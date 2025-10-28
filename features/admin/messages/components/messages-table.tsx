@@ -62,8 +62,9 @@ export function MessagesTable({ threads }: MessagesTableProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="p-0">
-        <ScrollArea className="w-full">
+      <CardContent>
+        <div className="-m-6">
+          <ScrollArea className="w-full">
           <Table>
             <TableHeader>
               <TableRow>
@@ -186,6 +187,7 @@ export function MessagesTable({ threads }: MessagesTableProps) {
           </Table>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

@@ -1,16 +1,22 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Separator } from '@/components/ui/separator'
 import { Star } from 'lucide-react'
 import type { ReviewsOverview } from './admin-overview-types'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -37,8 +43,13 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
         <CardContent>
           <Empty>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Star aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No reviews yet</EmptyTitle>
-              <EmptyDescription>Reviews will appear here once customers provide feedback.</EmptyDescription>
+              <EmptyDescription>
+                Reviews will appear here once customers provide feedback.
+              </EmptyDescription>
             </EmptyHeader>
           </Empty>
         </CardContent>
@@ -64,25 +75,20 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-80 pr-4">
-          <ItemGroup className="space-y-3">
+          <ItemGroup>
             {rows.map((review) => (
-              <Item key={review['id']} variant="outline" className="flex-col gap-3">
+              <Item key={review['id']} variant="outline" size="sm" className="flex-col gap-3">
+                <ItemHeader>
+                  <ItemTitle>{review['salon_name'] || 'Unknown salon'}</ItemTitle>
+                  <ItemActions>
+                    <Badge variant="outline">
+                      <Star className="mr-1 size-3 text-accent" fill="currentColor" />
+                      {review['rating'] || 0}/5
+                    </Badge>
+                  </ItemActions>
+                </ItemHeader>
                 <ItemContent>
-                  <ItemGroup>
-                    <Item variant="muted">
-                      <ItemContent>
-                        <ItemTitle>{review['salon_name'] || 'Unknown salon'}</ItemTitle>
-                        <ItemDescription>By {review['customer_name'] || 'Anonymous'}</ItemDescription>
-                      </ItemContent>
-                      <ItemActions>
-                        <Badge variant="outline">
-                          <Star className="mr-1 h-3 w-3 text-accent" fill="currentColor" />
-                          {review['rating'] || 0}/5
-                        </Badge>
-                      </ItemActions>
-                    </Item>
-                  </ItemGroup>
-                  <Separator />
+                  <ItemDescription>By {review['customer_name'] || 'Anonymous'}</ItemDescription>
                   {review['comment'] ? (
                     <p className="line-clamp-3 text-sm text-muted-foreground">{review['comment']}</p>
                   ) : (

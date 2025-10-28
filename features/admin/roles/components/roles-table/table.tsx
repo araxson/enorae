@@ -56,8 +56,9 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
+      <CardContent>
+        <div className="-m-6">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
@@ -98,7 +99,7 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
-                        <Shield className="h-3 w-3" />
+                        <Shield className="size-3" />
                         <Badge variant="outline">{formatRoleLabel(role['role'])}</Badge>
                       </div>
                     </TableCell>
@@ -122,18 +123,18 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="sm" aria-label={`Open role actions for ${role['role'] ?? 'role'}`}>
-                            <MoreVertical className="h-4 w-4" />
+                            <MoreVertical className="size-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => onEditPermissions(role)}>
-                            <Shield className="mr-2 h-4 w-4" />
+                            <Shield className="mr-2 size-4" />
                             Edit Permissions
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           {role['is_active'] ? (
                             <DropdownMenuItem onClick={() => onRevoke(role)}>
-                              <ShieldOff className="mr-2 h-4 w-4" />
+                              <ShieldOff className="mr-2 size-4" />
                               Revoke Role
                             </DropdownMenuItem>
                           ) : null}
@@ -142,7 +143,7 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                               onClick={() => onDelete(role)}
                               className="text-destructive focus:text-destructive"
                             >
-                              <Trash2 className="mr-2 h-4 w-4" />
+                              <Trash2 className="mr-2 size-4" />
                               Delete Permanently
                             </DropdownMenuItem>
                           )}
@@ -154,7 +155,8 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
               })
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   )

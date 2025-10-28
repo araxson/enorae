@@ -97,16 +97,16 @@ export function StaffScheduleTable({
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <ButtonGroup className="ml-auto justify-end">
+                <ButtonGroup aria-label="Schedule actions">
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => schedule['id'] && onToggleActive(schedule['id'], schedule['is_active'])}
                   >
                     {schedule['is_active'] ? (
-                      <PowerOff className="h-4 w-4" />
+                      <PowerOff className="size-4" />
                     ) : (
-                      <Power className="h-4 w-4" />
+                      <Power className="size-4" />
                     )}
                   </Button>
                   <Button
@@ -115,7 +115,7 @@ export function StaffScheduleTable({
                     onClick={() => schedule['id'] && onDelete(schedule['id'])}
                     disabled={deletingId === schedule['id']}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="size-4" />
                   </Button>
                 </ButtonGroup>
               </TableCell>

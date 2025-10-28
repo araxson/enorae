@@ -32,7 +32,7 @@ export function UserActionsDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" aria-label="Open user actions menu">
-          <MoreVertical className="h-4 w-4" />
+          <MoreVertical className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -41,18 +41,18 @@ export function UserActionsDropdown({
 
         {isActive ? (
           <DropdownMenuItem onClick={onOpenSuspend}>
-            <UserX className="h-4 w-4 mr-2" />
+            <UserX className="size-4 mr-2" />
             Suspend User
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem onClick={onOpenReactivate}>
-            <UserCheck className="h-4 w-4 mr-2" />
+            <UserCheck className="size-4 mr-2" />
             Reactivate User
           </DropdownMenuItem>
         )}
 
         <DropdownMenuItem onClick={onOpenTerminate}>
-          <ShieldOff className="h-4 w-4 mr-2" />
+          <ShieldOff className="size-4 mr-2" />
           Terminate Sessions
         </DropdownMenuItem>
 
@@ -63,7 +63,7 @@ export function UserActionsDropdown({
               onClick={onOpenDelete}
               className="text-destructive focus:text-destructive"
             >
-              <Trash2 className="h-4 w-4 mr-2" />
+              <Trash2 className="size-4 mr-2" />
               Delete Permanently
             </DropdownMenuItem>
           </>

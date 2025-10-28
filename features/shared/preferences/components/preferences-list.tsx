@@ -69,7 +69,7 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Settings className="h-6 w-6" />
+            <Settings className="size-6" />
           </EmptyMedia>
           <EmptyTitle>No preferences configured</EmptyTitle>
           <EmptyDescription>
@@ -106,14 +106,14 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
                 </div>
               </TableCell>
               <TableCell className="text-right">
-                <ButtonGroup className="ml-auto justify-end">
+                <ButtonGroup aria-label="Preference actions">
                   {onEdit ? (
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => onEdit(pref)}
                     >
-                      <Edit2 className="h-4 w-4" />
+                      <Edit2 className="size-4" />
                       <span className="sr-only">Edit</span>
                     </Button>
                   ) : null}
@@ -122,7 +122,7 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
                     size="icon"
                     onClick={() => setDeleteId(pref.id)}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="size-4" />
                     <span className="sr-only">Delete</span>
                   </Button>
                 </ButtonGroup>

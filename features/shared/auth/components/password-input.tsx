@@ -16,11 +16,11 @@ export interface PasswordInputProps
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-  ({ className, showVisibilityToggle = true, ...props }, ref) => {
+  ({ className, showVisibilityToggle = true, disabled, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
 
     return (
-      <InputGroup>
+      <InputGroup data-disabled={disabled ? '' : undefined}>
         <Input
           type={showPassword ? 'text' : 'password'}
           data-slot="input-group-control"
@@ -28,6 +28,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             'flex-1 rounded-none border-0 bg-transparent shadow-none focus-visible:ring-0 dark:bg-transparent',
             className
           )}
+          disabled={disabled}
           ref={ref}
           {...props}
         />
@@ -38,12 +39,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
               variant="ghost"
               size="icon-sm"
               onClick={() => setShowPassword(!showPassword)}
+              disabled={disabled}
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
-                <EyeOff className="h-4 w-4 text-muted-foreground" />
+                <EyeOff className="size-4 text-muted-foreground" />
               ) : (
-                <Eye className="h-4 w-4 text-muted-foreground" />
+                <Eye className="size-4 text-muted-foreground" />
               )}
             </InputGroupButton>
           </InputGroupAddon>

@@ -21,47 +21,55 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
   const items = featureUsage.items.slice(0, 10)
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <Sparkles className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Feature Usage Signals</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent>
-        {items.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No feature usage telemetry</EmptyTitle>
-              <EmptyDescription>Signals will appear once product instrumentation reports recent events.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <ItemGroup className="space-y-2">
-            {items.map((item) => (
-              <Item key={item.key} variant="outline" size="sm">
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <Sparkles className="size-4" />
+                </ItemMedia>
                 <ItemContent>
-                  <ItemTitle>{item.key}</ItemTitle>
-                  <ItemDescription>
-                    Interaction volume across last 30 days of telemetry.
-                  </ItemDescription>
+                  <ItemTitle>Feature Usage Signals</ItemTitle>
                 </ItemContent>
-                <ItemActions>
-                  <Badge variant="secondary">
-                    {item.count.toLocaleString('en-US')} hits
-                  </Badge>
-                </ItemActions>
               </Item>
-            ))}
-          </ItemGroup>
-        )}
-      </CardContent>
-    </Card>
+            </ItemGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {items.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No feature usage telemetry</EmptyTitle>
+                <EmptyDescription>
+                  Signals will appear once product instrumentation reports recent events.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            <div className="space-y-2">
+              <ItemGroup>
+                {items.map((item) => (
+                  <Item key={item.key} variant="outline" size="sm">
+                    <ItemContent>
+                      <ItemTitle>{item.key}</ItemTitle>
+                      <ItemDescription>
+                        Interaction volume across last 30 days of telemetry.
+                      </ItemDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge variant="secondary">
+                        {item.count.toLocaleString('en-US')} hits
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                ))}
+              </ItemGroup>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   )
 }

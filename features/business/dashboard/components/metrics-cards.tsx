@@ -4,7 +4,6 @@ import { useMemo, type ReactNode } from 'react'
 import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { BusinessDashboardMetrics } from '@/features/business/dashboard/types'
@@ -46,20 +45,20 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
   const revenueMetrics = [
     metrics.totalRevenue !== undefined && {
       title: 'Total Revenue',
-      icon: <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
+      icon: <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />,
       accent: 'primary' as const,
       amountLabel: formatCurrency(metrics.totalRevenue),
       description: 'All-time earnings',
     },
     metrics.last30DaysRevenue !== undefined && {
       title: 'Last 30 Days',
-      icon: <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />,
+      icon: <TrendingUp className="size-4 text-muted-foreground" aria-hidden="true" />,
       accent: 'success' as const,
       amountLabel: formatCurrency(metrics.last30DaysRevenue),
       description: 'Active revenue stream',
       highlight: (
         <div className="flex items-center gap-2">
-          <ArrowUpRight className="h-3 w-3 text-primary" aria-hidden="true" />
+          <ArrowUpRight className="size-3 text-primary" aria-hidden="true" />
           <p className="text-sm font-medium text-primary">Momentum trending upward</p>
         </div>
       ),
@@ -69,7 +68,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
   const appointmentMetrics = [
     {
       title: 'Total',
-      icon: <Calendar className="h-4 w-4 text-primary" aria-hidden="true" />,
+      icon: <Calendar className="size-4 text-primary" aria-hidden="true" />,
       value: metrics.totalAppointments,
       progress: 100,
       description: 'All bookings',
@@ -77,7 +76,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     },
     {
       title: 'Confirmed',
-      icon: <CheckCircle className="h-4 w-4 text-primary" aria-hidden="true" />,
+      icon: <CheckCircle className="size-4 text-primary" aria-hidden="true" />,
       value: metrics.confirmedAppointments,
       progress: confirmationRate,
       description: `${confirmationRate}% of total`,
@@ -85,7 +84,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     },
     {
       title: 'Pending',
-      icon: <Clock className="h-4 w-4 text-accent" aria-hidden="true" />,
+      icon: <Clock className="size-4 text-accent" aria-hidden="true" />,
       value: metrics.pendingAppointments,
       progress: pendingRate,
       description: 'Awaiting confirmation',
@@ -118,7 +117,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
             <ItemContent>
               <ItemTitle>Appointments overview</ItemTitle>
             </ItemContent>
-            <ItemActions className="flex-none">
+            <ItemActions>
               <Badge variant="outline">{confirmationRate}% Confirmed</Badge>
             </ItemActions>
           </Item>
@@ -140,11 +139,11 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
               <TooltipTrigger asChild>
                 <AppointmentResource
                   title="Staff Members"
-                icon={<Users className="h-4 w-4 text-secondary" aria-hidden="true" />}
-                value={metrics.totalStaff}
-                accent="accent"
-                description="Active team members"
-              />
+                  icon={<Users className="size-4 text-secondary" aria-hidden="true" />}
+                  value={metrics.totalStaff}
+                  accent="accent"
+                  description="Active team members"
+                />
             </TooltipTrigger>
             <TooltipContent>Ensure coverage across peak hours</TooltipContent>
           </Tooltip>
@@ -152,7 +151,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
             <TooltipTrigger asChild>
               <AppointmentResource
                 title="Services Offered"
-                icon={<Scissors className="h-4 w-4 text-secondary-foreground" aria-hidden="true" />}
+                icon={<Scissors className="size-4 text-secondary-foreground" aria-hidden="true" />}
                 value={metrics.totalServices}
                 accent="secondary"
                 description="Available services"
@@ -167,6 +166,8 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
   )
 }
 
+const resourceValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
 type AppointmentResourceProps = {
   title: string
   icon: ReactNode
@@ -179,12 +180,12 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
   return (
     <Item variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <ItemHeader className="items-start justify-between gap-2">
+      <ItemHeader>
         <ItemTitle>{title}</ItemTitle>
-        <ItemActions className="flex-none">{icon}</ItemActions>
+        <ItemActions>{icon}</ItemActions>
       </ItemHeader>
       <ItemContent className="space-y-2">
-        <CardTitle>{value}</CardTitle>
+        <p className={resourceValueClass}>{value}</p>
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>
     </Item>

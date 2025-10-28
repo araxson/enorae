@@ -99,13 +99,16 @@ export function ModerationFilters({
           <FieldContent>
             <InputGroup>
               <InputGroupAddon>
-                <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <Search className="size-4 text-muted-foreground" aria-hidden="true" />
               </InputGroupAddon>
               <InputGroupInput
                 id="moderation-search"
+                type="search"
                 placeholder="Search reviews..."
                 value={searchQuery}
                 onChange={(event) => onSearchChange(event.target.value)}
+                aria-label="Search reviews"
+                autoComplete="off"
               />
               <InputGroupAddon align="inline-end">
                 {searchQuery ? (
@@ -115,7 +118,7 @@ export function ModerationFilters({
                     aria-label="Clear search"
                     onClick={() => onSearchChange('')}
                   >
-                    <X className="h-4 w-4" aria-hidden="true" />
+                    <X className="size-4" aria-hidden="true" />
                   </InputGroupButton>
                 ) : null}
               </InputGroupAddon>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Badge } from '@/components/ui/badge'
@@ -19,6 +19,7 @@ import {
   ItemGroup,
   ItemHeader,
   ItemMedia,
+  ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -90,106 +91,124 @@ export function NotificationCenter({ notifications }: Props) {
   }
 
   const getChannelIcon = (contextType: string | null) => {
-    if (!contextType) return <Bell className="h-4 w-4" />
-    if (contextType === 'email') return <Mail className="h-4 w-4" />
-    if (contextType === 'sms') return <MessageSquare className="h-4 w-4" />
-    if (contextType === 'push') return <Smartphone className="h-4 w-4" />
-    return <Bell className="h-4 w-4" />
+    if (!contextType) return <Bell className="size-4" />
+    if (contextType === 'email') return <Mail className="size-4" />
+    if (contextType === 'sms') return <MessageSquare className="size-4" />
+    if (contextType === 'push') return <Smartphone className="size-4" />
+    return <Bell className="size-4" />
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
-        <div className="flex w-full justify-between items-center">
-          <div className="flex items-center gap-3">
-            <Bell className="h-5 w-5" />
-            <ItemTitle>Notification Center</ItemTitle>
-            {unreadCount > 0 && (
-              <Badge variant="destructive">{unreadCount}</Badge>
-            )}
-          </div>
-          {unreadCount > 0 && (
-            <Button variant="outline" size="sm" onClick={handleMarkAllAsRead}>
-              <CheckCheck className="h-4 w-4 mr-2" />
-              Mark all as read
-            </Button>
-          )}
+        <div className="flex items-center gap-3">
+          <Bell className="size-5" />
+          <ItemTitle>Notification Center</ItemTitle>
+          {unreadCount > 0 ? (
+            <Badge variant="destructive">{unreadCount}</Badge>
+          ) : null}
         </div>
+        {unreadCount > 0 ? (
+          <Button variant="outline" size="sm" onClick={handleMarkAllAsRead}>
+            <CheckCheck className="size-4" />
+            <span>Mark all as read</span>
+          </Button>
+        ) : null}
       </ItemHeader>
       <ItemContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="unread">
-              Unread {unreadCount > 0 && `(${unreadCount})`}
-            </TabsTrigger>
-            <TabsTrigger value="read">Read</TabsTrigger>
-            <TabsTrigger value="email">Email</TabsTrigger>
-            <TabsTrigger value="sms">SMS</TabsTrigger>
-          </TabsList>
+          <div className="grid w-full grid-cols-5">
+            <TabsList>
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="unread">
+                Unread {unreadCount > 0 ? `(${unreadCount})` : null}
+              </TabsTrigger>
+              <TabsTrigger value="read">Read</TabsTrigger>
+              <TabsTrigger value="email">Email</TabsTrigger>
+              <TabsTrigger value="sms">SMS</TabsTrigger>
+            </TabsList>
+          </div>
 
-          <TabsContent value={activeTab} className="mt-4">
-            {filteredNotifications.length === 0 ? (
-              <Empty>
-                <EmptyMedia variant="icon">
-                  <Bell className="h-6 w-6" aria-hidden="true" />
-                </EmptyMedia>
-                <EmptyHeader>
-                  <EmptyTitle>No notifications</EmptyTitle>
-                  <EmptyDescription>New alerts will show up here as they arrive.</EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            ) : (
-              <ItemGroup className="gap-3">
-                {filteredNotifications.map((notification) => (
-                  <Item
-                    key={notification.id}
-                    variant={notification.is_read ? 'outline' : 'muted'}
-                    className="items-start gap-4"
-                  >
-                    <ItemMedia variant="icon">
-                      {getChannelIcon(notification.context_type)}
-                    </ItemMedia>
-                    <ItemContent className="min-w-0 gap-2">
-                      <ItemTitle className="flex items-center gap-2">
-                        <span className="truncate">{notification.content}</span>
-                        {!notification.is_read ? <Badge variant="secondary">New</Badge> : null}
-                      </ItemTitle>
-                      {notification.context_type ? (
-                        <ItemDescription>Type: {notification.context_type}</ItemDescription>
+          <TabsContent value={activeTab}>
+            <div className="mt-4">
+              {filteredNotifications.length === 0 ? (
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <Bell className="size-6" aria-hidden="true" />
+                    </EmptyMedia>
+                    <EmptyTitle>No notifications</EmptyTitle>
+                    <EmptyDescription>
+                      New alerts will show up here as they arrive.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              ) : (
+                <ItemGroup>
+                  {filteredNotifications.map((notification, index) => (
+                    <Fragment key={notification.id}>
+                      <Item
+                        variant={notification.is_read ? 'outline' : 'muted'}
+                        size="sm"
+                      >
+                        <ItemMedia variant="icon">
+                          {getChannelIcon(notification.context_type)}
+                        </ItemMedia>
+                        <div className="min-w-0 flex-1">
+                          <ItemContent>
+                            <ItemTitle>
+                              <span className="truncate">{notification.content}</span>
+                              {!notification.is_read ? (
+                                <Badge variant="secondary">New</Badge>
+                              ) : null}
+                            </ItemTitle>
+                            {notification.context_type ? (
+                              <ItemDescription>
+                                Type: {notification.context_type}
+                              </ItemDescription>
+                            ) : null}
+                            <ItemDescription>
+                              <time dateTime={notification.created_at}>
+                                {formatDistanceToNow(new Date(notification.created_at), {
+                                  addSuffix: true,
+                                })}
+                              </time>
+                            </ItemDescription>
+                          </ItemContent>
+                        </div>
+                        <div className="flex-none">
+                          <ItemActions>
+                            <ButtonGroup>
+                              {!notification.is_read ? (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleMarkAsRead(notification.id)}
+                                  aria-label="Mark notification as read"
+                                >
+                                  <Check className="size-4" />
+                                </Button>
+                              ) : null}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => handleDelete(notification.id)}
+                                aria-label="Delete notification"
+                              >
+                                <Trash2 className="size-4" />
+                              </Button>
+                            </ButtonGroup>
+                          </ItemActions>
+                        </div>
+                      </Item>
+                      {index < filteredNotifications.length - 1 ? (
+                        <ItemSeparator />
                       ) : null}
-                      <ItemDescription>
-                        <time dateTime={notification.created_at}>
-                          {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                        </time>
-                      </ItemDescription>
-                    </ItemContent>
-                    <ItemActions className="flex-none">
-                      <ButtonGroup>
-                        {!notification.is_read ? (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleMarkAsRead(notification.id)}
-                            aria-label="Mark notification as read"
-                          >
-                            <Check className="h-4 w-4" />
-                          </Button>
-                        ) : null}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(notification.id)}
-                          aria-label="Delete notification"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </ButtonGroup>
-                    </ItemActions>
-                  </Item>
-                ))}
-              </ItemGroup>
-            )}
+                    </Fragment>
+                  ))}
+                </ItemGroup>
+              )}
+            </div>
           </TabsContent>
         </Tabs>
       </ItemContent>

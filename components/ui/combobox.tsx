@@ -77,7 +77,7 @@ export function Combobox({
               {startContent}
               {selected ? selected.label : <span className="text-muted-foreground">{placeholder}</span>}
             </span>
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
@@ -90,7 +90,7 @@ export function Combobox({
                   <CommandItem key={option.value} value={option.value} onSelect={handleSelect}>
                     <Check
                       className={cn(
-                        "mr-2 h-4 w-4",
+                        "mr-2 size-4",
                         option.value === value ? "opacity-100" : "opacity-0",
                       )}
                     />

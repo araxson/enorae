@@ -25,7 +25,7 @@ export function TimezoneField({ preferences, setPreferences }: PreferenceFieldPr
   return (
     <Field>
       <FieldLabel htmlFor="timezone" className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
         Timezone
       </FieldLabel>
       <FieldContent>
@@ -58,7 +58,7 @@ export function LocaleField({ preferences, setPreferences }: PreferenceFieldProp
   return (
     <Field>
       <FieldLabel htmlFor="locale" className="flex items-center gap-2">
-        <Globe className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        <Globe className="size-4 text-muted-foreground" aria-hidden="true" />
         Language &amp; Region
       </FieldLabel>
       <FieldContent>
@@ -91,7 +91,7 @@ export function CurrencyField({ preferences, setPreferences }: PreferenceFieldPr
   return (
     <Field>
       <FieldLabel htmlFor="currency" className="flex items-center gap-2">
-        <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />
         Currency
       </FieldLabel>
       <FieldContent>

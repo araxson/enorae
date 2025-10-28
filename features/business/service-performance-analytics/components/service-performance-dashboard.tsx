@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Users, Link2 } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { RevenueLeaders } from './partials/revenue-leaders'
@@ -71,22 +71,30 @@ export function ServicePerformanceDashboard({
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              <CardTitle>Staff Leaders by Service</CardTitle>
-            </div>
+            <CardTitle>Staff Leaders by Service</CardTitle>
+            <CardDescription>Identify the top performers driving revenue.</CardDescription>
           </CardHeader>
-          <StaffPerformanceSection staffPerformance={staffPerformance} />
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Users className="size-5" aria-hidden="true" />
+              <span className="text-sm font-medium">Staff performance overview</span>
+            </div>
+            <StaffPerformanceSection staffPerformance={staffPerformance} />
+          </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <div className="flex items-center gap-2">
-              <Link2 className="h-5 w-5" />
-              <CardTitle>Service Pairings</CardTitle>
-            </div>
+            <CardTitle>Service Pairings</CardTitle>
+            <CardDescription>Understand complementary services booked together.</CardDescription>
           </CardHeader>
-          <ServicePairingsSection pairings={pairings} />
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Link2 className="size-5" aria-hidden="true" />
+              <span className="text-sm font-medium">Common combinations</span>
+            </div>
+            <ServicePairingsSection pairings={pairings} />
+          </CardContent>
         </Card>
       </div>
 
@@ -94,7 +102,9 @@ export function ServicePerformanceDashboard({
         <CardHeader>
           <CardTitle>Duration Accuracy</CardTitle>
         </CardHeader>
-        <DurationAccuracySection durationAccuracy={durationAccuracy} />
+        <CardContent>
+          <DurationAccuracySection durationAccuracy={durationAccuracy} />
+        </CardContent>
       </Card>
     </div>
   )

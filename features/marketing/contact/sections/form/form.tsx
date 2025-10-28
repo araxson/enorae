@@ -26,7 +26,6 @@ import { submitContactMessage } from '@/features/marketing/contact/api/mutations
 import {
   Item,
   ItemContent,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -58,13 +57,12 @@ export function ContactForm() {
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
-      <ItemHeader>
-        <ItemTitle>Send us a message</ItemTitle>
-      </ItemHeader>
+    <Item variant="outline">
       <ItemContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex flex-col gap-4">
+          <ItemTitle>Send us a message</ItemTitle>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FieldSet>
               <FormField
                 control={form.control}
@@ -173,22 +171,23 @@ export function ContactForm() {
               />
             </FieldSet>
 
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? (
-                <>
-                  <Spinner className="mr-2 size-4" />
-                  Sending...
-                </>
-              ) : (
-                'Send Message'
-              )}
-            </Button>
-          </form>
-        </Form>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Spinner className="mr-2 size-4" />
+                    Sending...
+                  </>
+                ) : (
+                  'Send Message'
+                )}
+              </Button>
+            </form>
+          </Form>
+        </div>
       </ItemContent>
     </Item>
   )

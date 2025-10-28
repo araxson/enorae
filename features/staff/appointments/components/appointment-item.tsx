@@ -17,6 +17,8 @@ import {
   Item,
   ItemActions,
   ItemContent,
+  ItemDescription,
+  ItemTitle,
 } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
 
@@ -65,33 +67,23 @@ export function AppointmentItem({
       }}
     >
       <ItemContent>
-        <div className="flex flex-wrap items-center gap-2">
+        <ItemTitle>
           <Badge variant={config.variant}>{config.label}</Badge>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4" aria-hidden="true" />
-            {appointment.start_time ? format(new Date(appointment.start_time), 'MMM dd, yyyy') : 'N/A'}
-          </div>
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Clock className="h-4 w-4" aria-hidden="true" />
-            {appointment.start_time ? format(new Date(appointment.start_time), 'h:mm a') : 'N/A'}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <User className="h-4 w-4" />
-            <span>{customerId ?? 'No customer assigned'}</span>
-          </div>
-          {confirmationCode ? (
-            <p className="text-xs text-muted-foreground">Confirmation {confirmationCode}</p>
-          ) : null}
-        </div>
-
+          <Calendar className="size-4" aria-hidden="true" />
+          {appointment.start_time ? format(new Date(appointment.start_time), 'MMM dd, yyyy') : 'N/A'}
+          <Clock className="size-4" aria-hidden="true" />
+          {appointment.start_time ? format(new Date(appointment.start_time), 'h:mm a') : 'N/A'}
+        </ItemTitle>
+        <ItemDescription>
+          <User className="inline size-4" />
+          {' '}{customerId ?? 'No customer assigned'}
+          {confirmationCode && ` • Confirmation ${confirmationCode}`}
+        </ItemDescription>
         {appointment.duration_minutes ? (
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            <span>{appointment.duration_minutes} minutes</span>
-          </div>
+          <ItemDescription>
+            <Clock className="inline size-3" />
+            {' '}{appointment.duration_minutes} minutes
+          </ItemDescription>
         ) : null}
       </ItemContent>
 
@@ -109,7 +101,7 @@ export function AppointmentItem({
                 successMessage="Appointment confirmed"
                 loadingText="Confirming..."
               >
-                <CheckCircle className="mr-1 h-4 w-4" />
+                <CheckCircle className="mr-1 size-4" />
                 Confirm
               </ActionButton>
             ) : null}
@@ -123,7 +115,7 @@ export function AppointmentItem({
                 successMessage="Appointment started"
                 loadingText="Starting..."
               >
-                <Play className="mr-1 h-4 w-4" />
+                <Play className="mr-1 size-4" />
                 Start
               </ActionButton>
             ) : null}
@@ -138,7 +130,7 @@ export function AppointmentItem({
                   successMessage="Appointment completed"
                   loadingText="Completing..."
                 >
-                  <CheckCircle className="mr-1 h-4 w-4" />
+                  <CheckCircle className="mr-1 size-4" />
                   Complete
                 </ActionButton>
                 <ActionButton
@@ -151,7 +143,7 @@ export function AppointmentItem({
                   successMessage="Marked as no-show"
                   loadingText="Updating..."
                 >
-                  <XCircle className="mr-1 h-4 w-4" />
+                  <XCircle className="mr-1 size-4" />
                   No Show
                 </ActionButton>
               </>

@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Re-export main dashboard query
 export { getMessagesDashboard } from './dashboard'
 

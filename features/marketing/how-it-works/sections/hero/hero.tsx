@@ -13,10 +13,7 @@ export function Hero() {
           <ItemDescription>See how onboarding works for both salons and customers step-by-step.</ItemDescription>
         </ItemContent>
       </Item>
-      <ButtonGroup
-        aria-label="How Enorae works hero actions"
-        className="flex flex-wrap justify-center gap-2"
-      >
+      <ButtonGroup aria-label="How Enorae works hero actions">
         <Button asChild size="lg">
           <Link href="/signup">Start as a salon</Link>
         </Button>

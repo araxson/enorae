@@ -45,7 +45,7 @@ export async function SalonDirectoryPage({
       containerClassName="max-w-6xl"
       groupClassName="gap-8"
     >
-      <Item className="flex-col" variant="muted">
+      <Item variant="muted">
         <ItemContent>
           <ItemDescription>Discover salons near you and tailor the list with filters and categories.</ItemDescription>
         </ItemContent>

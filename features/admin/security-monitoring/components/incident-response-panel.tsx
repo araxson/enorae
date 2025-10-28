@@ -35,7 +35,7 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
         <ItemGroup>
           <Item variant="muted" className="items-center gap-2">
             <ItemContent className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+              <ShieldCheck className="size-4" aria-hidden="true" />
               <CardTitle>Security Incident Response</CardTitle>
             </ItemContent>
           </Item>
@@ -56,18 +56,21 @@ export function IncidentResponsePanel({ incidents }: IncidentResponsePanelProps)
                 key={incident['id']}
                 variant={incident['severity'].toLowerCase() === 'critical' ? 'destructive' : 'default'}
               >
-                <AlertTriangle className="h-4 w-4" />
+                <AlertTriangle className="size-4" />
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1">
                     <AlertTitle>{incident.eventType}</AlertTitle>
                     <AlertDescription>
-                      Detected at {new Date(incident.createdAt).toLocaleString()} · IP {incident.ipAddress ?? 'Unknown'}
-                    </AlertDescription>
-                    {incident['description'] ? (
-                      <AlertDescription className="mt-1">{incident['description']}</AlertDescription>
-                    ) : null}
-                    <AlertDescription className="mt-2 font-medium">
-                      {guidanceFor(incident['severity'])}
+                      <p>
+                        Detected at {new Date(incident.createdAt).toLocaleString()} · IP{' '}
+                        {incident.ipAddress ?? 'Unknown'}
+                      </p>
+                      {incident['description'] ? (
+                        <p className="mt-1">{incident['description']}</p>
+                      ) : null}
+                      <p className="mt-2 font-medium text-foreground">
+                        {guidanceFor(incident['severity'])}
+                      </p>
                     </AlertDescription>
                   </div>
                   {severityBadge(incident['severity'])}

@@ -2,6 +2,19 @@ import type { Database } from '@/lib/types/database.types'
 
 export type AdminRevenueRow = Database['public']['Views']['admin_revenue_overview_view']['Row']
 
+export interface SalonRevenueRow {
+  salon_id: string
+  salon_name: string
+  chain_name: string | null
+  total_revenue: number
+  service_revenue: number
+  product_revenue: number
+  total_appointments: number
+  completed_appointments: number
+  cancelled_appointments: number
+  completion_rate: number
+}
+
 // Manual transactions feature not implemented - placeholder type
 export interface ManualTransactionRow {
   id: string

@@ -1,5 +1,3 @@
-import 'server-only'
-
 export { getAllSalonChains } from './all-salon-chains'
 export { getChainAnalytics } from './chain-analytics'
 export { getChainById } from './chain-by-id'

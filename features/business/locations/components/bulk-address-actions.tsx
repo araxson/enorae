@@ -90,7 +90,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
       <ItemContent>
         <FieldSet className="flex flex-col gap-6">
           <Alert>
-            <CheckCircle className="h-4 w-4" />
+            <CheckCircle className="size-4" />
             <AlertTitle>Selection status</AlertTitle>
             <AlertDescription>
               {selectedIds.length > 0
@@ -114,7 +114,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
                   <SelectItem value="NZ">New Zealand</SelectItem>
                 </SelectContent>
               </Select>
-              <ButtonGroup>
+              <ButtonGroup aria-label="Update country">
                 <Button
                   type="button"
                   variant="outline"
@@ -122,7 +122,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
                   disabled={isUpdating || selectedIds.length === 0}
                   className="gap-2"
                 >
-                  {isUpdating ? <Spinner /> : <Globe className="h-4 w-4" />}
+                  {isUpdating ? <Spinner /> : <Globe className="size-4" />}
                   Update
                 </Button>
               </ButtonGroup>
@@ -133,7 +133,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
           <Field>
             <FieldLabel>Geocode Missing Coordinates</FieldLabel>
             <FieldContent>
-              <ButtonGroup className="w-full">
+              <ButtonGroup aria-label="Geocode addresses">
                 <Button
                   type="button"
                   variant="outline"
@@ -141,7 +141,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
                   disabled={isUpdating}
                   className="flex w-full items-center gap-2"
                 >
-                  {isUpdating ? <Spinner /> : <MapPin className="h-4 w-4" />}
+                  {isUpdating ? <Spinner /> : <MapPin className="size-4" />}
                   {isUpdating ? 'Processing...' : 'Geocode All Addresses Without Coordinates'}
                 </Button>
               </ButtonGroup>

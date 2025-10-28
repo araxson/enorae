@@ -23,21 +23,15 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
   return (
     <Card id="contact-options">
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Contact options</CardTitle>
-              <CardDescription>Select the channel that matches the urgency of your request.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Contact options</CardTitle>
+        <CardDescription>Select the channel that matches the urgency of your request.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <ItemGroup className="space-y-3">
             <Item variant="outline" size="sm">
               <ItemMedia variant="icon">
-                <Phone className="h-4 w-4 text-secondary" aria-hidden />
+                <Phone className="size-4 text-secondary" aria-hidden />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle id="contact-hotline-title">Hotline</ItemTitle>
@@ -52,7 +46,7 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
 
             <Item variant="outline" size="sm">
               <ItemMedia variant="icon">
-                <MessageCircle className="h-4 w-4 text-primary" aria-hidden />
+                <MessageCircle className="size-4 text-primary" aria-hidden />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle id="contact-chat-title">Chat</ItemTitle>
@@ -87,9 +81,9 @@ export function SupportContactCard({ onOpenContact }: SupportContactCardProps) {
                 <Item>
                   <ItemContent>
                     <ItemTitle id="status-alerts-title">Status alerts</ItemTitle>
-                    <CardDescription id="status-alerts-description">
+                    <ItemDescription id="status-alerts-description">
                       Receive mobile and email alerts when ticket status changes or a fix is shipped.
-                    </CardDescription>
+                    </ItemDescription>
                   </ItemContent>
                   <ItemActions>
                     <Switch

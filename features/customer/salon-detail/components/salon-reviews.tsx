@@ -39,9 +39,7 @@ function StarRating({ rating }: { rating: number | null }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`h-4 w-4 ${
-            i < validRating ? 'fill-accent text-accent' : 'text-muted-foreground/30'
-          }`}
+          className={`size-4 ${ i < validRating ? 'fill-accent text-accent' : 'text-muted-foreground/30' }`}
         />
       ))}
     </div>
@@ -110,7 +108,7 @@ function ReviewCard({ review }: { review: SalonReview }) {
             </>
           ) : (
             <>
-              <ThumbsUp className="mr-2 h-4 w-4" />
+              <ThumbsUp className="mr-2 size-4" />
               <span>Helpful {helpfulCount > 0 ? `(${helpfulCount})` : ''}</span>
             </>
           )}
@@ -127,7 +125,7 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
         <CardContent className="p-6">
           <Empty>
             <EmptyMedia variant="icon">
-              <Star className="h-6 w-6" />
+              <Star className="size-6" />
             </EmptyMedia>
             <EmptyHeader>
               <EmptyTitle>No reviews yet</EmptyTitle>

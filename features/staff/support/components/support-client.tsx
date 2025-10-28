@@ -70,7 +70,7 @@ export function StaffSupportClient({
               aria-label="Open contact drawer"
               onClick={() => setIsContactSheetOpen(true)}
             >
-              <LifeBuoy className="h-4 w-4" />
+              <LifeBuoy className="size-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Open contact options</TooltipContent>
@@ -79,7 +79,7 @@ export function StaffSupportClient({
     >
       <div className="space-y-6">
         <Alert variant="default">
-          <Bell className="h-4 w-4" />
+          <Bell className="size-4" />
           <AlertTitle>System note</AlertTitle>
           <AlertDescription>
             Calendar sync delays are impacting confirmations. Our infrastructure team is rolling out a fix and will update you here.

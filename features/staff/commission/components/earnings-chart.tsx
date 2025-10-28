@@ -28,7 +28,7 @@ export function EarningsChart({ data }: EarningsChartProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <TrendingUp className="h-8 w-8" aria-hidden="true" />
+                <TrendingUp className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No earnings data</EmptyTitle>
               <EmptyDescription>Once you complete appointments, earnings performance appears here.</EmptyDescription>

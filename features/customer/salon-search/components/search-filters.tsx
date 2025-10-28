@@ -65,7 +65,7 @@ export function SearchFilters({
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <ItemMedia variant="icon">
-              <Search className="h-5 w-5" aria-hidden="true" />
+              <Search className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemTitle>Advanced Salon Search</ItemTitle>
           </div>

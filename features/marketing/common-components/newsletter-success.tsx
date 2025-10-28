@@ -7,10 +7,12 @@ export function NewsletterSuccess() {
   return (
     <Item variant="muted">
       <ItemMedia variant="icon">
-        <CheckCircle className="h-5 w-5 text-primary" aria-hidden="true" />
+        <CheckCircle className="size-5 text-primary" aria-hidden="true" />
       </ItemMedia>
       <ItemContent>
-        <ItemTitle className="text-primary">Thanks for subscribing!</ItemTitle>
+        <span className="text-primary">
+          <ItemTitle>Thanks for subscribing!</ItemTitle>
+        </span>
       </ItemContent>
     </Item>
   )

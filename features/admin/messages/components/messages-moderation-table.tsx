@@ -31,19 +31,21 @@ const severityVariant = (severity: ModerationQueueItem['severity']) => {
 
 export function MessagesModerationTable({ items }: MessagesModerationTableProps) {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <CardTitle>Moderation Queue</CardTitle>
-              <CardDescription>Recently flagged messages requiring review</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <ScrollArea className="w-full">
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>Moderation Queue</CardTitle>
+                <CardDescription>Recently flagged messages requiring review</CardDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <ScrollArea className="w-full">
           {items.length === 0 ? (
             <Empty>
               <EmptyHeader>
@@ -93,9 +95,11 @@ export function MessagesModerationTable({ items }: MessagesModerationTableProps)
               </TableBody>
             </Table>
           )}
-          {items.length === 0 ? null : <ScrollBar orientation="horizontal" />}
-        </ScrollArea>
-      </CardContent>
-    </Card>
+            {items.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+          </ScrollArea>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

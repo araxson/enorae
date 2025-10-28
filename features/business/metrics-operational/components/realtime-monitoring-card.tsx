@@ -1,15 +1,7 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Activity } from 'lucide-react'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 type RealtimeMonitoringCardProps = {
   realtimeUpdates: number
@@ -20,24 +12,17 @@ export function RealtimeMonitoringCard({ realtimeUpdates, lastUpdate }: Realtime
   return (
     <Card>
       <CardHeader>
-        <ItemGroup className="items-start gap-2">
-          <Item className="items-center gap-2">
-            <ItemMedia>
-              <Activity className="h-5 w-5" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Real-Time Monitoring</ItemTitle>
-            </ItemContent>
-          </Item>
-          <Item>
-            <ItemContent>
-              <ItemDescription>Live operational updates</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Real-Time Monitoring</CardTitle>
+        <CardDescription>Live operational updates</CardDescription>
       </CardHeader>
       <CardContent>
         <ItemGroup className="flex flex-col gap-4">
+          <Item className="items-center gap-3">
+            <Activity className="size-5 text-primary" aria-hidden="true" />
+            <ItemContent>
+              <ItemDescription>Operational heartbeat</ItemDescription>
+            </ItemContent>
+          </Item>
           <Item>
             <ItemContent>
               <ItemTitle>Real-time updates</ItemTitle>

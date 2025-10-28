@@ -26,7 +26,7 @@ export function DateRangePicker({ dateRange, onChange }: DateRangePickerProps) {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-full justify-start gap-2 md:w-auto">
-          <CalendarIcon className="h-4 w-4" />
+          <CalendarIcon className="size-4" />
           {formattedRange}
         </Button>
       </PopoverTrigger>

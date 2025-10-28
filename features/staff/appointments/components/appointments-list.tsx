@@ -14,13 +14,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-  ItemSeparator,
-} from '@/components/ui/item'
+import { ItemGroup, ItemSeparator } from '@/components/ui/item'
 
 type AppointmentsListProps = {
   appointments: StaffAppointment[]
@@ -41,7 +35,7 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Calendar className="h-8 w-8" aria-hidden="true" />
+                <Calendar className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No appointments scheduled</EmptyTitle>
               <EmptyDescription>
@@ -57,16 +51,12 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
   return (
     <Card>
       <CardHeader>
-        <Item variant="muted" size="sm">
-          <ItemContent>
-            <CardTitle>{title}</CardTitle>
-          </ItemContent>
-          <ItemActions>
-            <Badge variant="secondary">
-              {appointments.length} appointment{appointments.length !== 1 ? 's' : ''}
-            </Badge>
-          </ItemActions>
-        </Item>
+        <div className="flex items-center justify-between gap-3">
+          <CardTitle>{title}</CardTitle>
+          <Badge variant="secondary">
+            {appointments.length} appointment{appointments.length !== 1 ? 's' : ''}
+          </Badge>
+        </div>
       </CardHeader>
       <CardContent>
         <ItemGroup className="gap-3">

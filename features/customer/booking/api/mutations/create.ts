@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { generateConfirmationCode } from './helpers'
+import { generateConfirmationCode } from './utilities'
 import {
   validateBookingData,
   validateSalon,

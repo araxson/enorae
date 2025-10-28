@@ -9,7 +9,6 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { CardTitle } from '@/components/ui/card'
 import type { PricingRule } from '@/features/business/pricing/types'
 import { formatCurrency } from './pricing-utils'
 import { DollarSign, TrendingUp, Zap } from 'lucide-react'
@@ -25,17 +24,19 @@ export function PricingSummaryCards({
   totalPotentialRevenue,
   servicesCount,
 }: PricingSummaryCardsProps) {
+  const valueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   return (
     <ItemGroup className="grid gap-4 md:grid-cols-3">
       <Item variant="outline" className="flex-col gap-3">
-        <ItemHeader className="items-center justify-between">
+        <ItemHeader>
           <ItemTitle>Active Rules</ItemTitle>
-          <ItemActions className="flex-none">
-            <Zap className="h-4 w-4 text-accent" />
+          <ItemActions>
+            <Zap className="size-4 text-accent" />
           </ItemActions>
         </ItemHeader>
         <ItemContent>
-          <CardTitle>{rules.length}</CardTitle>
+          <p className={valueClass}>{rules.length}</p>
           <ItemDescription>
             {rules.filter(r => r.adjustment_type === 'surge').length} surges,{' '}
             {rules.filter(r => r.adjustment_type === 'discount').length} discounts
@@ -44,27 +45,27 @@ export function PricingSummaryCards({
       </Item>
 
       <Item variant="outline" className="flex-col gap-3">
-        <ItemHeader className="items-center justify-between">
+        <ItemHeader>
           <ItemTitle>Revenue Potential</ItemTitle>
-          <ItemActions className="flex-none">
-            <TrendingUp className="h-4 w-4 text-primary" />
+          <ItemActions>
+            <TrendingUp className="size-4 text-primary" />
           </ItemActions>
         </ItemHeader>
         <ItemContent>
-          <CardTitle>{formatCurrency(totalPotentialRevenue)}</CardTitle>
+          <p className={valueClass}>{formatCurrency(totalPotentialRevenue)}</p>
           <ItemDescription>Estimated monthly increase</ItemDescription>
         </ItemContent>
       </Item>
 
       <Item variant="outline" className="flex-col gap-3">
-        <ItemHeader className="items-center justify-between">
+        <ItemHeader>
           <ItemTitle>Services Optimized</ItemTitle>
-          <ItemActions className="flex-none">
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <ItemActions>
+            <DollarSign className="size-4 text-muted-foreground" />
           </ItemActions>
         </ItemHeader>
         <ItemContent>
-          <CardTitle>{servicesCount}</CardTitle>
+          <p className={valueClass}>{servicesCount}</p>
           <ItemDescription>Dynamic pricing enabled</ItemDescription>
         </ItemContent>
       </Item>

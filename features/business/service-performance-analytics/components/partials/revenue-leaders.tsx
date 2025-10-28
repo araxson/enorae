@@ -31,7 +31,7 @@ export function RevenueLeaders({ services, formatCurrency }: RevenueLeadersProps
   return (
     <Item variant="outline" className="md:col-span-2 flex-col gap-4">
       <ItemHeader className="items-center gap-2">
-        <DollarSign className="h-5 w-5" />
+        <DollarSign className="size-5" />
         <ItemTitle>Top Revenue Generators</ItemTitle>
       </ItemHeader>
       <ItemContent>
@@ -48,7 +48,7 @@ export function RevenueLeaders({ services, formatCurrency }: RevenueLeadersProps
               <ItemActions className="flex-none text-right">
                 <p>{formatCurrency(service.total_revenue)}</p>
                 <div className="flex items-center gap-1 text-muted-foreground">
-                  <Star className="h-3 w-3 text-accent" />
+                  <Star className="size-3 text-accent" />
                   {service.avg_rating?.toFixed(1) || 'N/A'}
                 </div>
               </ItemActions>

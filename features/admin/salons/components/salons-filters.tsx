@@ -80,7 +80,7 @@ export function SalonsFilters({
 
   return (
     <div className="flex flex-col gap-4">
-      <ButtonGroup className="justify-between gap-2 md:justify-end">
+      <ButtonGroup aria-label="Actions">
         <Button
           variant="outline"
           size="sm"
@@ -101,13 +101,16 @@ export function SalonsFilters({
           <FieldContent>
             <InputGroup>
               <InputGroupAddon>
-                <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                <Search className="size-4 text-muted-foreground" aria-hidden="true" />
               </InputGroupAddon>
               <InputGroupInput
                 id="salons-search"
+                type="search"
                 placeholder="Search salons by name, business name, or slug..."
                 value={search}
                 onChange={(e) => handleSearchChange(e.target.value)}
+                aria-label="Search salons directory"
+                autoComplete="off"
               />
               <InputGroupAddon align="inline-end">
                 {search ? (
@@ -117,7 +120,7 @@ export function SalonsFilters({
                     aria-label="Clear search"
                     onClick={() => handleSearchChange('')}
                   >
-                    <X className="h-4 w-4" aria-hidden="true" />
+                    <X className="size-4" aria-hidden="true" />
                   </InputGroupButton>
                 ) : null}
               </InputGroupAddon>

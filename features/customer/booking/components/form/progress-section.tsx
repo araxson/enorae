@@ -20,7 +20,7 @@ export function ProgressSection({ progress }: ProgressSectionProps) {
       <ItemGroup>
         <Item>
           <ItemMedia variant="icon">
-            <Sparkles className="h-4 w-4" aria-hidden="true" />
+            <Sparkles className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Progress</ItemTitle>

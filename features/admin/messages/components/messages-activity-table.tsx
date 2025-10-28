@@ -42,8 +42,9 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <ScrollArea className="w-full">
+      <CardContent>
+        <div className="space-y-4">
+          <ScrollArea className="w-full">
           {hasVolume ? (
             <Table>
               <TableHeader>
@@ -83,6 +84,7 @@ export function MessagesActivityTable({ activity }: MessagesActivityTableProps) 
           )}
           {hasVolume ? <ScrollBar orientation="horizontal" /> : null}
         </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

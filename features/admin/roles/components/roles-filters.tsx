@@ -59,13 +59,16 @@ export function RolesFilters({
         <FieldContent>
           <InputGroup>
             <InputGroupAddon>
-              <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <Search className="size-4 text-muted-foreground" aria-hidden="true" />
             </InputGroupAddon>
             <InputGroupInput
               id="roles-search"
+              type="search"
               placeholder="Search by user or salon ID..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
+              aria-label="Search roles directory"
+              autoComplete="off"
             />
             <InputGroupAddon align="inline-end">
               {searchQuery ? (
@@ -75,7 +78,7 @@ export function RolesFilters({
                   aria-label="Clear search"
                   onClick={() => onSearchChange('')}
                 >
-                  <X className="h-4 w-4" aria-hidden="true" />
+                  <X className="size-4" aria-hidden="true" />
                 </InputGroupButton>
               ) : null}
             </InputGroupAddon>

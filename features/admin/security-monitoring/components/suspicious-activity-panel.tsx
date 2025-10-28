@@ -33,7 +33,7 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
         <ItemGroup>
           <Item className="items-center justify-between gap-3">
             <ItemContent className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4" aria-hidden="true" />
+              <AlertTriangle className="size-4" aria-hidden="true" />
               <CardTitle>Suspicious Sessions</CardTitle>
             </ItemContent>
             <ItemActions className="flex-none">
@@ -71,7 +71,7 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
                       {session.isBlocked ? (
                         <ItemActions className="flex-none items-center gap-1">
                           <Badge variant="destructive">
-                            <ShieldOff className="h-3 w-3" aria-hidden="true" />
+                            <ShieldOff className="size-3" aria-hidden="true" />
                             {' '}
                             Blocked
                           </Badge>
@@ -87,7 +87,7 @@ export function SuspiciousActivityPanel({ sessions, blockedSessions }: Suspiciou
                     ) : null}
                     {session.lastActivityAt ? (
                       <div className="flex items-center gap-2">
-                        <Clock3 className="h-3 w-3" aria-hidden="true" />
+                        <Clock3 className="size-3" aria-hidden="true" />
                         <CardDescription>
                           Last activity {formatDistanceToNow(new Date(session.lastActivityAt), { addSuffix: true })}
                         </CardDescription>

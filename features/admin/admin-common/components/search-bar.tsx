@@ -77,15 +77,16 @@ export function SearchBar({ placeholder = 'Search...', onSearch, defaultValue = 
     <div className="w-full max-w-sm pb-6" data-search-shortcut="cmd+k">
       <InputGroup aria-label={placeholder}>
         <InputGroupAddon>
-          <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <Search className="size-4 text-muted-foreground" aria-hidden="true" />
         </InputGroupAddon>
         <InputGroupInput
           ref={inputRef}
-          type="text"
+          type="search"
           placeholder={placeholder}
           value={query}
           onChange={(event) => handleChange(event.target.value)}
           aria-describedby="admin-search-shortcut"
+          autoComplete="off"
         />
         <InputGroupAddon align="inline-end" className="gap-2">
           {isSearching ? <Spinner className="text-muted-foreground" /> : null}
@@ -96,7 +97,7 @@ export function SearchBar({ placeholder = 'Search...', onSearch, defaultValue = 
               variant="ghost"
               size="icon-sm"
             >
-              <X className="h-4 w-4" aria-hidden="true" />
+              <X className="size-4" aria-hidden="true" />
             </InputGroupButton>
           ) : null}
         </InputGroupAddon>

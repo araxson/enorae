@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import {
   Field,
   FieldContent,
@@ -22,6 +21,7 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Label } from '@/components/ui/label'
 
 interface HelpFeedbackDrawerProps {
   open: boolean
@@ -48,14 +48,8 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
 
             <Card>
               <CardHeader>
-                <ItemGroup>
-                  <Item variant="muted" size="sm">
-                    <ItemContent>
-                      <CardTitle>Notify me when</CardTitle>
-                      <CardDescription>Select the updates you would like to keep.</CardDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
+                <CardTitle>Notify me when</CardTitle>
+                <CardDescription>Select the updates you would like to keep.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Field orientation="horizontal">
@@ -86,24 +80,32 @@ export function HelpFeedbackDrawer({ open, onOpenChange }: HelpFeedbackDrawerPro
 
             <Card>
               <CardHeader>
-                <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <CardTitle>Share anonymously</CardTitle>
-                      <CardDescription>We will only record the feedback message.</CardDescription>
-                    </ItemContent>
-                    <ItemActions>
-                      <Switch defaultChecked />
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <CardTitle id="share-anonymously-title">Share anonymously</CardTitle>
+                    <CardDescription id="share-anonymously-description">
+                      We will only record the feedback message.
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="share-anonymously"
+                      defaultChecked
+                      aria-describedby="share-anonymously-description"
+                      aria-labelledby="share-anonymously-title"
+                    />
+                    <Label htmlFor="share-anonymously" className="sr-only">
+                      Share feedback anonymously
+                    </Label>
+                  </div>
+                </div>
               </CardHeader>
             </Card>
           </FieldSet>
         </ScrollArea>
 
         <DrawerFooter>
-          <ButtonGroup className="justify-end">
+          <ButtonGroup className="justify-end" aria-label="Actions">
             <Button onClick={() => onOpenChange(false)}>Save view</Button>
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancel

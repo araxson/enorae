@@ -1,5 +1,3 @@
-import 'server-only'
-
 export { getFinancialExportData } from './financial-export-data'
 export { getPaymentMethodStats } from './payment-method-stats'
 export { getPlatformRevenueAnalytics } from './platform-revenue-analytics'

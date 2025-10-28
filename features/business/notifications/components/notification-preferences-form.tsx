@@ -87,36 +87,27 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>
-                <CardTitle>Delivery Preferences</CardTitle>
-              </ItemTitle>
-              <ItemDescription>
-                <CardDescription>
-                  Control which events trigger notifications per channel
-                </CardDescription>
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <ButtonGroup>
-                <Button onClick={handleSave} disabled={isPending}>
-                  {isPending ? (
-                    <>
-                      <Spinner />
-                      Saving
-                    </>
-                  ) : (
-                    'Save Preferences'
-                  )}
-                </Button>
-              </ButtonGroup>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Delivery Preferences</CardTitle>
+        <CardDescription>
+          Control which events trigger notifications per channel
+        </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-6">
+        <div className="flex justify-end">
+          <ButtonGroup>
+            <Button onClick={handleSave} disabled={isPending}>
+              {isPending ? (
+                <>
+                  <Spinner />
+                  Saving
+                </>
+              ) : (
+                'Save Preferences'
+              )}
+            </Button>
+          </ButtonGroup>
+        </div>
+
         <div className="flex flex-col gap-6">
           {Object.entries(state).map(([channel, events]) => (
             <Card key={channel} className="border-muted">
@@ -130,34 +121,39 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                  {Object.entries(events).map(([event, value]) => (
-                    <Card key={event}>
-                      <CardContent>
-                        <ItemGroup>
-                          <Item>
-                            <ItemContent>
-                              <ItemTitle>
-                                <span className="capitalize">{event.replace(/_/g, ' ')}</span>
-                              </ItemTitle>
-                              <ItemDescription>
-                                Trigger when {event.replace(/_/g, ' ')} occurs
-                              </ItemDescription>
-                            </ItemContent>
-                            <ItemActions>
-                              <div className="flex-none">
-                                <Switch
-                                  checked={value}
-                                  onCheckedChange={(checked) =>
-                                    handleToggle(channel as keyof typeof state, event, checked)
-                                  }
-                                />
-                              </div>
-                            </ItemActions>
-                          </Item>
-                        </ItemGroup>
-                      </CardContent>
-                    </Card>
-                  ))}
+                  {Object.entries(events).map(([event, value]) => {
+                    const eventLabel = event
+                      .split('_')
+                      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+                      .join(' ')
+
+                    return (
+                      <Card key={event}>
+                        <CardContent>
+                          <ItemGroup>
+                            <Item>
+                              <ItemContent>
+                                <ItemTitle>{eventLabel}</ItemTitle>
+                                <ItemDescription>
+                                  Trigger when {eventLabel.toLowerCase()} occurs
+                                </ItemDescription>
+                              </ItemContent>
+                              <ItemActions>
+                                <div className="flex-none">
+                                  <Switch
+                                    checked={value}
+                                    onCheckedChange={(checked) =>
+                                      handleToggle(channel as keyof typeof state, event, checked)
+                                    }
+                                  />
+                                </div>
+                              </ItemActions>
+                            </Item>
+                          </ItemGroup>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
                 </div>
               </CardContent>
             </Card>

@@ -82,7 +82,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
       <DialogTrigger asChild>
         {children || (
           <Button variant="outline" size="sm" className="flex-1">
-            <Pencil className="mr-2 h-4 w-4" />
+            <Pencil className="mr-2 size-4" />
             Edit
           </Button>
         )}
@@ -99,7 +99,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
 
         {!canEdit ? (
           <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="size-4" />
             <AlertTitle>Edit window expired</AlertTitle>
             <AlertDescription>
               Reviews can only be edited within 7 days of creation. This review was posted{' '}
@@ -107,7 +107,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
               <ItemGroup className="mt-3 gap-2">
                 <Item variant="muted" size="sm">
                   <ItemMedia variant="icon">
-                    <History className="h-4 w-4" aria-hidden="true" />
+                    <History className="size-4" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>Original post</ItemTitle>
@@ -133,16 +133,14 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
                         setRating(pressed ? value : Math.max(1, value - 1))
                       }
                       aria-label={`Rate ${value} star${value === 1 ? '' : 's'}`}
-                      className="h-10 w-10"
+                      className="size-10"
                       type="button"
                     >
-                      <Star className="h-5 w-5" aria-hidden="true" />
+                      <Star className="size-5" aria-hidden="true" />
                     </Toggle>
                   ))}
                 </div>
-                <FieldDescription className="font-medium">
-                  {rating} out of 5
-                </FieldDescription>
+                <FieldDescription>{rating} out of 5</FieldDescription>
                 <input type="hidden" name="rating" value={rating} />
               </FieldContent>
             </Field>
@@ -182,14 +180,14 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
 
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
             <DialogFooter>
-              <ButtonGroup className="w-full justify-end gap-2">
+              <ButtonGroup aria-label="Dialog actions">
                 <Button
                   type="button"
                   variant="outline"

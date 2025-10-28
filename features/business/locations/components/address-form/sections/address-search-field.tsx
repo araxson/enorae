@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
 import { Search } from 'lucide-react'
@@ -34,6 +34,7 @@ export function AddressSearchField({ address, onAddressSelect }: AddressSearchFi
     description: string
     place_id: string
   }>>([])
+  const suggestionListId = useId()
 
   // Debounce address search with proper cleanup
   useEffect(() => {
@@ -158,19 +159,24 @@ export function AddressSearchField({ address, onAddressSelect }: AddressSearchFi
           <div className="relative flex-1">
             <InputGroup>
               <InputGroupAddon>
-                <Search className="h-4 w-4" aria-hidden="true" />
+                <Search className="size-4" aria-hidden="true" />
               </InputGroupAddon>
               <InputGroupInput
                 id="address-search"
+                type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Start typing to search for an address..."
+                aria-autocomplete="list"
+                aria-controls={suggestions.length > 0 ? suggestionListId : undefined}
+                aria-expanded={suggestions.length > 0}
+                autoComplete="off"
               />
             </InputGroup>
             {suggestions.length > 0 && (
               <div className="absolute left-0 right-0 top-full z-10 mt-1">
                 <Command aria-label="Address suggestions">
-                  <CommandList>
+                  <CommandList id={suggestionListId}>
                     <CommandGroup heading="Suggested addresses">
                       {suggestions.map((suggestion) => (
                         <CommandItem
@@ -198,7 +204,7 @@ export function AddressSearchField({ address, onAddressSelect }: AddressSearchFi
             onClick={handleManualGeocode}
             disabled={isSearching || !address?.['street_address'] || !EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()}
           >
-            <Search className="mr-2 h-4 w-4" />
+            <Search className="mr-2 size-4" />
             Geocode
           </Button>
         </div>

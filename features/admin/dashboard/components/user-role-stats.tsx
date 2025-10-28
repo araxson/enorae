@@ -1,15 +1,26 @@
+import { Fragment } from 'react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Users } from 'lucide-react'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
+  ItemFooter,
+  ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -48,20 +59,6 @@ const roleDescriptions: Record<string, string> = {
   guest: 'Unverified or pending accounts.',
 }
 
-const progressAccent: Record<string, string> = {
-  super_admin: '[&>div]:bg-primary',
-  platform_admin: '[&>div]:bg-primary',
-  tenant_owner: '[&>div]:bg-accent',
-  salon_owner: '[&>div]:bg-accent',
-  salon_manager: '[&>div]:bg-secondary',
-  senior_staff: '[&>div]:bg-secondary',
-  staff: '[&>div]:bg-secondary',
-  junior_staff: '[&>div]:bg-accent',
-  vip_customer: '[&>div]:bg-primary',
-  customer: '[&>div]:bg-primary',
-  guest: '[&>div]:bg-muted',
-}
-
 export function UserRoleStats({ stats }: UserRoleStatsProps) {
   const sortedRoles = Object.entries(stats.roleCounts).sort(([, a], [, b]) => b - a)
 
@@ -72,24 +69,30 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
     return (
       <div className="h-full">
         <Card>
-          <CardHeader className="space-y-3">
+          <CardHeader>
             <ItemGroup>
               <Item variant="muted">
-              <ItemContent>
-                <ItemTitle>User distribution</ItemTitle>
-                <ItemDescription>
-                  Role analytics will appear when users are assigned roles.
-                </ItemDescription>
-              </ItemContent>
+                <ItemContent>
+                  <ItemTitle>User distribution</ItemTitle>
+                  <ItemDescription>
+                    Role analytics will appear when users are assigned roles.
+                  </ItemDescription>
+                </ItemContent>
               </Item>
             </ItemGroup>
           </CardHeader>
           <CardContent>
             <Empty>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Users aria-hidden="true" />
+                </EmptyMedia>
                 <EmptyTitle>No role data available</EmptyTitle>
-                <EmptyDescription>Assign platform roles to users to populate distribution metrics.</EmptyDescription>
+                <EmptyDescription>
+                  Assign platform roles to users to populate distribution metrics.
+                </EmptyDescription>
               </EmptyHeader>
+              <EmptyContent>Invite teams or sync data to unlock role analytics.</EmptyContent>
             </Empty>
           </CardContent>
         </Card>
@@ -100,7 +103,7 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
   return (
     <div className="h-full">
       <Card>
-        <CardHeader className="space-y-3">
+        <CardHeader>
           <ItemGroup>
             <Item>
               <ItemContent>
@@ -111,7 +114,7 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
               </ItemContent>
               <ItemActions>
                 <Badge variant="outline">
-                  <Users className="mr-1 h-3 w-3" />
+                  <Users className="mr-1 size-3" />
                   {stats.totalUsers.toLocaleString()} users
                 </Badge>
               </ItemActions>
@@ -126,39 +129,37 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
           </ItemGroup>
         </CardHeader>
 
-        <CardContent className="space-y-4">
-          <ScrollArea className="h-80 pr-4">
-            <div className="space-y-4">
-              {sortedRoles.map(([role, count]) => {
+        <CardContent>
+          <ScrollArea className="h-80">
+            <ItemGroup>
+              {sortedRoles.map(([role, count], index) => {
                 const percentage = stats.totalUsers > 0 ? (count / stats.totalUsers) * 100 : 0
                 const label = roleLabels[role] || role
+
                 return (
-                  <Card key={role}>
-                    <CardHeader className="pb-2">
-                      <ItemGroup>
-                        <Item>
-                          <ItemContent>
-                            <ItemTitle>{label}</ItemTitle>
-                            <ItemDescription>
-                              {roleDescriptions[role] || 'No description available'}
-                            </ItemDescription>
-                          </ItemContent>
-                          <ItemActions>
-                            <Badge variant="outline">{count.toLocaleString()}</Badge>
-                          </ItemActions>
-                        </Item>
-                      </ItemGroup>
-                    </CardHeader>
-                    <CardContent className="flex items-center gap-3 pt-0">
-                      <Progress value={Number(percentage.toFixed(1))} className={`h-1.5 flex-1 ${progressAccent[role] ?? '[&>div]:bg-muted'}`} />
-                      <span className="w-14 text-right text-xs font-medium text-muted-foreground">
-                        {percentage.toFixed(1)}%
-                      </span>
-                    </CardContent>
-                  </Card>
+                  <Fragment key={role}>
+                    <Item variant="outline" size="sm">
+                      <ItemHeader>
+                        <ItemTitle>{label}</ItemTitle>
+                        <Badge variant="outline">{count.toLocaleString()}</Badge>
+                      </ItemHeader>
+                      <ItemContent>
+                        <ItemDescription>
+                          {roleDescriptions[role] || 'No description available'}
+                        </ItemDescription>
+                        <Progress value={Number(percentage.toFixed(1))} />
+                      </ItemContent>
+                      <ItemFooter>
+                        <ItemDescription>
+                          {percentage.toFixed(1)}% of users
+                        </ItemDescription>
+                      </ItemFooter>
+                    </Item>
+                    {index < sortedRoles.length - 1 ? <ItemSeparator /> : null}
+                  </Fragment>
                 )
               })}
-            </div>
+            </ItemGroup>
           </ScrollArea>
         </CardContent>
       </Card>

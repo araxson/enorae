@@ -84,7 +84,7 @@ export function OverviewCards({ snapshot }: OverviewCardsProps) {
                     <CardDescription>{description}</CardDescription>
                   </ItemContent>
                   <ItemActions className="flex-none">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <Icon className="size-4" aria-hidden="true" />
                   </ItemActions>
                 </Item>
               </ItemGroup>

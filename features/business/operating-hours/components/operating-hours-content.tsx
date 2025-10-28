@@ -1,11 +1,4 @@
-import { Card, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { WeeklyScheduleForm } from '.'
 import type { getOperatingHoursBySalon } from '../api/queries'
 
@@ -20,18 +13,10 @@ export function OperatingHoursContent({ salonId, operatingHours }: OperatingHour
       <div className="flex flex-col gap-8">
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-1">
-                <ItemContent>
-                  <ItemTitle>Operating hours</ItemTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>
-                    Configure your salon&apos;s weekly operating schedule.
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Operating hours</CardTitle>
+            <CardDescription>
+              Configure your salon&apos;s weekly operating schedule.
+            </CardDescription>
           </CardHeader>
         </Card>
 

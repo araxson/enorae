@@ -13,23 +13,29 @@ export function AdminChainsContent({ chains, analytics, compliance }: AdminChain
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
-          <Tabs defaultValue="overview" className="w-full">
+          <Tabs defaultValue="overview">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="compliance">Compliance</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="overview" className="mt-6">
-              <SalonChainsClient chains={chains} />
+            <TabsContent value="overview">
+              <div className="mt-6">
+                <SalonChainsClient chains={chains} />
+              </div>
             </TabsContent>
 
-            <TabsContent value="analytics" className="mt-6">
-              <ChainAnalyticsTable analytics={analytics} />
+            <TabsContent value="analytics">
+              <div className="mt-6">
+                <ChainAnalyticsTable analytics={analytics} />
+              </div>
             </TabsContent>
 
-            <TabsContent value="compliance" className="mt-6">
-              <ChainComplianceTable compliance={compliance} />
+            <TabsContent value="compliance">
+              <div className="mt-6">
+                <ChainComplianceTable compliance={compliance} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>

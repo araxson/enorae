@@ -1,11 +1,4 @@
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item'
 import type { Salon } from '../types'
 import { ContactCard } from './contact-card'
 import { QuickStatsCard } from './quick-stats-card'
@@ -20,13 +13,17 @@ interface SalonSidebarProps {
 
 export function SalonSidebar({ salon, location }: SalonSidebarProps) {
   return (
-    <ItemGroup className="gap-6">
-      <Item className="flex-col" variant="muted">
-        <ItemHeader>
-          <ItemTitle>Helpful details</ItemTitle>
-        </ItemHeader>
+    <div
+      className="group/item-group flex flex-col gap-6"
+      data-slot="item-group"
+      role="list"
+    >
+      <Item variant="muted">
         <ItemContent>
-          <ItemDescription>Key details to help you plan visits and stay in touch with the salon.</ItemDescription>
+          <div className="flex flex-col gap-2">
+            <ItemTitle>Helpful details</ItemTitle>
+            <ItemDescription>Key details to help you plan visits and stay in touch with the salon.</ItemDescription>
+          </div>
         </ItemContent>
       </Item>
       <ContactCard salon={salon} location={location} />
@@ -34,6 +31,6 @@ export function SalonSidebar({ salon, location }: SalonSidebarProps) {
       <SpecialtiesCard salon={salon} />
       <LanguagesCard salon={salon} />
       <PaymentMethodsCard salon={salon} />
-    </ItemGroup>
+    </div>
   )
 }

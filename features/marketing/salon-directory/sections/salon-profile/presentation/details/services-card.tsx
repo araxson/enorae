@@ -1,13 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item'
 import type { ServicesByCategory, Service } from '../types'
 
 interface ServicesCardProps {
@@ -25,22 +17,24 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
         <CardDescription>Browse offerings grouped by category.</CardDescription>
       </CardHeader>
       <CardContent>
-        <ItemGroup className="gap-6">
+        <div className="flex flex-col gap-6">
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
-              <Item key={category} className="flex-col gap-4" variant="outline">
-                <ItemHeader className="flex-col gap-2">
-                  <ItemTitle>{category}</ItemTitle>
-                </ItemHeader>
-                <ItemGroup className="gap-2">
-                  {categoryServices.map((service) => (
-                    <ServiceRow key={service['id']} service={service} />
-                  ))}
-                </ItemGroup>
+              <Item key={category} variant="outline">
+                <ItemContent>
+                  <div className="flex flex-col gap-4">
+                    <ItemTitle>{category}</ItemTitle>
+                    <div className="flex flex-col gap-2">
+                      {categoryServices.map((service) => (
+                        <ServiceRow key={service['id']} service={service} />
+                      ))}
+                    </div>
+                  </div>
+                </ItemContent>
               </Item>
             ),
           )}
-        </ItemGroup>
+        </div>
       </CardContent>
     </Card>
   )

@@ -5,6 +5,7 @@ export interface FinanceParams {}
 // Re-export types from api/types.ts
 export type {
   AdminRevenueRow,
+  SalonRevenueRow,
   ManualTransactionRow,
   RevenueMetrics,
   TransactionMetrics,

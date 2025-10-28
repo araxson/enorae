@@ -75,7 +75,7 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
       <Field>
         <FieldLabel>Days of Week</FieldLabel>
         <FieldContent>
-          <ButtonGroup className="flex flex-wrap gap-2 pt-2">
+          <ButtonGroup aria-label="Select days of week">
             {dayOptions.map((day) => (
               <Button
                 key={day.value}

@@ -24,7 +24,7 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
     <Item variant="outline" className="md:col-span-2 flex-col gap-4">
       <ItemHeader className="items-start gap-2">
         <div className="flex items-center gap-2">
-          <DollarSign className="h-5 w-5" />
+          <DollarSign className="size-5" />
           <ItemTitle>Top Revenue Generators</ItemTitle>
         </div>
         <ItemDescription>Highest earning services ranked by total revenue.</ItemDescription>
@@ -54,7 +54,7 @@ export function TopRevenueCard({ services }: { services: ServicePerformance[] })
                 <ItemActions className="flex-none text-right">
                   <p className="text-xs font-semibold">{formatCurrency(service.total_revenue)}</p>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Star className="h-3 w-3" />
+                    <Star className="size-3" />
                     {service.avg_rating?.toFixed(1) || 'N/A'}
                   </div>
                 </ItemActions>

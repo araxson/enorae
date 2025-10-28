@@ -14,24 +14,28 @@ export function Testimonials() {
   return (
     <MarketingSection spacing="compact" groupClassName="gap-0">
       <Card>
-        <CardHeader className="items-center justify-center">
-          <CardTitle>What our users say</CardTitle>
-          <CardDescription>
-            Trusted by thousands of customers and salon professionals
-          </CardDescription>
+        <CardHeader>
+          <div className="flex flex-col items-center text-center">
+            <CardTitle>What our users say</CardTitle>
+            <CardDescription>
+              Trusted by thousands of customers and salon professionals
+            </CardDescription>
+          </div>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <Item variant="muted">
-            <ItemContent>
-              <ItemDescription>
-                Curated from verified customer feedback collected after completed appointments.
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.author} {...testimonial} />
-            ))}
+        <CardContent>
+          <div className="flex flex-col gap-6">
+            <Item variant="muted">
+              <ItemContent>
+                <ItemDescription>
+                  Curated from verified customer feedback collected after completed appointments.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((testimonial) => (
+                <TestimonialCard key={testimonial.author} {...testimonial} />
+              ))}
+            </div>
           </div>
         </CardContent>
       </Card>

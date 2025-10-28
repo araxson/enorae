@@ -29,7 +29,7 @@ export function WebhookActionButtons({
         onConfirm={onDelete}
       >
         <Button variant="destructive" disabled={isDeleting || isRetrying}>
-          <Trash2 className="mr-2 h-4 w-4" />
+          <Trash2 className="mr-2 size-4" />
           {isDeleting ? 'Deleting...' : 'Delete'}
         </Button>
       </ConfirmDialog>
@@ -41,7 +41,7 @@ export function WebhookActionButtons({
 
         {status === 'failed' && (
           <Button onClick={onRetry} disabled={isRetrying || isDeleting}>
-            <RefreshCw className="mr-2 h-4 w-4" />
+            <RefreshCw className="mr-2 size-4" />
             {isRetrying ? 'Retrying...' : 'Retry'}
           </Button>
         )}

@@ -18,7 +18,6 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -105,43 +104,40 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
   return (
     <ItemGroup className="flex flex-col gap-4">
       {rules.map((rule) => (
-        <Item key={rule.id} variant="outline" className="flex flex-col items-start gap-3">
-          <ItemHeader>
-            <ItemTitle>{rule.rule_name}</ItemTitle>
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="outline">{getRuleTypeLabel(rule.rule_type)}</Badge>
-              {rule.is_active ? <Badge variant="default">Active</Badge> : null}
-            </div>
-          </ItemHeader>
+        <Item key={rule.id} variant="outline">
           <ItemContent>
+            <ItemTitle>
+              {rule.rule_name}
+              <Badge variant="outline">{getRuleTypeLabel(rule.rule_type)}</Badge>
+              {rule.is_active && <Badge variant="default">Active</Badge>}
+            </ItemTitle>
             <ItemDescription>Priority {rule.priority}</ItemDescription>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              {rule.multiplier && rule.multiplier !== 1 ? (
-                <p>
-                  Multiplier: {rule.multiplier}x ({((rule.multiplier - 1) * 100).toFixed(0)}%{' '}
-                  {rule.multiplier > 1 ? 'increase' : 'decrease'})
-                </p>
-              ) : null}
-              {rule.fixed_adjustment && rule.fixed_adjustment !== 0 ? (
-                <p>
-                  Fixed: {rule.fixed_adjustment > 0 ? '+' : ''}
-                  {rule.fixed_adjustment}
-                </p>
-              ) : null}
-              {rule.start_time && rule.end_time ? (
-                <p>
-                  Time: {rule.start_time} - {rule.end_time}
-                </p>
-              ) : null}
-              {rule.valid_from || rule.valid_until ? (
-                <p>
-                  Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}
-                </p>
-              ) : null}
-              {rule.customer_segment ? (
-                <p>Segment: {rule.customer_segment.replace(/_/g, ' ')}</p>
-              ) : null}
-            </div>
+            {rule.multiplier && rule.multiplier !== 1 && (
+              <ItemDescription>
+                Multiplier: {rule.multiplier}x ({((rule.multiplier - 1) * 100).toFixed(0)}%{' '}
+                {rule.multiplier > 1 ? 'increase' : 'decrease'})
+              </ItemDescription>
+            )}
+            {rule.fixed_adjustment && rule.fixed_adjustment !== 0 && (
+              <ItemDescription>
+                Fixed: {rule.fixed_adjustment > 0 ? '+' : ''}{rule.fixed_adjustment}
+              </ItemDescription>
+            )}
+            {rule.start_time && rule.end_time && (
+              <ItemDescription>
+                Time: {rule.start_time} - {rule.end_time}
+              </ItemDescription>
+            )}
+            {(rule.valid_from || rule.valid_until) && (
+              <ItemDescription>
+                Season: {rule.valid_from || 'now'} → {rule.valid_until || 'ongoing'}
+              </ItemDescription>
+            )}
+            {rule.customer_segment && (
+              <ItemDescription>
+                Segment: {rule.customer_segment.replace(/_/g, ' ')}
+              </ItemDescription>
+            )}
           </ItemContent>
           <ItemActions>
             <Switch
@@ -155,7 +151,7 @@ export function PricingRulesList({ rules }: PricingRulesListProps) {
               onClick={() => handleDelete(rule.id)}
               aria-label={`Delete pricing rule ${rule.rule_name}`}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="size-4" />
             </Button>
           </ItemActions>
         </Item>

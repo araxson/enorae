@@ -44,6 +44,11 @@ const getStatusVariant = (status: string | null) => {
   }
 }
 
+const formatStatusLabel = (status: string | null) =>
+  status
+    ? status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+    : 'Pending'
+
 export async function AppointmentDetail({ appointmentId }: AppointmentDetailProps) {
   const appointment = await getCustomerAppointmentById(appointmentId)
 
@@ -73,21 +78,21 @@ function AppointmentDetailContent({
     }).format(amount)
   }
 
+  const statusLabel = formatStatusLabel(appointment['status'])
+
   return (
     <div className="space-y-8">
       <ItemGroup>
         <Item>
           <ItemMedia variant="icon">
-            <Check className="h-4 w-4" aria-hidden="true" />
+            <Check className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Confirmation</ItemTitle>
             <ItemDescription>{appointment['confirmation_code'] || 'No code'}</ItemDescription>
           </ItemContent>
-          <ItemActions className="flex-none">
-            <Badge variant={getStatusVariant(appointment['status'])}>
-              {appointment['status'] ?? 'pending'}
-            </Badge>
+          <ItemActions>
+            <Badge variant={getStatusVariant(appointment['status'])}>{statusLabel}</Badge>
           </ItemActions>
         </Item>
       </ItemGroup>
@@ -97,95 +102,99 @@ function AppointmentDetailContent({
           <CardTitle>Appointment overview</CardTitle>
           <CardDescription>Schedule, team, and services for this visit</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <ItemGroup className="gap-4">
-            <Item variant="outline" size="sm">
-              <ItemContent>
-                <p className="text-sm text-muted-foreground">Date &amp; time</p>
-                <p className="leading-7">
-                  {appointment['start_time'] &&
-                    new Date(appointment['start_time']).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                </p>
-                <p className="leading-7 text-muted-foreground">
-                  {appointment['start_time'] &&
-                    new Date(appointment['start_time']).toLocaleTimeString('en-US', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  {' — '}
-                  {appointment['end_time'] &&
-                    new Date(appointment['end_time']).toLocaleTimeString('en-US', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                </p>
-              </ItemContent>
-              <ItemActions className="flex-none items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{appointment['duration_minutes'] || 0} minutes total</span>
-              </ItemActions>
-            </Item>
-
-            {appointment['staff_name'] ? (
+        <CardContent>
+          <div className="flex flex-col gap-6">
+            <ItemGroup className="gap-4">
               <Item variant="outline" size="sm">
                 <ItemContent>
-                  <p className="text-sm text-muted-foreground">Staff member</p>
-                  <p className="leading-7">{appointment['staff_name']}</p>
+                  <ItemDescription>Date &amp; time</ItemDescription>
+                  <ItemTitle>
+                    {appointment['start_time'] &&
+                      new Date(appointment['start_time']).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                  </ItemTitle>
+                  <ItemDescription>
+                    {appointment['start_time'] &&
+                      new Date(appointment['start_time']).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    {' — '}
+                    {appointment['end_time'] &&
+                      new Date(appointment['end_time']).toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                  </ItemDescription>
                 </ItemContent>
+                <ItemActions>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Clock className="size-4" />
+                    <span>{appointment['duration_minutes'] || 0} minutes total</span>
+                  </div>
+                </ItemActions>
               </Item>
-            ) : null}
-          </ItemGroup>
 
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">Service</p>
-            <Card>
-              <CardContent className="pt-6">
-                <ItemGroup className="gap-4">
-                  <Item>
-                    <ItemContent>
-                      <p className="leading-7">
-                        {appointment['service_name'] || 'No service specified'}
-                      </p>
-                    </ItemContent>
-                  </Item>
-                  {appointment['duration_minutes'] && (
+              {appointment['staff_name'] ? (
+                <Item variant="outline" size="sm">
+                  <ItemContent>
+                    <ItemDescription>Staff member</ItemDescription>
+                    <ItemTitle>{appointment['staff_name']}</ItemTitle>
+                  </ItemContent>
+                </Item>
+              ) : null}
+            </ItemGroup>
+
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">Service</p>
+              <Card>
+                <CardContent className="pt-6">
+                  <ItemGroup className="gap-4">
                     <Item>
-                      <ItemMedia variant="icon">
-                        <Clock className="h-4 w-4" />
-                      </ItemMedia>
                       <ItemContent>
-                        <ItemDescription>{appointment['duration_minutes']} minutes</ItemDescription>
+                        <ItemTitle>
+                          {appointment['service_name'] || 'No service specified'}
+                        </ItemTitle>
                       </ItemContent>
                     </Item>
-                  )}
-                  {appointment['total_price'] !== null && (
-                    <Item>
-                      <ItemMedia variant="icon">
-                        <DollarSign className="h-4 w-4" />
-                      </ItemMedia>
-                      <ItemContent>
-                        <span className="text-lg font-semibold">
-                          {formatCurrency(appointment['total_price'])}
-                        </span>
-                      </ItemContent>
-                    </Item>
-                  )}
-                </ItemGroup>
-              </CardContent>
-            </Card>
+                    {appointment['duration_minutes'] ? (
+                      <Item>
+                        <ItemMedia variant="icon">
+                          <Clock className="size-4" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemDescription>{appointment['duration_minutes']} minutes</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                    {appointment['total_price'] !== null ? (
+                      <Item>
+                        <ItemMedia variant="icon">
+                          <DollarSign className="size-4" />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle>{formatCurrency(appointment['total_price'])}</ItemTitle>
+                        </ItemContent>
+                      </Item>
+                    ) : null}
+                  </ItemGroup>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      <ButtonGroup className="w-full flex-col gap-3 sm:flex-row" orientation="horizontal">
-        <Button asChild variant="outline" className="w-full sm:flex-1">
-          <Link href="/customer/appointments">Back to appointments</Link>
-        </Button>
+      <ButtonGroup aria-label="Actions" orientation="horizontal">
+        <div className="w-full sm:flex-1">
+          <Button asChild variant="outline">
+            <Link href="/customer/appointments">Back to appointments</Link>
+          </Button>
+        </div>
         {appointment['status'] === 'confirmed' && appointment['start_time'] && appointment['id'] ? (
           <>
             <RescheduleRequestDialog

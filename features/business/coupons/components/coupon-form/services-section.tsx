@@ -1,5 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Empty,
@@ -26,13 +26,14 @@ export function CouponServicesSection({
     <Card>
       <CardHeader>
         <CardTitle>Applicable services</CardTitle>
+        <CardDescription>Select which services the coupon can be applied to.</CardDescription>
       </CardHeader>
       <CardContent>
         {services.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Scissors className="h-8 w-8" aria-hidden="true" />
+                <Scissors className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No active services</EmptyTitle>
               <EmptyDescription>Select services once they are available.</EmptyDescription>

@@ -50,50 +50,54 @@ export function MessageThreadView({
 
   return (
     <div className="flex h-full flex-col gap-6">
-      <Item variant="outline" className="flex min-h-96 flex-1 flex-col">
-        <ItemHeader>
-          <div className="flex flex-col gap-1">
-            <ItemTitle>Conversation</ItemTitle>
-            {otherUserName ? (
-              <ItemDescription>Chatting with {otherUserName}</ItemDescription>
-            ) : null}
-          </div>
-        </ItemHeader>
-        <ItemContent>
-          <div className="flex flex-1 flex-col">
-            <ScrollArea className="flex-1">
-              {messages.length === 0 ? (
-                <Empty>
-                  <EmptyHeader>
-                    <EmptyMedia variant="icon">
-                      <MessageSquare className="h-6 w-6" aria-hidden="true" />
-                  </EmptyMedia>
-                  <EmptyTitle>No messages yet</EmptyTitle>
-                  <EmptyDescription>Start the conversation!</EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            ) : (
-              <div className="flex flex-col gap-3 pr-2">
-                {messages.map((message) => {
-                  const isOwn = message.from_user_id === currentUserId
-                  return (
-                    <MessageBubble
-                      key={message.id}
-                      content={message.content}
-                      isOwn={isOwn}
-                      senderName={isOwn ? 'You' : otherUserName}
-                      timestamp={message.created_at}
-                      isRead={message.is_read}
-                    />
-                  )
-                })}
+      <div className="flex flex-1 min-h-96">
+        <Item variant="outline">
+          <ItemHeader>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Conversation</ItemTitle>
+              {otherUserName ? (
+                <ItemDescription>Chatting with {otherUserName}</ItemDescription>
+              ) : null}
+            </div>
+          </ItemHeader>
+          <ItemContent>
+            <div className="flex flex-1 flex-col">
+              <div className="flex-1">
+                <ScrollArea>
+                  {messages.length === 0 ? (
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <MessageSquare className="size-6" aria-hidden="true" />
+                        </EmptyMedia>
+                        <EmptyTitle>No messages yet</EmptyTitle>
+                        <EmptyDescription>Start the conversation!</EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
+                  ) : (
+                    <div className="flex flex-col gap-3 pr-2">
+                      {messages.map((message) => {
+                        const isOwn = message.from_user_id === currentUserId
+                        return (
+                          <MessageBubble
+                            key={message.id}
+                            content={message.content}
+                            isOwn={isOwn}
+                            senderName={isOwn ? 'You' : otherUserName}
+                            timestamp={message.created_at}
+                            isRead={message.is_read}
+                          />
+                        )
+                      })}
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </ScrollArea>
               </div>
-            )}
-            <div ref={messagesEndRef} />
-            </ScrollArea>
-          </div>
-        </ItemContent>
-      </Item>
+            </div>
+          </ItemContent>
+        </Item>
+      </div>
       <MessageComposer onSend={onSendMessage} />
     </div>
   )

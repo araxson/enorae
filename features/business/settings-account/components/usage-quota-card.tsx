@@ -32,7 +32,7 @@ export function UsageQuotaCard({ quotas }: { quotas: UsageQuota[] }) {
                 />
                 {isNearLimit && (
                   <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" aria-hidden="true" />
+                    <AlertCircle className="size-4" aria-hidden="true" />
                     <AlertTitle>Approaching limit</AlertTitle>
                     <AlertDescription>
                       Consider upgrading to avoid hitting this quota.

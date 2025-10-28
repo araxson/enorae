@@ -42,11 +42,11 @@ export function StaffPageToolbar({
   return (
     <TooltipProvider delayDuration={150}>
       <div className="flex items-center gap-2">
-        <ButtonGroup className="items-center gap-2">
+        <ButtonGroup aria-label="Toolbar actions">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline" size="icon" onClick={onOpenCommand} aria-label="Quick navigator">
-                <CommandIcon className="h-4 w-4" aria-hidden="true" />
+                <CommandIcon className="size-4" aria-hidden="true" />
               </Button>
             </TooltipTrigger>
             <TooltipContent className="flex items-center gap-2">
@@ -58,7 +58,7 @@ export function StaffPageToolbar({
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="gap-2" aria-label="Select date range">
-                <CalendarDays className="h-4 w-4" aria-hidden="true" />
+                <CalendarDays className="size-4" aria-hidden="true" />
                 <span className="hidden sm:inline-flex">{dateLabel}</span>
               </Button>
             </PopoverTrigger>
@@ -78,7 +78,7 @@ export function StaffPageToolbar({
           {toolbarEnd}
         </ButtonGroup>
 
-        <Avatar className="h-9 w-9">
+        <Avatar className="size-9">
           <AvatarImage src={avatarUrl ?? undefined} />
           <AvatarFallback>
             {cn(avatarFallback?.slice(0, 2).toUpperCase() || 'ST')}

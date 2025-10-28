@@ -27,7 +27,7 @@ export function DateTimeSection({
       <ItemGroup className="gap-4">
         <Item variant="outline" size="sm">
           <ItemMedia variant="icon">
-            <CalendarDays className="h-4 w-4" aria-hidden="true" />
+            <CalendarDays className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Date &amp; time</ItemTitle>
@@ -70,7 +70,7 @@ export function DateTimeSection({
             </ItemDescription>
           </ItemContent>
           <ItemMedia variant="icon">
-            <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
           </ItemMedia>
         </Item>
       </ItemGroup>
@@ -78,7 +78,7 @@ export function DateTimeSection({
       <ItemGroup>
         <Item variant="muted" size="sm">
           <ItemMedia variant="icon">
-            <Clock className="h-4 w-4" aria-hidden="true" />
+            <Clock className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Duration</ItemTitle>

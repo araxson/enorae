@@ -38,7 +38,7 @@ export function RequestActions({
   if (isStaffView) {
     // Staff view: can edit pending requests or cancel any request
     return (
-      <ButtonGroup className="justify-end">
+      <ButtonGroup aria-label="Request actions">
         {status === 'pending' && (
           <RequestEditDialog
             open={editDialogOpen}
@@ -63,7 +63,7 @@ export function RequestActions({
   // Manager view: can approve/reject
   if (status === 'pending') {
     return (
-      <ButtonGroup className="justify-end">
+      <ButtonGroup aria-label="Request actions">
         <Button size="sm" variant="outline" onClick={onReject} disabled={isPending}>
           Reject
         </Button>

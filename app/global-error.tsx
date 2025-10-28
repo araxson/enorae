@@ -45,7 +45,7 @@ export default function GlobalError({
               <ItemGroup>
                 <Item>
                   <ItemMedia variant="icon">
-                    <ServerCrash className="h-6 w-6 text-destructive" aria-hidden="true" />
+                    <ServerCrash className="size-6 text-destructive" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>Critical Application Error</ItemTitle>
@@ -91,7 +91,7 @@ export default function GlobalError({
             </CardContent>
 
             <CardFooter>
-              <ButtonGroup className="w-full gap-4">
+              <ButtonGroup aria-label="Error actions">
                 <Button
                   onClick={() => {
                     startNavigation(async () => {
@@ -103,7 +103,7 @@ export default function GlobalError({
                   disabled={isNavigating}
                   aria-busy={isNavigating}
                 >
-                  <RefreshCw className="h-4 w-4" />
+                  <RefreshCw className="size-4" />
                   Try Again
                 </Button>
                 <Button
@@ -118,7 +118,7 @@ export default function GlobalError({
                   disabled={isNavigating}
                   aria-busy={isNavigating}
                 >
-                  <Home className="h-4 w-4" />
+                  <Home className="size-4" />
                   Home
                 </Button>
               </ButtonGroup>

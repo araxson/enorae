@@ -26,7 +26,7 @@ export function SearchResultsSection({ results, searchTerm }: SearchResultsSecti
         <CardContent className="p-6">
           <Empty>
             <EmptyMedia variant="icon">
-              <Search className="h-6 w-6" />
+              <Search className="size-6" />
             </EmptyMedia>
             <EmptyHeader>
               <EmptyTitle>No salons found</EmptyTitle>
@@ -50,7 +50,7 @@ export function SearchResultsSection({ results, searchTerm }: SearchResultsSecti
       <ItemGroup className="mb-4 items-center gap-2">
         <Item className="items-center gap-2">
           <ItemMedia variant="icon">
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUp className="size-5" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Search Results ({results.length})</ItemTitle>

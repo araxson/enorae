@@ -1,11 +1,4 @@
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import type { Salon, Service, ServicesByCategory } from '../types'
 import { AboutCard } from './about-card'
 import { ServicesCard } from './services-card'
@@ -20,8 +13,12 @@ interface SalonDetailsProps {
 
 export function SalonDetails({ salon, services, servicesByCategory }: SalonDetailsProps) {
   return (
-    <ItemGroup className="gap-6">
-      <Item className="flex-col" variant="muted">
+    <div
+      className="group/item-group flex flex-col gap-6"
+      data-slot="item-group"
+      role="list"
+    >
+      <Item variant="muted">
         <ItemHeader>
           <ItemTitle>Salon overview</ItemTitle>
         </ItemHeader>
@@ -33,6 +30,6 @@ export function SalonDetails({ salon, services, servicesByCategory }: SalonDetai
       <ServicesCard services={services} servicesByCategory={servicesByCategory} />
       <AmenitiesCard salon={salon} />
       <GalleryCard salon={salon} />
-    </ItemGroup>
+    </div>
   )
 }

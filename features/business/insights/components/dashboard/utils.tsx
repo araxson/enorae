@@ -14,19 +14,19 @@ export { formatCurrency, formatPercentage }
 export const getSegmentIcon = (segment: string) => {
   switch (segment) {
     case 'VIP':
-      return <Crown className="h-4 w-4 text-accent" />
+      return <Crown className="size-4 text-accent" />
     case 'Loyal':
-      return <Heart className="h-4 w-4 text-destructive" />
+      return <Heart className="size-4 text-destructive" />
     case 'Regular':
-      return <Users className="h-4 w-4 text-secondary" />
+      return <Users className="size-4 text-secondary" />
     case 'At Risk':
-      return <AlertTriangle className="h-4 w-4 text-destructive" />
+      return <AlertTriangle className="size-4 text-destructive" />
     case 'New':
-      return <UserPlus className="h-4 w-4 text-primary" />
+      return <UserPlus className="size-4 text-primary" />
     case 'Churned':
-      return <UserX className="h-4 w-4 text-muted-foreground" />
+      return <UserX className="size-4 text-muted-foreground" />
     default:
-      return <Users className="h-4 w-4" />
+      return <Users className="size-4" />
   }
 }
 

@@ -37,7 +37,7 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <ShieldAlert className="h-5 w-5" aria-hidden="true" />
+              <ShieldAlert className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Schema Validation</ItemTitle>
@@ -46,24 +46,25 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {summary.criticalSecurityIssues > 0 && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Critical Security Issues Detected</AlertTitle>
-            <AlertDescription>
-              {summary.criticalSecurityIssues} table(s) without RLS policies detected.
-              This is a critical security vulnerability.
-            </AlertDescription>
-          </Alert>
-        )}
+      <CardContent>
+        <div className="space-y-6">
+          {summary.criticalSecurityIssues > 0 && (
+            <Alert variant="destructive">
+              <AlertCircle className="size-4" />
+              <AlertTitle>Critical Security Issues Detected</AlertTitle>
+              <AlertDescription>
+                {summary.criticalSecurityIssues} table(s) without RLS policies detected.
+                This is a critical security vulnerability.
+              </AlertDescription>
+            </Alert>
+          )}
 
-        <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Item variant="outline" className="flex-col gap-4">
             <ItemGroup>
               <Item>
                 <ItemMedia variant="icon">
-                  <ShieldAlert className="h-5 w-5" aria-hidden="true" />
+                  <ShieldAlert className="size-5" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>RLS Policy Issues</ItemTitle>
@@ -128,7 +129,7 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
             <ItemGroup>
               <Item>
                 <ItemMedia variant="icon">
-                  <Key className="h-5 w-5" aria-hidden="true" />
+                  <Key className="size-5" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>Primary Key Issues</ItemTitle>
@@ -182,7 +183,8 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
               )}
             </ItemContent>
           </Item>
-        </ItemGroup>
+          </ItemGroup>
+        </div>
       </CardContent>
     </Card>
   )

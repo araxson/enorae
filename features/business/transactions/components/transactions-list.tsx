@@ -46,7 +46,7 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <DollarSign className="h-8 w-8" aria-hidden="true" />
+            <DollarSign className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No manual transactions found</EmptyTitle>
           <EmptyDescription>Manual adjustments will appear here once recorded.</EmptyDescription>

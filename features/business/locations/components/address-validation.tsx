@@ -101,7 +101,7 @@ export function AddressValidation({ address }: Props) {
       return (
         <Badge variant="default">
           <span className="flex items-center gap-1">
-            <CheckCircle className="h-3 w-3" />
+            <CheckCircle className="size-3" />
             Valid ({result.score}%)
           </span>
         </Badge>
@@ -112,7 +112,7 @@ export function AddressValidation({ address }: Props) {
       return (
         <Badge variant="secondary">
           <span className="flex items-center gap-1">
-            <AlertTriangle className="h-3 w-3" />
+            <AlertTriangle className="size-3" />
             Needs Improvement ({result.score}%)
           </span>
         </Badge>
@@ -122,7 +122,7 @@ export function AddressValidation({ address }: Props) {
     return (
       <Badge variant="destructive">
         <span className="flex items-center gap-1">
-          <XCircle className="h-3 w-3" />
+          <XCircle className="size-3" />
           Invalid ({result.score}%)
         </span>
       </Badge>
@@ -139,7 +139,7 @@ export function AddressValidation({ address }: Props) {
       </ItemHeader>
       <ItemContent>
         <div className="flex flex-col gap-4">
-          <ButtonGroup className="w-full">
+          <ButtonGroup aria-label="Address validation">
             <Button
               type="button"
               variant="outline"
@@ -150,7 +150,7 @@ export function AddressValidation({ address }: Props) {
               {isValidating ? (
                 <Spinner className="mr-2" />
               ) : (
-                <RefreshCw className="mr-2 h-4 w-4" />
+                <RefreshCw className="mr-2 size-4" />
               )}
               {isValidating ? 'Validating...' : 'Validate Address'}
             </Button>
@@ -184,7 +184,7 @@ export function AddressValidation({ address }: Props) {
 
           {result && result.isValid ? (
             <Alert>
-              <CheckCircle className="h-4 w-4" />
+              <CheckCircle className="size-4" />
               <AlertTitle>Validation passed</AlertTitle>
               <AlertDescription>
                 Address validation passed! Your address is properly formatted and complete.

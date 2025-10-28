@@ -70,17 +70,16 @@ export function DataRefreshControls({
       size="sm"
       onClick={handleRefresh}
       disabled={isPending}
-      className="gap-2"
       aria-label="Refresh dashboard data"
     >
       {isPending ? (
         <>
-          <Spinner className="h-4 w-4" />
+          <Spinner />
           {loadingLabel}
         </>
       ) : (
         <>
-          <RefreshCw className="h-4 w-4" />
+          <RefreshCw className="size-4" />
           {buttonLabel}
         </>
       )}
@@ -89,11 +88,13 @@ export function DataRefreshControls({
 
   return (
     <div className={cn('flex items-center gap-3 text-muted-foreground', className)}>
-      <p className="text-xs flex items-center gap-1">
-        <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+      <p className="flex items-center gap-1 text-xs">
+        <Clock className="size-3.5" aria-hidden="true" />
         <span aria-live="polite">{relativeLabel}</span>
       </p>
-      <Separator orientation="vertical" className="hidden h-4 sm:block" decorative />
+      <div className="hidden h-4 items-center sm:flex">
+        <Separator orientation="vertical" decorative />
+      </div>
       {tooltip ? (
         <TooltipProvider delayDuration={150}>
           <Tooltip>

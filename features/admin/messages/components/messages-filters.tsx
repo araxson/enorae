@@ -66,15 +66,18 @@ export function MessagesFilters({
         <ItemContent>
           <InputGroup className="flex-1" aria-label="Search messages">
             <InputGroupAddon>
-              <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <Search className="size-4 text-muted-foreground" aria-hidden="true" />
             </InputGroupAddon>
             <InputGroupInput
+              type="search"
               placeholder="Search messages..."
               value={searchValue}
               onChange={(e) => {
                 setSearchValue(e.target.value)
                 onSearch(e.target.value)
               }}
+              aria-label="Search messages"
+              autoComplete="off"
             />
             <InputGroupAddon align="inline-end">
               {searchValue ? (
@@ -87,7 +90,7 @@ export function MessagesFilters({
                     onSearch('')
                   }}
                 >
-                  <X className="h-4 w-4" aria-hidden="true" />
+                  <X className="size-4" aria-hidden="true" />
                 </InputGroupButton>
               ) : null}
             </InputGroupAddon>
@@ -135,7 +138,7 @@ export function MessagesFilters({
           </SelectContent>
         </Select>
         <Field orientation="horizontal" className="items-center gap-2 rounded-md border px-3 py-2">
-          <ShieldAlert className="h-4 w-4 text-destructive" aria-hidden="true" />
+          <ShieldAlert className="size-4 text-destructive" aria-hidden="true" />
           <FieldLabel htmlFor="flagged-only">
             Flagged only
           </FieldLabel>

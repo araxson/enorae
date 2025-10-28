@@ -15,7 +15,7 @@ export function StaffLeadersCard({ staffPerformance }: { staffPerformance: Staff
   return (
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader className="items-center gap-2">
-        <Users className="h-5 w-5" />
+        <Users className="size-5" />
         <ItemTitle>Staff Leaders by Service</ItemTitle>
       </ItemHeader>
       <ItemContent className="space-y-3">

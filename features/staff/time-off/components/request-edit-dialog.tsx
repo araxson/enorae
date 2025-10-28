@@ -122,7 +122,7 @@ export function RequestEditDialog({
               />
             </FieldContent>
           </Field>
-          <ButtonGroup className="justify-end">
+          <ButtonGroup aria-label="Dialog actions">
             <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>
               Cancel
             </Button>

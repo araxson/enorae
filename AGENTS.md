@@ -1,523 +1,256 @@
-# Claude Agent Guide
+# CLAUDE.md
 
-Fast reference for Claude Code when contributing to ENORAE.
-Never Edit the database.type.ts
----
-NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
-## Stack Patterns Documentation
+Quick reference for Claude Code. **For comprehensive patterns, read `docs/rules/`**
 
-**Complete, standalone pattern files for the ENORAE tech stack.**
-
-- **Start here:** `docs/ruls/00-INDEX.md`
-- **Main architecture:** `docs/ruls/architecture-patterns.md`
-- **All patterns are standalone** - Each file is completely portable with full context
-
-### Quick Navigation
-
-| Task | Read this pattern file |
-| --- | --- |
-| **New feature** | `docs/ruls/architecture-patterns.md` |
-| **New page/route** | `docs/ruls/nextjs-patterns.md` |
-| **UI components** | `docs/ruls/ui.md` |
-| **Database queries** | `docs/ruls/supabase-patterns.md` |
-| **Forms & validation** | `docs/ruls/forms-patterns.md` |
-| **Type safety** | `docs/ruls/typescript-patterns.md` |
-| **React components** | `docs/ruls/react-patterns.md` |
-| **File organization** | `docs/ruls/architecture-patterns.md` |
-
-**💡 Tip:** Each pattern file is self-contained with complete examples, detection commands, and best practices. No cross-references needed.
+**Never edit:** `components/ui/*`, `app/globals.css`, `lib/types/database.types.ts`
 
 ---
 
-## Critical Reminders
+## Essential Commands
 
-### UI Components
+```bash
+# Development
+pnpm dev              # Start dev server
+pnpm build            # Production build
+pnpm typecheck        # MUST pass before commits
 
-- **Use shadcn/ui primitives** from `@/components/ui/*`
-- **Fetch missing components** via shadcn MCP (`mcp__shadcn__get-component-docs`)
-- **Never edit** `components/ui/*` files
-- **Eliminate custom Typography** - No imports from `@/components/ui/typography`
-- **Use component slots AS-IS** - CardTitle, CardDescription, AlertTitle, etc. with **zero styling changes**
-- **Apply layout classes only** - Use `flex`, `gap`, `padding` for arrangement
-- **No slot customization** - Never add `className="text-lg font-bold"` to slots
-- **Restructure to shadcn compositions** - Content blocks → Cards, callouts → Alerts
-- **Fallback rarely** - Use semantic HTML only when no shadcn primitive exists
-- **No arbitrary styling** - No custom Tailwind utilities, no arbitrary colors
-- **Never edit `app/globals.css`**
+# Database
+pnpm db:types         # Generate types from Supabase
 
-**Reference:** `docs/ruls/ui.md`
-
----
-
-### Database & Security
-
-- **Reads from public views** - Query `*_view` tables, not schema tables
-- **Writes to schema tables** - Use `.schema('schema_name').from('table')`
-- **Always verify auth** - `getUser()` or `verifySession()` before any database operation
-- **Validate inputs** - Use Zod schemas for all user input
-- **Revalidate paths** - Call `revalidatePath()` after mutations
-- **RLS tenant scoping** - Filter by tenant/user ID in all queries
-
-**Reference:** `docs/ruls/supabase-patterns.md`
-
----
-
-### Architecture
-
-- **Pages are shells (5-15 lines)** - Render feature components only
-- **Server-only directives** - `features/**/api/queries.ts` must have `import 'server-only'`
-- **Server actions** - `features/**/api/mutations.ts` must start with `'use server'`
-- **Canonical structure** - `components/`, `api/`, `types.ts`, `schema.ts`, `index.tsx`
-- **Feature organization** - `features/{portal}/{feature}/`
-
-**Reference:** `docs/ruls/architecture-patterns.md`
-
----
-
-### Next.js, React, TypeScript
-
-- **App Router only** - No Pages Router, no `getInitialProps`, no `getServerSideProps`
-- **Server Components for data** - Fetch in Server Components, not Client Components
-- **Client Components for interactivity** - Use `'use client'` for hooks and events
-- **TypeScript strict mode** - No `any`, no `@ts-ignore`, strict compiler flags
-- **Type safety everywhere** - Use generated database types, Zod inference
-
-**Reference:**
-- `docs/ruls/nextjs-patterns.md`
-- `docs/ruls/react-patterns.md`
-- `docs/ruls/typescript-patterns.md`
-
----
-
-## Frequent Violations (Avoid These)
-
-1. ❌ Importing from `@/components/ui/typography` → ✅ Use shadcn slots (CardTitle, etc.)
-2. ❌ Adding `className="text-lg font-bold"` to slots → ✅ Use slots as-is
-3. ❌ Wrapping slots in extra `<span>`/`<p>` → ✅ Render text directly
-4. ❌ Building custom UI primitives → ✅ Use existing shadcn components
-5. ❌ Editing `components/ui/*` → ✅ Never edit, only import
-6. ❌ Arbitrary Tailwind classes → ✅ Use layout classes only
-7. ❌ Querying schema tables for reads → ✅ Query public views
-8. ❌ Missing auth guards → ✅ Always verify with `getUser()`
-9. ❌ Business logic in pages → ✅ Pages are 5-15 line shells
-10. ❌ Using `any` type → ✅ TypeScript strict mode always
-11. ❌ Missing `revalidatePath()` → ✅ Call after all mutations
-
-**When stuck:** Read the relevant pattern file in `docs/ruls/`
-
----
-
-## Code Reference Examples
-
-### Database Query Pattern
-
-```ts
-import 'server-only'
-import { createClient } from '@/lib/supabase/server'
-
-export async function getSalonDashboard(userId: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user || user.id !== userId) throw new Error('Unauthorized')
-
-  const { data, error } = await supabase
-    .from('salon_dashboard') // ✅ Public view
-    .select('*')
-    .eq('owner_id', user.id)
-
-  if (error) throw error
-  return data
-}
+# Validation
+pnpm lint:shadcn      # Check shadcn/ui compliance
 ```
 
-**Full patterns:** `docs/ruls/supabase-patterns.md`
-
 ---
 
-### UI Component Pattern
+## Critical Rules
 
+### 1. NEVER Edit These Files
+- ❌ `lib/types/database.types.ts` - Auto-generated
+- ❌ `components/ui/*` - shadcn/ui primitives (import only)
+- ❌ `app/globals.css` - Locked
+
+### 2. NEVER Create Bulk Fix Scripts
+Always make targeted, specific changes.
+
+### 3. Pages Are Thin Shells (5-15 Lines)
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-
-export function EmptyAppointments() {
-  return (
-    <Card>
-      <CardHeader className="mb-4">
-        {/* ✅ Use slots with ZERO styling changes */}
-        <CardTitle>Nothing scheduled</CardTitle>
-        <CardDescription>Once clients book, appointments will appear here.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex items-center justify-between gap-2">
-        {/* ✅ Layout classes (flex, gap, justify-between) OK */}
-        {/* ❌ DO NOT: <CardTitle className="text-lg font-bold"> */}
-        <Badge variant="outline">0 bookings</Badge>
-        <Button>Create a service</Button>
-      </CardContent>
-    </Card>
-  )
-}
-```
-
-**Full patterns:** `docs/ruls/ui.md`
-
----
-
-### Page Shell Pattern
-
-```tsx
+// ✅ CORRECT
 import { Suspense } from 'react'
-import { BusinessDashboard } from '@/features/business/dashboard'
+import { DashboardFeature } from '@/features/business/dashboard'
 
-export default function Page() {
+export default async function Page() {
   return (
     <Suspense fallback={null}>
-      <BusinessDashboard />
+      <DashboardFeature />
     </Suspense>
   )
 }
 ```
 
-**Full patterns:** `docs/ruls/nextjs-patterns.md`
+### 4. Server Directives Required
+```ts
+import 'server-only'  // queries.ts
+'use server'          // mutations.ts
+'use client'          // client components
+```
+
+### 5. Always Use getUser() for Auth
+```ts
+const { data: { user } } = await supabase.auth.getUser()
+if (!user) throw new Error('Unauthorized')
+```
+### 5. Server Directives Required
+Always use supabase mcp for fixing do not assume
+---
+
+## Portal Structure
+
+```
+app/
+├── (marketing)/     # Public pages
+├── (customer)/      # Customer portal
+├── (staff)/         # Staff portal
+├── (business)/      # Business portal
+└── (admin)/         # Admin portal
+```
 
 ---
 
-### Server Mutation Pattern
+## Feature Structure
 
+```
+features/{portal}/{feature}/
+├── api/
+│   ├── queries/
+│   │   ├── index.ts          # Re-exports
+│   │   └── [domain].ts       # Query functions (< 300 lines)
+│   ├── mutations/
+│   │   ├── index.ts          # Re-exports
+│   │   └── [action].ts       # Mutations (< 300 lines)
+│   ├── types.ts              # API types (< 200 lines)
+│   ├── schema.ts             # Zod schemas (< 250 lines)
+│   └── constants.ts          # Constants (< 100 lines)
+├── components/               # Components (< 200 lines each)
+├── hooks/                    # Hooks (< 150 lines)
+└── index.tsx                 # Export (< 50 lines)
+```
+
+**File Limits:** Components < 200, Queries/Mutations < 300, Index < 50
+
+---
+
+## Database Pattern
+
+### Read from Views
 ```ts
-'use server'
-
+import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
-const schema = z.object({
-  name: z.string().min(1),
-  email: z.string().email(),
-})
-
-export async function createUser(formData: FormData) {
+export async function getData(userId: string) {
   const supabase = await createClient()
-
-  // 1. Verify auth
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  // 2. Validate
-  const validated = schema.parse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-  })
-
-  // 3. Write to schema table
-  const { error } = await supabase
-    .schema('organization')
-    .from('users')
-    .insert({
-      ...validated,
-      created_by: user.id,
-    })
-
-  if (error) throw error
-
-  // 4. Revalidate
-  revalidatePath('/users')
-  return { success: true }
+  return supabase.from('view_name').select('*')  // ✅ View
 }
 ```
 
-**Full patterns:** `docs/ruls/supabase-patterns.md` + `docs/ruls/forms-patterns.md`
+### Write to Schema Tables
+```ts
+'use server'
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
 
----
+export async function create(data: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
-## Project Structure
-
-### Portals
-- `(marketing)` - Public marketing pages
-- `(customer)` - Customer portal
-- `(staff)` - Staff portal
-- `(business)` - Business owner portal
-- `(admin)` - Admin portal
-
-### Feature Organization
-```
-features/{portal}/{feature}/
-├── components/       # UI components
-├── api/
-│   ├── queries.ts   # Server-only reads (public views)
-│   └── mutations.ts # Server actions (schema tables)
-├── types.ts         # TypeScript types
-├── schema.ts        # Zod validation schemas
-└── index.tsx        # Main feature export
+  await supabase.schema('organization').from('salons').insert(data)
+  revalidatePath('/salons')
+}
 ```
 
-### Database Schemas
-- `organization` - Organization/tenant data (US spelling)
-- `catalog` - Products, services, pricing
-- `scheduling` - Appointments, bookings
+**Database Schemas:**
+- `organization` - Salons, staff, locations
+- `catalog` - Services, pricing
+- `scheduling` - Appointments
 - `identity` - Users, profiles, auth
-- `communication` - Messages, notifications
-- `analytics` - Metrics, reports
-- `engagement` - Marketing, campaigns
-
-**Full details:** `docs/ruls/architecture-patterns.md`
+- `communication` - Messages
+- `analytics` - Metrics
+- `engagement` - Reviews
 
 ---
 
-## Tech Stack
+## Next.js 16 Patterns
 
-| Technology | Version | Pattern File |
-|-----------|---------|--------------|
-| Next.js | 15.5.4 | `nextjs-patterns.md` |
-| React | 19.1.0 | `react-patterns.md` |
-| TypeScript | 5.9.3 | `typescript-patterns.md` |
-| Supabase | 2.47.15 | `supabase-patterns.md` |
-| shadcn/ui | Latest | `ui-patterns.md` |
-| React Hook Form | 7.63.0 | `forms-patterns.md` |
-| Zod | 3.25.76 | `forms-patterns.md` |
-| lucide-react | 0.544.0 | `ui-patterns.md` |
+### Async Params
+```tsx
+export default async function Page({
+  params,
+  searchParams
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ query?: string }>
+}) {
+  const { id } = await params
+  const { query } = await searchParams
+  return <Feature id={id} query={query} />
+}
+```
+
+### Async Request APIs
+```ts
+const cookieStore = await cookies()
+const headersList = await headers()
+```
+
+---
+
+## UI Patterns (shadcn/ui)
+
+### Use Semantic Components
+- Statistics → Chart components (not Cards)
+- Navigation → Tabs, Accordion (not Card groups)
+- Actions → Alert, Dialog, Sheet (not Cards)
+- Data → Table, Data Table (not Card lists)
+
+### Use Slots As-Is
+```tsx
+// ✅ CORRECT
+<Card>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
+  <CardContent className="flex gap-4">
+    <Button>Action</Button>
+  </CardContent>
+</Card>
+
+// ❌ WRONG - Custom styling on slots
+<CardTitle className="text-2xl font-bold">  // ❌ NO
+```
+
+### Never Import Typography
+```tsx
+// ❌ WRONG
+import { H1, H2 } from '@/components/ui/typography'
+
+// ✅ CORRECT
+<h1 className="text-3xl font-bold">Heading</h1>
+```
 
 ---
 
 ## Pre-Commit Checklist
 
-Before committing code:
-
-1. ✅ **Read relevant pattern file** from `docs/ruls/`
-2. ✅ **Run type check** - `npm run typecheck` (must pass)
-3. ✅ **Verify auth guards** - All queries/mutations check user
-4. ✅ **Check server directives** - `'server-only'` in queries, `'use server'` in mutations
-5. ✅ **Validate UI patterns** - No typography imports, slots used as-is
-6. ✅ **No arbitrary styling** - Layout classes only, no custom colors
-7. ✅ **Pages are thin** - 5-15 lines, render feature components only
-8. ✅ **TypeScript strict** - No `any`, no `@ts-ignore`
-9. ✅ **Revalidate paths** - Called after mutations
-10. ✅ **Public views for reads** - Schema tables for writes
+1. ✅ `pnpm typecheck` - Must pass
+2. ✅ Auth guards with `getUser()`
+3. ✅ Server directives present
+4. ✅ Pages < 15 lines
+5. ✅ No `any` types
+6. ✅ Revalidate paths after mutations
 
 ---
 
-## Detection Commands
+## Comprehensive Documentation
 
-Run these to find violations:
+Read `docs/rules/` for detailed patterns:
 
-```bash
-# Missing 'server-only' in queries.ts
-rg "export async function" features/**/api/queries.ts -l | xargs -I {} sh -c "grep -L \"import 'server-only'\" {}"
-
-# Missing 'use server' in mutations.ts
-rg "export async function" features/**/api/mutations.ts -l | xargs -I {} sh -c "grep -L \"'use server'\" {}"
-
-# Typography imports (should not exist)
-rg "from '@/components/ui/typography'" --type tsx
-
-# Missing auth checks
-rg "export async function" features/**/api -A 5 | grep -L "getUser\|verifySession"
-
-# Using 'any' type
-rg "\bany\b" --type ts --type tsx | grep -v "node_modules"
-
-# Arbitrary colors
-rg "#[0-9a-fA-F]{3,6}" --type tsx | grep -v "app/globals.css"
-
-# Pages > 15 lines
-find app -name 'page.tsx' -exec sh -c 'lines=$(wc -l < "$1"); [ $lines -gt 15 ] && echo "$1: $lines lines"' _ {} \;
-```
-
-**Full detection commands in each pattern file.**
-
----
-
-## Quick Start Workflows
-
-### Creating a New Feature
-
-1. Read `docs/ruls/architecture-patterns.md`
-2. Create: `features/{portal}/{feature}/`
-3. Add structure: `components/`, `api/`, `types.ts`, `schema.ts`, `index.tsx`
-4. Write queries in `api/queries.ts` (with `import 'server-only'`)
-5. Write mutations in `api/mutations.ts` (with `'use server'`)
-6. Create UI in `components/`
-7. Export from `index.tsx`
-
-### Adding a Database Query
-
-1. Read `docs/ruls/supabase-patterns.md`
-2. Add to `features/{portal}/{feature}/api/queries.ts`
-3. Include `import 'server-only'` at top
-4. Verify auth with `getUser()`
-5. Query from public view (`*_view`)
-6. Filter by tenant/user ID
-7. Handle errors
-
-### Building a Form
-
-1. Read `docs/ruls/forms-patterns.md`
-2. Define Zod schema in `schema.ts`
-3. Create form with `useForm` + `zodResolver`
-4. Add shadcn Form components
-5. Handle submission with server action
-6. Display success/error feedback
-
-**All workflows in:** `docs/ruls/00-INDEX.md`
-
----
-
-## Updating Pattern Documentation
-
-To update pattern files with latest best practices:
-
-```bash
-# Read the update prompt
-cat UPDATE_PATTERNS_PROMPT.md
-
-# Then ask Claude to execute the updates using Context7 MCP
-```
-
-**Update prompt:** `UPDATE_PATTERNS_PROMPT.md`
-
----
-
-## Database Schema Synchronization Agents
-
-### Two-Step Schema Sync Process
-
-When TypeScript code and database schema are out of sync, use these agents in sequence:
-
-**Step 1: Analyze (database-schema-analyzer)**
-- Reads actual Supabase database schema using MCP
-- Scans codebase for mismatches
-- Generates organized reports in `docs/schema-sync/`
-- Creates task lists with [ ] checkboxes for each issue
-- Does NOT modify any code or database
-
-**Step 2: Fix (database-schema-fixer)**
-- Reads analysis reports from `docs/schema-sync/`
-- Applies fixes systematically (database = source of truth)
-- Updates task lists with [x] as it completes fixes
-- Runs typecheck after each batch
-- Generates completion report
-
-### When to Use
-
-**Use database-schema-analyzer when:**
-- TypeScript errors reference missing database properties
-- Database schema has been updated
-- You want to audit code/schema alignment
-- Planning a schema migration
-- Quarterly code health checks
-
-**Use database-schema-fixer when:**
-- You have analysis reports in `docs/schema-sync/`
-- Ready to apply schema alignment fixes
-- TypeScript errors need systematic resolution
-
-### Example Workflow
-
-```bash
-# 1. Generate analysis reports
-# Claude will use database-schema-analyzer agent
-
-# 2. Review reports
-cat docs/schema-sync/00-ANALYSIS-INDEX.md
-cat docs/schema-sync/09-fix-priority.md
-
-# 3. Apply fixes
-# Claude will use database-schema-fixer agent
-
-# 4. Verify
-npm run typecheck
-cat docs/schema-sync/10-FIX-COMPLETION-REPORT.md
-```
-
-### Report Structure
-
-Analysis creates organized reports:
-```
-docs/schema-sync/
-├── 00-ANALYSIS-INDEX.md          # Navigation hub
-├── 01-schema-overview.md          # Actual database schema (source of truth)
-├── 02-mismatch-summary.md         # Statistics
-├── 03-missing-properties.md       # Category A + task list
-├── 04-wrong-column-names.md       # Category B + task list
-├── 05-type-mismatches.md          # Category C + task list
-├── 06-nonexistent-rpcs.md         # Category D + task list
-├── 07-nonexistent-tables.md       # Category E + task list
-├── 08-incorrect-selects.md        # Category F + task list
-├── 09-fix-priority.md             # Prioritized action plan
-└── 10-FIX-COMPLETION-REPORT.md    # Generated after fixes
-```
-
-### Task List Format
-
-Reports use standardized task tracking:
-
-**Before fixing:**
-```markdown
-- [ ] Fix features/business/dashboard/api/queries.ts:45 - Property amenities does not exist
-```
-
-**After fixing:**
-```markdown
-- [x] Fix features/business/dashboard/api/queries.ts:45 - Property amenities does not exist
-  - **Fixed:** Removed amenities access, using actual schema columns only
-  - **Date:** 2025-10-22
-```
-
-### Critical Rules
-
-**Analyzer Agent:**
-- ✅ READ database schema using Supabase MCP
-- ✅ Generate ALL report files with task lists
-- ✅ Categorize by severity (Critical/High/Medium/Low)
-- ❌ NEVER modify code or database
-
-**Fixer Agent:**
-- ✅ READ analysis reports first
-- ✅ Use database schema as SOURCE OF TRUTH
-- ✅ Update task lists with [x] as you complete them
-- ✅ Run typecheck after each batch
-- ❌ NEVER modify database schema
-- ❌ NEVER use `any` or `@ts-ignore`
-
----
-
-## Getting Help
-
-**Need pattern examples?** → Read `docs/ruls/{topic}-patterns.md`
-
-**Unsure which file to read?** → Start with `docs/ruls/00-INDEX.md`
-
-**Building a feature?** → `docs/ruls/architecture-patterns.md`
-
-**Working with database?** → `docs/ruls/supabase-patterns.md`
-
-**Creating UI?** → `docs/ruls/ui.md`
-
-**Building forms?** → `docs/ruls/forms-patterns.md`
-
-**Database/code out of sync?** → Use `database-schema-analyzer` then `database-schema-fixer`
-
-**All pattern files are standalone and portable** - read any file independently.
+| File | Topic |
+|------|-------|
+| `architecture.md` | Naming, structure, file limits |
+| `architecture.md` | ENORAE architecture patterns |
+| `architecture.md` | File splitting strategies |
+| `nextjs.md` / `nextjs.md` | Next.js patterns |
+| `react.md` | React hooks, Server Components |
+| `typescript.md` | Type safety, strict mode |
+| `supabase.md` | Auth, database, RLS |
+| `ui.md` | shadcn/ui patterns |
+| `forms.md` | React Hook Form + Zod |
 
 ---
 
 ## Available Agents
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| `database-schema-analyzer` | Analyze database/code mismatches | Before fixing schema issues |
-| `database-schema-fixer` | Apply schema synchronization fixes | After analysis reports generated |
-| `stack-patterns-validator` | Audit ENORAE patterns compliance | Before major releases |
-| `ui-pattern-enforcer` | Enforce shadcn/ui patterns | UI consistency audits |
-
-**Agent Documentation:** `.claude/agents/`
+Specialized agents in `.claude/agents/`:
+- `performance-fixer` - Performance bottlenecks
+- `security-fixer` - Security audit
+- `type-safety-fixer` - Type issues
+- `ui-pattern-enforcer` - shadcn/ui compliance
+- `architecture-fixer` - Architecture violations
+- `form-validation-fixer` - Form patterns
+- `accessibility-fixer` - A11y issues
+- `dead-code-fixer` - Unused code
+- `import-dependency-fixer` - Import cleanup
 
 ---
 
-**Maintained by:** Development Team
-**Last Updated:** 2025-10-22
-**Pattern Files:** `docs/ruls/` (8 files, 100% standalone)
-**Agents:** `.claude/agents/` (Database schema sync, pattern validation, UI enforcement)
+## Tech Stack
 
-Stay within these patterns to keep ENORAE consistent, accessible, secure, and maintainable.
+- Next.js 16.0.0 + Turbopack
+- React 19.2.0
+- TypeScript 5.x (strict mode)
+- Supabase 2.47.15
+- pnpm

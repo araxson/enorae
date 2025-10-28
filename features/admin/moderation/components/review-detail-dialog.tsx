@@ -68,7 +68,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
               variant={review.qualityLabel === 'low' ? 'destructive' : review.qualityLabel === 'medium' ? 'default' : 'secondary'}
               className="gap-1"
             >
-              <TrendingUp className="h-3 w-3" />
+              <TrendingUp className="size-3" />
               Quality {review.qualityScore}
             </Badge>
           </div>
@@ -180,9 +180,9 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
           )}
 
           {!review['has_response'] && !isResponding && (
-            <ButtonGroup className="w-fit">
-              <Button onClick={() => setIsResponding(true)} variant="outline" className="gap-2">
-                <MessageSquare className="h-4 w-4" />
+            <ButtonGroup aria-label="Actions">
+              <Button onClick={() => setIsResponding(true)} variant="outline">
+                <MessageSquare className="mr-2 size-4" />
                 Add response
               </Button>
             </ButtonGroup>

@@ -37,7 +37,7 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Database className="h-5 w-5" aria-hidden="true" />
+              <Database className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Database Health</ItemTitle>
@@ -46,8 +46,9 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <Tabs defaultValue="bloat" className="w-full">
+      <CardContent>
+        <div className="space-y-6">
+          <Tabs defaultValue="bloat">
           <TabsList>
             <TabsTrigger value="bloat">Table Bloat</TabsTrigger>
             <TabsTrigger value="cache">Cache Performance</TabsTrigger>
@@ -252,7 +253,8 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
               </Empty>
             )}
           </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </CardContent>
     </Card>
   )

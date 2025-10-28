@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
@@ -49,23 +48,25 @@ export function StaffPageNavigation({
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
           <InputGroup className="flex-1">
             <InputGroupAddon>
-              <Search className="h-4 w-4" aria-hidden="true" />
+              <Search className="size-4" aria-hidden="true" />
             </InputGroupAddon>
             <InputGroupInput
+              type="search"
               placeholder={searchPlaceholder}
               value={searchValue ?? ''}
               onChange={(event) => onSearchChange?.(event.target.value)}
+              aria-label="Search staff content"
             />
           </InputGroup>
 
           {quickActions && quickActions.length > 0 ? (
-            <ButtonGroup className="w-full sm:w-fit">
+            <ButtonGroup aria-label="Actions">
               {quickActions.slice(0, 2).map((action) => {
                 const Icon = action.icon
                 return (
                   <Button key={action.id} asChild variant="outline" className="justify-start gap-2">
                     <a href={action.href}>
-                      {Icon ? <Icon className="h-4 w-4" /> : null}
+                      {Icon ? <Icon className="size-4" /> : null}
                       {action.label}
                     </a>
                   </Button>
@@ -84,7 +85,7 @@ export function StaffPageNavigation({
                   return (
                     <TabsTrigger key={tab.value} value={tab.value} disabled={tab.disabled}>
                       <span className="flex items-center gap-2">
-                        {Icon ? <Icon className="h-4 w-4" /> : null}
+                        {Icon ? <Icon className="size-4" /> : null}
                         <span>{tab.label}</span>
                         {tab.badge ? <Badge variant="secondary">{tab.badge}</Badge> : null}
                       </span>
@@ -100,7 +101,7 @@ export function StaffPageNavigation({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="gap-2 max-lg:w-full lg:w-auto">
-            <MoreHorizontal className="h-4 w-4" />
+            <MoreHorizontal className="size-4" />
             More
           </Button>
         </DropdownMenuTrigger>
@@ -108,11 +109,11 @@ export function StaffPageNavigation({
           <DropdownMenuLabel>Shortcuts</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onSelect={onOpenCommand}>
-            <CommandIcon className="mr-2 h-4 w-4" />
+            <CommandIcon className="mr-2 size-4" />
             Open command palette
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={onResetDateRange}>
-            <CalendarDays className="mr-2 h-4 w-4" />
+            <CalendarDays className="mr-2 size-4" />
             Reset date range
           </DropdownMenuItem>
         </DropdownMenuContent>

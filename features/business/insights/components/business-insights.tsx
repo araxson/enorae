@@ -1,11 +1,4 @@
-import { Card, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { getUserSalonId } from '@/lib/auth'
 import {
   getTrendInsights,
@@ -32,18 +25,10 @@ export async function BusinessInsights() {
       <div className="flex flex-col gap-8">
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-1">
-                <ItemContent>
-                  <ItemTitle>Business insights</ItemTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>
-                    AI-powered insights, trend detection, and growth recommendations.
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Business insights</CardTitle>
+            <CardDescription>
+              AI-powered insights, trend detection, and growth recommendations.
+            </CardDescription>
           </CardHeader>
         </Card>
 

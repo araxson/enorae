@@ -70,7 +70,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Scissors className="h-8 w-8" aria-hidden="true" />
+            <Scissors className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No service categories found</EmptyTitle>
           <EmptyDescription>Create a category to organize your services.</EmptyDescription>
@@ -113,7 +113,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
                 size="sm"
                 onClick={() => onEdit(category)}
               >
-                <Edit2 className="mr-2 h-4 w-4" />
+                <Edit2 className="mr-2 size-4" />
                 Edit
               </Button>
             ) : null}
@@ -122,7 +122,7 @@ export function CategoryList({ categories, onEdit }: CategoryListProps) {
               size="sm"
               onClick={() => setDeleteId(category['id'])}
             >
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="mr-2 size-4" />
               Delete
             </Button>
           </ButtonGroup>

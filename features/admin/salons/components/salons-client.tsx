@@ -122,27 +122,29 @@ function InsightCard({ title, subtitle, items, renderBadge }: InsightCardProps) 
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-3">
-        {items.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No salons in this category</EmptyTitle>
-              <EmptyDescription>Insights will fill once salons match the selected criteria.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          items.slice(0, 5).map((salon) => (
-            <Item key={salon['id']} variant="outline" className="items-start gap-3">
-              <ItemContent>
-                <div className="min-w-0">
-                  <ItemTitle>{salon['name'] || 'Unnamed salon'}</ItemTitle>
-                  <ItemDescription>{salon.business_name || '—'}</ItemDescription>
-                </div>
-              </ItemContent>
-              <ItemActions>{renderBadge(salon)}</ItemActions>
-            </Item>
-          ))
-        )}
+      <CardContent>
+        <div className="space-y-3">
+          {items.length === 0 ? (
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No salons in this category</EmptyTitle>
+                <EmptyDescription>Insights will fill once salons match the selected criteria.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : (
+            items.slice(0, 5).map((salon) => (
+              <Item key={salon['id']} variant="outline">
+                <ItemContent>
+                  <div className="min-w-0">
+                    <ItemTitle>{salon['name'] || 'Unnamed salon'}</ItemTitle>
+                    <ItemDescription>{salon.business_name || '—'}</ItemDescription>
+                  </div>
+                </ItemContent>
+                <ItemActions>{renderBadge(salon)}</ItemActions>
+              </Item>
+            ))
+          )}
+        </div>
       </CardContent>
     </Card>
   )

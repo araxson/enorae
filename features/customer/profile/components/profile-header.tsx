@@ -31,46 +31,41 @@ export function ProfileHeader({ profile, metadata }: ProfileHeaderProps) {
   return (
     <Card>
       <CardHeader>
+        <CardTitle>{profile.username || 'User'}</CardTitle>
+        <CardDescription>{displayHandle ?? `ID: ${profile.id ?? 'unknown'}`}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
         <ItemGroup>
           <Item>
             <ItemMedia>
-              <Avatar className="h-16 w-16">
+              <Avatar className="size-16">
                 {metadata?.avatar_url ? <AvatarImage src={metadata.avatar_url} /> : null}
                 <AvatarFallback className="text-xl">{initials}</AvatarFallback>
               </Avatar>
             </ItemMedia>
             <ItemContent>
-              <CardTitle>{profile.username || 'User'}</CardTitle>
-              <CardDescription>
-                {displayHandle ?? `ID: ${profile.id ?? 'unknown'}`}
-              </CardDescription>
+              <ItemTitle>Manage your profile preferences</ItemTitle>
+              <ItemDescription>
+                Keep your personal details up-to-date for tailored recommendations.
+              </ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <CardDescription>
-          Manage your profile preferences and personal information below.
-        </CardDescription>
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Email</ItemTitle>
-              <ItemDescription>
-                <span className="text-foreground">{profile.email ?? 'Not provided'}</span>
-              </ItemDescription>
+              <p className="text-sm text-foreground">{profile.email ?? 'Not provided'}</p>
             </ItemContent>
           </Item>
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Last updated</ItemTitle>
-              <ItemDescription>
-                <span className="text-foreground">
-                  {profile.updated_at
-                    ? new Date(profile.updated_at).toLocaleDateString()
-                    : 'Not available'}
-                </span>
-              </ItemDescription>
+              <p className="text-sm text-foreground">
+                {profile.updated_at
+                  ? new Date(profile.updated_at).toLocaleDateString()
+                  : 'Not available'}
+              </p>
             </ItemContent>
           </Item>
         </ItemGroup>

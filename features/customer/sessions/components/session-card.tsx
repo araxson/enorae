@@ -8,7 +8,6 @@ import type { SessionWithDevice } from '@/features/customer/sessions/api/queries
 import {
   Item,
   ItemContent,
-  ItemDescription,
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
@@ -52,38 +51,34 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="gap-3">
+      <CardHeader>
         <CardTitle>Session {session['id']?.substring(0, 8) || 'Unknown'}</CardTitle>
         <CardDescription>{getActivityStatus(session['updated_at'])}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           {session.is_current ? <Badge variant="default">Current Session</Badge> : null}
           {session['is_suspicious'] ? <Badge variant="destructive">Suspicious</Badge> : null}
         </div>
-      </CardHeader>
-      <CardContent>
         <ItemGroup className="gap-2">
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Created</ItemTitle>
-              <ItemDescription className="text-foreground">
-                {formatDate(session['created_at'])}
-              </ItemDescription>
+              <p className="text-sm text-foreground">{formatDate(session['created_at'])}</p>
             </ItemContent>
           </Item>
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Last updated</ItemTitle>
-              <ItemDescription className="text-foreground">
-                {formatDate(session['updated_at'])}
-              </ItemDescription>
+              <p className="text-sm text-foreground">{formatDate(session['updated_at'])}</p>
             </ItemContent>
           </Item>
           <Item variant="muted">
             <ItemContent>
               <ItemTitle>Status</ItemTitle>
-              <ItemDescription className="text-foreground">
+              <p className="text-sm text-foreground">
                 {session['is_active'] ? 'Active' : 'Inactive'}
-              </ItemDescription>
+              </p>
             </ItemContent>
           </Item>
         </ItemGroup>

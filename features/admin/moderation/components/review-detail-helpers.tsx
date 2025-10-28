@@ -64,7 +64,7 @@ export function DetailCard({ title, badge, description }: { title: string; badge
 export function StatusBadges({ review }: { review: ModerationReview }) {
   const badges: ReactNode[] = [
     <span key="rating" className="flex items-center gap-1 font-semibold">
-      <Star className="h-4 w-4 text-accent" fill="currentColor" />
+      <Star className="size-4 text-accent" fill="currentColor" />
       {review['rating']}
     </span>,
   ]
@@ -72,7 +72,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
   if (review['is_flagged']) {
     badges.push(
       <div key="flagged" className="flex items-center gap-1">
-        <Flag className="h-3 w-3" />
+        <Flag className="size-3" />
         <Badge variant="destructive">Flagged</Badge>
       </div>
     )
@@ -80,7 +80,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
   if (review['is_featured']) {
     badges.push(
       <div key="featured" className="flex items-center gap-1">
-        <Star className="h-3 w-3" />
+        <Star className="size-3" />
         <Badge variant="default">Featured</Badge>
       </div>
     )
@@ -88,7 +88,7 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
   if (review['has_response']) {
     badges.push(
       <div key="responded" className="flex items-center gap-1">
-        <MessageSquare className="h-3 w-3" />
+        <MessageSquare className="size-3" />
         <Badge variant="outline">Responded</Badge>
       </div>
     )

@@ -1,7 +1,6 @@
 'use client'
 
 import { Search } from 'lucide-react'
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -41,12 +40,15 @@ export function ServicesFilters({
       {showSearch ? (
         <InputGroup className="flex-1 min-w-56">
           <InputGroupAddon>
-            <Search className="h-4 w-4" aria-hidden="true" />
+            <Search className="size-4" aria-hidden="true" />
           </InputGroupAddon>
           <InputGroupInput
+            type="search"
             placeholder="Search services..."
             value={searchQuery}
             onChange={(event) => onSearchChange(event.target.value)}
+            aria-label="Search services"
+            autoComplete="off"
           />
         </InputGroup>
       ) : null}

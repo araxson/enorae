@@ -32,9 +32,9 @@ export function PaymentMethodCard({
         <Separator />
 
         <div className="flex items-center gap-6">
-          <Avatar className="h-12 w-12">
+          <Avatar className="size-12">
             <AvatarFallback>
-              <CreditCard className="h-5 w-5" />
+              <CreditCard className="size-5" />
             </AvatarFallback>
           </Avatar>
           <div className="flex-1">
@@ -47,7 +47,7 @@ export function PaymentMethodCard({
         <Separator />
 
         <div className="flex items-center gap-4 text-sm">
-          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <Calendar className="size-4 text-muted-foreground" />
           <div className="text-sm text-muted-foreground">
             Next billing date:{' '}
             {new Date(subscription.nextBillingDate).toLocaleDateString('en-US', {

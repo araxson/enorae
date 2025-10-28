@@ -25,38 +25,49 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
 
   return (
     <Card>
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>Performance Benchmarks</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardHeader>
+        <div className="pb-4">
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Performance Benchmarks</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <ItemGroup className="grid gap-4 md:grid-cols-3">
-          <Item variant="outline" className="flex-col items-start gap-2 text-sm">
-            <ItemContent>
-              <ItemDescription>Avg. utilization</ItemDescription>
-              <span className="text-xl font-semibold">{formatPercent(performance.avgUtilization)}</span>
-            </ItemContent>
-          </Item>
-          <Item variant="outline" className="flex-col items-start gap-2 text-sm">
-            <ItemContent>
-              <ItemDescription>Revenue per salon (30d)</ItemDescription>
-              <span className="text-xl font-semibold">{formatCurrencyCompact(performance.revenuePerSalon)}</span>
-            </ItemContent>
-          </Item>
-          <Item variant="outline" className="flex-col items-start gap-2 text-sm">
-            <ItemContent>
-              <ItemDescription>Appointments per salon</ItemDescription>
-              <span className="text-xl font-semibold">{performance.appointmentsPerSalon.toFixed(1)}</span>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              {
+                key: 'utilization',
+                label: 'Avg. utilization',
+                value: formatPercent(performance.avgUtilization),
+              },
+              {
+                key: 'revenue',
+                label: 'Revenue per salon (30d)',
+                value: formatCurrencyCompact(performance.revenuePerSalon),
+              },
+              {
+                key: 'appointments',
+                label: 'Appointments per salon',
+                value: performance.appointmentsPerSalon.toFixed(1),
+              },
+            ].map(({ key, label, value }) => (
+              <Item key={key} variant="outline">
+                <ItemContent>
+                  <div className="flex flex-col items-start gap-2 text-sm">
+                    <ItemDescription>{label}</ItemDescription>
+                    <span className="text-xl font-semibold">{value}</span>
+                  </div>
+                </ItemContent>
+              </Item>
+            ))}
+          </div>
 
-        <ScrollArea className="w-full">
+          <ScrollArea className="w-full">
           {hasTopSalons ? (
             <Table>
               <TableHeader>
@@ -99,6 +110,7 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
           )}
           {hasTopSalons ? <ScrollBar orientation="horizontal" /> : null}
         </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

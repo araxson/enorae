@@ -9,9 +9,11 @@ export function HowItWorksPage() {
   return (
     <main className="flex flex-col gap-16">
       <MarketingSection spacing="compact">
-        <Item className="flex-col items-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>See how the platform guides both clients and salons from discovery to booking.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>See how the platform guides both clients and salons from discovery to booking.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

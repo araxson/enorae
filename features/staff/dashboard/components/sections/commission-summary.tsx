@@ -5,7 +5,6 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 type Props = {
@@ -23,16 +22,12 @@ export function CommissionSummary({ commission }: Props) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemMedia variant="icon">
-              <DollarSign className="h-5 w-5" />
-            </ItemMedia>
-            <ItemContent>
-              <CardTitle>Commission Summary</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <div className="flex items-center gap-3">
+          <span className="rounded-full bg-muted p-2">
+            <DollarSign className="size-5" aria-hidden />
+          </span>
+          <CardTitle>Commission Summary</CardTitle>
+        </div>
       </CardHeader>
       <CardContent>
         <ItemGroup className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">

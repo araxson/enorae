@@ -38,7 +38,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Calendar className="h-8 w-8" aria-hidden="true" />
+                <Calendar className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No upcoming appointments</EmptyTitle>
               <EmptyDescription>No appointments are scheduled for the next 7 days.</EmptyDescription>
@@ -80,7 +80,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>
-                    <Clock className="inline h-3 w-3" aria-hidden="true" />{' '}
+                    <Clock className="inline size-3" aria-hidden="true" />{' '}
                     {formatAppointmentTime(appointment.start_time)}
                   </ItemTitle>
                   <ItemDescription>

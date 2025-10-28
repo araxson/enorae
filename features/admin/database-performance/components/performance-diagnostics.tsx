@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -9,10 +9,34 @@ import {
 } from '@/components/ui/item'
 import { AlertTriangle, BarChart3, Clock, Timer } from 'lucide-react'
 import { getQueryPerformance } from '../api/queries'
+import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { QueryPerformanceTable } from './query-performance-table'
 
 export async function PerformanceDiagnostics() {
   const snapshot = await getQueryPerformance({ limit: 50, offset: 0 })
+  const summaryCards = [
+    {
+      key: 'total',
+      icon: BarChart3,
+      title: 'Total Queries',
+      value: snapshot.totalCount.toLocaleString(),
+      helper: 'Queries analyzed',
+    },
+    {
+      key: 'slow',
+      icon: AlertTriangle,
+      title: 'Slow Queries',
+      value: snapshot.slowQueryCount.toLocaleString(),
+      helper: '> 100ms',
+    },
+    {
+      key: 'avg',
+      icon: Clock,
+      title: 'Avg Mean Time',
+      value: `${snapshot.avgMeanTime}ms`,
+      helper: 'Average execution time',
+    },
+  ] as const
 
   return (
     <section className="py-8 md:py-12">
@@ -29,86 +53,16 @@ export async function PerformanceDiagnostics() {
         </ItemGroup>
 
         <div className="mb-8 grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <BarChart3 className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Total Queries</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <CardTitle>{snapshot.totalCount}</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>Queries analyzed</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <AlertTriangle className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Slow Queries</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <CardTitle>{snapshot.slowQueryCount}</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>&gt; 100ms</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <Clock className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Avg Mean Time</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <CardTitle>{snapshot.avgMeanTime}ms</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>Average execution time</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
+          {summaryCards.map(({ key, icon, ...card }) => {
+            const Icon = icon
+            return (
+              <AdminMetricCard
+                key={key}
+                icon={<Icon className="size-5" aria-hidden="true" />}
+                {...card}
+              />
+            )
+          })}
         </div>
 
         <Card>
@@ -116,7 +70,7 @@ export async function PerformanceDiagnostics() {
             <ItemGroup>
               <Item>
                 <ItemMedia variant="icon">
-                  <Timer className="h-5 w-5" aria-hidden="true" />
+                  <Timer className="size-5" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>Query Performance Summary</ItemTitle>

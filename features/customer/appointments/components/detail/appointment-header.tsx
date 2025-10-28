@@ -25,7 +25,7 @@ export function AppointmentHeader({ appointment }: Pick<AppointmentDetailContent
       <ItemGroup>
         <Item>
           <ItemMedia variant="icon">
-            <Check className="h-4 w-4" aria-hidden="true" />
+            <Check className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Confirmation</ItemTitle>

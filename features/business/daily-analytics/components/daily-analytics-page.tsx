@@ -12,14 +12,7 @@ import { BarChart3, Store } from 'lucide-react'
 import { DailyMetricsDashboard } from './daily-metrics-dashboard'
 import { getUserSalon } from '@/features/business/staff/api/queries'
 import { getDailyMetrics, getMetricsComparison } from '../api/queries'
-import { Card, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 interface DailyAnalyticsPageProps {
   dateFrom?: string
@@ -63,7 +56,7 @@ export async function DailyAnalyticsPage({ dateFrom, dateTo }: DailyAnalyticsPag
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <Store className="h-8 w-8" aria-hidden="true" />
+              <Store className="size-8" aria-hidden="true" />
             </EmptyMedia>
             <EmptyTitle>No salon found</EmptyTitle>
             <EmptyDescription>Please create a salon profile to view analytics.</EmptyDescription>
@@ -91,18 +84,10 @@ export async function DailyAnalyticsPage({ dateFrom, dateTo }: DailyAnalyticsPag
         <div className="flex flex-col gap-8">
           <Card>
             <CardHeader>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <ItemTitle>Daily analytics</ItemTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>
-                      Performance metrics from {currentDateFrom} to {currentDateTo}
-                    </ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
+              <CardTitle>Daily analytics</CardTitle>
+              <CardDescription>
+                Performance metrics from {currentDateFrom} to {currentDateTo}
+              </CardDescription>
             </CardHeader>
           </Card>
 
@@ -110,7 +95,7 @@ export async function DailyAnalyticsPage({ dateFrom, dateTo }: DailyAnalyticsPag
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <BarChart3 className="h-8 w-8" aria-hidden="true" />
+                  <BarChart3 className="size-8" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No data available</EmptyTitle>
                 <EmptyDescription>

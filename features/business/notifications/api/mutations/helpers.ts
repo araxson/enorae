@@ -4,17 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-export const notificationSchema = z.object({
-  userId: z.string().uuid(),
-  title: z.string().min(1),
-  message: z.string().min(1),
-  type: z.string(),
-  channels: z.array(z.string()).optional(),
-  data: z.record(z.string(), z.unknown()).optional()
-})
-
-export const notificationIdsSchema = z.array(z.string().uuid()).optional()
-
+// Async helper functions for notification mutations
 export async function getSupabaseClient() {
   return await createClient()
 }
@@ -41,10 +31,4 @@ export async function logNotificationActivity(userId: string, action: string, me
 
   // Log the activity
   return { success: true }
-}
-
-export function revalidateNotifications() {
-  revalidatePath('/business/notifications', 'page')
-  revalidatePath('/staff/notifications', 'page')
-  revalidatePath('/customer/notifications', 'page')
 }

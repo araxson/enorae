@@ -64,11 +64,11 @@ export const CouponCard = memo(function CouponCard({
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-2">
-            <CardTitle>{coupon.code}</CardTitle>
-            {coupon.description ? <CardDescription>{coupon.description}</CardDescription> : null}
-          </div>
+        <CardTitle>{coupon.code}</CardTitle>
+        {coupon.description ? <CardDescription>{coupon.description}</CardDescription> : null}
+      </CardHeader>
+      <CardContent className="flex flex-col gap-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <ButtonGroup>
               <Button
@@ -77,19 +77,34 @@ export const CouponCard = memo(function CouponCard({
                 onClick={() => coupon.code && onCopy(coupon.code)}
                 aria-label={`Copy coupon code ${coupon.code}`}
               >
-                <Copy className="h-4 w-4" />
+                <Copy className="size-4" />
               </Button>
             </ButtonGroup>
             {statusBadge}
           </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              checked={coupon.is_active}
+              onCheckedChange={onToggle}
+              disabled={isExpired(coupon.valid_until)}
+              aria-label={`Toggle coupon ${coupon.code} ${coupon.is_active ? 'inactive' : 'active'}`}
+            />
+            <ButtonGroup>
+              <Button variant="ghost" size="icon" onClick={() => onEdit(coupon)} aria-label={`Edit coupon ${coupon.code}`}>
+                <Pencil className="size-4" />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={onDelete} aria-label={`Delete coupon ${coupon.code}`}>
+                <Trash2 className="size-4" />
+              </Button>
+            </ButtonGroup>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+
         <div className="flex flex-col gap-4 md:flex-row md:justify-between">
           <ItemGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Item variant="muted" className="items-start gap-3">
               <ItemMedia variant="icon">
-                <Gift className="h-4 w-4 text-muted-foreground" />
+                <Gift className="size-4 text-muted-foreground" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Discount</ItemTitle>
@@ -98,7 +113,7 @@ export const CouponCard = memo(function CouponCard({
             </Item>
             <Item variant="muted" className="items-start gap-3">
               <ItemMedia variant="icon">
-                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <Calendar className="size-4 text-muted-foreground" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Validity</ItemTitle>
@@ -122,30 +137,12 @@ export const CouponCard = memo(function CouponCard({
               </Item>
             ) : null}
           </ItemGroup>
-          <div className="flex items-center gap-2 self-start">
-            <Switch
-              checked={coupon.is_active}
-              onCheckedChange={onToggle}
-              disabled={isExpired(coupon.valid_until)}
-              aria-label={`Toggle coupon ${coupon.code} ${coupon.is_active ? 'inactive' : 'active'}`}
-            />
-            <ButtonGroup>
-              <Button variant="ghost" size="icon" onClick={() => onEdit(coupon)} aria-label={`Edit coupon ${coupon.code}`}>
-                <Pencil className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" onClick={onDelete} aria-label={`Delete coupon ${coupon.code}`}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </ButtonGroup>
-          </div>
         </div>
 
         <Card>
           <CardHeader>
-            <div className="pb-2">
-              <CardTitle>Performance</CardTitle>
-              <CardDescription>Usage and discount impact</CardDescription>
-            </div>
+            <CardTitle>Performance</CardTitle>
+            <CardDescription>Usage and discount impact</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 pt-0 md:grid-cols-3">
             <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -153,7 +150,7 @@ export const CouponCard = memo(function CouponCard({
                 <ItemTitle>Total uses</ItemTitle>
                 <div className="flex items-center gap-2 text-xl font-semibold">
                   {coupon.stats.totalUses}
-                  <TrendingUp className="h-4 w-4 text-primary" />
+                  <TrendingUp className="size-4 text-primary" />
                 </div>
                 <ItemDescription>
                   {coupon.stats.uniqueCustomers} unique customers
@@ -184,7 +181,7 @@ export const CouponCard = memo(function CouponCard({
           <Field>
             <FieldLabel>
               <div className="flex items-center gap-1">
-                <BarChart3 className="h-3 w-3" />
+                <BarChart3 className="size-3" />
                 Limited to services
               </div>
             </FieldLabel>
@@ -201,7 +198,7 @@ export const CouponCard = memo(function CouponCard({
         {coupon.applicable_customer_ids?.length ? (
           <Field>
             <FieldContent className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Users className="h-4 w-4" />
+              <Users className="size-4" />
               Targeted to {coupon.applicable_customer_ids.length} specific customers
             </FieldContent>
           </Field>

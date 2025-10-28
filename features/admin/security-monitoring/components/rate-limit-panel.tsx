@@ -24,7 +24,7 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
         <ItemGroup>
           <Item className="items-center gap-2">
             <ItemContent className="flex items-center gap-2">
-              <Lock className="h-4 w-4" aria-hidden="true" />
+              <Lock className="size-4" aria-hidden="true" />
               <CardTitle>Rate Limit Monitoring</CardTitle>
             </ItemContent>
           </Item>
@@ -65,7 +65,7 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
                     <AlertTitle>{violation.identifier}</AlertTitle>
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="destructive">
-                        <Ban className="h-3 w-3" aria-hidden="true" />
+                        <Ban className="size-3" aria-hidden="true" />
                         {' '}
                         Blocked
                       </Badge>

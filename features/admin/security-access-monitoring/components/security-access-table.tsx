@@ -177,7 +177,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
                         aria-label={`Open actions for ${record.user_email ?? 'security event'}`}
                         disabled={isLoading}
                       >
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreHorizontal className="size-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

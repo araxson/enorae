@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -45,6 +44,8 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
     setDialogOpen(open)
   }
 
+  const statValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
@@ -66,7 +67,7 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
               <ItemTitle>Total Services</ItemTitle>
             </ItemHeader>
             <ItemContent>
-              <CardTitle>{pricing.length}</CardTitle>
+              <p className={statValueClass}>{pricing.length}</p>
             </ItemContent>
           </Item>
           <Item variant="outline" className="flex-col gap-3">
@@ -74,10 +75,10 @@ export function ServicePricingClient({ pricing, services }: ServicePricingClient
               <ItemTitle>Average Price</ItemTitle>
             </ItemHeader>
             <ItemContent>
-              <CardTitle>
+              <p className={statValueClass}>
                 $
                 {avgPrice.toFixed(2)}
-              </CardTitle>
+              </p>
             </ItemContent>
           </Item>
         </ItemGroup>

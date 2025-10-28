@@ -14,7 +14,7 @@ export function SalonSettingsNoSalonError() {
         <Empty>
           <EmptyHeader>
             <EmptyMedia variant="icon">
-              <Store className="h-8 w-8" aria-hidden="true" />
+              <Store className="size-8" aria-hidden="true" />
             </EmptyMedia>
             <EmptyTitle>No salon found</EmptyTitle>
             <EmptyDescription>Please create a salon first to manage settings.</EmptyDescription>

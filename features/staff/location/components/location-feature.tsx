@@ -9,11 +9,6 @@ import {
 import { MapPin } from 'lucide-react'
 import { LocationCard, AllLocationsList } from './index'
 import type { StaffLocationDetail } from '../types'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 interface LocationFeatureProps {
   myLocation: StaffLocationDetail | null
@@ -25,27 +20,15 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Location Information</CardTitle>
-                <CardDescription>Your assigned salon location and other branches</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Location Information</CardTitle>
+          <CardDescription>Your assigned salon location and other branches</CardDescription>
         </CardHeader>
       </Card>
 
       {myLocation ? (
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <CardTitle>Your Location</CardTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Your Location</CardTitle>
           </CardHeader>
           <CardContent>
             <LocationCard location={myLocation} />
@@ -57,7 +40,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <MapPin className="h-8 w-8" aria-hidden="true" />
+                  <MapPin className="size-8" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No assigned location</EmptyTitle>
                 <EmptyDescription>
@@ -72,13 +55,7 @@ export function LocationFeature({ myLocation, allLocations }: LocationFeaturePro
       {allLocations.length > 1 && (
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <CardTitle>All Salon Locations</CardTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>All Salon Locations</CardTitle>
           </CardHeader>
           <CardContent>
             <AllLocationsList

@@ -7,7 +7,7 @@ export default function StaffNotFound() {
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-4 text-center sm:px-6 lg:px-8">
         <div className="rounded-full bg-destructive/10 p-6">
-          <FileQuestion className="h-16 w-16 text-destructive" />
+          <FileQuestion className="size-16 text-destructive" />
         </div>
 
         <div className="flex flex-col gap-6">
@@ -20,13 +20,13 @@ export default function StaffNotFound() {
         <div className="flex gap-4">
           <Button asChild variant="outline">
             <Link href="/staff">
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="mr-2 size-4" />
               Back to Dashboard
             </Link>
           </Button>
           <Button asChild>
             <Link href="/">
-              <LayoutDashboard className="mr-2 h-4 w-4" />
+              <LayoutDashboard className="mr-2 size-4" />
               Go Home
             </Link>
           </Button>

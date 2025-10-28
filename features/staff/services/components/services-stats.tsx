@@ -1,12 +1,5 @@
 import { Scissors, Star, TrendingUp, Award } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 type StaffService = {
   id: string
   proficiency_level?: string | null
@@ -63,15 +56,15 @@ export function ServicesStats({ services }: ServicesStatsProps) {
       {items.map(({ label, value, icon: Icon, accent }) => (
         <Card key={label}>
           <CardHeader>
-            <Item variant="muted" size="sm">
-              <ItemMedia variant="icon">
-                <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{value}</ItemTitle>
-                <ItemDescription>{label}</ItemDescription>
-              </ItemContent>
-            </Item>
+            <div className="flex items-center gap-3">
+              <span className="rounded-full bg-muted p-2">
+                <Icon className={`size-4 ${accent}`} aria-hidden />
+              </span>
+              <div className="space-y-1">
+                <CardTitle>{value}</CardTitle>
+                <CardDescription>{label}</CardDescription>
+              </div>
+            </div>
           </CardHeader>
         </Card>
       ))}

@@ -64,7 +64,7 @@ export function CreateThreadDialog({ open, onOpenChange, salonId }: CreateThread
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Start a new conversation</DialogTitle>
           <DialogDescription>
@@ -102,20 +102,27 @@ export function CreateThreadDialog({ open, onOpenChange, salonId }: CreateThread
             </FieldContent>
           </Field>
 
-          <DialogFooter className="gap-2 sm:gap-0">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Spinner className="size-4" />
-                  <span>Sending...</span>
-                </>
-              ) : (
-                <span>Start conversation</span>
-              )}
-            </Button>
+          <DialogFooter>
+            <div className="flex w-full flex-col gap-2 sm:flex-row sm:justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Spinner />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <span>Start conversation</span>
+                )}
+              </Button>
+            </div>
           </DialogFooter>
         </form>
       </DialogContent>

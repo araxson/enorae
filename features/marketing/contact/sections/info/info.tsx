@@ -1,19 +1,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { infoData } from './info.data'
 
 export function Info() {
   return (
-    <ItemGroup className="gap-6">
+    <div
+      className="group/item-group flex flex-col gap-6"
+      data-slot="item-group"
+      role="list"
+    >
       <Card>
         <CardHeader>
           <CardTitle>{infoData.title}</CardTitle>
@@ -22,7 +18,11 @@ export function Info() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ItemGroup className="gap-4">
+          <div
+            className="group/item-group flex flex-col gap-4"
+            data-slot="item-group"
+            role="list"
+          >
             <Item variant="muted">
               <ItemMedia variant="icon">
                 <Mail className="size-4" aria-hidden="true" />
@@ -50,7 +50,7 @@ export function Info() {
                 <ItemDescription>{infoData.address}</ItemDescription>
               </ItemContent>
             </Item>
-          </ItemGroup>
+          </div>
         </CardContent>
       </Card>
 
@@ -62,7 +62,11 @@ export function Info() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ItemGroup className="gap-2">
+          <div
+            className="group/item-group flex flex-col gap-2"
+            data-slot="item-group"
+            role="list"
+          >
             {infoData.supportHours.map(({ label, value }) => (
               <Item key={label} variant="muted">
                 <ItemHeader>
@@ -71,9 +75,9 @@ export function Info() {
                 </ItemHeader>
               </Item>
             ))}
-          </ItemGroup>
+          </div>
         </CardContent>
       </Card>
-    </ItemGroup>
+    </div>
   )
 }

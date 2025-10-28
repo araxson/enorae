@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 type TrendIndicatorsCardProps = {
   trendIndicators: unknown
@@ -9,16 +8,8 @@ export function TrendIndicatorsCard({ trendIndicators }: TrendIndicatorsCardProp
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Trend Indicators</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>Performance trends and patterns</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Trend Indicators</CardTitle>
+        <CardDescription>Performance trends and patterns</CardDescription>
       </CardHeader>
       <CardContent>
         <pre className="text-xs bg-muted p-4 rounded-md overflow-auto">

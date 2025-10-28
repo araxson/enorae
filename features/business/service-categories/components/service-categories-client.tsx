@@ -44,7 +44,7 @@ export function ServiceCategoriesClient({ initialCategories }: ServiceCategories
         </Item>
         <ItemActions>
           <Button onClick={() => setIsFormOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Add Category
           </Button>
         </ItemActions>

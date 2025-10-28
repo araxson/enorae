@@ -42,7 +42,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
                 </CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <MessageSquare className="h-8 w-8 text-muted-foreground" />
+                <MessageSquare className="size-8 text-muted-foreground" />
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -61,7 +61,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
                 <CardDescription>High priority {stats.highPriorityThreads}</CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <AlertTriangle className="h-8 w-8 text-accent" />
+                <AlertTriangle className="size-8 text-accent" />
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -80,7 +80,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
                 <CardDescription>Threads affected {stats.flaggedThreads}</CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <ShieldAlert className="h-8 w-8 text-destructive" />
+                <ShieldAlert className="size-8 text-destructive" />
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -101,7 +101,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
                 </CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <GitPullRequest className="h-8 w-8 text-accent" />
+                <GitPullRequest className="size-8 text-accent" />
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -122,7 +122,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
                 </CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <Clock className="h-8 w-8 text-secondary" />
+                <Clock className="size-8 text-secondary" />
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -143,7 +143,7 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
                 <CardDescription>Customer SLA coverage</CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <Timer className="h-8 w-8 text-primary" />
+                <Timer className="size-8 text-primary" />
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -155,24 +155,26 @@ export function MessagesStats({ stats }: MessagesStatsProps) {
         </CardContent>
       </Card>
 
-      <Card className="md:col-span-2 xl:col-span-3">
-        <CardHeader>
-          <ItemGroup>
-            <Item className="items-start justify-between gap-2">
+      <div className="md:col-span-2 xl:col-span-3">
+        <Card>
+          <CardHeader>
+            <ItemGroup>
+            <Item>
               <ItemContent>
                 <CardTitle>Unread Messages</CardTitle>
                 <CardDescription>Across customers and staff</CardDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <MailWarning className="h-8 w-8 text-secondary" />
+                <MailWarning className="size-8 text-secondary" />
               </ItemActions>
             </Item>
           </ItemGroup>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-semibold">{stats.totalUnread}</p>
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-semibold">{stats.totalUnread}</p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

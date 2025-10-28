@@ -69,7 +69,7 @@ export function ServicesManagementClient({ salon, services }: ServicesManagement
         <div className="flex gap-4 items-start justify-end">
           <ButtonGroup>
             <Button onClick={handleAddClick}>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="mr-2 size-4" />
               Add Service
             </Button>
           </ButtonGroup>

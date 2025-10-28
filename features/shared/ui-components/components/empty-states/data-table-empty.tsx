@@ -29,7 +29,7 @@ export function DataTableEmpty({
     <Empty>
       {Icon ? (
         <EmptyMedia variant="icon">
-          <Icon className="h-6 w-6" />
+          <Icon className="size-6" />
         </EmptyMedia>
       ) : null}
       <EmptyHeader>

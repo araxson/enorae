@@ -36,7 +36,7 @@ const severityBadge = (severity: string) => {
     <Badge variant={variant}>
       {['critical', 'high'].includes(normalized) ? (
         <>
-          <AlertCircle className="h-3 w-3" aria-hidden="true" />
+          <AlertCircle className="size-3" aria-hidden="true" />
           {' '}
         </>
       ) : null}
@@ -52,7 +52,7 @@ export function SecurityEventsPanel({ events }: SecurityEventsPanelProps) {
         <ItemGroup>
           <Item variant="muted" className="items-center gap-2">
             <ItemContent className="flex items-center gap-2">
-              <Shield className="h-4 w-4" aria-hidden="true" />
+              <Shield className="size-4" aria-hidden="true" />
               <CardTitle>Security Event Stream</CardTitle>
             </ItemContent>
           </Item>

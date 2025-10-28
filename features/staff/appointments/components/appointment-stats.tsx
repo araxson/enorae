@@ -1,15 +1,8 @@
 'use client'
 
-import { Card, CardHeader } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Clock, CheckCircle, History } from 'lucide-react'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
 
 type AppointmentStatsProps = {
   appointments: StaffAppointment[]
@@ -56,15 +49,15 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
         return (
           <Card key={stat.label}>
             <CardHeader>
-              <Item variant="muted" size="sm">
-                <ItemMedia variant="icon">
-                  <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{stat.value}</ItemTitle>
-                  <ItemDescription>{stat.label}</ItemDescription>
-                </ItemContent>
-              </Item>
+              <div className="flex items-center gap-3">
+                <span className="rounded-full bg-muted p-2">
+                  <Icon className={`size-4 ${stat.color}`} aria-hidden />
+                </span>
+                <div className="space-y-1">
+                  <CardTitle>{stat.value}</CardTitle>
+                  <CardDescription>{stat.label}</CardDescription>
+                </div>
+              </div>
             </CardHeader>
           </Card>
         )

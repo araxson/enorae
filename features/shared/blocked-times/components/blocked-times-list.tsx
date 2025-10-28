@@ -79,32 +79,23 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
   }
 
   return (
-    <ItemGroup className="flex flex-col gap-4">
-      {blockedTimes.map((blockedTime) => (
-        <Item key={blockedTime.id} variant="outline" className="flex-col gap-3">
-          <ItemHeader>
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div className="space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <ItemTitle>
-                    {format(new Date(blockedTime.start_time), 'PPP')}
-                  </ItemTitle>
-                  {blockedTime.is_recurring && (
-                    <div className="flex items-center gap-2">
-                      <Repeat className="h-3 w-3" aria-hidden="true" />
-                      <Badge variant="secondary">
-                        {getRecurrenceLabel(blockedTime.recurrence_pattern)}
-                      </Badge>
-                    </div>
-                  )}
-                </div>
-                <ItemDescription>
-                  {format(new Date(blockedTime.start_time), 'p')}
-                  {' '}
-                  –
-                  {' '}
-                  {format(new Date(blockedTime.end_time), 'p')}
-                </ItemDescription>
+    <div className="flex flex-col gap-4">
+      <ItemGroup>
+        {blockedTimes.map((blockedTime) => (
+          <Item key={blockedTime.id} variant="outline">
+            <ItemHeader>
+              <div className="flex flex-wrap items-center gap-2">
+                <ItemTitle>
+                  {format(new Date(blockedTime.start_time), 'PPP')}
+                </ItemTitle>
+                {blockedTime.is_recurring ? (
+                  <div className="flex items-center gap-2">
+                    <Repeat className="size-3" aria-hidden="true" />
+                    <Badge variant="secondary">
+                      {getRecurrenceLabel(blockedTime.recurrence_pattern)}
+                    </Badge>
+                  </div>
+                ) : null}
               </div>
               <ItemActions>
                 <ConfirmDialog
@@ -129,13 +120,22 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
                   </Button>
                 </ConfirmDialog>
               </ItemActions>
-            </div>
-          </ItemHeader>
-          <ItemContent>
-            {blockedTime.reason ? <ItemDescription>{blockedTime.reason}</ItemDescription> : null}
-          </ItemContent>
-        </Item>
-      ))}
-    </ItemGroup>
+            </ItemHeader>
+            <ItemContent>
+              <ItemDescription>
+                {format(new Date(blockedTime.start_time), 'p')}
+                {' '}
+                –
+                {' '}
+                {format(new Date(blockedTime.end_time), 'p')}
+              </ItemDescription>
+              {blockedTime.reason ? (
+                <ItemDescription>{blockedTime.reason}</ItemDescription>
+              ) : null}
+            </ItemContent>
+          </Item>
+        ))}
+      </ItemGroup>
+    </div>
   )
 }

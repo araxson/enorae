@@ -124,11 +124,10 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
+              <Avatar>
                 <AvatarImage src={user.avatar || undefined} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-primary/10">
+                <AvatarFallback>
                   {getInitials(user.name, user.email)}
                 </AvatarFallback>
               </Avatar>
@@ -136,20 +135,21 @@ export function NavUser({
                 <span className="truncate font-medium">{user.name || 'User'}</span>
                 <span className="truncate text-xs text-muted-foreground">{user.email}</span>
               </div>
-              <ChevronsUpDown className="ml-auto size-4" />
+              <div className="ml-auto flex items-center">
+                <ChevronsUpDown className="size-4" />
+              </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
+            <DropdownMenuLabel>
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
+                <Avatar>
                   <AvatarImage src={user.avatar || undefined} alt={user.name} />
-                  <AvatarFallback className="rounded-lg bg-primary/10">
+                  <AvatarFallback>
                     {getInitials(user.name, user.email)}
                   </AvatarFallback>
                 </Avatar>
@@ -168,8 +168,8 @@ export function NavUser({
             <DropdownMenuGroup>
               {menuItems.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
-                  <Link href={item.href} className="cursor-pointer">
-                    <item.icon className="mr-2 h-4 w-4" />
+                  <Link href={item.href}>
+                    <item.icon className="size-4" />
                     {item.label}
                   </Link>
                 </DropdownMenuItem>
@@ -178,11 +178,10 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleSignOut}
-              className="cursor-pointer"
               disabled={isSigningOut}
               aria-busy={isSigningOut}
             >
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="size-4" />
               {isSigningOut ? 'Signing out...' : 'Sign out'}
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -61,17 +61,17 @@ export function AdvancedPreferencesForm({
   }
 
   return (
-    <Item variant="outline" className="flex flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
         <div className="flex items-center gap-2">
-          <Globe className="h-5 w-5" aria-hidden="true" />
+          <Globe className="size-5" aria-hidden="true" />
           <ItemTitle>Regional &amp; Display Preferences</ItemTitle>
         </div>
+      </ItemHeader>
+      <ItemContent>
         <ItemDescription>
           Customize your regional settings, language, and currency preferences
         </ItemDescription>
-      </ItemHeader>
-      <ItemContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <TimezoneField preferences={preferences} setPreferences={setPreferences} />
@@ -80,7 +80,7 @@ export function AdvancedPreferencesForm({
 
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
@@ -88,7 +88,7 @@ export function AdvancedPreferencesForm({
 
             {success && (
               <Alert>
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Preferences saved</AlertTitle>
                 <AlertDescription>Preferences updated successfully!</AlertDescription>
               </Alert>
@@ -97,7 +97,7 @@ export function AdvancedPreferencesForm({
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Spinner className="size-4" />
+                  <Spinner />
                   <span>Saving...</span>
                 </>
               ) : (

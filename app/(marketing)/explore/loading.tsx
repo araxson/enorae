@@ -35,19 +35,21 @@ export default function ExploreLoading() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(12)].map((_, i) => (
           <Card key={i} className="overflow-hidden">
-            <CardHeader className="p-0">
-              <ItemGroup>
-                <Item className="flex-col items-start gap-2">
-                  <ItemContent>
-                    <ItemTitle>
-                      <span className="sr-only">Loading salon listing</span>
-                    </ItemTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <Skeleton className="h-56 w-full" />
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
+            <CardHeader>
+              <div className="p-0">
+                <ItemGroup>
+                  <Item className="flex-col items-start gap-2">
+                    <ItemContent>
+                      <ItemTitle>
+                        <span className="sr-only">Loading salon listing</span>
+                      </ItemTitle>
+                    </ItemContent>
+                    <ItemContent>
+                      <Skeleton className="h-56 w-full" />
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
+              </div>
             </CardHeader>
             <CardContent className="p-6">
               <ItemGroup className="gap-3">

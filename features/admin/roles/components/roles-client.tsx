@@ -58,13 +58,13 @@ export function RolesClient({ roles, stats, salons, canDelete, auditEvents }: Ro
             Assign roles, manage permissions, and monitor historical changes.
           </p>
         </div>
-        <ButtonGroup className="flex-wrap justify-end gap-4">
+        <ButtonGroup aria-label="Actions">
           <Button variant="outline" onClick={() => setIsBulkDialogOpen(true)}>
-            <Upload className="mr-2 h-4 w-4" />
+            <Upload className="mr-2 size-4" />
             Bulk Assign
           </Button>
           <Button onClick={() => setIsAssignFormOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Assign Role
           </Button>
         </ButtonGroup>

@@ -28,9 +28,9 @@ export function MetricTrend({ value, className, showIcon = true }: MetricTrendPr
     >
       {showIcon && (
         <>
-          {isPositive && <TrendingUp className="h-3 w-3" />}
-          {isNegative && <TrendingDown className="h-3 w-3" />}
-          {isNeutral && <Minus className="h-3 w-3" />}
+          {isPositive && <TrendingUp className="size-3" />}
+          {isNegative && <TrendingDown className="size-3" />}
+          {isNeutral && <Minus className="size-3" />}
         </>
       )}
       <span className="text-xs font-medium">{formatValue(value)}</span>

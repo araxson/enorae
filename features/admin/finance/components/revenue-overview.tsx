@@ -48,24 +48,24 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
         <StatCard
           label="Total Revenue"
           value={formatCurrency(metrics.totalRevenue)}
-          icon={<DollarSign className="h-4 w-4" />}
+          icon={<DollarSign className="size-4" />}
         />
         <StatCard
           label="Service Revenue"
           value={formatCurrency(metrics.serviceRevenue)}
-          icon={<TrendingUp className="h-4 w-4" />}
+          icon={<TrendingUp className="size-4" />}
           description={formatPercentage((metrics.serviceRevenue / metrics.totalRevenue) * 100 || 0) + ' of total'}
         />
         <StatCard
           label="Product Revenue"
           value={formatCurrency(metrics.productRevenue)}
-          icon={<DollarSign className="h-4 w-4" />}
+          icon={<DollarSign className="size-4" />}
           description={formatPercentage((metrics.productRevenue / metrics.totalRevenue) * 100 || 0) + ' of total'}
         />
         <StatCard
           label="Avg per Appointment"
           value={formatCurrency(metrics.avgRevenuePerAppointment)}
-          icon={<TrendingUp className="h-4 w-4" />}
+          icon={<TrendingUp className="size-4" />}
           description={`${metrics.completedAppointments} completed`}
         />
       </div>
@@ -74,24 +74,24 @@ export function RevenueOverview({ metrics }: RevenueOverviewProps) {
         <StatCard
           label="Total Appointments"
           value={metrics.totalAppointments.toString()}
-          icon={<Calendar className="h-4 w-4" />}
+          icon={<Calendar className="size-4" />}
         />
         <StatCard
           label="Completed"
           value={metrics.completedAppointments.toString()}
-          icon={<Users className="h-4 w-4" />}
+          icon={<Users className="size-4" />}
           description={formatPercentage(completionRate) + ' completion rate'}
         />
         <StatCard
           label="Cancelled"
           value={metrics.cancelledAppointments.toString()}
-          icon={<Calendar className="h-4 w-4" />}
+          icon={<Calendar className="size-4" />}
           description={formatPercentage(cancellationRate) + ' cancellation rate'}
         />
         <StatCard
           label="No Shows"
           value={metrics.noShowAppointments.toString()}
-          icon={<Users className="h-4 w-4" />}
+          icon={<Users className="size-4" />}
           description={formatPercentage((metrics.noShowAppointments / metrics.totalAppointments) * 100 || 0) + ' of total'}
         />
       </div>

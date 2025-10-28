@@ -7,14 +7,7 @@ import {
   TrendingDown,
 } from 'lucide-react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 import type { InsightsSummary } from '@/features/business/insights/api/queries'
 
@@ -29,85 +22,53 @@ export function CustomerInsightsSummaryCards({
   formatCurrency,
   formatPercentage,
 }: CustomerInsightsSummaryCardsProps) {
+  const metricValueClass = 'text-3xl font-semibold tracking-tight'
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <ItemGroup className="flex w-full items-center justify-between">
-            <Item>
-              <ItemContent>
-                <ItemTitle>Total Customers</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Total Customers</CardTitle>
+          <CardDescription>{summary.active_customers} active this month</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{summary.total_customers}</CardTitle>
-          <div className="text-xs text-muted-foreground">{summary.active_customers} active</div>
+        <CardContent className="flex items-start justify-between">
+          <p className={metricValueClass}>{summary.total_customers}</p>
+          <Users className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <ItemGroup className="flex w-full items-center justify-between">
-            <Item>
-              <ItemContent>
-                <ItemTitle>Avg Lifetime Value</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <DollarSign className="h-4 w-4 text-primary" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Avg Lifetime Value</CardTitle>
+          <CardDescription>
+            {summary.avg_visits_per_customer.toFixed(1)} visits per customer
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{formatCurrency(summary.avg_lifetime_value)}</CardTitle>
-          <div className="text-xs text-muted-foreground">
-            {summary.avg_visits_per_customer.toFixed(1)} avg visits
-          </div>
+        <CardContent className="flex items-start justify-between">
+          <p className={metricValueClass}>{formatCurrency(summary.avg_lifetime_value)}</p>
+          <DollarSign className="size-4 text-primary" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <ItemGroup className="flex w-full items-center justify-between">
-            <Item>
-              <ItemContent>
-                <ItemTitle>Retention Rate</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Retention Rate</CardTitle>
+          <CardDescription>Returning within 90 days</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{formatPercentage(summary.retention_rate)}</CardTitle>
-          <div className="text-xs text-muted-foreground">Customer retention</div>
+        <CardContent className="flex items-start justify-between">
+          <p className={metricValueClass}>{formatPercentage(summary.retention_rate)}</p>
+          <TrendingUp className="size-4 text-primary" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <ItemGroup className="flex w-full items-center justify-between">
-            <Item>
-              <ItemContent>
-                <ItemTitle>Churn Rate</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <TrendingDown className="h-4 w-4 text-destructive" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Churn Rate</CardTitle>
+          <CardDescription>{summary.segmentation.churned} churned customers</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{formatPercentage(summary.churn_rate)}</CardTitle>
-          <div className="text-xs text-muted-foreground">
-            {summary.segmentation.churned} churned customers
-          </div>
+        <CardContent className="flex items-start justify-between">
+          <p className={metricValueClass}>{formatPercentage(summary.churn_rate)}</p>
+          <TrendingDown className="size-4 text-destructive" aria-hidden="true" />
         </CardContent>
       </Card>
     </div>

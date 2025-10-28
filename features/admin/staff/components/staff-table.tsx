@@ -60,7 +60,8 @@ export function StaffTable({ staff }: StaffTableProps) {
 
   return (
     <>
-      <Card className="hidden md:block">
+      <div className="hidden md:block">
+        <Card>
         <CardHeader>
           <ItemGroup>
             <Item variant="muted">
@@ -71,9 +72,10 @@ export function StaffTable({ staff }: StaffTableProps) {
             </Item>
           </ItemGroup>
         </CardHeader>
-        <CardContent className="p-0">
-          <ScrollArea className="w-full">
-            <Table>
+        <CardContent>
+          <div className="-m-6">
+            <ScrollArea className="w-full">
+              <Table>
               <TableHeader>
               <TableRow>
                 <TableHead>Staff member</TableHead>
@@ -181,16 +183,19 @@ export function StaffTable({ staff }: StaffTableProps) {
               </TableRow>
               ))}
               </TableBody>
-            </Table>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+              </Table>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
 
       <div className="space-y-4 md:hidden">
         {staff.map((member) => (
           <Card key={member.id}>
-            <CardHeader className="pb-2">
+            <CardHeader>
+              <div className="pb-2">
               <ItemGroup className="items-start justify-between gap-3">
                 <Item variant="muted" className="items-start gap-2">
                   <ItemContent>
@@ -209,9 +214,11 @@ export function StaffTable({ staff }: StaffTableProps) {
                   </ItemContent>
                 </Item>
               </ItemGroup>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-3 pt-0">
-              <div className="grid grid-cols-2 gap-3">
+            <CardContent>
+              <div className="space-y-3 pt-0">
+                <div className="grid grid-cols-2 gap-3">
                 <div>
                   <span className="block font-medium">Role</span>
                   <span className="text-muted-foreground capitalize">
@@ -274,6 +281,7 @@ export function StaffTable({ staff }: StaffTableProps) {
                     Completion {Math.round(member.compliance.completionRate * 100)}%
                   </span>
                 </div>
+              </div>
               </div>
             </CardContent>
           </Card>

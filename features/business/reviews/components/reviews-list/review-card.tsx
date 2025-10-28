@@ -74,19 +74,19 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
               <ItemTitle>{review.customer_name || 'Anonymous'}</ItemTitle>
               {review.is_verified && (
                 <div className="flex items-center gap-1 text-xs">
-                  <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
+                  <CheckCircle2 className="size-3" aria-hidden="true" />
                   <Badge variant="outline">Verified</Badge>
                 </div>
               )}
               {review.is_featured && (
                 <div className="flex items-center gap-1 text-xs">
-                  <TrendingUp className="h-3 w-3" aria-hidden="true" />
+                  <TrendingUp className="size-3" aria-hidden="true" />
                   <Badge variant="default">Featured</Badge>
                 </div>
               )}
               {review.is_flagged && (
                 <div className="flex items-center gap-1 text-xs">
-                  <Flag className="h-3 w-3" aria-hidden="true" />
+                  <Flag className="size-3" aria-hidden="true" />
                   <Badge variant="destructive">Flagged</Badge>
                 </div>
               )}
@@ -103,13 +103,13 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
             <ButtonGroup>
               {!review.response ? (
                 <Button size="sm" variant="outline" onClick={handleRespond}>
-                  <MessageSquare className="mr-2 h-4 w-4" aria-hidden="true" />
+                  <MessageSquare className="mr-2 size-4" aria-hidden="true" />
                   Respond
                 </Button>
               ) : null}
               {!review.is_flagged ? (
                 <Button size="sm" variant="ghost" onClick={handleFlag} aria-label="Flag review for moderation">
-                  <Flag className="h-4 w-4" aria-hidden="true" />
+                  <Flag className="size-4" aria-hidden="true" />
                 </Button>
               ) : null}
               <Button
@@ -118,7 +118,7 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
                 onClick={handleToggleFeatured}
                 aria-label={review.is_featured ? 'Unfeature review' : 'Feature review'}
               >
-                <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} aria-hidden="true" />
+                <TrendingUp className={`size-4 ${review.is_featured ? 'fill-current' : ''}`} aria-hidden="true" />
               </Button>
             </ButtonGroup>
           </ItemActions>
@@ -208,7 +208,7 @@ const StarIcon = memo(function StarIcon({ filled }: StarIconProps) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={`h-4 w-4 ${filled ? 'fill-accent text-accent' : 'text-muted-foreground/30'}`}
+      className={`size-4 ${filled ? 'fill-accent text-accent' : 'text-muted-foreground/30'}`}
       aria-hidden="true"
     >
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />

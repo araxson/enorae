@@ -147,7 +147,7 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
                           aria-label={`Open rate limit actions for ${record.identifier}`}
                           disabled={isLoading}
                         >
-                          {isLoading ? <Spinner className="h-4 w-4" /> : <MoreHorizontal className="h-4 w-4" />}
+                          {isLoading ? <Spinner className="size-4" /> : <MoreHorizontal className="size-4" />}
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

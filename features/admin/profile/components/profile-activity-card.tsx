@@ -49,7 +49,8 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
   if (isLoading) {
     return (
       <Card>
-        <CardHeader className="pb-4">
+        <CardHeader>
+          <div className="pb-4">
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
@@ -57,11 +58,14 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
               </ItemContent>
             </Item>
           </ItemGroup>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-2/3" />
-          <Skeleton className="h-4 w-3/4" />
+        <CardContent>
+          <div className="space-y-3">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
         </CardContent>
       </Card>
     )
@@ -70,7 +74,8 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
   if (!profile) {
     return (
       <Card>
-        <CardHeader className="pb-2">
+        <CardHeader>
+          <div className="pb-2">
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
@@ -78,6 +83,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
               </ItemContent>
             </Item>
           </ItemGroup>
+          </div>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -94,7 +100,8 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
   if (profile.activity.length === 0) {
     return (
       <Card>
-        <CardHeader className="pb-2">
+        <CardHeader>
+          <div className="pb-2">
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
@@ -102,6 +109,7 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
               </ItemContent>
             </Item>
           </ItemGroup>
+          </div>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -117,7 +125,8 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
 
   return (
     <Card>
-      <CardHeader className="pb-2">
+      <CardHeader>
+        <div className="pb-2">
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
@@ -125,37 +134,40 @@ export function ProfileActivityCard({ profile, isLoading }: ProfileActivityCardP
             </ItemContent>
           </Item>
         </ItemGroup>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <ItemGroup className="space-y-2">
-          {profile.activity.map((event) => (
-            <Item key={`${event.id}-${event.createdAt ?? ''}`} variant="outline">
-              <ItemHeader>
-                <ItemTitle>{event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}</ItemTitle>
-                <ItemActions className="flex-none">
-                  <Badge variant={severityVariant(event.severity)}>
-                    {(event.severity ?? 'info')
-                      .replace(/_/g, ' ')
-                      .replace(/\b\w/g, (char) => char.toUpperCase())}
-                  </Badge>
-                </ItemActions>
-              </ItemHeader>
-              <ItemContent>
-                <ItemDescription>
-                  {event.entityType ? `${event.entityType} · ` : ''}
-                  {event.entityId ?? 'No entity id'}
-                </ItemDescription>
-              </ItemContent>
-              <ItemFooter className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                <span>{formatDate(event.createdAt)}</span>
-                {event.ipAddress ? <span>IP {event.ipAddress}</span> : null}
-                {event.userAgent ? (
-                  <span className="truncate md:max-w-md">{event.userAgent}</span>
-                ) : null}
-              </ItemFooter>
-            </Item>
-          ))}
-        </ItemGroup>
+      <CardContent>
+        <div className="space-y-3">
+          <ItemGroup className="space-y-2">
+            {profile.activity.map((event) => (
+              <Item key={`${event.id}-${event.createdAt ?? ''}`} variant="outline">
+                <ItemHeader>
+                  <ItemTitle>{event.eventType?.replace(/_/g, ' ') ?? 'Unknown event'}</ItemTitle>
+                  <ItemActions className="flex-none">
+                    <Badge variant={severityVariant(event.severity)}>
+                      {(event.severity ?? 'info')
+                        .replace(/_/g, ' ')
+                        .replace(/\b\w/g, (char) => char.toUpperCase())}
+                    </Badge>
+                  </ItemActions>
+                </ItemHeader>
+                <ItemContent>
+                  <ItemDescription>
+                    {event.entityType ? `${event.entityType} · ` : ''}
+                    {event.entityId ?? 'No entity id'}
+                  </ItemDescription>
+                </ItemContent>
+                <ItemFooter className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                  <span>{formatDate(event.createdAt)}</span>
+                  {event.ipAddress ? <span>IP {event.ipAddress}</span> : null}
+                  {event.userAgent ? (
+                    <span className="truncate md:max-w-md">{event.userAgent}</span>
+                  ) : null}
+                </ItemFooter>
+              </Item>
+            ))}
+          </ItemGroup>
+        </div>
       </CardContent>
     </Card>
   )

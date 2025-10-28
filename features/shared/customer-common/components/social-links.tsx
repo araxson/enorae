@@ -28,11 +28,11 @@ export function SocialLinks({
   }
 
   return (
-    <ButtonGroup className={cn('flex flex-wrap gap-2', className)}>
+    <ButtonGroup aria-label="Social media links">
       {instagramUrl && (
         <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} asChild>
           <a href={instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <Instagram className="h-4 w-4" />
+            <Instagram className="size-4" />
             {size !== 'sm' && <span className="ml-2">Instagram</span>}
           </a>
         </Button>
@@ -40,7 +40,7 @@ export function SocialLinks({
       {facebookUrl && (
         <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} asChild>
           <a href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <Facebook className="h-4 w-4" />
+            <Facebook className="size-4" />
             {size !== 'sm' && <span className="ml-2">Facebook</span>}
           </a>
         </Button>
@@ -48,7 +48,7 @@ export function SocialLinks({
       {twitterUrl && (
         <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} asChild>
           <a href={twitterUrl} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-            <Twitter className="h-4 w-4" />
+            <Twitter className="size-4" />
             {size !== 'sm' && <span className="ml-2">Twitter</span>}
           </a>
         </Button>
@@ -57,7 +57,7 @@ export function SocialLinks({
         <Button variant="outline" size={size === 'sm' ? 'icon' : 'default'} asChild>
           <a href={tiktokUrl} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
             <svg
-              className="h-4 w-4"
+              className="size-4"
               viewBox="0 0 24 24"
               fill="currentColor"
             >

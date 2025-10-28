@@ -1,8 +1,7 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -11,6 +10,7 @@ import {
 } from '@/components/ui/item'
 import { AlertTriangle, Database, Layers, Package } from 'lucide-react'
 import { getToastUsage } from '../api/queries'
+import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { ToastUsageTable } from './toast-usage-table'
 
 export async function ToastStorageAudit() {
@@ -23,6 +23,30 @@ export async function ToastStorageAudit() {
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i]
   }
+  const summaryCards = [
+    {
+      key: 'totalTables',
+      icon: Database,
+      title: 'Total Tables',
+      value: snapshot.totalCount.toLocaleString(),
+      helper: 'Tables analyzed',
+    },
+    {
+      key: 'highUsage',
+      icon: AlertTriangle,
+      title: 'High TOAST Usage',
+      value: snapshot.highToastCount.toLocaleString(),
+      valueAdornment: <Badge variant="destructive">High usage</Badge>,
+      helper: '> 20% bloat',
+    },
+    {
+      key: 'totalToast',
+      icon: Package,
+      title: 'Total TOAST',
+      value: formatBytes(snapshot.totalToastBytes),
+      helper: 'Total compressed storage',
+    },
+  ] as const
 
   return (
     <section className="py-8 md:py-12">
@@ -39,89 +63,16 @@ export async function ToastStorageAudit() {
         </ItemGroup>
 
         <div className="mb-8 grid gap-4 md:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <Database className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Total Tables</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-2">
-                  <ItemContent>
-                    <CardTitle>{snapshot.totalCount}</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>Tables analyzed</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <AlertTriangle className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>High TOAST Usage</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-2">
-                  <ItemContent>
-                    <CardTitle>{snapshot.highToastCount}</CardTitle>
-                  </ItemContent>
-                  <ItemActions>
-                    <Badge variant="destructive">High usage</Badge>
-                  </ItemActions>
-                  <ItemContent>
-                    <ItemDescription>&gt; 20% bloat</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <Package className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Total TOAST</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-2">
-                  <ItemContent>
-                    <CardTitle>{formatBytes(snapshot.totalToastBytes)}</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>Total compressed storage</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
+          {summaryCards.map(({ key, icon, ...card }) => {
+            const Icon = icon
+            return (
+              <AdminMetricCard
+                key={key}
+                icon={<Icon className="size-5" aria-hidden="true" />}
+                {...card}
+              />
+            )
+          })}
         </div>
 
         <Card>
@@ -129,7 +80,7 @@ export async function ToastStorageAudit() {
             <ItemGroup>
               <Item>
                 <ItemMedia variant="icon">
-                  <Layers className="h-5 w-5" aria-hidden="true" />
+                  <Layers className="size-5" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>TOAST Usage Summary</ItemTitle>

@@ -20,7 +20,7 @@ export function LastUpdated() {
     <ItemGroup>
       <Item variant="muted" size="sm" className="items-center gap-2">
         <ItemMedia variant="icon">
-          <Clock className="h-3 w-3" />
+          <Clock className="size-3" />
         </ItemMedia>
         <ItemContent>
           <ItemDescription>

@@ -38,14 +38,16 @@ const STATUS_VARIANTS: Record<string, 'default' | 'secondary' | 'outline' | 'des
 export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTableProps) {
   return (
     <Card>
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>Most Recent Appointments</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardHeader>
+        <div className="pb-4">
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Most Recent Appointments</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
       </CardHeader>
       <CardContent>
         <ScrollArea className="w-full">

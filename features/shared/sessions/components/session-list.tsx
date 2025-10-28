@@ -17,6 +17,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from '@/components/ui/item'
 import { ShieldAlert } from 'lucide-react'
 
 interface SessionListProps {
@@ -77,7 +84,7 @@ export function SessionList({ sessions }: SessionListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <ShieldAlert className="h-6 w-6" aria-hidden="true" />
+            <ShieldAlert className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No active sessions</EmptyTitle>
           <EmptyDescription>No active sessions found.</EmptyDescription>
@@ -89,30 +96,31 @@ export function SessionList({ sessions }: SessionListProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex gap-4 items-center justify-between">
-        <div className="flex flex-col gap-2">
-          <h2 className="scroll-m-20 text-3xl font-semibold">Active Sessions</h2>
-          <p className="text-sm text-muted-foreground">
+      <Item>
+        <ItemContent>
+          <ItemTitle>Active Sessions</ItemTitle>
+          <ItemDescription>
             You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
-          </p>
-        </div>
-
+          </ItemDescription>
+        </ItemContent>
         {otherSessions.length > 0 && (
-          <ConfirmDialog
-            title="Revoke All Other Sessions?"
-            description={`Are you sure you want to revoke all ${otherSessions.length} other session(s)? This will sign you out from all other devices.`}
-            confirmText="Revoke All"
-            onConfirm={handleRevokeAll}
-          >
-            <Button
-              variant="outline"
-              disabled={revokingAll}
+          <ItemActions>
+            <ConfirmDialog
+              title="Revoke All Other Sessions?"
+              description={`Are you sure you want to revoke all ${otherSessions.length} other session(s)? This will sign you out from all other devices.`}
+              confirmText="Revoke All"
+              onConfirm={handleRevokeAll}
             >
-              {revokingAll ? 'Revoking All...' : `Revoke All Other Sessions (${otherSessions.length})`}
-            </Button>
-          </ConfirmDialog>
+              <Button
+                variant="outline"
+                disabled={revokingAll}
+              >
+                {revokingAll ? 'Revoking All...' : `Revoke All Other Sessions (${otherSessions.length})`}
+              </Button>
+            </ConfirmDialog>
+          </ItemActions>
         )}
-      </div>
+      </Item>
 
       {error && (
         <Alert variant="destructive">

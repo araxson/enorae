@@ -89,7 +89,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
         <CardContent className="space-y-6">
           {error && (
             <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" aria-hidden="true" />
+              <AlertCircle className="size-4" aria-hidden="true" />
               <AlertTitle>Booking failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>

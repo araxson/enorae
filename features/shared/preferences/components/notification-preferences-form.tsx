@@ -11,7 +11,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
@@ -65,23 +64,23 @@ export function NotificationPreferencesForm({
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
         <div className="flex items-center gap-2">
-          <Bell className="h-5 w-5" />
+          <Bell className="size-5" />
           <ItemTitle>Notification preferences</ItemTitle>
         </div>
+      </ItemHeader>
+      <ItemContent>
         <ItemDescription>
           Manage how you receive notifications and updates from Enorae
         </ItemDescription>
-      </ItemHeader>
-      <ItemContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <NotificationSection
-            icon={<Mail className="h-4 w-4 text-muted-foreground" />}
+            icon={<Mail className="size-4 text-muted-foreground" />}
             title="Email notifications"
           >
-            <ItemGroup className="space-y-4 pl-6">
+            <div className="space-y-4 pl-6">
               <NotificationToggleItem
                 id="email_appointments"
                 labelId="notification-email-appointments-label"
@@ -102,14 +101,14 @@ export function NotificationPreferencesForm({
                   setPreferences((prev) => ({ ...prev, email_promotions: checked }))
                 }
               />
-            </ItemGroup>
+            </div>
           </NotificationSection>
 
           <NotificationSection
-            icon={<MessageSquare className="h-4 w-4 text-muted-foreground" />}
+            icon={<MessageSquare className="size-4 text-muted-foreground" />}
             title="SMS notifications"
           >
-            <ItemGroup className="space-y-4 pl-6">
+            <div className="space-y-4 pl-6">
               <NotificationToggleItem
                 id="sms_reminders"
                 labelId="notification-sms-reminders-label"
@@ -120,14 +119,14 @@ export function NotificationPreferencesForm({
                   setPreferences((prev) => ({ ...prev, sms_reminders: checked }))
                 }
               />
-            </ItemGroup>
+            </div>
           </NotificationSection>
 
           <NotificationSection
-            icon={<Smartphone className="h-4 w-4 text-muted-foreground" />}
+            icon={<Smartphone className="size-4 text-muted-foreground" />}
             title="Push notifications"
           >
-            <ItemGroup className="space-y-4 pl-6">
+            <div className="space-y-4 pl-6">
               <NotificationToggleItem
                 id="push_enabled"
                 labelId="notification-push-enabled-label"
@@ -138,12 +137,12 @@ export function NotificationPreferencesForm({
                   setPreferences((prev) => ({ ...prev, push_enabled: checked }))
                 }
               />
-            </ItemGroup>
+            </div>
           </NotificationSection>
 
           {error && (
             <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <AlertTitle>Update failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
@@ -151,7 +150,7 @@ export function NotificationPreferencesForm({
 
           {success && (
             <Alert>
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <AlertTitle>Preferences saved</AlertTitle>
               <AlertDescription>Preferences updated successfully!</AlertDescription>
             </Alert>
@@ -160,7 +159,7 @@ export function NotificationPreferencesForm({
           <Button type="submit" disabled={isLoading}>
             {isLoading ? (
               <>
-                <Spinner className="size-4" />
+                <Spinner />
                 <span>Saving...</span>
               </>
             ) : (

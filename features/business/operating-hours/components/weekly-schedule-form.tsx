@@ -94,7 +94,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
           <div className="flex flex-col gap-4">
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Failed to save hours</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
@@ -117,7 +117,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
           </div>
         </CardContent>
         <CardFooter>
-          <ButtonGroup className="justify-end">
+          <ButtonGroup aria-label="Form actions">
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>

@@ -35,12 +35,12 @@ export function AdminOverviewTabs({
   const chartWindow = Math.min(revenue.length, 30)
 
   return (
-    <Tabs defaultValue="revenue" className="w-full gap-6">
+    <Tabs defaultValue="revenue">
       <ItemGroup className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <Item variant="muted" className="items-center gap-2 text-xs text-muted-foreground">
           <ItemContent>
             <div className="flex items-center gap-2">
-              <Calendar className="h-3.5 w-3.5" />
+              <Calendar className="size-3.5" />
               <ItemDescription>Data refreshes automatically every 60 seconds</ItemDescription>
             </div>
           </ItemContent>
@@ -49,31 +49,31 @@ export function AdminOverviewTabs({
           <TabsList className="flex w-full min-w-max justify-between md:w-auto">
             <TabsTrigger value="revenue">
               <span className="flex items-center gap-1.5">
-                <DollarSign className="h-4 w-4" />
+                <DollarSign className="size-4" />
                 Revenue
               </span>
             </TabsTrigger>
             <TabsTrigger value="appointments">
               <span className="flex items-center gap-1.5">
-                <Calendar className="h-4 w-4" />
+                <Calendar className="size-4" />
                 Appointments
               </span>
             </TabsTrigger>
             <TabsTrigger value="reviews">
               <span className="flex items-center gap-1.5">
-                <Star className="h-4 w-4" />
+                <Star className="size-4" />
                 Reviews
               </span>
             </TabsTrigger>
             <TabsTrigger value="messages">
               <span className="flex items-center gap-1.5">
-                <MessageSquare className="h-4 w-4" />
+                <MessageSquare className="size-4" />
                 Messages
               </span>
             </TabsTrigger>
             <TabsTrigger value="staff">
               <span className="flex items-center gap-1.5">
-                <Users className="h-4 w-4" />
+                <Users className="size-4" />
                 Staff
               </span>
             </TabsTrigger>

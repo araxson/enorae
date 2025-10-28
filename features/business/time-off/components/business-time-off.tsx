@@ -48,7 +48,7 @@ export async function BusinessTimeOff() {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <CalendarDays className="h-8 w-8" aria-hidden="true" />
+                <CalendarDays className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No requests</EmptyTitle>
               <EmptyDescription>No time-off requests found</EmptyDescription>

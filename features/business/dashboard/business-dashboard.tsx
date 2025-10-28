@@ -51,7 +51,7 @@ export async function BusinessDashboardPage() {
         <section className="py-10 w-full px-6">
           <Empty>
             <EmptyMedia variant="icon">
-              <ShieldAlert className="h-6 w-6" aria-hidden="true" />
+              <ShieldAlert className="size-6" aria-hidden="true" />
             </EmptyMedia>
             <EmptyHeader>
               <EmptyTitle>Access denied</EmptyTitle>
@@ -76,7 +76,7 @@ export async function BusinessDashboardPage() {
       <section className="py-10 w-full px-6">
         <Empty>
           <EmptyMedia variant="icon">
-            <Store className="h-6 w-6" aria-hidden="true" />
+            <Store className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyHeader>
             <EmptyTitle>No salon found</EmptyTitle>
@@ -115,9 +115,15 @@ export async function BusinessDashboardPage() {
       analyticsPanel={
         <Suspense
           fallback={
-            <div className="flex flex-col gap-6 items-center justify-center py-12">
-              <Spinner className="size-8" />
-            </div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Spinner className="size-8" />
+                </EmptyMedia>
+                <EmptyTitle>Loading analytics</EmptyTitle>
+                <EmptyDescription>Fetching the latest performance insights…</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           }
         >
           <AnalyticsTab salonId={salon.id} />

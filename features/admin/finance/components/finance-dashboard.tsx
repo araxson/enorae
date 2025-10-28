@@ -38,7 +38,7 @@ async function FinanceDashboardContent({ startDate, endDate }: FinanceDashboardP
     <div className="flex flex-col gap-10">
       <RevenueOverview metrics={revenueMetrics} />
 
-      <Tabs defaultValue="by-salon" className="w-full">
+      <Tabs defaultValue="by-salon">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="by-salon">By Salon</TabsTrigger>
           <TabsTrigger value="by-chain">By Chain</TabsTrigger>
@@ -46,20 +46,28 @@ async function FinanceDashboardContent({ startDate, endDate }: FinanceDashboardP
           <TabsTrigger value="payment-methods">Payment Methods</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="by-salon" className="mt-6">
-          <RevenueBySalon data={revenueBySalon} />
+        <TabsContent value="by-salon">
+          <div className="mt-6">
+            <RevenueBySalon data={revenueBySalon} />
+          </div>
         </TabsContent>
 
-        <TabsContent value="by-chain" className="mt-6">
-          <RevenueByChain data={revenueByChain} />
+        <TabsContent value="by-chain">
+          <div className="mt-6">
+            <RevenueByChain data={revenueByChain} />
+          </div>
         </TabsContent>
 
-        <TabsContent value="transactions" className="mt-6">
-          <TransactionMonitoring metrics={transactionMetrics} />
+        <TabsContent value="transactions">
+          <div className="mt-6">
+            <TransactionMonitoring metrics={transactionMetrics} />
+          </div>
         </TabsContent>
 
-        <TabsContent value="payment-methods" className="mt-6">
-          <PaymentMethodStatsComponent stats={paymentMethodStats} />
+        <TabsContent value="payment-methods">
+          <div className="mt-6">
+            <PaymentMethodStatsComponent stats={paymentMethodStats} />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

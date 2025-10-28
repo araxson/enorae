@@ -68,7 +68,7 @@ export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Shield className="h-8 w-8" aria-hidden="true" />
+            <Shield className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No user roles found</EmptyTitle>
           <EmptyDescription>Roles will appear once they are created.</EmptyDescription>
@@ -124,7 +124,7 @@ export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm">
-                    <MoreVertical className="h-4 w-4" />
+                    <MoreVertical className="size-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">

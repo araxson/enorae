@@ -27,16 +27,16 @@ export default function NotFound() {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <ButtonGroup className="w-full gap-2">
+            <ButtonGroup aria-label="Navigation options">
               <Button asChild className="flex-1">
                 <Link href="/">
-                  <Home className="mr-2 h-4 w-4" aria-hidden="true" />
+                  <Home className="mr-2 size-4" aria-hidden="true" />
                   Home
                 </Link>
               </Button>
               <Button asChild variant="outline" className="flex-1">
                 <Link href="/salons">
-                  <Search className="mr-2 h-4 w-4" aria-hidden="true" />
+                  <Search className="mr-2 size-4" aria-hidden="true" />
                   Explore
                 </Link>
               </Button>

@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import {
   getStaffPerformanceMetrics,
@@ -25,16 +24,10 @@ export async function StaffAnalytics() {
       <div className="flex flex-col gap-8">
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <CardTitle>My Analytics</CardTitle>
-                  <CardDescription>
-                    Track your performance, earnings, and customer relationships
-                  </CardDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>My Analytics</CardTitle>
+            <CardDescription>
+              Track your performance, earnings, and customer relationships
+            </CardDescription>
           </CardHeader>
         </Card>
 

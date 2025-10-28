@@ -1,6 +1,5 @@
 'use client'
 
-import { CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import {
   Item,
@@ -24,6 +23,7 @@ type ReviewsStatsProps = {
 
 export function ReviewsStats({ stats }: ReviewsStatsProps) {
   const maxCount = Math.max(...stats.ratingDistribution.map((distribution) => distribution.count), 1)
+  const valueClass = 'text-2xl font-semibold leading-none tracking-tight'
 
   return (
     <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -31,22 +31,18 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
         <ItemHeader>
           <ItemTitle>Average Rating</ItemTitle>
           <ItemMedia variant="icon">
-            <Star className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <Star className="size-4 text-muted-foreground" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent>
           <div className="flex flex-col gap-2">
             <div className="flex items-baseline gap-2">
-              <CardTitle>{stats.averageRating.toFixed(1)}</CardTitle>
+              <p className={valueClass}>{stats.averageRating.toFixed(1)}</p>
               <span className="flex gap-1" aria-hidden="true">
                 {[...Array(5)].map((_, index) => (
                   <Star
                     key={index}
-                    className={`h-4 w-4 ${
-                      index < Math.floor(stats.averageRating)
-                        ? 'fill-accent text-accent'
-                        : 'text-muted-foreground/30'
-                    }`}
+                    className={`size-4 ${ index < Math.floor(stats.averageRating) ? 'fill-accent text-accent' : 'text-muted-foreground/30' }`}
                   />
                 ))}
               </span>
@@ -64,12 +60,12 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
         <ItemHeader>
           <ItemTitle>Pending Responses</ItemTitle>
           <ItemMedia variant="icon">
-            <MessageSquare className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <MessageSquare className="size-4 text-muted-foreground" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent>
           <div className="flex flex-col gap-2">
-            <CardTitle>{stats.pendingResponses}</CardTitle>
+            <p className={valueClass}>{stats.pendingResponses}</p>
             <ItemDescription>
               {stats.totalReviews > 0
                 ? `${Math.round((stats.pendingResponses / stats.totalReviews) * 100)}% of reviews`
@@ -83,12 +79,12 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
         <ItemHeader>
           <ItemTitle>Flagged Reviews</ItemTitle>
           <ItemMedia variant="icon">
-            <Flag className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <Flag className="size-4 text-muted-foreground" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent>
           <div className="flex flex-col gap-2">
-            <CardTitle>{stats.flaggedCount}</CardTitle>
+            <p className={valueClass}>{stats.flaggedCount}</p>
             <ItemDescription>Require moderation</ItemDescription>
           </div>
         </ItemContent>
@@ -98,7 +94,7 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
         <ItemHeader>
           <ItemTitle>Rating Distribution</ItemTitle>
           <ItemMedia variant="icon">
-            <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <TrendingUp className="size-4 text-muted-foreground" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent>

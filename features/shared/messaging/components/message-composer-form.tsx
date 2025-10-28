@@ -45,7 +45,7 @@ export function MessageComposerForm({ onSend, disabled = false }: MessageCompose
     <div className="flex flex-col gap-4">
       {error && (
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
+          <AlertCircle className="size-4" />
           <AlertTitle>Message failed</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
@@ -76,7 +76,7 @@ export function MessageComposerForm({ onSend, disabled = false }: MessageCompose
         <Button onClick={handleSend} disabled={isSending || !message.trim() || disabled}>
           {isSending ? (
             <>
-              <Spinner className="size-4" />
+              <Spinner />
               <span>Sending...</span>
             </>
           ) : (

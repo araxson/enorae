@@ -64,7 +64,8 @@ export function ProfileBasicsForm({ profile, onUpdated }: ProfileBasicsFormProps
 
   return (
     <Card>
-      <CardHeader className="pb-2">
+      <CardHeader>
+        <div className="pb-2">
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
@@ -73,6 +74,7 @@ export function ProfileBasicsForm({ profile, onUpdated }: ProfileBasicsFormProps
             </ItemContent>
           </Item>
         </ItemGroup>
+        </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

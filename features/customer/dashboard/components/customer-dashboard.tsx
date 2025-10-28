@@ -58,15 +58,15 @@ export async function CustomerDashboardPage() {
       <Tabs defaultValue="upcoming" className="w-full space-y-6">
         <TabsList className="grid w-full max-w-md grid-cols-3">
           <TabsTrigger value="upcoming" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" aria-hidden="true" />
+            <Calendar className="size-4" aria-hidden="true" />
             Upcoming
           </TabsTrigger>
           <TabsTrigger value="favorites" className="flex items-center gap-2">
-            <Heart className="h-4 w-4" aria-hidden="true" />
+            <Heart className="size-4" aria-hidden="true" />
             Favorites
           </TabsTrigger>
           <TabsTrigger value="history" className="flex items-center gap-2">
-            <History className="h-4 w-4" aria-hidden="true" />
+            <History className="size-4" aria-hidden="true" />
             History
           </TabsTrigger>
         </TabsList>

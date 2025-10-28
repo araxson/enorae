@@ -30,47 +30,55 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
   const series = retention.series.slice(-10).reverse()
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <ShieldCheck className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Retention &amp; Churn</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <ItemGroup className="grid gap-4 text-sm sm:grid-cols-2">
-          <Item variant="muted" size="sm" className="flex-col items-start gap-2">
-            <ItemContent>
-              <ItemDescription>Retention rate</ItemDescription>
-              <span className="text-2xl font-semibold">
-                {formatPercent(retention.retentionRate)}
-              </span>
-              <ItemDescription>
-                {retention.returningCustomers.toLocaleString('en-US')} returning customers
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-          <Item variant="muted" size="sm" className="flex-col items-start gap-2">
-            <ItemContent>
-              <span className="flex items-center gap-1">
-                <AlertTriangle className="h-3 w-3" />
-                <ItemDescription>Churn rate</ItemDescription>
-              </span>
-              <span className="text-2xl font-semibold">
-                {formatPercent(retention.churnRate)}
-              </span>
-              <ItemDescription>Based on cancelled appointments</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <ShieldCheck className="size-4" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Retention &amp; Churn</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid gap-4 text-sm sm:grid-cols-2">
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <div className="flex flex-col items-start gap-2">
+                    <ItemDescription>Retention rate</ItemDescription>
+                    <span className="text-2xl font-semibold">
+                      {formatPercent(retention.retentionRate)}
+                    </span>
+                    <ItemDescription>
+                      {retention.returningCustomers.toLocaleString('en-US')} returning customers
+                    </ItemDescription>
+                  </div>
+                </ItemContent>
+              </Item>
+              <Item variant="muted" size="sm">
+                <ItemContent>
+                  <div className="flex flex-col items-start gap-2">
+                    <span className="flex items-center gap-1">
+                      <AlertTriangle className="size-3" />
+                      <ItemDescription>Churn rate</ItemDescription>
+                    </span>
+                    <span className="text-2xl font-semibold">
+                      {formatPercent(retention.churnRate)}
+                    </span>
+                    <ItemDescription>Based on cancelled appointments</ItemDescription>
+                  </div>
+                </ItemContent>
+              </Item>
+            </div>
 
-        <ScrollArea className="w-full">
+            <ScrollArea className="w-full">
           {series.length === 0 ? (
             <Empty>
               <EmptyHeader>
@@ -104,9 +112,11 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
               </TableBody>
             </Table>
           )}
-          {series.length === 0 ? null : <ScrollBar orientation="horizontal" />}
-        </ScrollArea>
-      </CardContent>
-    </Card>
+            {series.length === 0 ? null : <ScrollBar orientation="horizontal" />}
+          </ScrollArea>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

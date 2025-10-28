@@ -49,7 +49,7 @@ export function DashboardFilters() {
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
         <ItemTitle>Smart filters</ItemTitle>
         <ItemDescription>Fine tune the data you see today.</ItemDescription>
@@ -57,18 +57,20 @@ export function DashboardFilters() {
       <ItemContent>
         <div className="flex flex-col gap-4">
           <ItemGroup>
-            <Item className="items-stretch gap-4">
-              <ItemContent className="flex items-center gap-3">
+            <Item>
+              <ItemContent>
                 <Badge variant="outline">
                   <span className="flex items-center gap-1">
-                    <Filter className="h-3.5 w-3.5" />
+                    <Filter className="size-3.5" />
                     Smart filters
                   </span>
                 </Badge>
               </ItemContent>
-              <ItemActions className="flex-col items-end gap-2 text-xs text-muted-foreground">
-                <span>{formattedRange}</span>
-                <span>{selectedStylist}</span>
+              <ItemActions>
+                <div className="flex flex-col items-end gap-2 text-xs text-muted-foreground">
+                  <span>{formattedRange}</span>
+                  <span>{selectedStylist}</span>
+                </div>
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -80,12 +82,20 @@ export function DashboardFilters() {
 
             <InputGroup className="md:max-w-xs">
               <InputGroupAddon>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <Users className="size-4 text-muted-foreground" aria-hidden="true" />
               </InputGroupAddon>
-              <InputGroupInput placeholder="Search clients" onFocus={() => undefined} />
-              <InputGroupButton size="icon-xs" variant="outline">
-                Go
-              </InputGroupButton>
+              <InputGroupInput
+                type="search"
+                placeholder="Search clients"
+                onFocus={() => undefined}
+                aria-label="Search clients"
+                autoComplete="off"
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton size="icon-xs" variant="outline">
+                  Go
+                </InputGroupButton>
+              </InputGroupAddon>
             </InputGroup>
 
             <Select
@@ -123,9 +133,9 @@ export function DashboardFilters() {
             </FieldGroup>
 
             <ItemGroup>
-              <Item className="items-center justify-between gap-4">
+              <Item>
                 <ItemContent>
-                  <Field orientation="horizontal" className="items-center gap-3">
+                  <Field orientation="horizontal">
                     <Switch id="include-cancellations" />
                     <FieldLabel htmlFor="include-cancellations">Include cancellations</FieldLabel>
                   </Field>

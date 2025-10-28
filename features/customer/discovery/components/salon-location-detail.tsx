@@ -42,7 +42,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <MapPin className="h-5 w-5" aria-hidden="true" />
+              <MapPin className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>Location</CardTitle>
@@ -114,7 +114,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
           {locationAddress['parking_instructions'] ? (
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <ParkingCircle className="h-4 w-4" aria-hidden="true" />
+                <ParkingCircle className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Parking information</ItemTitle>
@@ -130,7 +130,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
           {locationAddress['accessibility_notes'] ? (
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <Accessibility className="h-4 w-4" aria-hidden="true" />
+                <Accessibility className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Accessibility</ItemTitle>
@@ -149,7 +149,7 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
             <Separator />
             <Button asChild variant="outline" className="w-full">
               <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
-                <Navigation className="mr-2 h-4 w-4" aria-hidden="true" />
+                <Navigation className="mr-2 size-4" aria-hidden="true" />
                 Get directions
               </a>
             </Button>

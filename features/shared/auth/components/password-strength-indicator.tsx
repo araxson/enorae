@@ -121,9 +121,9 @@ export function PasswordStrengthIndicator({
           {requirements.map((req, index) => (
             <div key={index} className="flex items-center gap-2">
               {req.met ? (
-                <Check className="text-primary h-3.5 w-3.5 flex-shrink-0" />
+                <Check className="text-primary size-3.5 flex-shrink-0" />
               ) : (
-                <X className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                <X className="size-3.5 text-muted-foreground flex-shrink-0" />
               )}
               <p
                 className={cn(

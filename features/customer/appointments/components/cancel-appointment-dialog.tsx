@@ -83,7 +83,7 @@ export function CancelAppointmentDialog({
 
         {!canCancel && (
           <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="size-4" />
             <AlertTitle>Cancellation unavailable</AlertTitle>
             <AlertDescription>
               Appointments must be cancelled at least 24 hours in advance. Please contact the salon
@@ -94,7 +94,7 @@ export function CancelAppointmentDialog({
 
         {canCancel && (
           <Alert>
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="size-4" />
             <AlertTitle>Cancellation policy</AlertTitle>
             <AlertDescription>
               Cancellation policy: Appointments must be cancelled at least 24 hours in advance.
@@ -118,14 +118,14 @@ export function CancelAppointmentDialog({
 
         {error && (
           <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="size-4" />
             <AlertTitle>Cancellation failed</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
         <DialogFooter>
-          <ButtonGroup className="w-full justify-end gap-2">
+          <ButtonGroup aria-label="Dialog actions">
             <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
               Keep appointment
             </Button>

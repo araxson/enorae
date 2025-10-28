@@ -37,7 +37,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Calendar className="h-6 w-6" aria-hidden="true" />
+                <Calendar className="size-6" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No staff members available</EmptyTitle>
               <EmptyDescription>
@@ -56,7 +56,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Calendar className="h-4 w-4" aria-hidden="true" />
+              <Calendar className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>Our team</CardTitle>
@@ -96,7 +96,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
               </HoverCardTrigger>
               <HoverCardContent className="w-80 space-y-3">
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-12 w-12">
+                  <Avatar className="size-12">
                     <AvatarFallback>
                       {member.title?.slice(0, 2).toUpperCase() || 'ST'}
                     </AvatarFallback>
@@ -109,7 +109,7 @@ export function StaffGrid({ staff }: StaffGridProps) {
                 {member['bio'] && <CardDescription>{member['bio']}</CardDescription>}
                 <Item>
                   <ItemMedia variant="icon">
-                    <Calendar className="h-3 w-3" aria-hidden="true" />
+                    <Calendar className="size-3" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemDescription>

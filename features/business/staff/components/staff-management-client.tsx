@@ -32,9 +32,9 @@ export function StaffManagementClient({
 
   return (
     <>
-      <ButtonGroup className="justify-end">
+      <ButtonGroup aria-label="Actions">
         <Button onClick={() => setIsDialogOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="mr-2 size-4" />
           Add Staff Member
         </Button>
       </ButtonGroup>

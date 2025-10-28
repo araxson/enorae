@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { Fragment } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -18,6 +19,7 @@ import {
   ItemDescription,
   ItemGroup,
   ItemHeader,
+  ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
 import { MessageSquare } from 'lucide-react'
@@ -49,7 +51,7 @@ export function ThreadList({
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <MessageSquare className="h-6 w-6" aria-hidden="true" />
+            <MessageSquare className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No messages yet</EmptyTitle>
           <EmptyDescription>Messages will appear once you start a conversation.</EmptyDescription>
@@ -80,32 +82,35 @@ export function ThreadList({
       : thread.unread_count_staff || 0
 
   return (
-    <ItemGroup className="gap-3">
-      {threads.map((thread) => {
+    <ItemGroup>
+      {threads.map((thread, index) => {
         const unreadCount = getUnreadCount(thread)
 
         return (
-          <Link key={thread.id} href={`${basePath}/${thread.id}`} className="block">
-            <Item variant={unreadCount > 0 ? 'muted' : 'outline'} className="flex-col gap-3">
-              <ItemHeader>
-                <ItemTitle>{thread.subject || 'No subject'}</ItemTitle>
-                {unreadCount > 0 ? <Badge variant="destructive">{unreadCount}</Badge> : null}
-              </ItemHeader>
-              <ItemContent>
-                <ItemDescription>
-                  Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
-                </ItemDescription>
-              </ItemContent>
-              <ItemActions>
-                <Badge variant={getPriorityVariant(thread.priority)}>
-                  {thread.priority.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                </Badge>
-                <Badge variant={thread.status === 'active' ? 'default' : 'secondary'}>
-                  {thread.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                </Badge>
-              </ItemActions>
+          <Fragment key={thread.id}>
+            <Item variant={unreadCount > 0 ? 'muted' : 'outline'} asChild>
+              <Link href={`${basePath}/${thread.id}`}>
+                <ItemHeader>
+                  <ItemTitle>{thread.subject || 'No subject'}</ItemTitle>
+                  {unreadCount > 0 ? <Badge variant="destructive">{unreadCount}</Badge> : null}
+                </ItemHeader>
+                <ItemContent>
+                  <ItemDescription>
+                    Updated {formatDistanceToNow(new Date(thread.updated_at), { addSuffix: true })}
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant={getPriorityVariant(thread.priority)}>
+                    {thread.priority.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                  </Badge>
+                  <Badge variant={thread.status === 'active' ? 'default' : 'secondary'}>
+                    {thread.status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                  </Badge>
+                </ItemActions>
+              </Link>
             </Item>
-          </Link>
+            {index < threads.length - 1 ? <ItemSeparator /> : null}
+          </Fragment>
         )
       })}
     </ItemGroup>

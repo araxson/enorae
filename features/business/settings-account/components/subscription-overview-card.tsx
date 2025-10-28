@@ -101,7 +101,7 @@ export function SubscriptionOverviewCard({
             <ul className="space-y-1.5">
               {tierFeatures[subscription.tier].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm">
-                  <CheckCircle2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="size-4 text-primary mt-0.5 flex-shrink-0" />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -113,7 +113,7 @@ export function SubscriptionOverviewCard({
 
         <ButtonGroup>
           <Button variant="outline" className="gap-2">
-            <TrendingUp className="h-4 w-4" />
+            <TrendingUp className="size-4" />
             Upgrade Plan
           </Button>
           <Button variant="ghost">Change Billing Cycle</Button>

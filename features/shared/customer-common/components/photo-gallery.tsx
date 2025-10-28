@@ -112,7 +112,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
               onClick={closeLightbox}
               aria-label="Close lightbox"
             >
-              <X className="h-4 w-4" />
+              <X className="size-4" />
             </Button>
 
             {selectedIndex !== null && (
@@ -128,7 +128,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
 
                 {allImages.length > 1 && (
                   <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between p-4">
-                    <ButtonGroup className="w-full justify-between">
+                    <ButtonGroup aria-label="Actions">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -137,7 +137,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                         className="bg-background/80 text-foreground hover:bg-background"
                         aria-label="Previous image"
                       >
-                        <ChevronLeft className="h-6 w-6" />
+                        <ChevronLeft className="size-6" />
                       </Button>
                       <Button
                         variant="ghost"
@@ -147,7 +147,7 @@ export function PhotoGallery({ images: galleryUrls, logoUrl, coverUrl, className
                         className="bg-background/80 text-foreground hover:bg-background"
                         aria-label="Next image"
                       >
-                        <ChevronRight className="h-6 w-6" />
+                        <ChevronRight className="size-6" />
                       </Button>
                     </ButtonGroup>
                   </div>

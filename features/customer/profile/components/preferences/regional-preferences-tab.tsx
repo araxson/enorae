@@ -2,7 +2,6 @@
 
 import { Dispatch, SetStateAction } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { DollarSign } from 'lucide-react'
 import {
   Field,
   FieldContent,
@@ -32,7 +31,7 @@ export function RegionalPreferencesTab({
   return (
     <FieldSet>
       <FieldLegend>Regional defaults</FieldLegend>
-      <FieldGroup className="gap-4">
+      <FieldGroup>
         <Field>
           <FieldLabel htmlFor="timezone">Timezone</FieldLabel>
           <FieldContent>
@@ -73,12 +72,7 @@ export function RegionalPreferencesTab({
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="currency">
-            <span className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
-              Currency
-            </span>
-          </FieldLabel>
+          <FieldLabel htmlFor="currency">Currency</FieldLabel>
           <FieldContent>
             <Select value={currencyCode} onValueChange={setCurrencyCode}>
               <SelectTrigger id="currency">

@@ -33,7 +33,7 @@ export function BusinessRecommendationsTab({ recommendations }: BusinessRecommen
           <p className="text-sm text-muted-foreground">Data-driven actions to improve your performance.</p>
         </div>
         <Badge variant="outline">
-          <Lightbulb className="mr-1 h-3 w-3" aria-hidden="true" />
+          <Lightbulb className="mr-1 size-3" aria-hidden="true" />
           {recommendations.length} insights
         </Badge>
       </div>
@@ -63,7 +63,7 @@ export function BusinessRecommendationsTab({ recommendations }: BusinessRecommen
                 <p className="text-sm">{rec.description}</p>
                 <Item variant="outline" className="items-center gap-3">
                   <ItemMedia variant="icon">
-                    <Target className="h-4 w-4 text-primary" aria-hidden="true" />
+                    <Target className="size-4 text-primary" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>Impact</ItemTitle>
@@ -77,7 +77,7 @@ export function BusinessRecommendationsTab({ recommendations }: BusinessRecommen
                       <Item key={idx} variant="muted" className="items-start gap-2">
                         <ItemMedia variant="icon">
                           <CheckCircle2
-                            className="h-4 w-4 text-primary"
+                            className="size-4 text-primary"
                             aria-hidden="true"
                           />
                         </ItemMedia>
@@ -94,7 +94,7 @@ export function BusinessRecommendationsTab({ recommendations }: BusinessRecommen
         </Accordion>
       ) : (
         <Alert>
-          <CheckCircle2 className="h-4 w-4" />
+          <CheckCircle2 className="size-4" />
           <AlertTitle>All systems optimal</AlertTitle>
           <AlertDescription>
             Your business metrics are performing well. Keep up the great work!

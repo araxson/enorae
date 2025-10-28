@@ -34,7 +34,7 @@ export function TimeOffRequestGrid({
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <CalendarClock className="h-8 w-8" aria-hidden="true" />
+            <CalendarClock className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No time-off requests yet</EmptyTitle>
           <EmptyDescription>
@@ -44,7 +44,7 @@ export function TimeOffRequestGrid({
         <EmptyContent>
           <ButtonGroup>
             <Button variant="default" onClick={onCreateRequest}>
-              <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
+              <Plus className="mr-2 size-4" aria-hidden="true" />
               Create request
             </Button>
           </ButtonGroup>

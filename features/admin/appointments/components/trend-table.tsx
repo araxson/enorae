@@ -22,18 +22,21 @@ export function TrendTable({ trend }: TrendTableProps) {
   const rows = trend.slice(-14)
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>14-day Trend</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="w-full">
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <ItemTitle>14-day Trend</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="w-full">
           {rows.length === 0 ? (
             <Empty>
               <EmptyHeader>
@@ -67,7 +70,8 @@ export function TrendTable({ trend }: TrendTableProps) {
           )}
           {rows.length === 0 ? null : <ScrollBar orientation="horizontal" />}
         </ScrollArea>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

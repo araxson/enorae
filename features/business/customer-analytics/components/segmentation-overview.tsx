@@ -12,7 +12,6 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type SegmentationData = {
@@ -44,6 +43,7 @@ const aovLabels = [
 
 export function SegmentationOverview({ data }: SegmentationOverviewProps) {
   const totalCustomers = data.counts.active + data.counts.atRisk + data.counts.churned
+  const valueEmphasisClass = 'text-2xl font-semibold leading-none tracking-tight'
 
   const renderProgressRow = (
     label: string,
@@ -103,7 +103,7 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
             <Field>
               <FieldLabel>Average LTV</FieldLabel>
               <FieldContent>
-                <CardTitle>${data.averageLTV.toFixed(2)}</CardTitle>
+                <p className={valueEmphasisClass}>${data.averageLTV.toFixed(2)}</p>
               </FieldContent>
             </Field>
             <Field>
@@ -128,11 +128,11 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
                   <Item key={customer.name}>
                     <ItemContent>
                       <ItemTitle>{customer.name}</ItemTitle>
-                      {customer.email ? (
-                        <ItemDescription>{customer.email}</ItemDescription>
-                      ) : null}
-                    </ItemContent>
-                    <ItemActions className="flex-none">
+                    {customer.email ? (
+                      <ItemDescription>{customer.email}</ItemDescription>
+                    ) : null}
+                  </ItemContent>
+                    <ItemActions>
                       <ItemDescription>${customer.totalSpent.toFixed(0)}</ItemDescription>
                     </ItemActions>
                   </Item>

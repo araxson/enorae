@@ -1,4 +1,4 @@
-# 02 Schema Alignment Audit
+Focus on Business Portal
 
 **Core Principle:** The Supabase database is the single source of truth—frontend models, queries, and types must match the live schema exactly.
 

@@ -16,7 +16,7 @@ export function ErrorState({ message, retryHref }: { message: string; retryHref:
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <AlertCircle className="h-8 w-8" aria-hidden="true" />
+            <AlertCircle className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>Error Loading Dashboard</EmptyTitle>
           <EmptyDescription>{message}</EmptyDescription>
@@ -37,7 +37,7 @@ export function MissingProfileState() {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <UserX className="h-8 w-8" aria-hidden="true" />
+            <UserX className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No Staff Profile Found</EmptyTitle>
           <EmptyDescription>You don&apos;t have a staff profile. Please contact your administrator.</EmptyDescription>

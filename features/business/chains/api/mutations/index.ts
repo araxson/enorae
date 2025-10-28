@@ -1,4 +1,3 @@
-'use server'
 
 // Barrel export for backward compatibility
 export * from './chain-crud'

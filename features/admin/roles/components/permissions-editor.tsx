@@ -36,6 +36,12 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
           onChange={(event) => setValue(event.target.value)}
           placeholder="Add permission key"
           aria-label="Permission key"
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault()
+              handleAdd()
+            }
+          }}
         />
         <InputGroupAddon align="inline-end">
           <InputGroupButton
@@ -44,7 +50,7 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
             variant="outline"
             disabled={!value.trim()}
           >
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             Add
           </InputGroupButton>
         </InputGroupAddon>
@@ -66,11 +72,11 @@ export function PermissionsEditor({ permissions, onAdd, onRemove }: PermissionsE
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 text-muted-foreground"
+                className="size-6 text-muted-foreground"
                 onClick={() => onRemove(permission)}
                 aria-label={`Remove permission ${permission}`}
               >
-                <X className="h-3 w-3" aria-hidden="true" />
+                <X className="size-3" aria-hidden="true" />
               </Button>
             </div>
           ))}

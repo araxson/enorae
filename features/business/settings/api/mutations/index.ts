@@ -1,4 +1,3 @@
-'use server'
 
 export { updateBookingRules } from './booking'
 export { updateCancellationPolicy } from './cancellation'

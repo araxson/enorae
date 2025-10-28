@@ -68,7 +68,8 @@ export function AppointmentCard({
   const config = statusConfig[status]
 
   return (
-    <Item variant="outline" className={cn('w-full', className)}>
+    <div className={cn('w-full', className)}>
+      <Item variant="outline">
       <ItemHeader>
         <div className="flex items-center gap-3">
           <div className="flex-1">
@@ -83,15 +84,15 @@ export function AppointmentCard({
       <ItemContent>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <User className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <User className="size-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm font-medium text-muted-foreground">{staffName}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Calendar className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <Calendar className="size-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm font-medium text-muted-foreground">{date}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm font-medium text-muted-foreground">{time}</p>
           </div>
         </div>
@@ -99,7 +100,7 @@ export function AppointmentCard({
 
       {(onReschedule || onViewDetails || onCancel) && (
         <ItemFooter>
-          <ButtonGroup className="w-full flex-wrap">
+          <ButtonGroup aria-label="Appointment actions">
             {onViewDetails ? (
               <Button variant="outline" size="sm" onClick={onViewDetails}>
                 View Details
@@ -126,10 +127,8 @@ export function AppointmentCard({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Keep Appointment</AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                      <Button onClick={onCancel} variant="destructive">
-                        Yes, Cancel Appointment
-                      </Button>
+                    <AlertDialogAction onClick={() => onCancel?.()}>
+                      Yes, Cancel Appointment
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
@@ -138,6 +137,7 @@ export function AppointmentCard({
           </ButtonGroup>
         </ItemFooter>
       )}
-    </Item>
+      </Item>
+    </div>
   )
 }

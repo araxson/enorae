@@ -54,8 +54,9 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-4 p-0">
-        <ScrollArea className="px-6 pt-6">
+      <CardContent>
+        <div className="space-y-4">
+          <ScrollArea className="px-6 pt-6">
           {stats.length === 0 ? (
             <Empty>
               <EmptyHeader>
@@ -64,39 +65,40 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
               </EmptyHeader>
             </Empty>
           ) : (
-            <ItemGroup className="space-y-3">
-              {stats.map((stat) => (
-                <Item key={stat.method} variant="outline" className="flex-col gap-3">
-                  <ItemMedia variant="icon">
-                    <span className="text-lg">{getMethodIcon(stat.method)}</span>
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemGroup className="gap-2">
-                      <Item variant="muted">
-                        <ItemContent>
-                          <ItemTitle>{formatMethodName(stat.method)}</ItemTitle>
-                          <ItemDescription>
-                            {stat.count.toLocaleString()} transactions · Last used {formatDate(stat.lastUsed)}
-                          </ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                          <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
-                        </ItemActions>
-                      </Item>
-                    </ItemGroup>
-                    <Progress value={stat.percentage} className="mt-2 h-2" />
-                  </ItemContent>
-                </Item>
-              ))}
-            </ItemGroup>
+            <div className="space-y-3">
+              <ItemGroup>
+                {stats.map((stat) => (
+                  <Item key={stat.method} variant="outline" size="sm">
+                    <ItemMedia variant="icon">
+                      <span className="text-lg">{getMethodIcon(stat.method)}</span>
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>{formatMethodName(stat.method)}</ItemTitle>
+                      <ItemDescription>
+                        {stat.count.toLocaleString()} transactions · Last used {formatDate(stat.lastUsed)}
+                      </ItemDescription>
+                      <div className="mt-2">
+                        <Progress value={stat.percentage} />
+                      </div>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
+                    </ItemActions>
+                  </Item>
+                ))}
+              </ItemGroup>
+            </div>
           )}
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
+        </div>
       </CardContent>
       {stats.length > 0 ? (
-        <CardFooter className="flex items-center justify-between px-6 pb-6 pt-0 text-sm text-muted-foreground">
-          <span>Total Transactions: {totalTransactions.toLocaleString()}</span>
-          <span>Methods Available: {stats.length}</span>
+        <CardFooter>
+          <div className="flex w-full items-center justify-between px-6 pb-6 pt-0 text-sm text-muted-foreground">
+            <span>Total Transactions: {totalTransactions.toLocaleString()}</span>
+            <span>Methods Available: {stats.length}</span>
+          </div>
         </CardFooter>
       ) : null}
     </Card>

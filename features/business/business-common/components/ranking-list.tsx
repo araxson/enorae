@@ -1,7 +1,7 @@
 'use client'
 
 import { type ComponentType, type ReactNode } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
@@ -121,16 +121,18 @@ export function RankingList({
   return (
     <Card className={className}>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent className="flex items-center gap-2">
-              {IconComponent && <IconComponent className={`h-5 w-5 ${iconColor}`} />}
-              <CardTitle>{title}</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>{title}</CardTitle>
+        {valueFormat === 'currency' ? (
+          <CardDescription>Values shown in USD</CardDescription>
+        ) : null}
       </CardHeader>
       <CardContent>
+        {IconComponent ? (
+          <div className="mb-4 flex items-center gap-2 text-muted-foreground">
+            <IconComponent className={`size-5 ${iconColor}`} aria-hidden="true" />
+            <span className="text-xs uppercase tracking-wide">Ranking</span>
+          </div>
+        ) : null}
         {displayItems.length === 0 ? (
           <Empty>
             <EmptyHeader>

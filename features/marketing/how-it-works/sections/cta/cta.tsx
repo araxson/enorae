@@ -5,7 +5,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { MarketingSection } from '@/features/marketing/common-components'
@@ -18,18 +17,15 @@ export function CTA() {
       containerClassName="max-w-3xl"
       groupClassName="gap-6 text-center"
     >
-      <Item className="flex-col items-center text-center" variant="muted">
-        <ItemHeader>
-          <ItemTitle>{ctaData.title}</ItemTitle>
-        </ItemHeader>
+      <Item variant="muted">
         <ItemContent>
-          <ItemDescription>{ctaData.description}</ItemDescription>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <ItemTitle>{ctaData.title}</ItemTitle>
+            <ItemDescription>{ctaData.description}</ItemDescription>
+          </div>
         </ItemContent>
       </Item>
-      <ButtonGroup
-        aria-label="How Enorae works call to action buttons"
-        className="flex flex-wrap items-center justify-center gap-3"
-      >
+      <ButtonGroup aria-label="How Enorae works call to action buttons">
         {ctaData.buttons.map((button) => (
           <Button key={button.text} asChild variant={button.variant} size="lg">
             <Link href={button.href}>{button.text}</Link>

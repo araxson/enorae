@@ -32,7 +32,7 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader className="items-center gap-2">
           <ItemMedia variant="icon">
-            <Star className="h-5 w-5 text-accent" />
+            <Star className="size-5 text-accent" />
           </ItemMedia>
           <ItemTitle>Top Services</ItemTitle>
         </ItemHeader>
@@ -73,7 +73,7 @@ export function TopPerformers({ services, staff }: TopPerformersProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader className="items-center gap-2">
           <ItemMedia variant="icon">
-            <Award className="h-5 w-5 text-secondary" />
+            <Award className="size-5 text-secondary" />
           </ItemMedia>
           <ItemTitle>Top Performers</ItemTitle>
         </ItemHeader>

@@ -44,7 +44,7 @@ export function StaffServicesList({
     return (
       <Empty>
         <EmptyMedia variant="icon">
-          <Scissors className="h-6 w-6" aria-hidden="true" />
+          <Scissors className="size-6" aria-hidden="true" />
         </EmptyMedia>
         <EmptyHeader>
           <EmptyTitle>No staff members</EmptyTitle>
@@ -59,7 +59,9 @@ export function StaffServicesList({
     <Card>
       <CardHeader>
         <CardTitle>Staff Services Management</CardTitle>
-        <div className="mt-4">
+      </CardHeader>
+      <CardContent>
+        <div className="mb-6">
           <SearchInput
             value={searchQuery}
             onChange={onSearchChange}
@@ -67,12 +69,10 @@ export function StaffServicesList({
             className="w-full"
           />
         </div>
-      </CardHeader>
-      <CardContent>
         {filteredStaff.length === 0 ? (
           <Empty>
             <EmptyMedia variant="icon">
-              <Scissors className="h-6 w-6" aria-hidden="true" />
+              <Scissors className="size-6" aria-hidden="true" />
             </EmptyMedia>
             <EmptyHeader>
               <EmptyTitle>No staff found</EmptyTitle>
@@ -131,7 +131,7 @@ function StaffMemberCard({ member, onManage }: StaffMemberCardProps) {
 
       <ItemActions>
         <Button variant="outline" size="sm" onClick={onManage}>
-          <Scissors className="h-4 w-4 mr-2" />
+          <Scissors className="size-4 mr-2" />
           Manage Services
         </Button>
       </ItemActions>
@@ -158,7 +158,7 @@ function ServiceBadge({
       {service['rating_average'] && service['rating_average'] > 0 && (
         <div className="flex gap-3 text-xs text-muted-foreground mt-1">
           <span className="flex items-center gap-1">
-            <Star className="h-3 w-3 text-accent" fill="currentColor" />
+            <Star className="size-3 text-accent" fill="currentColor" />
             {Number(service['rating_average']).toFixed(1)} rating
           </span>
         </div>

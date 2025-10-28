@@ -50,7 +50,7 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
     if (level === 'critical') {
       return (
         <div className="flex items-center gap-1">
-          <AlertCircle className="h-3 w-3" />
+          <AlertCircle className="size-3" />
           <Badge variant="destructive">{formatted}</Badge>
         </div>
       )
@@ -58,7 +58,7 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
     if (level === 'high') {
       return (
         <div className="flex items-center gap-1">
-          <AlertTriangle className="h-3 w-3" />
+          <AlertTriangle className="size-3" />
           <Badge variant="destructive">{formatted}</Badge>
         </div>
       )
@@ -71,20 +71,23 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
 
   return (
     <Card>
-      <CardHeader className="sr-only">
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Security events</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>Recent platform security activity</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardHeader>
+        <div className="sr-only">
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>Security events</ItemTitle>
+              </ItemContent>
+              <ItemContent>
+                <ItemDescription>Recent platform security activity</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
       </CardHeader>
-      <CardContent className="p-0">
-        <ScrollArea className="w-full">
+      <CardContent>
+        <div className="-m-6">
+          <ScrollArea className="w-full">
           <Table>
             <TableHeader>
               <TableRow>
@@ -102,7 +105,7 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
                     <ItemGroup>
                       <Item variant="muted" className="items-center gap-2">
                         <ItemMedia variant="icon">
-                          <Shield className="h-4 w-4 text-muted-foreground" />
+                          <Shield className="size-4 text-muted-foreground" />
                         </ItemMedia>
                         <ItemContent>
                           <span className="font-medium">{event.event_type}</span>
@@ -132,6 +135,7 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
           </Table>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

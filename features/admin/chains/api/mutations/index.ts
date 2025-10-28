@@ -1,4 +1,3 @@
-'use server'
 
 // Verification operations
 export { verifyChain } from './verification'

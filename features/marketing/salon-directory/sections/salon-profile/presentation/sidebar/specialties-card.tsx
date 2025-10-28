@@ -34,7 +34,7 @@ export function SpecialtiesCard({ salon }: SpecialtiesCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted" className="flex-col gap-1">
+            <Item variant="muted">
               <ItemHeader>
                 <ItemTitle>Signature services</ItemTitle>
               </ItemHeader>

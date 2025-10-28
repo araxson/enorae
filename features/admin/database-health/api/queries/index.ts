@@ -1,5 +1,3 @@
-import 'server-only'
-
 export { getQueryPerformance } from './query-performance'
 export { getDatabaseHealth } from './database-health'
 export { getSchemaValidation } from './schema-validation'

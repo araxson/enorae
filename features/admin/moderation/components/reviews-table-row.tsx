@@ -85,7 +85,7 @@ export function ReviewsTableRow({
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-1">
-          <Star className="h-4 w-4 text-accent" fill="currentColor" />
+          <Star className="size-4 text-accent" fill="currentColor" />
           <span className="font-medium">{review['rating']}</span>
         </div>
       </TableCell>
@@ -104,7 +104,7 @@ export function ReviewsTableRow({
           </Badge>
           {review['has_response'] && (
             <div className="flex items-center gap-1">
-              <MessageSquare className="h-3 w-3" />
+              <MessageSquare className="size-3" />
               <Badge variant="outline">Responded</Badge>
             </div>
           )}
@@ -116,14 +116,14 @@ export function ReviewsTableRow({
             Risk {review.fakeLikelihoodScore}
           </Badge>
           <div className="flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" />
+            <TrendingUp className="size-3" />
             <Badge variant={review.qualityLabel === 'low' ? 'destructive' : 'secondary'}>
               Quality {review.qualityScore}
             </Badge>
           </div>
           {review['is_flagged'] && (
             <div className="flex items-center gap-1">
-              <Flag className="h-3 w-3" />
+              <Flag className="size-3" />
               <Badge variant="destructive">Flagged</Badge>
             </div>
           )}
@@ -146,34 +146,34 @@ export function ReviewsTableRow({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" disabled={isLoading}>
-              <MoreVertical className="h-4 w-4" />
+              <MoreVertical className="size-4" />
               <span className="sr-only">Review actions</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => onViewDetail(review)}>
-              <Eye className="mr-2 h-4 w-4" />
+              <Eye className="mr-2 size-4" />
               View Details
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             {review['is_flagged'] ? (
               <DropdownMenuItem onClick={() => onUnflag(review)}>
-                <FlagOff className="mr-2 h-4 w-4" />
+                <FlagOff className="mr-2 size-4" />
                 Unflag
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem onClick={() => onFlag(review)}>
-                <Flag className="mr-2 h-4 w-4" />
+                <Flag className="mr-2 size-4" />
                 Flag
               </DropdownMenuItem>
             )}
             <DropdownMenuItem onClick={() => onToggleFeature(review)}>
-              <Star className="mr-2 h-4 w-4" />
+              <Star className="mr-2 size-4" />
               {review['is_featured'] ? 'Unfeature' : 'Feature'}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => onDelete(review)}>
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 className="mr-2 size-4" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

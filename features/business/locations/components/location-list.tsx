@@ -29,7 +29,6 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { deleteSalonLocation } from '@/features/business/locations/api/mutations/location'
@@ -71,7 +70,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <MapPin className="h-8 w-8" aria-hidden="true" />
+            <MapPin className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No salon locations found</EmptyTitle>
           <EmptyDescription>Add your first location to manage scheduling and staff.</EmptyDescription>
@@ -85,23 +84,18 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {locations.map((location) => (
-          <Item key={location['id']} variant="outline" className="flex flex-col items-start gap-4">
-            <ItemHeader>
-              <ItemTitle>{location['name']}</ItemTitle>
-              {location['is_primary'] ? (
-                <Badge variant="secondary">Primary</Badge>
-              ) : null}
-            </ItemHeader>
+          <Item key={location['id']} variant="outline">
             <ItemContent>
-              <div className="flex items-start gap-2 text-sm text-muted-foreground">
-                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0" />
-                <div className="flex flex-col gap-2">
-                  <ItemDescription>/{location['slug']}</ItemDescription>
-                  <span className={location['is_active'] ? 'font-medium text-primary' : ''}>
-                    {location['is_active'] ? 'Active' : 'Inactive'}
-                  </span>
-                </div>
-              </div>
+              <ItemTitle>
+                {location['name']}
+                {location['is_primary'] && (
+                  <Badge variant="secondary">Primary</Badge>
+                )}
+              </ItemTitle>
+              <ItemDescription>
+                <MapPin className="inline size-4" />
+                {' '}/{location['slug']} • {location['is_active'] ? 'Active' : 'Inactive'}
+              </ItemDescription>
             </ItemContent>
             <ItemActions>
               <ButtonGroup>
@@ -111,7 +105,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     size="sm"
                     onClick={() => onEdit(location)}
                   >
-                    <Edit2 className="h-4 w-4 mr-2" />
+                    <Edit2 className="mr-2 size-4" />
                     Edit
                   </Button>
                 ) : null}
@@ -121,7 +115,7 @@ export function LocationList({ locations, onEdit }: LocationListProps) {
                     size="sm"
                     onClick={() => setDeleteId(location['id'])}
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
+                    <Trash2 className="mr-2 size-4" />
                     Delete
                   </Button>
                 ) : null}

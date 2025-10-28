@@ -1,14 +1,6 @@
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemHeader,
-  ItemTitle,
-  ItemGroup,
-  ItemMedia,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemTitle, ItemMedia } from '@/components/ui/item'
 import { MapPin, Phone, Mail, Globe } from 'lucide-react'
 import type { Salon } from '../types'
 
@@ -32,16 +24,18 @@ export function ContactCard({ salon, location }: ContactCardProps) {
         <CardTitle>Contact</CardTitle>
       </CardHeader>
       <CardContent>
-        <ItemGroup className="gap-3">
+        <div
+          className="group/item-group flex flex-col gap-3"
+          data-slot="item-group"
+          role="list"
+        >
           {location && (
             <Item variant="muted">
-              <ItemHeader className="gap-3">
-                <ItemMedia variant="icon">
-                  <MapPin className="size-4" aria-hidden="true" />
-                </ItemMedia>
-                <ItemTitle>Location</ItemTitle>
-              </ItemHeader>
+              <ItemMedia variant="icon">
+                <MapPin className="size-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
+                <ItemTitle>Location</ItemTitle>
                 <ItemDescription>
                   {mapsHref ? (
                     <Link href={mapsHref} target="_blank" rel="noopener noreferrer">
@@ -56,13 +50,11 @@ export function ContactCard({ salon, location }: ContactCardProps) {
           )}
           {salon['primary_phone'] && (
             <Item variant="muted">
-              <ItemHeader className="gap-3">
-                <ItemMedia variant="icon">
-                  <Phone className="size-4" aria-hidden="true" />
-                </ItemMedia>
-                <ItemTitle>Phone</ItemTitle>
-              </ItemHeader>
+              <ItemMedia variant="icon">
+                <Phone className="size-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
+                <ItemTitle>Phone</ItemTitle>
                 <ItemDescription>
                   <a href={`tel:${salon['primary_phone']}`}>{salon['primary_phone']}</a>
                 </ItemDescription>
@@ -71,13 +63,11 @@ export function ContactCard({ salon, location }: ContactCardProps) {
           )}
           {salon['primary_email'] && (
             <Item variant="muted">
-              <ItemHeader className="gap-3">
-                <ItemMedia variant="icon">
-                  <Mail className="size-4" aria-hidden="true" />
-                </ItemMedia>
-                <ItemTitle>Email</ItemTitle>
-              </ItemHeader>
+              <ItemMedia variant="icon">
+                <Mail className="size-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
+                <ItemTitle>Email</ItemTitle>
                 <ItemDescription>
                   <a href={`mailto:${salon['primary_email']}`}>{salon['primary_email']}</a>
                 </ItemDescription>
@@ -86,13 +76,11 @@ export function ContactCard({ salon, location }: ContactCardProps) {
           )}
           {salon['website_url'] && (
             <Item variant="muted">
-              <ItemHeader className="gap-3">
-                <ItemMedia variant="icon">
-                  <Globe className="size-4" aria-hidden="true" />
-                </ItemMedia>
-                <ItemTitle>Website</ItemTitle>
-              </ItemHeader>
+              <ItemMedia variant="icon">
+                <Globe className="size-4" aria-hidden="true" />
+              </ItemMedia>
               <ItemContent>
+                <ItemTitle>Website</ItemTitle>
                 <ItemDescription>
                   <Link href={salon['website_url']} target="_blank" rel="noopener noreferrer">
                     Visit site
@@ -101,7 +89,7 @@ export function ContactCard({ salon, location }: ContactCardProps) {
               </ItemContent>
             </Item>
           )}
-        </ItemGroup>
+        </div>
       </CardContent>
     </Card>
   )

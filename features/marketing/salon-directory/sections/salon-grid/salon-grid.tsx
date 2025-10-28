@@ -9,14 +9,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 
@@ -46,7 +39,11 @@ export function SalonGrid({ salons }: SalonGridProps) {
   }
 
   return (
-    <ItemGroup className="gap-4">
+    <div
+      className="group/item-group flex flex-col gap-4"
+      data-slot="item-group"
+      role="list"
+    >
       <Item variant="muted">
         <ItemHeader>
           <ItemTitle>Search results</ItemTitle>
@@ -105,6 +102,6 @@ export function SalonGrid({ salons }: SalonGridProps) {
           )
         })}
       </div>
-    </ItemGroup>
+    </div>
   )
 }

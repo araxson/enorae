@@ -67,19 +67,21 @@ export function MessageThread({ threadId, messages, currentUserId }: MessageThre
 
   return (
     <div className="space-y-6">
-      <Item variant="outline" className="flex-col gap-4">
+      <Item variant="outline">
         <ItemHeader>
           <ItemTitle>Conversation</ItemTitle>
-          <ItemDescription>Latest messages in this thread</ItemDescription>
         </ItemHeader>
         <ItemContent>
-          <ScrollArea className="h-96">
-            <MessageList messages={messages} currentUserId={currentUserId} />
-          </ScrollArea>
+          <ItemDescription>Latest messages in this thread</ItemDescription>
+          <div className="h-96">
+            <ScrollArea>
+              <MessageList messages={messages} currentUserId={currentUserId} />
+            </ScrollArea>
+          </div>
         </ItemContent>
       </Item>
 
-      <Item variant="outline" className="flex-col gap-4">
+      <Item variant="outline">
         <ItemHeader>
           <ItemTitle>Send a message</ItemTitle>
         </ItemHeader>

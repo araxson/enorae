@@ -51,7 +51,8 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
 
   return (
     <Card>
-      <CardHeader className="pb-2">
+      <CardHeader>
+        <div className="pb-2">
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
@@ -60,6 +61,7 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
             </ItemContent>
           </Item>
         </ItemGroup>
+        </div>
       </CardHeader>
       <CardContent>
         <ItemGroup className="gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -82,7 +84,7 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
                   {isPending || isLoading ? (
                     <Spinner className="mr-2" />
                   ) : (
-                    <ShieldBan className="mr-2 h-4 w-4" />
+                    <ShieldBan className="mr-2 size-4" />
                   )}
                   {isPending || isLoading ? 'Anonymizing…' : 'Anonymize user'}
                 </Button>
@@ -92,11 +94,13 @@ export function ProfileActions({ profile, onAnonymized, isLoading }: ProfileActi
         </ItemGroup>
       </CardContent>
       {feedback && (
-        <CardContent className="pt-0">
-          <Alert variant={feedback.success ? 'default' : 'destructive'}>
-            <AlertTitle>{feedback.success ? 'Action completed' : 'Action failed'}</AlertTitle>
-            <AlertDescription>{feedback.message}</AlertDescription>
-          </Alert>
+        <CardContent>
+          <div className="pt-0">
+            <Alert variant={feedback.success ? 'default' : 'destructive'}>
+              <AlertTitle>{feedback.success ? 'Action completed' : 'Action failed'}</AlertTitle>
+              <AlertDescription>{feedback.message}</AlertDescription>
+            </Alert>
+          </div>
         </CardContent>
       )}
     </Card>

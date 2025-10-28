@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/item'
 import type { StaffDashboardStats } from '@/features/admin/staff/api/queries'
 
-const STAT_ICON_CLASSES = 'h-4 w-4'
+const STAT_ICON_CLASSES = 'size-4'
 
 export function StaffStats({ stats }: { stats: StaffDashboardStats }) {
   const statCards = [

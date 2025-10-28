@@ -27,7 +27,7 @@ export function SalonStats({ staffCount, servicesCount, className }: SalonStatsP
       {staffCount && staffCount > 0 && (
         <Item variant="muted">
           <ItemMedia variant="icon">
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="size-4 text-muted-foreground" />
           </ItemMedia>
           <ItemContent>
             <ItemDescription>
@@ -39,7 +39,7 @@ export function SalonStats({ staffCount, servicesCount, className }: SalonStatsP
       {servicesCount && servicesCount > 0 && (
         <Item variant="muted">
           <ItemMedia variant="icon">
-            <Scissors className="h-4 w-4 text-muted-foreground" />
+            <Scissors className="size-4 text-muted-foreground" />
           </ItemMedia>
           <ItemContent>
             <ItemDescription>

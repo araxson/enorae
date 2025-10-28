@@ -35,7 +35,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
     return (
       <Empty>
         <EmptyMedia variant="icon">
-          <MapPin className="h-6 w-6" aria-hidden="true" />
+          <MapPin className="size-6" aria-hidden="true" />
         </EmptyMedia>
         <EmptyHeader>
           <EmptyTitle>No favorite salons yet</EmptyTitle>
@@ -64,7 +64,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             <ItemHeader className="items-start gap-3">
               {salon['formatted_address'] ? (
                 <ItemMedia variant="icon">
-                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                  <MapPin className="size-4" aria-hidden="true" />
                 </ItemMedia>
               ) : null}
               <ItemContent>
@@ -77,7 +77,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             <ItemContent className="gap-4">
               {favorite['notes'] ? (
                 <Alert>
-                  <StickyNote className="h-4 w-4" aria-hidden="true" />
+                  <StickyNote className="size-4" aria-hidden="true" />
                   <AlertTitle>My notes</AlertTitle>
                   <AlertDescription>{favorite['notes']}</AlertDescription>
                 </Alert>
@@ -95,7 +95,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
               </Item>
             </ItemContent>
             <ItemFooter>
-              <ButtonGroup className="w-full flex-wrap gap-2" orientation="horizontal">
+              <ButtonGroup aria-label="Favorite actions" orientation="horizontal">
                 <Button asChild className="flex-1 min-w-36">
                   <Link href={`/customer/salons/${salon['slug']}`}>View details</Link>
                 </Button>

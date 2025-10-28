@@ -47,18 +47,20 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
             </Item>
           </ItemGroup>
         </CardHeader>
-        <CardContent className="py-12">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Activity className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No audit logs found</EmptyTitle>
-              <EmptyDescription>
-                Audit logs will appear here when users perform actions.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
+        <CardContent>
+          <div className="py-12">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Activity className="size-6 text-muted-foreground" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No audit logs found</EmptyTitle>
+                <EmptyDescription>
+                  Audit logs will appear here when users perform actions.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </div>
         </CardContent>
       </Card>
     )
@@ -75,18 +77,21 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
 
   return (
     <Card>
-      <CardHeader className="sr-only">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>Audit logs</ItemTitle>
-              <ItemDescription>Latest recorded admin and system activity</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardHeader>
+        <div className="sr-only">
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Audit logs</ItemTitle>
+                <ItemDescription>Latest recorded admin and system activity</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
       </CardHeader>
-      <CardContent className="p-0">
-        <ScrollArea className="w-full">
+      <CardContent>
+        <div className="-m-6">
+          <ScrollArea className="w-full">
           <Table>
             <TableHeader>
               <TableRow>
@@ -102,7 +107,7 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
                 <TableRow key={log.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      <Shield className="size-4 text-muted-foreground" />
                       <div>{getEventTypeBadge(log.event_type)}</div>
                     </div>
                   </TableCell>
@@ -139,6 +144,7 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
           </Table>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   )

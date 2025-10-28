@@ -61,14 +61,12 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
           </Alert>
         )}
 
-        <Item variant="outline" className="flex flex-col gap-4">
+        <Item variant="outline">
           <ItemHeader>
-            <div className="flex flex-col gap-1">
-              <ItemTitle>Profile images</ItemTitle>
-              <ItemDescription>Update the images customers see on your profile.</ItemDescription>
-            </div>
+            <ItemTitle>Profile images</ItemTitle>
           </ItemHeader>
           <ItemContent>
+            <ItemDescription>Update the images customers see on your profile.</ItemDescription>
             <ProfileImagesSection
               avatarUrl={avatarUrl}
               coverUrl={coverUrl}
@@ -80,26 +78,22 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
           </ItemContent>
         </Item>
 
-        <Item variant="outline" className="flex flex-col gap-4">
+        <Item variant="outline">
           <ItemHeader>
-            <div className="flex flex-col gap-1">
-              <ItemTitle>Social profiles</ItemTitle>
-              <ItemDescription>Share the places clients can follow your business.</ItemDescription>
-            </div>
+            <ItemTitle>Social profiles</ItemTitle>
           </ItemHeader>
           <ItemContent>
+            <ItemDescription>Share the places clients can follow your business.</ItemDescription>
             <SocialProfilesSection defaults={socialProfiles} />
           </ItemContent>
         </Item>
 
-        <Item variant="outline" className="flex flex-col gap-4">
+        <Item variant="outline">
           <ItemHeader>
-            <div className="flex flex-col gap-1">
-              <ItemTitle>Interests and tags</ItemTitle>
-              <ItemDescription>Highlight services and topics that describe your brand.</ItemDescription>
-            </div>
+            <ItemTitle>Interests and tags</ItemTitle>
           </ItemHeader>
           <ItemContent>
+            <ItemDescription>Highlight services and topics that describe your brand.</ItemDescription>
             <InterestsTagsSection
               interests={interests}
               tags={tags}
@@ -114,7 +108,7 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
             <>
-              <Spinner className="size-4" />
+              <Spinner />
               <span>Saving…</span>
             </>
           ) : (

@@ -1,16 +1,14 @@
 'use client'
 
 import { Dispatch, SetStateAction } from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tag, X } from 'lucide-react'
 import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import {
@@ -47,25 +45,16 @@ export function TagsSection({
     <div>
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemMedia variant="icon">
-                <Tag className="h-4 w-4" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>Tags</ItemTitle>
-                <ItemDescription>Quick labels for your profile</ItemDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Tags</CardTitle>
+          <CardDescription>Quick labels for your profile</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           {tags.length === 0 ? (
             <Empty>
-              <EmptyMedia variant="icon">
-                <Tag className="h-4 w-4" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Tag className="size-4" />
+                </EmptyMedia>
                 <EmptyTitle>No tags yet</EmptyTitle>
                 <EmptyDescription>
                   Add quick labels to highlight your preferences.
@@ -79,7 +68,7 @@ export function TagsSection({
                   <ItemContent>
                     <ItemTitle>{tag}</ItemTitle>
                   </ItemContent>
-                  <ItemActions className="flex-none">
+                  <ItemActions>
                     <Button
                       type="button"
                       variant="ghost"
@@ -87,7 +76,7 @@ export function TagsSection({
                       onClick={() => removeTag(tag)}
                       aria-label={`Remove ${tag}`}
                     >
-                      <X className="h-3 w-3" />
+                      <X className="size-3" />
                     </Button>
                   </ItemActions>
                 </Item>
@@ -98,7 +87,7 @@ export function TagsSection({
       </Card>
       <InputGroup>
         <InputGroupAddon>
-          <Tag className="h-4 w-4" aria-hidden="true" />
+          <Tag className="size-4" aria-hidden="true" />
         </InputGroupAddon>
         <InputGroupInput
           placeholder="Add a tag (e.g., vegan, eco-friendly)"
@@ -110,10 +99,18 @@ export function TagsSection({
               addTag()
             }
           }}
+          autoComplete="off"
         />
-        <InputGroupButton type="button" variant="outline" onClick={addTag}>
-          Add
-        </InputGroupButton>
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            type="button"
+            variant="outline"
+            onClick={addTag}
+            aria-label="Add tag"
+          >
+            Add
+          </InputGroupButton>
+        </InputGroupAddon>
       </InputGroup>
     </div>
   )

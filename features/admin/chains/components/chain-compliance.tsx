@@ -35,8 +35,9 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
+      <CardContent>
+        <div className="-m-6">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Chain Name</TableHead>
@@ -86,7 +87,7 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
                       <div className="flex flex-wrap gap-1">
                         {chain.issues.map((issue, idx) => (
                           <Badge key={idx} variant={getComplianceVariant(chain.complianceRate)}>
-                            <AlertCircle className="mr-1 h-3 w-3" />
+                            <AlertCircle className="mr-1 size-3" />
                             {issue}
                           </Badge>
                         ))}
@@ -99,7 +100,8 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
               ))
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   )

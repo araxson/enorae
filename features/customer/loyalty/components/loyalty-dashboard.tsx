@@ -38,21 +38,23 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
   if (!points) {
     return (
       <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Star className="h-6 w-6" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>Loyalty coming soon</EmptyTitle>
-              <EmptyDescription>
-                We&apos;ll let you know when loyalty rewards are ready.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              Check back for updates or enable notifications in your profile settings.
-            </EmptyContent>
-          </Empty>
+        <CardContent>
+          <div className="p-6">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Star className="size-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>Loyalty coming soon</EmptyTitle>
+                <EmptyDescription>
+                  We&apos;ll let you know when loyalty rewards are ready.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                Check back for updates or enable notifications in your profile settings.
+              </EmptyContent>
+            </Empty>
+          </div>
         </CardContent>
       </Card>
     )
@@ -67,59 +69,71 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
-          <CardHeader className="gap-2">
-            <ItemGroup>
-              <Item>
-                <ItemContent>
-                  <CardDescription>Total points</CardDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Star className="h-5 w-5" aria-hidden="true" />
-                </ItemActions>
-              </Item>
-            </ItemGroup>
-            <CardTitle>{formatNumber(points.total_points)}</CardTitle>
+          <CardHeader>
+            <div className="flex flex-col gap-2">
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <CardDescription>Total points</CardDescription>
+                  </ItemContent>
+                  <ItemActions className="flex-none">
+                    <Star className="size-5" aria-hidden="true" />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
+              <CardTitle>{formatNumber(points.total_points)}</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <CardDescription>Available to redeem</CardDescription>
+          <CardContent>
+            <div className="pt-0">
+              <CardDescription>Available to redeem</CardDescription>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="gap-2">
-            <ItemGroup>
-              <Item>
-                <ItemContent>
-                  <CardDescription>Current tier</CardDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Trophy className="h-5 w-5" aria-hidden="true" />
-                </ItemActions>
-              </Item>
-            </ItemGroup>
-            <CardTitle>{points.tier.toUpperCase()}</CardTitle>
+          <CardHeader>
+            <div className="flex flex-col gap-2">
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <CardDescription>Current tier</CardDescription>
+                  </ItemContent>
+                  <ItemActions className="flex-none">
+                    <Trophy className="size-5" aria-hidden="true" />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
+              <CardTitle>{points.tier.toUpperCase()}</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <CardDescription>Member tier</CardDescription>
+          <CardContent>
+            <div className="pt-0">
+              <CardDescription>Member tier</CardDescription>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="gap-2">
-            <ItemGroup>
-              <Item>
-                <ItemContent>
-                  <CardDescription>Lifetime earned</CardDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <TrendingUp className="h-5 w-5" aria-hidden="true" />
-                </ItemActions>
-              </Item>
-            </ItemGroup>
-            <CardTitle>{formatNumber(points.points_earned)}</CardTitle>
+          <CardHeader>
+            <div className="flex flex-col gap-2">
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <CardDescription>Lifetime earned</CardDescription>
+                  </ItemContent>
+                  <ItemActions className="flex-none">
+                    <TrendingUp className="size-5" aria-hidden="true" />
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
+              <CardTitle>{formatNumber(points.points_earned)}</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <CardDescription>Total points earned</CardDescription>
+          <CardContent>
+            <div className="pt-0">
+              <CardDescription>Total points earned</CardDescription>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -129,18 +143,20 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
           <CardTitle>Progress to next tier</CardTitle>
           <CardDescription>Keep booking appointments to unlock new rewards.</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <Progress value={tierProgress} className="h-3" />
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <ItemDescription>{formatNumber(points.total_points)} points earned</ItemDescription>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <ItemDescription>{formatNumber(points.next_tier_points)} needed</ItemDescription>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+        <CardContent>
+          <div className="flex flex-col gap-4">
+            <Progress value={tierProgress} className="h-3" />
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <ItemDescription>{formatNumber(points.total_points)} points earned</ItemDescription>
+                </ItemContent>
+                <ItemActions className="flex-none">
+                  <ItemDescription>{formatNumber(points.next_tier_points)} needed</ItemDescription>
+                </ItemActions>
+              </Item>
+            </ItemGroup>
+          </div>
         </CardContent>
       </Card>
 
@@ -152,7 +168,7 @@ export function LoyaltyDashboard({ points, transactions }: Props) {
                 <CardTitle>Recent activity</CardTitle>
               </ItemContent>
               <ItemActions className="flex-none">
-                <History className="h-5 w-5" aria-hidden="true" />
+                <History className="size-5" aria-hidden="true" />
               </ItemActions>
             </Item>
           </ItemGroup>

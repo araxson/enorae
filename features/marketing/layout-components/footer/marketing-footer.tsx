@@ -3,16 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Separator } from '@/components/ui/separator'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { MarketingSection, NewsletterForm } from '@/features/marketing/common-components'
 import { Sparkles, Mail, MapPin, Phone } from 'lucide-react'
 
@@ -53,32 +44,40 @@ export function MarketingFooter() {
         containerClassName="py-12"
         groupClassName="gap-10"
       >
-        <Item className="flex-col items-center text-center" variant="muted">
-          <ItemContent className="w-full max-w-2xl">
-            <NewsletterForm
-              title="Stay in the Loop"
-              description="Get beauty tips, exclusive offers, and the latest salon updates"
-              inline
-            />
-          </ItemContent>
-        </Item>
+        <div className="flex flex-col items-center text-center">
+          <Item variant="muted">
+            <ItemContent>
+              <div className="w-full max-w-2xl">
+                <NewsletterForm
+                  title="Stay in the Loop"
+                  description="Get beauty tips, exclusive offers, and the latest salon updates"
+                  inline
+                />
+              </div>
+            </ItemContent>
+          </Item>
+        </div>
 
         <Separator />
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <Item className="flex-col gap-6" variant="outline">
-            <ItemHeader className="items-start gap-2">
+          <div className="flex flex-col gap-6">
+            <Item variant="outline">
               <ItemMedia variant="icon">
                 <Sparkles className="size-6" aria-hidden="true" />
               </ItemMedia>
-              <ItemTitle>Enorae</ItemTitle>
-            </ItemHeader>
-            <ItemContent>
-              <ItemDescription>
-                Your Beauty Appointments, Simplified. The modern platform connecting clients with premier salons.
-              </ItemDescription>
-            </ItemContent>
-            <ItemGroup className="gap-2">
+              <ItemContent>
+                <ItemTitle>Enorae</ItemTitle>
+                <ItemDescription>
+                  Your Beauty Appointments, Simplified. The modern platform connecting clients with premier salons.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+            <div
+              className="group/item-group flex flex-col gap-2"
+              data-slot="item-group"
+              role="list"
+            >
               <Item variant="muted">
                 <ItemMedia variant="icon">
                   <Mail className="size-4" aria-hidden="true" />
@@ -103,95 +102,116 @@ export function MarketingFooter() {
                   <ItemDescription>San Francisco, CA</ItemDescription>
                 </ItemContent>
               </Item>
-            </ItemGroup>
+            </div>
+          </div>
+
+          <Item variant="outline">
+            <ItemContent>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <ItemTitle>Product</ItemTitle>
+                </div>
+                <div
+                  className="group/item-group flex flex-col gap-2"
+                  data-slot="item-group"
+                  role="list"
+                >
+                  {footerLinks.product.map((link) => (
+                    <Item key={link.href} asChild variant="muted">
+                      <Link href={link.href}>
+                        <ItemContent>
+                          <ItemDescription>{link.label}</ItemDescription>
+                        </ItemContent>
+                      </Link>
+                    </Item>
+                  ))}
+                </div>
+              </div>
+            </ItemContent>
+          </Item>
+          <Item variant="outline">
+            <ItemContent>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <ItemTitle>Company</ItemTitle>
+                </div>
+                <div
+                  className="group/item-group flex flex-col gap-2"
+                  data-slot="item-group"
+                  role="list"
+                >
+                  {footerLinks.company.map((link) => (
+                    <Item key={link.href} asChild variant="muted">
+                      <Link href={link.href}>
+                        <ItemContent>
+                          <ItemDescription>{link.label}</ItemDescription>
+                        </ItemContent>
+                      </Link>
+                    </Item>
+                  ))}
+                </div>
+              </div>
+            </ItemContent>
           </Item>
 
-          <Item className="flex-col gap-6" variant="outline">
-            <ItemHeader>
-              <ItemTitle>Product</ItemTitle>
-            </ItemHeader>
-            <ItemGroup className="gap-2">
-              {footerLinks.product.map((link) => (
-                <Item key={link.href} asChild variant="muted">
-                  <Link href={link.href}>
-                    <ItemContent>
-                      <ItemDescription>{link.label}</ItemDescription>
-                    </ItemContent>
-                  </Link>
-                </Item>
-              ))}
-            </ItemGroup>
-          </Item>
-
-          <Item className="flex-col gap-6" variant="outline">
-            <ItemHeader>
-              <ItemTitle>Company</ItemTitle>
-            </ItemHeader>
-            <ItemGroup className="gap-2">
-              {footerLinks.company.map((link) => (
-                <Item key={link.href} asChild variant="muted">
-                  <Link href={link.href}>
-                    <ItemContent>
-                      <ItemDescription>{link.label}</ItemDescription>
-                    </ItemContent>
-                  </Link>
-                </Item>
-              ))}
-            </ItemGroup>
-          </Item>
-
-          <Item className="flex-col gap-6" variant="outline">
-            <ItemHeader>
-              <ItemTitle>Legal</ItemTitle>
-            </ItemHeader>
-            <ItemGroup className="gap-2">
-              {footerLinks.legal.map((link) => (
-                <Item key={link.href} asChild variant="muted">
-                  <Link href={link.href}>
-                    <ItemContent>
-                      <ItemDescription>{link.label}</ItemDescription>
-                    </ItemContent>
-                  </Link>
-                </Item>
-              ))}
-            </ItemGroup>
-            <ItemGroup className="gap-2">
-              {footerLinks.resources.map((link) => (
-                <Item key={link.href} asChild variant="muted">
-                  <Link href={link.href}>
-                    <ItemContent>
-                      <ItemDescription>{link.label}</ItemDescription>
-                    </ItemContent>
-                  </Link>
-                </Item>
-              ))}
-            </ItemGroup>
+          <Item variant="outline">
+            <ItemContent>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <ItemTitle>Legal</ItemTitle>
+                </div>
+                <div
+                  className="group/item-group flex flex-col gap-2"
+                  data-slot="item-group"
+                  role="list"
+                >
+                  {footerLinks.legal.map((link) => (
+                    <Item key={link.href} asChild variant="muted">
+                      <Link href={link.href}>
+                        <ItemContent>
+                          <ItemDescription>{link.label}</ItemDescription>
+                        </ItemContent>
+                      </Link>
+                    </Item>
+                  ))}
+                </div>
+                <div
+                  className="group/item-group flex flex-col gap-2"
+                  data-slot="item-group"
+                  role="list"
+                >
+                  {footerLinks.resources.map((link) => (
+                    <Item key={link.href} asChild variant="muted">
+                      <Link href={link.href}>
+                        <ItemContent>
+                          <ItemDescription>{link.label}</ItemDescription>
+                        </ItemContent>
+                      </Link>
+                    </Item>
+                  ))}
+                </div>
+              </div>
+            </ItemContent>
           </Item>
         </div>
 
         <Separator />
 
-        <Item
-          className="flex flex-wrap items-center justify-between gap-4"
-          variant="muted"
-        >
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>© {currentYear} Enorae. All rights reserved.</ItemDescription>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <ItemDescription>© {currentYear} Enorae. All rights reserved.</ItemDescription>
+              <ButtonGroup aria-label="Follow Enorae on social media">
+                {socialLinks.map((link) => (
+                  <Button key={link.href} asChild variant="ghost" size="sm">
+                    <Link href={link.href} target="_blank" rel="noopener noreferrer">
+                      {link.label}
+                    </Link>
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </div>
           </ItemContent>
-          <ItemActions>
-            <ButtonGroup
-              aria-label="Follow Enorae on social media"
-              className="flex flex-wrap justify-end gap-3"
-            >
-              {socialLinks.map((link) => (
-                <Button key={link.href} asChild variant="ghost" size="sm">
-                  <Link href={link.href} target="_blank" rel="noopener noreferrer">
-                    {link.label}
-                  </Link>
-                </Button>
-              ))}
-            </ButtonGroup>
-          </ItemActions>
         </Item>
       </MarketingSection>
     </footer>

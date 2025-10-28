@@ -7,9 +7,11 @@ export function TermsPage() {
   return (
     <main className="flex flex-col gap-16">
       <MarketingSection spacing="compact">
-        <Item className="flex-col items-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>Review the agreements that guide appointments, payments, and platform use.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>Review the agreements that guide appointments, payments, and platform use.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

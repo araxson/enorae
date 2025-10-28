@@ -1,18 +1,34 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import { AlertTriangle, Database } from 'lucide-react'
 import { getStatisticsFreshness } from '../api/queries'
+import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { FreshnessTable } from './freshness-table'
 
 export async function StatsFreshnessMonitor() {
   const snapshot = await getStatisticsFreshness({ limit: 100, offset: 0 })
+  const summaryCards = [
+    {
+      key: 'total',
+      icon: Database,
+      title: 'Total Tables',
+      value: snapshot.totalCount.toLocaleString(),
+      helper: 'Total monitored tables',
+    },
+    {
+      key: 'stale',
+      icon: AlertTriangle,
+      title: 'Stale Statistics',
+      value: snapshot.staleCount.toLocaleString(),
+      helper: 'Maintenance needed',
+    },
+  ] as const
 
   return (
     <section className="py-8 md:py-12">
@@ -29,59 +45,16 @@ export async function StatsFreshnessMonitor() {
         </ItemGroup>
 
         <div className="mb-8 grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <Database className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Total Tables</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <CardTitle>{snapshot.totalCount}</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>Total monitored tables</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item>
-                  <ItemMedia variant="icon">
-                    <AlertTriangle className="h-5 w-5" aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>Stale Statistics</ItemTitle>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <CardTitle>{snapshot.staleCount}</CardTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>Maintenance needed</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
+          {summaryCards.map(({ key, icon, ...card }) => {
+            const Icon = icon
+            return (
+              <AdminMetricCard
+                key={key}
+                icon={<Icon className="size-5" aria-hidden="true" />}
+                {...card}
+              />
+            )
+          })}
         </div>
 
         <Card>

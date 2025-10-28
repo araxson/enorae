@@ -1,14 +1,7 @@
 'use client'
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import { Scissors } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts'
@@ -48,19 +41,13 @@ export function ServicePopularityChart({
     return (
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <ItemTitle>{title}</ItemTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>{title}</CardTitle>
         </CardHeader>
         <CardContent>
           <Empty className="h-72">
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Scissors className="h-8 w-8" aria-hidden="true" />
+                <Scissors className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No service data available</EmptyTitle>
               <EmptyDescription>Service popularity metrics will appear once bookings are made</EmptyDescription>
@@ -74,18 +61,8 @@ export function ServicePopularityChart({
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>{title}</ItemTitle>
-            </ItemContent>
-            {description ? (
-              <ItemContent>
-                <ItemDescription>{description}</ItemDescription>
-              </ItemContent>
-            ) : null}
-          </Item>
-        </ItemGroup>
+        <CardTitle>{title}</CardTitle>
+        {description ? <CardDescription>{description}</CardDescription> : null}
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-72 w-full">

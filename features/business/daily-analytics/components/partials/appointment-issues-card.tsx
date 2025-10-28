@@ -26,7 +26,7 @@ export function AppointmentIssuesCard({ aggregated }: Props) {
   return (
     <Item variant="outline" className="flex-col gap-3">
       <ItemHeader className="items-center gap-2">
-        <AlertCircle className="h-4 w-4" />
+        <AlertCircle className="size-4" />
         <ItemTitle>Appointment Issues</ItemTitle>
       </ItemHeader>
       <ItemContent>

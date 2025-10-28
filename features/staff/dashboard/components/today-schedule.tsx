@@ -42,7 +42,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Clock className="h-8 w-8" aria-hidden="true" />
+                <Clock className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No Appointments Today</EmptyTitle>
               <EmptyDescription>No appointments scheduled for today</EmptyDescription>
@@ -71,18 +71,18 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
   return (
     <Card>
       <CardHeader>
-        <Item variant="muted" size="sm">
-          <ItemContent>
+        <div className="flex items-center justify-between gap-3">
+          <div className="space-y-1">
             <CardTitle>Today&apos;s Schedule</CardTitle>
             <CardDescription>{appointments.length} appointments</CardDescription>
-          </ItemContent>
-          <ItemActions className="flex items-center gap-2">
-            <CheckCircle className="h-3 w-3" />
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="size-3" aria-hidden />
             <Badge variant="secondary">
               {completedCount}/{appointments.length}
             </Badge>
-          </ItemActions>
-        </Item>
+          </div>
+        </div>
       </CardHeader>
       <Separator />
       <CardContent>
@@ -105,11 +105,11 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
                     className={isCompleted ? 'opacity-75' : ''}
                   >
                     <ItemMedia variant="icon">
-                      <Clock className="h-4 w-4" aria-hidden="true" />
+                      <Clock className="size-4" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
+                        <Avatar className="size-8">
                           <AvatarFallback className="text-xs font-semibold">
                             {customerInitials}
                           </AvatarFallback>
@@ -118,7 +118,7 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
                           <ItemTitle>{customerLabel}</ItemTitle>
                           <ItemDescription>{formatAppointmentTime(appointment.start_time)}</ItemDescription>
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <User className="h-3 w-3" />
+                            <User className="size-3" />
                             <span className="truncate">Customer ID</span>
                           </div>
                         </div>

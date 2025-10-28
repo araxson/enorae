@@ -35,9 +35,9 @@ export function StatBadge({
       <span className={cn('flex items-center gap-1', className)}>
         {showTrend && (
           <>
-            {value > 0 && <TrendingUp className="h-3 w-3" aria-label="Trending up" />}
-            {value < 0 && <TrendingDown className="h-3 w-3" aria-label="Trending down" />}
-            {isNeutral && <Minus className="h-3 w-3" aria-label="No change" />}
+            {value > 0 && <TrendingUp className="size-3" aria-label="Trending up" />}
+            {value < 0 && <TrendingDown className="size-3" aria-label="Trending down" />}
+            {isNeutral && <Minus className="size-3" aria-label="No change" />}
           </>
         )}
         <span>{displayValue}</span>
@@ -75,9 +75,9 @@ export function ComparisonBadge({
       title={`Change: ${formatPercentage(change, { includeSign: true })}`}
     >
       <span className={cn('flex items-center gap-1', className)}>
-        {!isNeutral && change > 0 && <TrendingUp className="h-3 w-3" aria-label="Increased" />}
-        {!isNeutral && change < 0 && <TrendingDown className="h-3 w-3" aria-label="Decreased" />}
-        {isNeutral && <Minus className="h-3 w-3" aria-label="No change" />}
+        {!isNeutral && change > 0 && <TrendingUp className="size-3" aria-label="Increased" />}
+        {!isNeutral && change < 0 && <TrendingDown className="size-3" aria-label="Decreased" />}
+        {isNeutral && <Minus className="size-3" aria-label="No change" />}
         <span>{displayValue}</span>
       </span>
     </Badge>

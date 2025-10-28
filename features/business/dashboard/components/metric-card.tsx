@@ -3,7 +3,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { Progress } from '@/components/ui/progress'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -23,6 +22,8 @@ const accentIndicatorClasses = {
 } as const
 
 export type MetricAccent = keyof typeof accentIndicatorClasses
+
+const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
 
 export function getAccentStripeClass(accent: MetricAccent) {
   return accentIndicatorClasses[accent]
@@ -48,12 +49,12 @@ export function AppointmentMetricCard({
   return (
     <Item role="article" aria-label={`${title} metric`} variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <ItemHeader className="items-center justify-between">
+      <ItemHeader>
         <ItemTitle>{title}</ItemTitle>
-        <ItemActions className="flex-none">{icon}</ItemActions>
+        <ItemActions>{icon}</ItemActions>
       </ItemHeader>
       <ItemContent className="space-y-2">
-        <CardTitle>{value}</CardTitle>
+        <p className={metricValueClass}>{value}</p>
         <Progress value={progress} className="mt-2" aria-label={`${progress}% progress`} />
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>
@@ -81,12 +82,12 @@ export function RevenueMetricCard({
   return (
     <Item role="article" aria-label={`${title} metric`} variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
-      <ItemHeader className="items-center justify-between">
+      <ItemHeader>
         <ItemTitle>{title}</ItemTitle>
-        <ItemActions className="flex-none">{icon}</ItemActions>
+        <ItemActions>{icon}</ItemActions>
       </ItemHeader>
       <ItemContent className="space-y-2">
-        <CardTitle>{amountLabel}</CardTitle>
+        <p className={metricValueClass}>{amountLabel}</p>
         {highlight}
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>

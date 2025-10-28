@@ -7,7 +7,6 @@ export {
   ResetPasswordForm,
   VerifyOTPForm,
   PasswordInput,
-  OTPInput,
 } from './components'
 export { login, signup, logout } from './api/mutations'
 export {

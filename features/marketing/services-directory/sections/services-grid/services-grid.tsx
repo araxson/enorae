@@ -1,9 +1,4 @@
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import type { Database } from '@/lib/types/database.types'
 import { EmptyState } from './empty-state'
 import { ServiceCard } from './service-card'
@@ -21,7 +16,11 @@ export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
   }
 
   return (
-    <ItemGroup className="gap-6">
+    <div
+      className="group/item-group flex flex-col gap-6"
+      data-slot="item-group"
+      role="list"
+    >
       <Item variant="muted">
         <ItemContent>
           <ItemDescription>
@@ -40,6 +39,6 @@ export function ServicesGrid({ services, categoryName }: ServicesGridProps) {
           <ServiceCard key={service['id']} service={service} />
         ))}
       </div>
-    </ItemGroup>
+    </div>
   )
 }

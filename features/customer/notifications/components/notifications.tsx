@@ -14,7 +14,7 @@ export async function Notifications() {
       <ItemGroup className="mb-6">
         <Item variant="muted" size="sm">
           <ItemMedia variant="icon">
-            <Bell className="h-4 w-4" aria-hidden="true" />
+            <Bell className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Notifications</ItemTitle>

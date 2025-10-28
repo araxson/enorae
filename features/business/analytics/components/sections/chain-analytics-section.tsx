@@ -2,7 +2,6 @@
 
 import { ExportButton } from '@/features/business/business-common/components'
 import { Building2, TrendingUp } from 'lucide-react'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -38,15 +37,15 @@ type Props = {
 export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Props) {
   return (
     <Item variant="outline" className="flex-col gap-6">
-      <ItemHeader className="items-start justify-between gap-4">
+      <ItemHeader>
         <div className="flex flex-1 flex-col gap-2">
           <div className="flex items-center gap-2">
-            <Building2 className="h-4 w-4" aria-hidden />
+            <Building2 className="size-4" aria-hidden />
             <ItemTitle>Chain analytics</ItemTitle>
           </div>
           <ItemDescription>Performance across all salons in your chain.</ItemDescription>
         </div>
-        <ItemActions className="flex-none">
+        <ItemActions>
           <ExportButton
             data={breakdown.map((row) => ({
               salon_id: row.salonId,
@@ -66,7 +65,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
             label="MoM Growth"
             value={
               <span className="flex items-center gap-1">
-                <TrendingUp className="h-4 w-4" />
+                <TrendingUp className="size-4" />
                 {comparison.momGrowth.toFixed(1)}%
               </span>
             }
@@ -76,7 +75,7 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
             label="YoY Growth"
             value={
               <span className="flex items-center gap-1">
-                <TrendingUp className="h-4 w-4" />
+                <TrendingUp className="size-4" />
                 {comparison.yoyGrowth.toFixed(1)}%
               </span>
             }
@@ -104,10 +103,12 @@ export function ChainAnalyticsSection({ start, end, breakdown, comparison }: Pro
 }
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
+  const statValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   return (
     <div>
       <ItemDescription>{label}</ItemDescription>
-      <CardTitle>{value}</CardTitle>
+      <p className={statValueClass}>{value}</p>
     </div>
   )
 }

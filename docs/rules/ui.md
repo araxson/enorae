@@ -5,9 +5,10 @@
 - **Accountability**: Only use generic fallback when no better match exists, document why
 - **Examples**: Stats → Chart components; Navigation → Tabs/Accordion; Actions → Alert/Dialog; Lists → Table/DataTable
 
-### Rule 1: NO Custom Styles - shadcn Components ONLY
-- Use ONLY shadcn/ui primitives from the 54+ available components
-- Custom styling is FORBIDDEN
+### Rule 1: Default to shadcn/ui Primitives
+- Start with shadcn/ui components and their documented variants before inventing custom markup.
+- Adapt appearance via the surfaces the docs call out (`className`, `variant`, `size`, CSS variables) instead of bespoke component rewrites.
+- Keep utility classes purposeful and minimal; if you reach for heavy overrides revisit the component choice.
 - If unsure whether a component exists, check using `mcp__shadcn__list_components()` or `mcp__shadcn__get_component_docs()`
 
 ### Rule 2: NO Unnecessary Wrappers
@@ -26,18 +27,14 @@
 - Follow composition EXACTLY (e.g., CardHeader → CardTitle + CardDescription → CardContent)
 - Never break or reorder documented composition patterns
 
-### Rule 5: Component Slots vs Standalone HTML
-- **Inside slots**: Use plain text (e.g., `<CardTitle>Text</CardTitle>`)
-- **Outside slots**: Use shadcn typography patterns (e.g., `<h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Text</h2>`)
-
 ### Rule 6: NEVER Edit components/ui/*.tsx
 - Never modify shadcn component source files in `components/ui/`
 
-### Rule 7: Pure shadcn/ui Usage - Never Style Slot Components
+### Rule 7: Mirror Documented Slot Styling
 
-**Golden Rule:** If shadcn docs show a slot component, use it **exactly as shown** without `className` modifications.
+**Golden Rule:** Follow the official shadcn docs. If a slot is shown unstyled, keep it unstyled. If the docs demonstrate a className or prop on that slot, mirror the same pattern and rationale.
 
-#### 7.1 Never Style Slot Components
+#### 7.1 Default: Leave Structural Slots Unstyled
 ```tsx
 // ❌ WRONG - Custom styling on slots
 <CardTitle className="text-2xl font-bold">Title</CardTitle>
@@ -52,23 +49,35 @@
 <AlertDialogDescription>Description</AlertDialogDescription>
 ```
 
-**Slot components to never style:**
-- Card: `CardHeader`, `CardTitle`, `CardDescription`, `CardFooter`
-- Dialog: `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`
-- Alert Dialog: `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogFooter`
-- Alert: `AlertTitle`, `AlertDescription`
-- Sheet: `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter`
-- Any component ending in `Title`, `Description`, `Header`, `Footer`
+Use titles, descriptions, headers, and footers exactly as composed unless a doc example shows a specific override.
 
-#### 7.2 Style Container/Wrapper Only
+#### 7.2 Documented Exceptions You Should Apply
+```tsx
+// ✅ CardFooter may carry layout classes (see card.md)
+<CardFooter className="flex-col gap-2">
+  <Button type="submit" className="w-full">
+    Login
+  </Button>
+  <Button variant="outline" className="w-full">
+    Login with Google
+  </Button>
+</CardFooter>
+
+// ✅ ItemTitle can use utilities like line clamp (see item.md & spinner.md)
+<ItemTitle className="line-clamp-1">Processing payment...</ItemTitle>
+```
+
+If the component docs showcase an override, copy that pattern verbatim (utility choice, placement, reasoning) instead of inventing a new approach.
+
+#### 7.3 Style Containers and Layout Surfaces
 ```tsx
 // ✅ CORRECT - Style the wrapper, not the slots
-<Card className="border-2 shadow-lg">
+<Card>
   <CardHeader>
     <CardTitle>Title</CardTitle>
     <CardDescription>Description</CardDescription>
   </CardHeader>
-  <CardContent className="flex gap-4">
+  <CardContent>
     {/* Content styling here is OK */}
     <Button>Action</Button>
   </CardContent>
@@ -76,7 +85,7 @@
 
 // ✅ CORRECT - Style Dialog, not DialogTitle
 <Dialog>
-  <DialogContent className="max-w-2xl">
+  <DialogContent>
     <DialogHeader>
       <DialogTitle>Title</DialogTitle>
       <DialogDescription>Description</DialogDescription>
@@ -85,12 +94,12 @@
 </Dialog>
 ```
 
-**Where you CAN add className:**
+**Where you CAN add className (when the docs do):**
 - Main component (e.g., `Card`, `Dialog`, `Alert`, `Button`)
-- Content areas (e.g., `CardContent`, `DialogContent`)
+- Documented layout slots (`CardContent`, `CardFooter`, `ItemContent`, etc.)
 - Layout wrappers inside content areas (e.g., `<div className="flex gap-4">` inside `CardContent`)
 
-#### 7.3 Use Semantic Structure Exactly as Documented
+#### 7.4 Preserve Documented Composition
 ```tsx
 // ✅ CORRECT - Follow documented patterns exactly
 <AlertDialog>
@@ -118,21 +127,22 @@
 </AlertDialog>
 ```
 
-#### 7.4 Validation
+#### 7.5 Validation
 ```bash
 # Check shadcn/ui compliance before commits
 pnpm lint:shadcn
 ```
 
-#### 7.5 Quick Reference
-| Component Pattern | Where to Style | Where NOT to Style |
-|-------------------|----------------|-------------------|
-| `<Card>` | `Card`, `CardContent` | `CardHeader`, `CardTitle`, `CardDescription`, `CardFooter` |
+#### 7.6 Quick Reference
+| Component Pattern | Common Surfaces to Style | Handle With Care |
+|-------------------|--------------------------|------------------|
+| `<Card>` | `Card`, `CardContent`, `CardFooter` (layout utilities) | `CardTitle`, `CardDescription` unless docs show an override |
 | `<Dialog>` | `Dialog`, `DialogContent` | `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter` |
+| `<Item>` | `Item`, `ItemContent`, `ItemTitle` (line clamp, alignment) | `ItemMedia` structure and ordering |
 | `<Alert>` | `Alert` | `AlertTitle`, `AlertDescription` |
-| `<Sheet>` | `Sheet`, `SheetContent` | `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter` |
+| `<InputGroup>` | Leading addon (`InputGroupAddon`), trailing addon with buttons or text, `data-disabled` for readonly states | `InputGroupButton` outside of `InputGroupAddon`, unlabeled icon buttons |
 
-**Summary:** Slot components (Title, Description, Header, Footer) are styled by shadcn. You only style containers and content areas.
+**Summary:** Let the docs be the source of truth. Style the same surfaces they style, keep structural slots pristine unless an example proves otherwise, and prefer semantic composition over ad-hoc overrides.
 
 
 ## October 2025 - New Shadcn Components (use these)
@@ -205,33 +215,6 @@ export function SpinnerButton() {
 
 ```
 
-You can edit the code and replace it with your own spinner.
-
-```tsx
-import { LoaderIcon } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-
-function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
-  return (
-    <LoaderIcon
-      role="status"
-      aria-label="Loading"
-      className={cn("size-4 animate-spin", className)}
-      {...props}
-    />
-  )
-}
-
-export function SpinnerCustom() {
-  return (
-    <div className="flex items-center gap-4">
-      <Spinner />
-    </div>
-  )
-}
-
-```
 
 ### Kbd
 
@@ -1901,4 +1884,3 @@ export function EmptyInputGroup() {
     </Empty>
   )
 }
-

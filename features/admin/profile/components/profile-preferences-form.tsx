@@ -78,7 +78,8 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
 
   return (
     <Card>
-      <CardHeader className="pb-2">
+      <CardHeader>
+        <div className="pb-2">
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
@@ -87,6 +88,7 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
             </ItemContent>
           </Item>
         </ItemGroup>
+        </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -136,7 +138,8 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
 
           <div className="flex flex-col gap-3">
             <Card>
-              <CardHeader className="pb-2">
+              <CardHeader>
+                <div className="pb-2">
                 <ItemGroup>
                   <Item variant="muted">
                     <ItemContent>
@@ -145,25 +148,29 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
                     </ItemContent>
                   </Item>
                 </ItemGroup>
+                </div>
               </CardHeader>
-              <CardContent className="pt-0">
-                <ItemGroup className="items-center justify-between gap-4">
-                  <Item variant="muted">
-                    <ItemActions>
-                      <Switch
-                        checked={marketingEmails}
-                        onCheckedChange={setMarketingEmails}
-                        disabled={isPending}
-                        aria-label="Toggle marketing emails"
-                      />
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
+              <CardContent>
+                <div className="pt-0">
+                  <ItemGroup className="items-center justify-between gap-4">
+                    <Item variant="muted">
+                      <ItemActions>
+                        <Switch
+                          checked={marketingEmails}
+                          onCheckedChange={setMarketingEmails}
+                          disabled={isPending}
+                          aria-label="Toggle marketing emails"
+                        />
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
+                </div>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader className="pb-2">
+              <CardHeader>
+                <div className="pb-2">
                 <ItemGroup>
                   <Item variant="muted">
                     <ItemContent>
@@ -172,20 +179,23 @@ export function ProfilePreferencesForm({ profile, onUpdated }: ProfilePreference
                     </ItemContent>
                   </Item>
                 </ItemGroup>
+                </div>
               </CardHeader>
-              <CardContent className="pt-0">
-                <ItemGroup className="items-center justify-between gap-4">
-                  <Item variant="muted">
-                    <ItemActions>
-                      <Switch
-                        checked={smsAlerts}
-                        onCheckedChange={setSmsAlerts}
-                        disabled={isPending}
-                        aria-label="Toggle SMS alerts"
-                      />
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
+              <CardContent>
+                <div className="pt-0">
+                  <ItemGroup className="items-center justify-between gap-4">
+                    <Item variant="muted">
+                      <ItemActions>
+                        <Switch
+                          checked={smsAlerts}
+                          onCheckedChange={setSmsAlerts}
+                          disabled={isPending}
+                          aria-label="Toggle SMS alerts"
+                        />
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
+                </div>
               </CardContent>
             </Card>
           </div>

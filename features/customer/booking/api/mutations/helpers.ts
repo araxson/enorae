@@ -5,7 +5,7 @@ import { randomInt } from 'crypto'
 /**
  * Generate a unique confirmation code in format ABC-1234
  */
-export function generateConfirmationCode(): string {
+function generateConfirmationCode(): string {
   const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ' // Exclude I, O to avoid confusion with 1, 0
   const numbers = '0123456789'
 

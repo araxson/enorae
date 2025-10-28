@@ -1,4 +1,3 @@
-'use server'
 
 export { updateSalon } from './update-salon.mutation'
 export { updateSalonSettings } from './update-salon-settings.mutation'

@@ -1,7 +1,6 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -23,20 +22,22 @@ type Props = {
 }
 
 export function MetricCard({ title, value, trend, icon: Icon, subtitle }: Props) {
+  const valueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   return (
     <Item variant="outline" className="flex-col gap-2">
-      <ItemHeader className="items-center justify-between">
+      <ItemHeader>
         <ItemTitle>{title}</ItemTitle>
-        <ItemActions className="flex-none">
-          <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        <ItemActions>
+          <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
         </ItemActions>
       </ItemHeader>
       {subtitle ? <ItemDescription>{subtitle}</ItemDescription> : null}
       <ItemContent className="flex items-end justify-between gap-3">
-        <CardTitle>{value}</CardTitle>
+        <p className={valueClass}>{value}</p>
         {trend !== undefined ? (
           <div className="flex items-center gap-1">
-            {trend >= 0 ? <TrendingUp className="h-3 w-3" aria-hidden="true" /> : <TrendingDown className="h-3 w-3" aria-hidden="true" />}
+            {trend >= 0 ? <TrendingUp className="size-3" aria-hidden="true" /> : <TrendingDown className="size-3" aria-hidden="true" />}
             <Badge variant={trend >= 0 ? 'default' : 'destructive'}>{formatPercentage(trend)}</Badge>
           </div>
         ) : null}

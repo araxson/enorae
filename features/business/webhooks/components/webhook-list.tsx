@@ -45,7 +45,7 @@ export function WebhookList({ webhooks }: WebhookListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Webhook className="h-8 w-8" aria-hidden="true" />
+            <Webhook className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No webhook entries found</EmptyTitle>
           <EmptyDescription>New webhook activity will appear here.</EmptyDescription>

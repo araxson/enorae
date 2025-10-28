@@ -1,16 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Star } from 'lucide-react'
 import type { Salon } from './types'
 
@@ -20,46 +11,49 @@ interface SalonHeroProps {
 
 export function SalonHero({ salon }: SalonHeroProps) {
   return (
-    <ItemGroup className="gap-4">
-      <Item className="flex-col gap-4" variant="muted">
-        <ItemHeader>
-          <ItemTitle>{salon['name'] || 'Unnamed Salon'}</ItemTitle>
-        </ItemHeader>
-        {salon['rating_average'] !== null && (
-          <Item variant="outline">
-            <ItemMedia variant="icon">
-              <Star className="size-4" fill="currentColor" aria-hidden="true" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>{salon['rating_average'].toFixed(1)}</ItemTitle>
-              {salon['rating_count'] !== null && (
-                <ItemDescription>{salon['rating_count']} reviews</ItemDescription>
-              )}
-            </ItemContent>
-          </Item>
-        )}
-        {salon['short_description'] ? (
-          <ItemContent>
-            <ItemDescription>{salon['short_description']}</ItemDescription>
-          </ItemContent>
-        ) : null}
+    <div
+      className="group/item-group flex flex-col gap-4"
+      data-slot="item-group"
+      role="list"
+    >
+      <Item variant="muted">
+        <ItemContent>
+          <div className="flex flex-col gap-4">
+            <ItemTitle>{salon['name'] || 'Unnamed Salon'}</ItemTitle>
+            {salon['rating_average'] !== null && (
+              <Item variant="outline">
+                <ItemMedia variant="icon">
+                  <Star className="size-4" fill="currentColor" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{salon['rating_average'].toFixed(1)}</ItemTitle>
+                  {salon['rating_count'] !== null && (
+                    <ItemDescription>{salon['rating_count']} reviews</ItemDescription>
+                  )}
+                </ItemContent>
+              </Item>
+            )}
+            {salon['short_description'] ? (
+              <ItemDescription>{salon['short_description']}</ItemDescription>
+            ) : null}
+          </div>
+        </ItemContent>
       </Item>
 
       <Item variant="outline">
-        <ItemActions className="w-full justify-end gap-3">
-          <ButtonGroup
-            aria-label="Salon hero actions"
-            className="flex flex-wrap gap-3"
-          >
-            <Button size="lg" asChild>
-              <Link href="/signup">Book Appointment</Link>
-            </Button>
-            <Button size="lg" type="button" variant="outline">
-              Share
-            </Button>
-          </ButtonGroup>
+        <ItemActions>
+          <div className="flex w-full justify-end">
+            <ButtonGroup aria-label="Salon hero actions">
+              <Button size="lg" asChild>
+                <Link href="/signup">Book Appointment</Link>
+              </Button>
+              <Button size="lg" type="button" variant="outline">
+                Share
+              </Button>
+            </ButtonGroup>
+          </div>
         </ItemActions>
       </Item>
-    </ItemGroup>
+    </div>
   )
 }

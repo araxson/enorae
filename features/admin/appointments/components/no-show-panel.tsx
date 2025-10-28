@@ -22,71 +22,93 @@ const formatPercent = (value: number) => `${(value * 100).toFixed(1)}%`
 
 export function NoShowPanel({ noShows }: NoShowPanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <CalendarOff className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>No-show Tracking</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <ItemGroup className="items-center gap-4 text-sm text-muted-foreground">
-          <Item variant="muted">
-            <ItemContent>
-              <ItemDescription>
-                Total no-shows: <span className="text-foreground font-semibold">{noShows.count}</span>
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemDescription>
-                Rate: <span className="text-foreground font-semibold">{formatPercent(noShows.rate)}</span>
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-
-        {noShows.recent.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No recent no-show events</EmptyTitle>
-              <EmptyDescription>The tracker updates as guests miss scheduled appointments.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <div className="space-y-2">
-            {noShows.recent.map((item) => (
-              <Alert key={item.id}>
-                <CalendarOff className="h-4 w-4" />
-                <ItemGroup>
-                  <Item className="items-start gap-2" variant="muted" size="sm">
-                    <ItemContent>
-                      <AlertTitle>{item.customerName || 'Unknown'}</AlertTitle>
-                      <AlertDescription>
-                        {item.startTime ? new Date(item.startTime).toLocaleString() : 'Unknown time'}
-                      </AlertDescription>
-                      <AlertDescription className="mt-1 space-y-1">
-                        {item.staffName ? <div>Staff: {item.staffName}</div> : null}
-                        {item.totalPrice ? <div>Estimated value ${item.totalPrice.toFixed(2)}</div> : null}
-                      </AlertDescription>
-                    </ItemContent>
-                    <ItemActions>
-                      <Badge variant="outline">{item.salonName || 'Unassigned'}</Badge>
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </Alert>
-            ))}
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <CalendarOff className="size-4" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>No-show Tracking</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="text-sm text-muted-foreground">
+              <ItemGroup>
+                <Item variant="muted">
+                  <ItemContent>
+                    <ItemDescription>
+                      Total no-shows:{' '}
+                      <span className="text-foreground font-semibold">{noShows.count}</span>
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+                <Item variant="muted">
+                  <ItemContent>
+                    <ItemDescription>
+                      Rate:{' '}
+                      <span className="text-foreground font-semibold">
+                        {formatPercent(noShows.rate)}
+                      </span>
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
+            </div>
+
+            {noShows.recent.length === 0 ? (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No recent no-show events</EmptyTitle>
+                  <EmptyDescription>
+                    The tracker updates as guests miss scheduled appointments.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="space-y-2">
+                {noShows.recent.map((item) => (
+                  <Alert key={item.id}>
+                    <CalendarOff className="size-4" />
+                    <ItemGroup>
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <div className="space-y-2">
+                            <AlertTitle>{item.customerName || 'Unknown'}</AlertTitle>
+                            <AlertDescription>
+                              <p>
+                                {item.startTime
+                                  ? new Date(item.startTime).toLocaleString()
+                                  : 'Unknown time'}
+                              </p>
+                              <div className="mt-1 space-y-1">
+                                {item.staffName ? <div>Staff: {item.staffName}</div> : null}
+                                {item.totalPrice ? (
+                                  <div>Estimated value ${item.totalPrice.toFixed(2)}</div>
+                                ) : null}
+                              </div>
+                            </AlertDescription>
+                          </div>
+                        </ItemContent>
+                        <ItemActions>
+                          <Badge variant="outline">{item.salonName || 'Unassigned'}</Badge>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
+                  </Alert>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

@@ -18,17 +18,20 @@ import { questionsData } from './questions.data'
 export function Questions() {
   return (
     <MarketingSection spacing="compact" groupClassName="gap-6">
-      <Item className="flex-col items-center text-center" variant="muted">
-        <ItemHeader>
-          <ItemTitle>{questionsData.title}</ItemTitle>
-        </ItemHeader>
+      <Item variant="muted">
+        <ItemContent>
+          <div className="flex flex-col items-center text-center">
+            <ItemTitle>{questionsData.title}</ItemTitle>
+          </div>
+        </ItemContent>
       </Item>
 
       {questionsData.categories.map((category) => (
-        <Item key={category.name} className="flex-col" variant="outline">
+        <Item key={category.name} variant="outline">
           <ItemContent>
-            <ItemTitle>{category.name}</ItemTitle>
-            <Accordion type="multiple">
+            <div className="flex flex-col gap-4">
+              <ItemTitle>{category.name}</ItemTitle>
+              <Accordion type="multiple">
               {category.questions.map((item, index) => {
                 const itemValue = `${category.name.toLowerCase().replace(/\s+/g, '-')}-${index}`
                 return (
@@ -41,6 +44,7 @@ export function Questions() {
                 )
               })}
             </Accordion>
+            </div>
           </ItemContent>
         </Item>
       ))}

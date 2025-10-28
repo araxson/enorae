@@ -72,9 +72,9 @@ export function ExportFinancialData() {
           {message && (
             <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
               {message.type === 'success' ? (
-                <CheckCircle2 className="h-4 w-4" />
+                <CheckCircle2 className="size-4" />
               ) : (
-                <XCircle className="h-4 w-4" />
+                <XCircle className="size-4" />
               )}
               <AlertTitle>{message.type === 'success' ? 'Export ready' : 'Export failed'}</AlertTitle>
               <AlertDescription>{message.text}</AlertDescription>
@@ -136,7 +136,7 @@ export function ExportFinancialData() {
             </FieldGroup>
           </ItemGroup>
 
-          <ButtonGroup className="w-full md:w-auto">
+          <ButtonGroup aria-label="Actions">
             <Button
               onClick={handleExport}
               disabled={isLoading || !startDate || !endDate}
@@ -149,7 +149,7 @@ export function ExportFinancialData() {
                 </>
               ) : (
                 <>
-                  <Download className="h-4 w-4" />
+                  <Download className="size-4" />
                   <span>Export to CSV</span>
                 </>
               )}

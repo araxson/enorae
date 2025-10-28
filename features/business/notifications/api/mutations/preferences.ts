@@ -2,7 +2,7 @@
 import 'server-only'
 
 import { z } from 'zod'
-import { getSupabaseClient, revalidateNotifications } from './helpers'
+import { getSupabaseClient, revalidateNotifications } from './utilities'
 
 const updatePreferencesSchema = z.object({
   preferences: z.object({

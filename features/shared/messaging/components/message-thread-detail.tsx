@@ -9,6 +9,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { ArrowLeft } from 'lucide-react'
@@ -31,19 +32,21 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
   ])
 
   return (
-    <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+    <section className="mx-auto w-full max-w-6xl px-6 py-10">
       <div className="flex flex-col gap-6">
         <ItemGroup>
-          <Item variant="muted" size="sm" className="flex-col gap-3">
-            <div className="flex flex-wrap items-center gap-3">
+          <Item variant="muted" size="sm">
+            <ItemHeader>
+              <div className="flex flex-wrap items-center gap-3">
               <Button asChild variant="ghost" size="sm">
-                <Link href="/customer/messages" className="flex items-center gap-2">
-                  <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                  <Link href="/customer/messages">
+                  <ArrowLeft className="size-4" aria-hidden="true" />
                   Back to Messages
                 </Link>
               </Button>
               <ItemTitle>{thread['subject'] || 'Conversation'}</ItemTitle>
             </div>
+            </ItemHeader>
             <ItemContent>
               <ItemDescription>
                 Thread started{' '}

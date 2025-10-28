@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Re-export all queries
 export * from './appointments'
 export * from './business-hours'

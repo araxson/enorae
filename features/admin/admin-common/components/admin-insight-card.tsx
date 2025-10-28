@@ -31,19 +31,21 @@ export const AdminInsightCard = <T,>({
         </Item>
       </ItemGroup>
     </CardHeader>
-    <CardContent className="space-y-3">
-      {items.length === 0 ? (
-        <Empty>
-          <EmptyHeader>
-            <EmptyTitle>{emptyLabel}</EmptyTitle>
-          </EmptyHeader>
-          <EmptyContent>
-            <EmptyDescription>No data available yet.</EmptyDescription>
-          </EmptyContent>
-        </Empty>
-      ) : (
-        items.map((item, index) => renderItem(item, index))
-      )}
+    <CardContent>
+      <div className="space-y-3">
+        {items.length === 0 ? (
+          <Empty>
+            <EmptyHeader>
+              <EmptyTitle>{emptyLabel}</EmptyTitle>
+            </EmptyHeader>
+            <EmptyContent>
+              <EmptyDescription>No data available yet.</EmptyDescription>
+            </EmptyContent>
+          </Empty>
+        ) : (
+          items.map((item, index) => renderItem(item, index))
+        )}
+      </div>
     </CardContent>
   </Card>
 )

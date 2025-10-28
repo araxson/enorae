@@ -1,7 +1,6 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemContent, ItemGroup, ItemMedia } from '@/components/ui/item'
 import { DollarSign, Calendar, Users, Award } from 'lucide-react'
 
 interface MetricsSummaryProps {
@@ -36,19 +35,15 @@ export function MetricsSummary({ metrics, earnings }: MetricsSummaryProps) {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemMedia variant="icon">
-                <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <CardTitle>Total Revenue</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Total Revenue</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-semibold">{formatCurrency(metrics.total_revenue)}</div>
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-semibold">{formatCurrency(metrics.total_revenue)}</div>
+            <span className="rounded-full bg-muted p-2">
+              <DollarSign className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+          </div>
           <p className="text-xs text-muted-foreground">
             {formatCurrency(metrics.avg_appointment_value)} avg per appointment
           </p>
@@ -57,19 +52,15 @@ export function MetricsSummary({ metrics, earnings }: MetricsSummaryProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemMedia variant="icon">
-                <Award className="h-4 w-4 text-primary" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <CardTitle>Estimated Commission</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Estimated Commission</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-semibold">{formatCurrency(earnings.estimated_commission)}</div>
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-semibold">{formatCurrency(earnings.estimated_commission)}</div>
+            <span className="rounded-full bg-muted p-2">
+              <Award className="size-4 text-primary" aria-hidden />
+            </span>
+          </div>
           <p className="text-xs text-muted-foreground">
             {earnings.commission_rate}% commission rate
           </p>
@@ -78,19 +69,15 @@ export function MetricsSummary({ metrics, earnings }: MetricsSummaryProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemMedia variant="icon">
-                <Calendar className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <CardTitle>Appointments</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Appointments</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-semibold">{metrics.completed_appointments}</div>
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-semibold">{metrics.completed_appointments}</div>
+            <span className="rounded-full bg-muted p-2">
+              <Calendar className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+          </div>
           <p className="text-xs text-muted-foreground">
             {metrics.total_appointments} total ({formatPercentage(metrics.completion_rate)} completion)
           </p>
@@ -99,19 +86,15 @@ export function MetricsSummary({ metrics, earnings }: MetricsSummaryProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemMedia variant="icon">
-                <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <CardTitle>Customers</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Customers</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-semibold">{metrics.unique_customers}</div>
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-semibold">{metrics.unique_customers}</div>
+            <span className="rounded-full bg-muted p-2">
+              <Users className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+          </div>
           <p className="text-xs text-muted-foreground">
             {metrics.repeat_customers} repeat customers
           </p>

@@ -64,8 +64,8 @@ export function StatCard({
               role="status"
               aria-label={`${isPositive ? 'Increased' : 'Decreased'} by ${Math.abs(change)}%`}
             >
-              {isPositive && <TrendingUp className="h-3 w-3" aria-hidden="true" />}
-              {isNegative && <TrendingDown className="h-3 w-3" aria-hidden="true" />}
+              {isPositive && <TrendingUp className="size-3" aria-hidden="true" />}
+              {isNegative && <TrendingDown className="size-3" aria-hidden="true" />}
               <span>
                 {change > 0 && '+'}
                 {change}%

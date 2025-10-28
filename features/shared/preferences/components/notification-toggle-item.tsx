@@ -32,14 +32,16 @@ export function NotificationToggleItem({
         <ItemTitle id={labelId}>{title}</ItemTitle>
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>
-      <ItemActions className="flex-none">
-        <Switch
-          id={id}
-          aria-labelledby={labelId}
-          checked={checked}
-          onCheckedChange={onCheckedChange}
-        />
-      </ItemActions>
+      <div className="flex-none">
+        <ItemActions>
+          <Switch
+            id={id}
+            aria-labelledby={labelId}
+            checked={checked}
+            onCheckedChange={onCheckedChange}
+          />
+        </ItemActions>
+      </div>
     </Item>
   )
 }

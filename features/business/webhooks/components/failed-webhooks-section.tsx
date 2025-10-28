@@ -40,7 +40,7 @@ export function FailedWebhooksSection({ failedWebhooks }: FailedWebhooksSectionP
           </ItemContent>
           <ItemActions className="flex-none">
             <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing}>
-              {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 size-4" />}
               Refresh
             </Button>
           </ItemActions>
@@ -48,18 +48,20 @@ export function FailedWebhooksSection({ failedWebhooks }: FailedWebhooksSectionP
       </ItemGroup>
       {failedWebhooks.map((webhook) => (
         <Alert key={webhook.id} variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle className="flex items-center justify-between">
-            <span>{webhook.url}</span>
-            <Button variant="outline" size="sm">
-              Retry
-            </Button>
-          </AlertTitle>
-          <AlertDescription className="space-y-1">
-            <p className="text-sm">Event: {webhook.event_type}</p>
-            {webhook.error_message && <p className="text-sm">Error: {webhook.error_message}</p>}
-            <p className="text-xs opacity-70">{new Date(webhook.created_at).toLocaleString()}</p>
-          </AlertDescription>
+          <AlertCircle className="size-4" />
+          <div className="flex w-full flex-col gap-2">
+            <div className="flex items-start justify-between gap-3">
+              <AlertTitle>{webhook.url}</AlertTitle>
+              <Button variant="outline" size="sm">
+                Retry
+              </Button>
+            </div>
+            <AlertDescription>Event: {webhook.event_type}</AlertDescription>
+            {webhook.error_message ? (
+              <p className="text-sm text-muted-foreground">Error: {webhook.error_message}</p>
+            ) : null}
+            <p className="text-xs text-muted-foreground">{new Date(webhook.created_at).toLocaleString()}</p>
+          </div>
         </Alert>
       ))}
     </div>

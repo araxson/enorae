@@ -7,9 +7,11 @@ export function PricingPage() {
   return (
     <main className="flex flex-col gap-16">
       <MarketingSection spacing="compact">
-        <Item className="flex-col items-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>Compare simple plans designed for salons of every size.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>Compare simple plans designed for salons of every size.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

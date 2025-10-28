@@ -9,6 +9,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import {
@@ -33,10 +34,15 @@ export function ClientAppointmentHistory({
 }: ClientAppointmentHistoryProps) {
   if (loading) {
     return (
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <Spinner className="size-4" />
-        <span>Loading appointments…</span>
-      </div>
+      <Item variant="muted" size="sm">
+        <ItemMedia variant="icon">
+          <Spinner aria-hidden="true" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>Loading appointments…</ItemTitle>
+          <ItemDescription>Fetching the latest booking history.</ItemDescription>
+        </ItemContent>
+      </Item>
     )
   }
 
@@ -45,7 +51,7 @@ export function ClientAppointmentHistory({
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Calendar className="h-8 w-8" aria-hidden="true" />
+            <Calendar className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No appointments found</EmptyTitle>
           <EmptyDescription>This client has no appointment history yet.</EmptyDescription>
@@ -55,7 +61,7 @@ export function ClientAppointmentHistory({
   }
 
   return (
-    <ItemGroup className="gap-2">
+    <ItemGroup>
       {appointments.map((apt) => {
         const serviceNames = 'Appointment'
         const startTime = apt['start_time']
@@ -65,14 +71,10 @@ export function ClientAppointmentHistory({
         return (
           <Item key={apt['id']} variant="outline" size="sm">
             <ItemContent>
-              <div className="flex flex-wrap items-center gap-3">
-                <Badge variant={apt['status'] === 'completed' ? 'default' : 'outline'}>
-                  {apt['status']}
-                </Badge>
-                {startTime ? (
-                  <ItemDescription>{startTime}</ItemDescription>
-                ) : null}
-              </div>
+              <Badge variant={apt['status'] === 'completed' ? 'default' : 'outline'}>
+                {apt['status']}
+              </Badge>
+              {startTime ? <ItemDescription>{startTime}</ItemDescription> : null}
               <ItemTitle>{serviceNames}</ItemTitle>
               {apt['duration_minutes'] ? (
                 <ItemDescription>{apt['duration_minutes']} minutes</ItemDescription>

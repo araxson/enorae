@@ -1,4 +1,3 @@
-import 'server-only'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 
 interface CouponValidationResult {

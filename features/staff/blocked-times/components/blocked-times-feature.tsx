@@ -10,12 +10,6 @@ import { BlockedTimesList } from './blocked-times-list'
 import { BlockedTimesCalendar } from './blocked-times-calendar'
 import { BlockedTimeDialog } from './blocked-time-dialog'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 interface BlockedTimesFeatureProps {
   blockedTimes: BlockedTime[]
@@ -40,32 +34,24 @@ export function BlockedTimesFeature({ blockedTimes }: BlockedTimesFeatureProps) 
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Blocked Times</CardTitle>
-              </ItemContent>
-              <ItemActions>
-                <ButtonGroup>
-                  <Button onClick={handleCreate}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Blocked Time
-                  </Button>
-                </ButtonGroup>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Blocked Times</CardTitle>
+          <ButtonGroup>
+            <Button onClick={handleCreate}>
+              <Plus className="mr-2 size-4" />
+              Add Blocked Time
+            </Button>
+          </ButtonGroup>
         </CardHeader>
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
           <TabsTrigger value="list">
-            <List className="mr-2 h-4 w-4" />
+            <List className="mr-2 size-4" />
             List View
           </TabsTrigger>
           <TabsTrigger value="calendar">
-            <Calendar className="mr-2 h-4 w-4" />
+            <Calendar className="mr-2 size-4" />
             Calendar View
           </TabsTrigger>
         </TabsList>

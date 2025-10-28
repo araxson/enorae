@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Field,
@@ -9,12 +9,6 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 type BrandColors = {
   primary: string
   secondary: string
@@ -29,13 +23,7 @@ export function BrandColorsSection({ brandColors }: BrandColorsSectionProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>Brand Colors</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Brand Colors</CardTitle>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-6">

@@ -60,7 +60,8 @@ import 'server-only'  // queries.ts
 const { data: { user } } = await supabase.auth.getUser()
 if (!user) throw new Error('Unauthorized')
 ```
-
+### 5. Server Directives Required
+Always use supabase mcp for fixing do not assume
 ---
 
 ## Portal Structure
@@ -253,8 +254,3 @@ Specialized agents in `.claude/agents/`:
 - TypeScript 5.x (strict mode)
 - Supabase 2.47.15
 - pnpm
-
----
-
-**Last Updated:** 2025-10-27
-**Status:** Production-ready, 0 TypeScript errors

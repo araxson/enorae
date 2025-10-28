@@ -43,7 +43,7 @@ export function EmptyState({
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant={variant}>
-          <Icon className="h-8 w-8" aria-hidden="true" />
+          <Icon className="size-8" aria-hidden="true" />
         </EmptyMedia>
         <EmptyTitle>{title}</EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>

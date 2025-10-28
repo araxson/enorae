@@ -50,7 +50,7 @@ export function FailedLoginsPanel({ summary }: FailedLoginsPanelProps) {
         <ItemGroup>
           <Item variant="muted" className="items-center gap-2">
             <ItemContent className="flex items-center gap-2">
-              <Fingerprint className="h-4 w-4" aria-hidden="true" />
+              <Fingerprint className="size-4" aria-hidden="true" />
               <CardTitle>Failed Login Tracking</CardTitle>
             </ItemContent>
           </Item>
@@ -81,7 +81,7 @@ export function FailedLoginsPanel({ summary }: FailedLoginsPanelProps) {
           <ItemGroup className="mb-2 items-center gap-2">
             <Item variant="muted" className="items-center gap-2">
               <ItemContent className="flex items-center gap-2">
-                <Users className="h-4 w-4" aria-hidden="true" />
+                <Users className="size-4" aria-hidden="true" />
                 <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Recent Attempts</h3>
               </ItemContent>
             </Item>

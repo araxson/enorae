@@ -91,7 +91,7 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
           <ItemActions>
             <ButtonGroup>
               <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-                {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+                {isRefreshing ? <Spinner className="mr-2" /> : <RefreshCw className="mr-2 size-4" />}
                 Refresh
               </Button>
             </ButtonGroup>
@@ -101,7 +101,7 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
 
       {error && (
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
+          <AlertCircle className="size-4" />
           <AlertTitle>Unable to refresh analytics</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

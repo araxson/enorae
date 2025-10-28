@@ -29,10 +29,10 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
         </CardHeader>
         <CardContent>
           <Empty>
-            <EmptyMedia variant="icon">
-              <Heart className="h-6 w-6" />
-            </EmptyMedia>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Heart className="size-6" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No favorites yet</EmptyTitle>
               <EmptyDescription>Save salons to rebook faster next time.</EmptyDescription>
             </EmptyHeader>
@@ -59,7 +59,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             <Fragment key={favorite['id']}>
               <Item variant="outline" size="sm">
                 <ItemMedia variant="icon">
-                  <Heart className="h-4 w-4 fill-primary text-primary" />
+                  <Heart className="size-4 fill-primary text-primary" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>
@@ -74,7 +74,7 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
             </Fragment>
           ))}
         </ItemGroup>
-        <Button variant="outline" asChild className="w-full">
+        <Button variant="outline" asChild>
           <Link href="/customer/favorites">View all favorites</Link>
         </Button>
       </CardContent>

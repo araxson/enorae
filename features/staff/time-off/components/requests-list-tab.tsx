@@ -40,7 +40,7 @@ export function RequestsListTab({
               </EmptyHeader>
               <EmptyContent>
                 <Button onClick={onCreateClick}>
-                  <Plus className="mr-2 h-4 w-4" />
+                  <Plus className="mr-2 size-4" />
                   New request
                 </Button>
               </EmptyContent>

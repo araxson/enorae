@@ -122,7 +122,7 @@ export async function AdminDashboardPage() {
           <ItemGroup>
             <Item className="w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between" variant="muted">
               <ItemMedia variant="icon">
-                <Activity className="h-5 w-5" aria-hidden="true" />
+                <Activity className="size-5" aria-hidden="true" />
               </ItemMedia>
               <ItemContent className="flex flex-col gap-3">
                 <Breadcrumb>
@@ -142,19 +142,17 @@ export async function AdminDashboardPage() {
                 </ItemDescription>
               </ItemContent>
               <ItemActions className="flex-none">
-                <Badge
-                  variant="outline"
-                  className="rounded-full border-foreground/20 px-3 py-1 text-xs font-semibold text-muted-foreground"
-                >
-                  Live feed
-                </Badge>
+                <div className="rounded-full border border-foreground/20 px-3 py-1 text-xs font-semibold text-muted-foreground">
+                  <Badge variant="outline">Live feed</Badge>
+                </div>
               </ItemActions>
             </Item>
           </ItemGroup>
         </CardHeader>
-        <CardContent className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <ItemGroup className="w-full">
-            <Item variant="muted" className="w-full">
+        <CardContent>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <ItemGroup className="w-full">
+              <Item variant="muted" className="w-full">
               <ItemContent className="flex w-full flex-wrap items-center gap-3 text-sm text-muted-foreground">
                 <LastUpdated />
                 <Separator orientation="vertical" className="hidden h-4 lg:flex" />
@@ -166,10 +164,11 @@ export async function AdminDashboardPage() {
                     <Separator orientation="vertical" className="hidden h-4 lg:flex" />
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Link href="/admin/users">
-                          <Badge variant="secondary" className="gap-1.5 hover:bg-secondary/80">
-                            <ShieldAlert className="h-3 w-3" />
-                            {platformMetrics.pendingVerifications} {platformMetrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
+                        <Link href="/admin/users" className="inline-flex items-center">
+                          <Badge variant="secondary">
+                            <ShieldAlert className="mr-1 size-3" />
+                            {platformMetrics.pendingVerifications}{' '}
+                            {platformMetrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
                           </Badge>
                         </Link>
                       </TooltipTrigger>
@@ -181,51 +180,54 @@ export async function AdminDashboardPage() {
                 )}
               </ItemContent>
             </Item>
-          </ItemGroup>
+            </ItemGroup>
 
-          <ButtonGroup className="flex flex-wrap items-center gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <RefreshButton />
-              </TooltipTrigger>
-              <TooltipContent>Refresh dashboard data</TooltipContent>
-            </Tooltip>
+            <ButtonGroup aria-label="Dashboard actions">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <RefreshButton />
+                </TooltipTrigger>
+                <TooltipContent>Refresh dashboard data</TooltipContent>
+              </Tooltip>
 
-            <Button asChild size="sm" className="gap-2">
-              <Link href="/admin/chains">Manage chains</Link>
-            </Button>
+              <Button asChild size="sm">
+                <Link href="/admin/chains" className="flex items-center gap-2">
+                  Manage chains
+                </Link>
+              </Button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Settings className="h-4 w-4" />
-                  Quick actions
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-60">
-                <DropdownMenuLabel>Navigate to</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/analytics" className="flex items-center gap-2">
-                    <LineChart className="h-4 w-4" />
-                    Platform analytics
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/moderation" className="flex items-center gap-2">
-                    <MessageSquareWarning className="h-4 w-4" />
-                    Review moderation
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/security" className="flex items-center gap-2">
-                    <ShieldCheck className="h-4 w-4" />
-                    Security center
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </ButtonGroup>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Settings className="mr-2 size-4" />
+                    Quick actions
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-60">
+                  <DropdownMenuLabel>Navigate to</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/analytics" className="flex items-center gap-2">
+                      <LineChart className="size-4" />
+                      Platform analytics
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/moderation" className="flex items-center gap-2">
+                      <MessageSquareWarning className="size-4" />
+                      Review moderation
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/security" className="flex items-center gap-2">
+                      <ShieldCheck className="size-4" />
+                      Security center
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ButtonGroup>
+          </div>
         </CardContent>
       </Card>
 

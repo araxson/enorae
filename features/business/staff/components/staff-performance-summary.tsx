@@ -65,13 +65,13 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
         <Item variant="outline" className="flex-col gap-3">
           <ItemHeader>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+              <TrendingUp className="size-4 text-primary" aria-hidden="true" />
               <ItemTitle>Top Performer by Volume</ItemTitle>
             </div>
           </ItemHeader>
           <ItemContent>
             <div className="flex gap-4 items-center">
-              <Avatar className="h-12 w-12">
+              <Avatar className="size-12">
                 {topPerformer['avatar_url'] && (
                   <AvatarImage src={topPerformer['avatar_url']} alt={topPerformer['full_name'] || 'Staff'} />
                 )}
@@ -86,7 +86,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default">
                     <span className="flex items-center gap-2 text-xs">
-                      <TrendingUp className="h-3 w-3" aria-hidden="true" />
+                      <TrendingUp className="size-3" aria-hidden="true" />
                       {topPerformer.totalPerformed} services performed
                     </span>
                   </Badge>
@@ -102,13 +102,13 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
         <Item variant="outline" className="flex-col gap-3">
           <ItemHeader>
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 text-accent" fill="currentColor" aria-hidden="true" />
+              <Star className="size-4 text-accent" fill="currentColor" aria-hidden="true" />
               <ItemTitle>Top Rated Staff Member</ItemTitle>
             </div>
           </ItemHeader>
           <ItemContent>
             <div className="flex gap-4 items-center">
-              <Avatar className="h-12 w-12">
+              <Avatar className="size-12">
                 {topRated['avatar_url'] && (
                   <AvatarImage src={topRated['avatar_url']} alt={topRated['full_name'] || 'Staff'} />
                 )}
@@ -123,7 +123,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default">
                     <span className="flex items-center gap-1 text-xs">
-                      <Star className="h-3 w-3 fill-white" aria-hidden="true" />
+                      <Star className="size-3 fill-white" aria-hidden="true" />
                       {topRated.avgRating.toFixed(1)} average rating
                     </span>
                   </Badge>

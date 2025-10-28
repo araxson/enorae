@@ -1,10 +1,7 @@
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-} from '@/components/ui/button-group'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Empty,
   EmptyContent,
@@ -31,16 +28,12 @@ export function CTA() {
               <ItemDescription>Choose the option that fits—get started now or talk with our team first.</ItemDescription>
             </ItemContent>
           </Item>
-          <ButtonGroup
-            aria-label="Marketing call to action options"
-            className="w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-center"
-          >
+          <ButtonGroup aria-label="Marketing call to action options">
             <Button asChild size="lg">
               <Link href={ctaContent.primaryCta.href}>
                 {ctaContent.primaryCta.label}
               </Link>
             </Button>
-            <ButtonGroupSeparator className="hidden sm:flex" />
             <Button asChild variant="outline" size="lg">
               <Link href={ctaContent.secondaryCta.href}>
                 {ctaContent.secondaryCta.label}

@@ -17,7 +17,7 @@ export async function CustomerInsights() {
   return (
     <div className="flex flex-col gap-8">
       <ItemGroup>
-        <Item variant="muted" className="flex-col items-start gap-2">
+        <Item variant="muted">
           <ItemContent>
             <ItemTitle>Customer Insights</ItemTitle>
             <ItemDescription>

@@ -34,7 +34,7 @@ export function PaymentMethodsCard({ salon }: PaymentMethodsCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted" className="flex-col gap-1">
+            <Item variant="muted">
               <ItemHeader>
                 <ItemTitle>Accepted payments</ItemTitle>
               </ItemHeader>

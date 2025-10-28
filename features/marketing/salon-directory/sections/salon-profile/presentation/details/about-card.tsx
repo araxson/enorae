@@ -22,7 +22,7 @@ export function AboutCard({ salon }: AboutCardProps) {
         <CardTitle>About</CardTitle>
       </CardHeader>
       <CardContent>
-        <Item variant="muted" className="flex-col gap-2">
+        <Item variant="muted">
           <ItemHeader>
             <ItemTitle>What guests can expect</ItemTitle>
           </ItemHeader>

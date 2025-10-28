@@ -1,7 +1,5 @@
 'use client'
 
-import { format } from 'date-fns'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { MessageCircle } from 'lucide-react'
 import {
   Empty,
@@ -10,12 +8,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import {
-  Item,
-  ItemContent,
-  ItemFooter,
-  ItemGroup,
-} from '@/components/ui/item'
+import { MessageBubble } from './message-bubble'
 
 interface Message {
   id: string
@@ -37,7 +30,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <MessageCircle className="h-6 w-6" aria-hidden="true" />
+            <MessageCircle className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No messages yet</EmptyTitle>
           <EmptyDescription>Start the conversation!</EmptyDescription>
@@ -47,34 +40,19 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
   }
 
   return (
-    <ItemGroup className="gap-3">
+    <div className="flex flex-col gap-3">
       {messages.map((message) => {
         const isOwnMessage = message.from_user_id === currentUserId
         return (
-          <Item
+          <MessageBubble
             key={message.id}
-            variant={isOwnMessage ? 'muted' : 'outline'}
-            className={`max-w-xl flex-col gap-2 ${isOwnMessage ? 'ml-auto items-end text-right' : ''}`.trim()}
-          >
-            <ItemContent>
-              <p className="whitespace-pre-wrap break-words leading-7">{message.content}</p>
-            </ItemContent>
-            <ItemFooter className={`gap-2 text-xs text-muted-foreground ${isOwnMessage ? 'justify-end' : ''}`}>
-              <time dateTime={message.created_at} className="font-medium">
-                {format(new Date(message.created_at), 'PPp')}
-              </time>
-              {isOwnMessage ? (
-                <span
-                  aria-label={message.is_read ? 'Message delivered and read' : 'Message sent'}
-                  aria-hidden="true"
-                >
-                  {message.is_read ? '✓✓' : '✓'}
-                </span>
-              ) : null}
-            </ItemFooter>
-          </Item>
+            content={message.content}
+            isOwn={isOwnMessage}
+            timestamp={message.created_at}
+            isRead={message.is_read}
+          />
         )
       })}
-    </ItemGroup>
+    </div>
   )
 }

@@ -126,7 +126,7 @@ export function ServicesClient({ services }: ServicesClientProps) {
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Sparkles className="h-8 w-8" aria-hidden="true" />
+                  <Sparkles className="size-8" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No services match your filters</EmptyTitle>
                 <EmptyDescription>Adjust your filters to see additional services.</EmptyDescription>

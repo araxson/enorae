@@ -28,7 +28,7 @@ export function RevokeAllDialog({
 
   return (
     <Item>
-      <ItemActions className="flex-none">
+      <ItemActions>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline" disabled={revokingAll}>

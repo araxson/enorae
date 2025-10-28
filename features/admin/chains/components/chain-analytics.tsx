@@ -34,8 +34,9 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
+      <CardContent>
+        <div className="-m-6">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Chain Name</TableHead>
@@ -91,7 +92,8 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
               ))
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   )

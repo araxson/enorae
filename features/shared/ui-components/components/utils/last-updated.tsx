@@ -49,7 +49,7 @@ export function LastUpdated() {
 
   return (
     <span className="flex items-center gap-1 text-sm text-muted-foreground">
-      <Clock className="h-3 w-3" aria-hidden="true" />
+      <Clock className="size-3" aria-hidden="true" />
       <span aria-label={`Last updated ${relativeTime}`}>{relativeTime}</span>
     </span>
   )

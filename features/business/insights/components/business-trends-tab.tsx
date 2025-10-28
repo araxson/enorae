@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -42,35 +42,31 @@ export function BusinessTrendsTab({ trends }: BusinessTrendsTabProps) {
                   <ItemMedia variant="icon">
                     {trend.trend === 'up' ? (
                       <TrendingUp
-                        className={`h-6 w-6 ${
-                          trend.status === 'positive' ? 'text-primary' : 'text-destructive'
-                        }`}
+                        className={`size-6 ${ trend.status === 'positive' ? 'text-primary' : 'text-destructive' }`}
                         aria-hidden="true"
                       />
                     ) : trend.trend === 'down' ? (
                       <TrendingDown
-                        className={`h-6 w-6 ${
-                          trend.status === 'negative' ? 'text-destructive' : 'text-primary'
-                        }`}
+                        className={`size-6 ${ trend.status === 'negative' ? 'text-destructive' : 'text-primary' }`}
                         aria-hidden="true"
                       />
                     ) : (
-                      <Minus className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
+                      <Minus className="size-6 text-muted-foreground" aria-hidden="true" />
                     )}
                   </ItemMedia>
                 </div>
                 <div className="flex items-baseline gap-2">
-                  <CardTitle
+                  <p
                     className={
                       trend.status === 'positive'
-                        ? 'text-primary'
+                        ? 'text-2xl font-semibold leading-none tracking-tight text-primary'
                         : trend.status === 'negative'
-                        ? 'text-destructive'
-                        : 'text-muted-foreground'
+                        ? 'text-2xl font-semibold leading-none tracking-tight text-destructive'
+                        : 'text-2xl font-semibold leading-none tracking-tight text-muted-foreground'
                     }
                   >
                     {trend.changePercent.toFixed(1)}%
-                  </CardTitle>
+                  </p>
                   <Badge
                     variant={
                       trend.status === 'positive'

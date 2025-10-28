@@ -118,7 +118,7 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
         disabled={!imageUrl.trim()}
         className="w-full"
       >
-        <Upload className="mr-2 h-4 w-4" />
+        <Upload className="mr-2 size-4" />
         Add to Portfolio
       </Button>
 
@@ -142,7 +142,7 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center rounded-md border bg-muted">
-                        <ImageIcon className="h-8 w-8 text-muted-foreground" />
+                        <ImageIcon className="size-8 text-muted-foreground" />
                       </div>
                     )}
                   </AspectRatio>
@@ -155,11 +155,11 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
                     type="button"
                     variant="destructive"
                     size="icon"
-                    className="absolute right-2 top-2 h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
+                    className="absolute right-2 top-2 size-6 opacity-0 transition-opacity group-hover:opacity-100"
                     onClick={() => onRemove(index)}
                     aria-label={`Remove ${image.caption || 'image'}`}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="size-4" />
                   </Button>
                 </div>
               ))}

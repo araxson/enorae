@@ -1,17 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Button } from '@/components/ui/button'
 
 import { CustomerInsightsSummaryCards } from './customer-insights-summary-cards'
 import { CustomerSegmentationCard } from './customer-segmentation-card'
@@ -24,11 +16,18 @@ interface CustomerInsightsDashboardProps {
   topCustomers: CustomerMetrics[]
 }
 
+const segments = [
+  { value: 'all', label: 'All Customers', title: 'Top Customers by Lifetime Value' },
+  { value: 'vip', label: 'VIP', title: 'VIP Customers' },
+  { value: 'loyal', label: 'Loyal', title: 'Loyal Customers' },
+  { value: 'at risk', label: 'At Risk', title: 'At Risk Customers' },
+  { value: 'new', label: 'New', title: 'New Customers' },
+] as const
+
 export function CustomerInsightsDashboard({
   summary,
   topCustomers,
 }: CustomerInsightsDashboardProps) {
-  const [selectedSegment, setSelectedSegment] = useState<string>('all')
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -41,11 +40,6 @@ export function CustomerInsightsDashboard({
     return `${value.toFixed(1)}%`
   }
 
-  const filteredCustomers =
-    selectedSegment === 'all'
-      ? topCustomers
-      : topCustomers.filter((c) => c.segment.toLowerCase() === selectedSegment)
-
   return (
     <div className="flex flex-col gap-6">
       <CustomerInsightsSummaryCards
@@ -56,59 +50,61 @@ export function CustomerInsightsDashboard({
 
       <CustomerSegmentationCard summary={summary} />
 
-      <Tabs defaultValue="all" onValueChange={setSelectedSegment}>
+      <Tabs defaultValue="all">
         <TabsList>
-          <TabsTrigger value="all">All Customers</TabsTrigger>
-          <TabsTrigger value="vip">VIP</TabsTrigger>
-          <TabsTrigger value="loyal">Loyal</TabsTrigger>
-          <TabsTrigger value="at risk">At Risk</TabsTrigger>
-          <TabsTrigger value="new">New</TabsTrigger>
+          {segments.map(({ value, label }) => (
+            <TabsTrigger key={value} value={value}>
+              {label}
+            </TabsTrigger>
+          ))}
         </TabsList>
 
-        <TabsContent value={selectedSegment} className="space-y-4">
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item className="flex-col items-start gap-1">
-                  <ItemContent>
-                    <ItemTitle>
-                      {selectedSegment === 'all'
-                        ? 'Top Customers by Lifetime Value'
-                        : `${selectedSegment.charAt(0).toUpperCase() + selectedSegment.slice(1)} Customers`}
-                    </ItemTitle>
-                  </ItemContent>
-                  <ItemContent>
-                    <ItemDescription>
-                      Detailed customer insights and metrics ({filteredCustomers.length} customers)
-                    </ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col">
-                {filteredCustomers.length > 0 ? (
-                  filteredCustomers.map((customer, index) => (
-                    <CustomerListItem
-                      key={customer.customer_id}
-                      customer={customer}
-                      isLast={index === filteredCustomers.length - 1}
-                      formatCurrency={formatCurrency}
-                      formatPercentage={formatPercentage}
-                    />
-                  ))
-                ) : (
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyTitle>No customers in this segment</EmptyTitle>
-                      <EmptyDescription>Adjust your segment filters to explore other customer groups.</EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {segments.map(({ value, title }) => {
+          const customersForSegment =
+            value === 'all'
+              ? topCustomers
+              : topCustomers.filter((customer) => customer.segment.toLowerCase() === value)
+
+          return (
+            <TabsContent key={value} value={value}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{title}</CardTitle>
+                  <CardDescription>
+                    Detailed customer insights and metrics ({customersForSegment.length} customers)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col">
+                    {customersForSegment.length > 0 ? (
+                      customersForSegment.map((customer, index) => (
+                        <CustomerListItem
+                          key={customer.customer_id}
+                          customer={customer}
+                          isLast={index === customersForSegment.length - 1}
+                          formatCurrency={formatCurrency}
+                          formatPercentage={formatPercentage}
+                        />
+                      ))
+                    ) : (
+                      <Empty>
+                        <EmptyHeader>
+                          <EmptyTitle>No customers in this segment</EmptyTitle>
+                          <EmptyDescription>
+                            Adjust your filters to explore other customer groups.
+                          </EmptyDescription>
+                        </EmptyHeader>
+                        <EmptyContent>
+                          <Button variant="outline">View all segments</Button>
+                        </EmptyContent>
+                      </Empty>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )
+        })}
       </Tabs>
     </div>
   )

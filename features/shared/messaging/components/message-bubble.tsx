@@ -34,32 +34,47 @@ export function MessageBubble({
     .slice(0, 2) || '??'
 
   return (
-    <Item
-      variant={isOwn ? 'muted' : 'outline'}
-      size="sm"
-      className={cn('items-start gap-3', isOwn && 'ml-auto flex-row-reverse text-right')}
-    >
-      <ItemMedia className={cn('flex-none', isOwn && 'order-last')}>
-        <Avatar className="h-8 w-8">
-          <AvatarFallback className="text-xs">{isOwn ? 'You' : initials}</AvatarFallback>
-        </Avatar>
-      </ItemMedia>
-
-      <ItemContent className={cn('max-w-xl gap-2', isOwn && 'items-end text-right')}>
-        {!isOwn && senderName ? <ItemTitle>{senderName}</ItemTitle> : null}
-        <p className="mb-0 whitespace-pre-wrap break-words text-sm leading-6">{content}</p>
-      </ItemContent>
-
-      <ItemFooter className={cn('gap-2 text-xs text-muted-foreground', isOwn ? 'justify-end' : 'justify-start')}>
-        <time dateTime={timestamp} className="font-medium">
-          {format(new Date(timestamp), 'MMM dd, HH:mm')}
-        </time>
-        {isOwn ? (
-          <span aria-label={isRead ? 'Message delivered and read' : 'Message sent'} aria-hidden="true">
-            {isRead ? '✓✓' : '✓'}
-          </span>
-        ) : null}
-      </ItemFooter>
-    </Item>
+    <div className={cn('flex', isOwn ? 'justify-end text-right' : 'justify-start')}>
+      <div className="max-w-xl">
+        <Item variant={isOwn ? 'muted' : 'outline'} size="sm">
+          {!isOwn ? (
+            <ItemMedia variant="icon">
+              <Avatar>
+                <AvatarFallback>
+                  <span className="text-xs">{initials}</span>
+                </AvatarFallback>
+              </Avatar>
+            </ItemMedia>
+          ) : null}
+          <div className={cn('flex-1', isOwn && 'text-right')}>
+            <ItemContent>
+              {!isOwn && senderName ? <ItemTitle>{senderName}</ItemTitle> : null}
+              <p className="mb-0 whitespace-pre-wrap break-words text-sm leading-6">{content}</p>
+            </ItemContent>
+          </div>
+          {isOwn ? (
+            <ItemMedia variant="icon">
+              <Avatar>
+                <AvatarFallback>
+                  <span className="text-xs">You</span>
+                </AvatarFallback>
+              </Avatar>
+            </ItemMedia>
+          ) : null}
+          <ItemFooter>
+            <div className={cn('flex w-full items-center gap-2 text-xs text-muted-foreground', isOwn ? 'justify-end' : 'justify-start')}>
+              <time dateTime={timestamp} className="font-medium">
+                {format(new Date(timestamp), 'MMM dd, HH:mm')}
+              </time>
+              {isOwn ? (
+                <span aria-label={isRead ? 'Message delivered and read' : 'Message sent'} aria-hidden="true">
+                  {isRead ? '✓✓' : '✓'}
+                </span>
+              ) : null}
+            </div>
+          </ItemFooter>
+        </Item>
+      </div>
+    </div>
   )
 }

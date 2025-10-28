@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { SidebarInset, SidebarProvider, SIDEBAR_COOKIE_NAME } from '@/components/ui/sidebar'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { StaffSidebar } from '@/features/shared/portal-shell/components/sidebars/staff-sidebar'
 import { PortalHeader } from '@/features/shared/portal-shell/components/portal-header'
 
@@ -11,7 +11,7 @@ export default async function StaffLayout({
   children: React.ReactNode
 }) {
   const cookieStore = await cookies()
-  const defaultOpen = cookieStore.get(SIDEBAR_COOKIE_NAME)?.value !== 'false'
+  const defaultOpen = cookieStore.get('sidebar_state')?.value !== 'false'
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>

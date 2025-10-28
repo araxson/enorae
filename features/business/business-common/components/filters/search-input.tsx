@@ -24,15 +24,16 @@ export function SearchInput({
   return (
     <InputGroup className={className}>
       <InputGroupAddon>
-        <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        <Search className="size-4 text-muted-foreground" aria-hidden="true" />
       </InputGroupAddon>
-      <InputGroupInput
-        type="search"
-        placeholder={placeholder}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        aria-label={placeholder}
-      />
+  <InputGroupInput
+    type="search"
+    placeholder={placeholder}
+    value={value}
+    onChange={(event) => onChange(event.target.value)}
+    aria-label={placeholder}
+    autoComplete="off"
+  />
       {value ? (
         <InputGroupAddon align="inline-end">
           <InputGroupButton
@@ -41,7 +42,7 @@ export function SearchInput({
             aria-label="Clear search"
             onClick={() => onChange('')}
           >
-            <X className="h-4 w-4" aria-hidden="true" />
+            <X className="size-4" aria-hidden="true" />
           </InputGroupButton>
         </InputGroupAddon>
       ) : null}

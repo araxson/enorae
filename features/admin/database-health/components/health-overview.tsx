@@ -24,29 +24,29 @@ export function HealthOverview({ snapshot }: HealthOverviewProps) {
   const { healthScore, criticalIssues, warnings, recommendations } = overallStatus
 
   const getHealthIcon = (score: number) => {
-    if (score >= 90) return <CheckCircle className="h-8 w-8 text-primary" />
-    if (score >= 70) return <TrendingUp className="h-8 w-8 text-primary" />
-    if (score >= 50) return <AlertTriangle className="h-8 w-8 text-accent" />
-    return <AlertCircle className="h-8 w-8 text-destructive" />
+    if (score >= 90) return <CheckCircle className="size-8 text-primary" />
+    if (score >= 70) return <TrendingUp className="size-8 text-primary" />
+    if (score >= 50) return <AlertTriangle className="size-8 text-accent" />
+    return <AlertCircle className="size-8 text-destructive" />
   }
 
   const metrics = [
     {
       label: 'Critical Issues',
       value: criticalIssues,
-      icon: <AlertCircle className="h-5 w-5" />,
+      icon: <AlertCircle className="size-5" />,
       variant: criticalIssues > 0 ? 'destructive' : 'default',
     },
     {
       label: 'Warnings',
       value: warnings,
-      icon: <AlertTriangle className="h-5 w-5" />,
+      icon: <AlertTriangle className="size-5" />,
       variant: warnings > 5 ? 'destructive' : warnings > 0 ? 'secondary' : 'default',
     },
     {
       label: 'Recommendations',
       value: recommendations,
-      icon: <TrendingUp className="h-5 w-5" />,
+      icon: <TrendingUp className="size-5" />,
       variant: 'default',
     },
   ] as const

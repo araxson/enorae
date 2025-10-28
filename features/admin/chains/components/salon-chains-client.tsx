@@ -40,17 +40,20 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
         </ItemGroup>
       </CardHeader>
       {chains.length === 0 ? (
-        <CardContent className="py-12">
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No salon chains found</EmptyTitle>
-              <EmptyDescription>Chains will appear here once created.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
+        <CardContent>
+          <div className="py-12">
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No salon chains found</EmptyTitle>
+                <EmptyDescription>Chains will appear here once created.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </div>
         </CardContent>
       ) : (
-        <CardContent className="p-0">
-          <Table>
+        <CardContent>
+          <div className="-m-6">
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Chain Name</TableHead>
@@ -108,7 +111,8 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+            </Table>
+          </div>
         </CardContent>
       )}
     </Card>

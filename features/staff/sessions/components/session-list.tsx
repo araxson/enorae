@@ -18,11 +18,6 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -71,7 +66,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Monitor className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
+                <Monitor className="size-12 text-muted-foreground" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No active sessions</EmptyTitle>
               <EmptyDescription>Sign in on a device to see sessions here.</EmptyDescription>
@@ -86,14 +81,8 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
     <div className="flex flex-col gap-4">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Active Sessions</CardTitle>
-                <CardDescription>Manage devices where you&apos;re currently signed in</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Active Sessions</CardTitle>
+          <CardDescription>Manage devices where you&apos;re currently signed in</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -124,7 +113,7 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
 
       {activeSessions.length > 1 && (
         <Alert>
-          <AlertTriangle className="h-4 w-4" />
+          <AlertTriangle className="size-4" />
           <AlertTitle>Multiple sessions active</AlertTitle>
           <AlertDescription>
             You have {activeSessions.length} active sessions. If you don&apos;t recognize a session, revoke it immediately.

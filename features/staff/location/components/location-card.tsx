@@ -6,7 +6,6 @@ import type { StaffLocationDetail } from '@/features/staff/location/types'
 import { Separator } from '@/components/ui/separator'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -34,25 +33,23 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>{location.location_name || location['name']}</CardTitle>
-              {location['salon_name'] ? <CardDescription>{location['salon_name']}</CardDescription> : null}
-            </ItemContent>
-            <ItemActions className="flex gap-2">
-              {location['is_primary'] ? <Badge variant="default">Primary</Badge> : null}
-              {location['is_active'] === false ? <Badge variant="secondary">Inactive</Badge> : null}
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1">
+            <CardTitle>{location.location_name || location['name']}</CardTitle>
+            {location['salon_name'] ? <CardDescription>{location['salon_name']}</CardDescription> : null}
+          </div>
+          <div className="flex gap-2">
+            {location['is_primary'] ? <Badge variant="default">Primary</Badge> : null}
+            {location['is_active'] === false ? <Badge variant="secondary">Inactive</Badge> : null}
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <ItemGroup className="space-y-3">
           {address ? (
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <MapPin className="h-4 w-4" aria-hidden="true" />
+                <MapPin className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemDescription>{address}</ItemDescription>
@@ -63,7 +60,7 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
           {location.phone_number ? (
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Phone className="h-4 w-4" aria-hidden="true" />
+                <Phone className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemDescription>{location.phone_number}</ItemDescription>
@@ -74,7 +71,7 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
           {location['email'] ? (
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Mail className="h-4 w-4" aria-hidden="true" />
+                <Mail className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemDescription>{location['email']}</ItemDescription>
@@ -95,14 +92,14 @@ export function LocationCard({ location, showOperatingHours = true }: LocationCa
         <ButtonGroup>
           <Button variant="outline" size="sm" asChild>
             <a href={mapUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="mr-2 h-4 w-4" />
+              <ExternalLink className="mr-2 size-4" />
               Get Directions
             </a>
           </Button>
           {location.phone_number ? (
             <Button variant="outline" size="sm" asChild>
               <a href={`tel:${location.phone_number}`}>
-                <Phone className="mr-2 h-4 w-4" />
+                <Phone className="mr-2 size-4" />
                 Call
               </a>
             </Button>

@@ -38,37 +38,32 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
   const sessionLabel = session['id']?.substring(0, 8) || 'Unknown'
 
   return (
-    <Item variant="outline" className="flex-col gap-3">
+    <Item variant="outline">
       <ItemHeader>
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <ItemTitle>
-                Session
-                {' '}
-                {sessionLabel}
-              </ItemTitle>
-              {session.is_current ? <Badge variant="default">Current session</Badge> : null}
-              {session['is_suspicious'] ? <Badge variant="destructive">Suspicious</Badge> : null}
-            </div>
-            <ItemDescription>{getActivityStatus(session['updated_at'])}</ItemDescription>
-          </div>
-
-          {!session.is_current && session['id'] ? (
-            <ItemActions>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => onRevoke(session['id']!)}
-                disabled={isRevoking}
-              >
-                {isRevoking ? 'Revoking...' : 'Revoke'}
-              </Button>
-            </ItemActions>
-          ) : null}
+        <div className="flex flex-wrap items-center gap-2">
+          <ItemTitle>
+            Session
+            {' '}
+            {sessionLabel}
+          </ItemTitle>
+          {session.is_current ? <Badge variant="default">Current session</Badge> : null}
+          {session['is_suspicious'] ? <Badge variant="destructive">Suspicious</Badge> : null}
         </div>
+        {!session.is_current && session['id'] ? (
+          <ItemActions>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => onRevoke(session['id']!)}
+              disabled={isRevoking}
+            >
+              {isRevoking ? 'Revoking...' : 'Revoke'}
+            </Button>
+          </ItemActions>
+        ) : null}
       </ItemHeader>
       <ItemContent>
+        <ItemDescription>{getActivityStatus(session['updated_at'])}</ItemDescription>
         <dl className="grid gap-2">
           <div className="flex flex-wrap gap-3">
             <dt className="text-muted-foreground">Created</dt>

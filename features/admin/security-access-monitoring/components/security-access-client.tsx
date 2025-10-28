@@ -4,18 +4,17 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import type { SecurityAccessSnapshot } from '@/features/admin/security-access-monitoring/api/queries'
 import { AlertOctagon, Bell, ShieldCheck, ShieldX } from 'lucide-react'
+import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { SecurityAccessTable } from './security-access-table'
 
 interface SecurityAccessClientProps {
@@ -30,126 +29,54 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
       ? snapshot.records
       : snapshot.records.filter((r) => r.status === selectedStatus)
 
+  const summaryCards = [
+    {
+      key: 'total',
+      icon: ShieldCheck,
+      title: 'Total Access Events',
+      value: snapshot.totalCount.toLocaleString(),
+      helper: 'All recorded access attempts',
+    },
+    {
+      key: 'blocked',
+      icon: ShieldX,
+      title: 'Blocked Access',
+      value: snapshot.blockedCount.toLocaleString(),
+      valueAdornment: <Badge variant="destructive">Blocked</Badge>,
+      helper: 'Failed or blocked attempts',
+    },
+    {
+      key: 'flagged',
+      icon: AlertOctagon,
+      title: 'Flagged Events',
+      value: snapshot.flaggedCount.toLocaleString(),
+      valueAdornment: <Badge variant="outline">Flagged</Badge>,
+      helper: 'Suspicious activities',
+    },
+    {
+      key: 'pending',
+      icon: Bell,
+      title: 'Pending Review',
+      value: snapshot.pendingCount.toLocaleString(),
+      valueAdornment: <Badge variant="secondary">Pending</Badge>,
+      helper: 'Awaiting acknowledgement',
+    },
+  ] as const
+
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Total Access Events</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.totalCount}</CardTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>All recorded access attempts</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <ShieldX className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Blocked Access</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.blockedCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="destructive">Blocked</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Failed or blocked attempts</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <AlertOctagon className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Flagged Events</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.flaggedCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="outline">Flagged</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Suspicious activities</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <Bell className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Pending Review</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.pendingCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="secondary">Pending</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Awaiting acknowledgement</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
+        {summaryCards.map(({ key, icon, ...card }) => {
+          const Icon = icon
+          return (
+            <AdminMetricCard
+              key={key}
+              icon={<Icon className="size-5" aria-hidden="true" />}
+              {...card}
+            />
+          )
+        })}
       </div>
 
       {/* Data Table */}
@@ -167,7 +94,7 @@ export function SecurityAccessClient({ snapshot }: SecurityAccessClientProps) {
           </ItemGroup>
         </CardHeader>
         <CardContent>
-          <ButtonGroup className="mb-4">
+          <ButtonGroup aria-label="Filter by status">
             <Button
               onClick={() => setSelectedStatus(null)}
               size="sm"

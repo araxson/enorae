@@ -81,27 +81,31 @@ export function UsersTable({
 
   return (
     <>
-      <Card className="hidden md:block">
-        <CardHeader className="sr-only">
-          <CardTitle>Platform users</CardTitle>
-          <CardDescription>Manage staff and administrator accounts</CardDescription>
-        </CardHeader>
-        <CardContent className="p-0">
-          <ScrollArea className="w-full">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Roles</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Active Sessions</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((user) => {
+      <div className="hidden md:block">
+        <Card>
+          <CardHeader>
+            <div className="sr-only">
+              <CardTitle>Platform users</CardTitle>
+              <CardDescription>Manage staff and administrator accounts</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="-m-6">
+              <ScrollArea className="w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>User</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Roles</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Active Sessions</TableHead>
+                      <TableHead>Created</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((user) => {
                   const isActive = !user.deleted_at
                   const displayName = user.full_name || user.username || 'Unknown'
                   const rowIsLoading = loadingUserId === user.id
@@ -120,7 +124,7 @@ export function UsersTable({
                       )}
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <User className="h-4 w-4 text-muted-foreground" />
+                          <User className="size-4 text-muted-foreground" />
                           <div>
                             <p className="font-medium" title={displayName}>
                               {displayName}
@@ -143,7 +147,7 @@ export function UsersTable({
                           {user.roles.length > 0 ? (
                             user.roles.map((role) => (
                               <Badge key={role} variant="outline" title={role.replace(/_/g, ' ')}>
-                                <Shield className="mr-1 h-3 w-3" />
+                                <Shield className="mr-1 size-3" />
                                 {role.replace('_', ' ')}
                               </Badge>
                             ))
@@ -187,13 +191,15 @@ export function UsersTable({
                       </TableCell>
                     </TableRow>
                   )
-                })}
-              </TableBody>
-            </Table>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </CardContent>
-      </Card>
+                    })}
+                  </TableBody>
+                </Table>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <div className="space-y-4 md:hidden">
         {users.map((user) => {
@@ -205,80 +211,84 @@ export function UsersTable({
 
           return (
             <Card key={user.id}>
-              <CardHeader className="pb-2">
-                <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <CardTitle title={displayName}>{displayName}</CardTitle>
-                      {user.username && user.username !== displayName ? (
-                        <CardDescription>@{user.username}</CardDescription>
-                      ) : null}
-                    </ItemContent>
-                    <ItemActions>
-                      <Badge variant={STATUS_BADGE_VARIANT[isActive ? 'active' : 'suspended']}>
-                        {isActive ? 'Active' : 'Suspended'}
-                      </Badge>
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
-                <CardDescription>Created {createdLabel}</CardDescription>
+              <CardHeader>
+                <div className="pb-2">
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <CardTitle title={displayName}>{displayName}</CardTitle>
+                        {user.username && user.username !== displayName ? (
+                          <CardDescription>@{user.username}</CardDescription>
+                        ) : null}
+                      </ItemContent>
+                      <ItemActions>
+                        <Badge variant={STATUS_BADGE_VARIANT[isActive ? 'active' : 'suspended']}>
+                          {isActive ? 'Active' : 'Suspended'}
+                        </Badge>
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
+                  <CardDescription>Created {createdLabel}</CardDescription>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3 pt-0">
-                <div>
-                  <span className="font-medium">Email:</span>{' '}
-                  <span>{user.email || 'No email'}</span>
-                </div>
+              <CardContent>
+                <div className="space-y-3 pt-0">
+                  <div>
+                    <span className="font-medium">Email:</span>{' '}
+                    <span>{user.email || 'No email'}</span>
+                  </div>
 
-                <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <ItemTitle>Roles</ItemTitle>
-                      <ItemDescription>
-                        <span className="sr-only">Assigned roles</span>
-                      </ItemDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
-                <div className="flex flex-wrap gap-1">
-                  {user.roles.length > 0 ? (
-                    user.roles.map((role) => (
-                      <Badge key={role} variant="outline" title={role.replace(/_/g, ' ')}>
-                        <Shield className="mr-1 h-3 w-3" />
-                        {role.replace('_', ' ')}
-                      </Badge>
-                    ))
-                  ) : (
-                    <span className="text-xs text-muted-foreground">No roles</span>
-                  )}
-                </div>
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <ItemTitle>Roles</ItemTitle>
+                        <ItemDescription>
+                          <span className="sr-only">Assigned roles</span>
+                        </ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
+                  <div className="flex flex-wrap gap-1">
+                    {user.roles.length > 0 ? (
+                      user.roles.map((role) => (
+                        <Badge key={role} variant="outline" title={role.replace(/_/g, ' ')}>
+                          <Shield className="mr-1 size-3" />
+                          {role.replace('_', ' ')}
+                        </Badge>
+                      ))
+                    ) : (
+                      <span className="text-xs text-muted-foreground">No roles</span>
+                    )}
+                  </div>
 
-                <ItemGroup>
-                  <Item>
-                    <ItemContent>
-                      <ItemTitle>Sessions</ItemTitle>
-                      <ItemDescription>Active sessions across devices</ItemDescription>
-                    </ItemContent>
-                    <ItemActions>
-                      <Badge variant={(user.session_count ?? 0) > 0 ? 'default' : 'outline'}>
-                        {user.session_count ?? 0}
-                      </Badge>
-                    </ItemActions>
-                  </Item>
-                  <Item variant="muted">
-                    <ItemActions>
-                      <UserActionsMenu
-                        userId={user.id}
-                        userName={displayName}
-                        isActive={isActive}
-                        onSuspend={onSuspend}
-                        onReactivate={onReactivate}
-                        onTerminateSessions={onTerminateSessions}
-                        onDelete={onDelete}
-                        onLoadingChange={(loading) => setLoadingUserId(loading ? user.id : null)}
-                      />
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <ItemTitle>Sessions</ItemTitle>
+                        <ItemDescription>Active sessions across devices</ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <Badge variant={(user.session_count ?? 0) > 0 ? 'default' : 'outline'}>
+                          {user.session_count ?? 0}
+                        </Badge>
+                      </ItemActions>
+                    </Item>
+                    <Item variant="muted">
+                      <ItemActions>
+                        <UserActionsMenu
+                          userId={user.id}
+                          userName={displayName}
+                          isActive={isActive}
+                          onSuspend={onSuspend}
+                          onReactivate={onReactivate}
+                          onTerminateSessions={onTerminateSessions}
+                          onDelete={onDelete}
+                          onLoadingChange={(loading) => setLoadingUserId(loading ? user.id : null)}
+                        />
+                      </ItemActions>
+                    </Item>
+                  </ItemGroup>
+                </div>
               </CardContent>
             </Card>
           )

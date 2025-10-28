@@ -141,7 +141,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
           <ItemGroup>
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <Shield className="h-5 w-5" />
+                <Shield className="size-5" />
               </ItemMedia>
             <ItemContent>
               <DialogTitle>Assign Role</DialogTitle>
@@ -219,7 +219,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
               />
             </div>
 
-            <ButtonGroup className="justify-end">
+            <ButtonGroup aria-label="Actions">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
                 Cancel
               </Button>

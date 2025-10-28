@@ -56,9 +56,8 @@ export function RefreshButton({ onRefresh }: RefreshButtonProps) {
       onClick={handleRefresh}
       disabled={isRefreshing}
       aria-label="Refresh dashboard data"
-      className="gap-2"
     >
-      {isRefreshing ? <Spinner className="h-4 w-4" /> : <RefreshCw className="h-4 w-4" />}
+      {isRefreshing ? <Spinner /> : <RefreshCw className="size-4" />}
       {isRefreshing ? 'Refreshing...' : 'Refresh'}
     </Button>
   )

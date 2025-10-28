@@ -16,12 +16,6 @@ import {
 import { useToast } from '@/lib/hooks/use-toast'
 import { toggleServiceAvailability, updateServiceProficiency } from '@/features/staff/services/api/mutations'
 import { ServiceDetails } from './service-details'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 type StaffService = {
   id: string
@@ -103,56 +97,54 @@ export function ServiceCard({ service }: ServiceCardProps) {
   return (
     <Card className={service.is_available === false ? 'opacity-60' : ''}>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>{service.service_name}</CardTitle>
-              {service.category_name ? (
-                <CardDescription>{service.category_name}</CardDescription>
-              ) : null}
-            </ItemContent>
-            <ItemActions className="flex items-center gap-2">
-              {service.is_available === false ? (
-                <Badge variant="outline">Unavailable</Badge>
-              ) : null}
-              {service.proficiency_level ? (
-                <Badge variant={getProficiencyColor(service.proficiency_level)}>
-                  {formatLabel(service.proficiency_level)}
-                </Badge>
-              ) : null}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" disabled={isUpdating} aria-label="Service actions menu">
-                    <MoreVertical className="h-4 w-4" />
-                    <span className="sr-only">Service actions</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Service actions</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleToggleAvailability}>
-                    <Power className="mr-2 h-4 w-4" />
-                    {service.is_available === false ? 'Enable' : 'Disable'} service
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuLabel>Update proficiency</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => handleUpdateProficiency('beginner')}>
-                    Beginner
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleUpdateProficiency('intermediate')}>
-                    Intermediate
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleUpdateProficiency('advanced')}>
-                    Advanced
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleUpdateProficiency('expert')}>
-                    Expert
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1">
+            <CardTitle>{service.service_name}</CardTitle>
+            {service.category_name ? (
+              <CardDescription>{service.category_name}</CardDescription>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-2">
+            {service.is_available === false ? (
+              <Badge variant="outline">Unavailable</Badge>
+            ) : null}
+            {service.proficiency_level ? (
+              <Badge variant={getProficiencyColor(service.proficiency_level)}>
+                {formatLabel(service.proficiency_level)}
+              </Badge>
+            ) : null}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" disabled={isUpdating} aria-label="Service actions menu">
+                  <MoreVertical className="size-4" />
+                  <span className="sr-only">Service actions</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Service actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleToggleAvailability}>
+                  <Power className="mr-2 size-4" />
+                  {service.is_available === false ? 'Enable' : 'Disable'} service
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Update proficiency</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('beginner')}>
+                  Beginner
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('intermediate')}>
+                  Intermediate
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('advanced')}>
+                  Advanced
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleUpdateProficiency('expert')}>
+                  Expert
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <ServiceDetails

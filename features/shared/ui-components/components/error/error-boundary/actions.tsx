@@ -15,17 +15,21 @@ export function ErrorBoundaryActions({
   isLoading: boolean
 }) {
   return (
-    <ButtonGroup className="w-full">
-      <Button onClick={reset} variant="default" className="flex-1 gap-2" disabled={isLoading}>
-        <RefreshCw className="h-4 w-4" />
-        Try Again
-      </Button>
-      <Button asChild variant="outline" className="flex-1 gap-2">
-        <Link href={homeHref}>
-          <Home className="h-4 w-4" />
-          {homeLabel}
-        </Link>
-      </Button>
+    <ButtonGroup aria-label="Actions">
+      <div className="flex-1">
+        <Button onClick={reset} variant="default" disabled={isLoading}>
+          <RefreshCw className="size-4" />
+          <span>Try Again</span>
+        </Button>
+      </div>
+      <div className="flex-1">
+        <Button asChild variant="outline">
+          <Link href={homeHref}>
+            <Home className="size-4" />
+            <span>{homeLabel}</span>
+          </Link>
+        </Button>
+      </div>
     </ButtonGroup>
   )
 }

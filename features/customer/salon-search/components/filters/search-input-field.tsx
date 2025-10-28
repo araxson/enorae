@@ -52,10 +52,11 @@ export function SearchInputField({
         <FieldContent>
           <InputGroup>
             <InputGroupAddon>
-              <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <Search className="size-4 text-muted-foreground" aria-hidden="true" />
             </InputGroupAddon>
             <InputGroupInput
               id={searchInputId}
+              type="search"
               placeholder="Search by salon name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -71,15 +72,17 @@ export function SearchInputField({
               autoComplete="off"
               aria-label="Search by salon name"
             />
-            <InputGroupButton
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Run search"
-              onClick={handleSearch}
-            >
-              <Search className="h-4 w-4" aria-hidden="true" />
-            </InputGroupButton>
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Run search"
+                onClick={handleSearch}
+              >
+                <Search className="size-4" aria-hidden="true" />
+              </InputGroupButton>
+            </InputGroupAddon>
           </InputGroup>
           <FieldDescription className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             <span>Keyboard navigation:</span>

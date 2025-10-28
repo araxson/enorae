@@ -92,23 +92,23 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
-        <div className="flex flex-col gap-1">
-          <ItemTitle>Edit profile</ItemTitle>
-          <ItemDescription>Update your personal information and avatar</ItemDescription>
-        </div>
+        <ItemTitle>Edit profile</ItemTitle>
       </ItemHeader>
       <ItemContent>
+        <ItemDescription>Update your personal information and avatar</ItemDescription>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Avatar Upload */}
           <div className="flex items-center gap-6">
-            <Avatar className="h-24 w-24">
+          <div className="size-24">
+            <Avatar>
               <AvatarImage src={avatarPreview || undefined} />
-              <AvatarFallback className="text-2xl">
-                <User className="h-12 w-12" />
+              <AvatarFallback>
+                <User className="size-12" />
               </AvatarFallback>
             </Avatar>
+          </div>
 
             <div className="space-y-2">
               <input
@@ -127,12 +127,12 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
               >
                 {isUploadingAvatar ? (
                   <>
-                    <Spinner className="size-4" />
+                    <Spinner />
                     <span>Uploading...</span>
                   </>
                 ) : (
                   <>
-                    <Upload className="h-4 w-4" />
+                    <Upload className="size-4" />
                     <span>Upload avatar</span>
                   </>
                 )}
@@ -160,8 +160,9 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           </div>
 
           {error && (
+          {error && (
             <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <AlertTitle>Update failed</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
@@ -171,7 +172,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
                 <>
-                  <Spinner className="size-4" />
+                  <Spinner />
                   <span>Saving...</span>
                 </>
               ) : (

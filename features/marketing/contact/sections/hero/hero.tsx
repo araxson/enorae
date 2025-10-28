@@ -13,10 +13,7 @@ export function Hero() {
           <ItemDescription>We respond within one business day—reach out however you prefer.</ItemDescription>
         </ItemContent>
       </Item>
-      <ButtonGroup
-        aria-label="Contact options"
-        className="flex flex-wrap justify-center gap-2"
-      >
+      <ButtonGroup aria-label="Contact options">
         <Button asChild size="lg">
           <Link href="/faq">View FAQ</Link>
         </Button>

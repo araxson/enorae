@@ -39,7 +39,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <ImageIcon className="h-5 w-5" aria-hidden="true" />
+              <ImageIcon className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Gallery</ItemTitle>
@@ -116,7 +116,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
         ) : (
           <Empty>
             <EmptyMedia variant="icon">
-              <ImageIcon className="h-6 w-6" aria-hidden="true" />
+              <ImageIcon className="size-6" aria-hidden="true" />
             </EmptyMedia>
             <EmptyHeader>
               <EmptyTitle>No photos available</EmptyTitle>

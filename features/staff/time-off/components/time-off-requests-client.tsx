@@ -83,7 +83,7 @@ export function TimeOffRequestsClient({
       onTabChange={(value) => setActiveTab(value as typeof activeTab)}
       toolbarEnd={
         <Button onClick={() => setIsCreateDialogOpen(true)} className="hidden gap-2 sm:inline-flex">
-          <Plus className="h-4 w-4" />
+          <Plus className="size-4" />
           New request
         </Button>
       }
@@ -91,7 +91,7 @@ export function TimeOffRequestsClient({
       <div className="space-y-6">
         <div className="flex justify-end sm:hidden">
           <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2 w-full sm:w-auto">
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
             New request
           </Button>
         </div>

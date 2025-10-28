@@ -2,7 +2,6 @@
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import type { Database } from '@/lib/types/database.types'
 import { AlertTriangle, Bell, Inbox, Wifi } from 'lucide-react'
 
@@ -35,34 +34,44 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <Alert className="flex items-start gap-3">
-        <Bell className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        <Bell className="size-5 text-muted-foreground" aria-hidden="true" />
         <div className="flex flex-col gap-1">
           <AlertTitle>Notifications Processed</AlertTitle>
-          <CardTitle>{totalSent}</CardTitle>
-          <AlertDescription>Across all channels in the last 200 events</AlertDescription>
+          <AlertDescription>
+            <p className="text-2xl font-semibold tracking-tight text-foreground">{totalSent}</p>
+            <span className="text-sm text-muted-foreground">Across all channels in the last 200 events</span>
+          </AlertDescription>
         </div>
       </Alert>
 
       <Alert variant={failureRate > 5 ? 'destructive' : 'default'} className="flex items-start gap-3">
-        <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+        <AlertTriangle className="size-5" aria-hidden="true" />
         <div className="flex flex-col gap-1">
           <AlertTitle>Failure Rate</AlertTitle>
-          <CardTitle>{failureRate.toFixed(1)}%</CardTitle>
           <AlertDescription>
-            {recentFailures} failures detected in recent queue
+            <p className="text-2xl font-semibold tracking-tight text-foreground">
+              {failureRate.toFixed(1)}%
+            </p>
+            <span className="text-sm text-muted-foreground">
+              {recentFailures} failures detected in recent queue
+            </span>
           </AlertDescription>
         </div>
       </Alert>
 
       <Alert className="flex items-start gap-3">
-        <Wifi className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        <Wifi className="size-5 text-muted-foreground" aria-hidden="true" />
         <div className="flex flex-col gap-1">
           <AlertTitle>Top Channel</AlertTitle>
           {topChannel ? (
             <>
-              <CardTitle><span className="capitalize">{topChannel[0].replace('_', ' ')}</span></CardTitle>
               <AlertDescription>
-                {topChannel[1]} notifications sent
+                <p className="text-2xl font-semibold tracking-tight text-foreground capitalize">
+                  {topChannel[0].replace(/_/g, ' ')}
+                </p>
+                <span className="text-sm text-muted-foreground">
+                  {topChannel[1]} notifications sent
+                </span>
               </AlertDescription>
             </>
           ) : (
@@ -72,7 +81,7 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
       </Alert>
 
       <Alert className="flex items-start gap-3">
-        <Inbox className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        <Inbox className="size-5 text-muted-foreground" aria-hidden="true" />
         <div className="flex flex-col gap-1">
           <AlertTitle>Status Breakdown</AlertTitle>
           <AlertDescription>Current notification statuses</AlertDescription>

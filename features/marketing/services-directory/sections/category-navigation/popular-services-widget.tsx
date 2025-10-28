@@ -3,15 +3,7 @@
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { TrendingUp } from 'lucide-react'
 
 interface PopularServicesProps {
@@ -40,7 +32,11 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
         </Item>
       </CardHeader>
       <CardContent>
-        <ItemGroup className="gap-2">
+        <div
+          className="group/item-group flex flex-col gap-2"
+          data-slot="item-group"
+          role="list"
+        >
           {services.map((service, index) => (
             <Item key={`${service.name}-${service.category}`} asChild variant="muted">
               <Link href={`/services/${service.categorySlug}`} className="no-underline">
@@ -60,7 +56,7 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
               </Link>
             </Item>
           ))}
-        </ItemGroup>
+        </div>
       </CardContent>
     </Card>
   )

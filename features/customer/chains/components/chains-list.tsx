@@ -33,23 +33,25 @@ export function ChainsList({ chains }: ChainsListProps) {
   if (chains.length === 0) {
     return (
       <Card>
-        <CardContent className="p-6">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Building2 className="h-6 w-6" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>No salon chains yet</EmptyTitle>
-              <EmptyDescription>
-                You haven't followed any salon chains. Explore salons to discover popular chains.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button asChild>
-                <Link href="/customer/salons">Browse salons</Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
+        <CardContent>
+          <div className="p-6">
+            <Empty>
+              <EmptyMedia variant="icon">
+                <Building2 className="size-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle>No salon chains yet</EmptyTitle>
+                <EmptyDescription>
+                  You haven't followed any salon chains. Explore salons to discover popular chains.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <Button asChild>
+                  <Link href="/customer/salons">Browse salons</Link>
+                </Button>
+              </EmptyContent>
+            </Empty>
+          </div>
         </CardContent>
       </Card>
     )
@@ -60,7 +62,7 @@ export function ChainsList({ chains }: ChainsListProps) {
       <ItemGroup>
         <Item variant="muted" size="sm">
           <ItemMedia variant="icon">
-            <Building2 className="h-4 w-4" aria-hidden="true" />
+            <Building2 className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Salon chains</ItemTitle>

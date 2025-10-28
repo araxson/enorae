@@ -8,9 +8,11 @@ export async function MarketingExplorePage() {
   return (
     <main className="flex flex-col gap-10">
       <MarketingSection spacing="compact">
-        <Item className="items-center justify-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>Browse every verified salon on Enorae or filter inside the directory below.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>Browse every verified salon on Enorae or filter inside the directory below.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

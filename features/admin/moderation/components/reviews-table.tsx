@@ -13,7 +13,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { flagReview, unflagReview, deleteReview, featureReview } from '@/features/admin/moderation/api/mutations'
@@ -29,7 +28,6 @@ import {
 } from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
 import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
-import { ButtonGroup } from '@/components/ui/button-group'
 
 const EMPTY_MESSAGE = 'No reviews found'
 
@@ -159,7 +157,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
             </Item>
           </ItemGroup>
         </CardHeader>
-        <CardContent className="p-0">
+        <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
@@ -210,9 +208,7 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>{dialogContent?.['title']}</AlertDialogTitle>
             <AlertDialogDescription>{dialogContent?.['description']}</AlertDialogDescription>
-            <AlertDialogDescription className="mt-2">
-              Review by: {dialogContent?.reviewLabel}
-            </AlertDialogDescription>
+            <AlertDialogDescription>Review by: {dialogContent?.reviewLabel}</AlertDialogDescription>
           </AlertDialogHeader>
 
           {requiresReason ? (
@@ -238,21 +234,17 @@ export function ReviewsTable({ reviews, onViewDetail }: ReviewsTableProps) {
           ) : null}
 
           <AlertDialogFooter>
-            <ButtonGroup>
-              <AlertDialogCancel disabled={loadingId !== null}>Cancel</AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button onClick={handleAction} disabled={loadingId !== null} variant={dialog['type'] === 'delete' ? 'destructive' : 'default'}>
-                  {loadingId !== null ? (
-                    <>
-                      <Spinner className="size-4" />
-                      <span>Processing…</span>
-                    </>
-                  ) : (
-                    <span>Confirm</span>
-                  )}
-                </Button>
-              </AlertDialogAction>
-            </ButtonGroup>
+            <AlertDialogCancel disabled={loadingId !== null}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleAction} disabled={loadingId !== null}>
+              {loadingId !== null ? (
+                <>
+                  <Spinner className="mr-2 size-4" />
+                  <span>Processing…</span>
+                </>
+              ) : (
+                <span>Confirm</span>
+              )}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

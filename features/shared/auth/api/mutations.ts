@@ -1,5 +1,3 @@
-'use server'
-
 // Import and re-export all mutations from organized directory
 // Each mutation file has 'use server' directive, making them server actions
 export { login } from './mutations/login'

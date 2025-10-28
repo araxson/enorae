@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -21,9 +21,11 @@ export function Plans() {
       containerClassName="max-w-6xl"
       groupClassName="gap-10"
     >
-      <Item className="items-center justify-center text-center" variant="muted">
+      <Item variant="muted">
         <ItemContent>
-          <ItemTitle>{plansData.title}</ItemTitle>
+          <div className="flex flex-col items-center justify-center text-center">
+            <ItemTitle>{plansData.title}</ItemTitle>
+          </div>
         </ItemContent>
       </Item>
 
@@ -41,33 +43,41 @@ export function Plans() {
                 <Badge>Most popular</Badge>
               </div>
             ) : null}
-            <CardHeader className="space-y-2">
-              <CardTitle>{plan.name}</CardTitle>
-              <CardDescription>{plan.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-6">
-              <Item variant="muted">
-                <ItemContent>
-                  <ItemTitle>{plan.price}</ItemTitle>
-                  <ItemDescription>{plan.period}</ItemDescription>
-                </ItemContent>
-              </Item>
-              <div className="flex flex-col gap-2">
-                {plan.features.map((feature) => (
-                  <Item key={feature} variant="muted">
-                    <ItemMedia variant="icon">
-                      <Check className="size-4" aria-hidden="true" />
-                    </ItemMedia>
-                    <ItemContent>
-                      <ItemDescription>{feature}</ItemDescription>
-                    </ItemContent>
-                  </Item>
-                ))}
+            <CardHeader>
+              <div className="space-y-2">
+                <CardTitle>{plan.name}</CardTitle>
+                <CardDescription>{plan.description}</CardDescription>
               </div>
-              <Button className="w-full" variant={plan.highlighted ? 'default' : 'outline'}>
-                {plan.cta}
-              </Button>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-6">
+                <Item variant="muted">
+                  <ItemContent>
+                    <ItemTitle>{plan.price}</ItemTitle>
+                    <ItemDescription>{plan.period}</ItemDescription>
+                  </ItemContent>
+                </Item>
+                <div className="flex flex-col gap-2">
+                  {plan.features.map((feature) => (
+                    <Item key={feature} variant="muted">
+                      <ItemMedia variant="icon">
+                        <Check className="size-4" aria-hidden="true" />
+                      </ItemMedia>
+                      <ItemContent>
+                        <ItemDescription>{feature}</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  ))}
+                </div>
+              </div>
             </CardContent>
+            <CardFooter>
+              <div className="w-full">
+                <Button className="w-full" variant={plan.highlighted ? 'default' : 'outline'}>
+                  {plan.cta}
+                </Button>
+              </div>
+            </CardFooter>
           </Card>
         ))}
       </div>

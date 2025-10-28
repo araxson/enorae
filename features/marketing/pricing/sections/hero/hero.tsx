@@ -13,10 +13,7 @@ export function Hero() {
           <ItemDescription>Transparent plans with no hidden fees—choose what fits your salon.</ItemDescription>
         </ItemContent>
       </Item>
-      <ButtonGroup
-        aria-label="Pricing hero actions"
-        className="flex flex-wrap justify-center gap-2"
-      >
+      <ButtonGroup aria-label="Pricing hero actions">
         <Button asChild size="lg">
           <Link href="/signup">Start free trial</Link>
         </Button>

@@ -56,7 +56,7 @@ export function PerformanceOverviewCard({ services }: { services: ServicePerform
                     <p className="text-xs text-muted-foreground">Avg Rating</p>
                     <div className="flex items-center gap-1">
                       <p className="font-semibold">{service.avg_rating?.toFixed(1) || 'N/A'}</p>
-                      <Star className="h-4 w-4 text-star-filled" />
+                      <Star className="size-4 text-star-filled" />
                     </div>
                   </div>
                   <div>

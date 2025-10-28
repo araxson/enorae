@@ -4,18 +4,17 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import type { SessionSecuritySnapshot } from '@/features/admin/session-security/api/queries'
 import { ActivitySquare, ShieldCheck, ShieldX, TriangleAlert } from 'lucide-react'
+import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { SessionSecurityTable } from './session-security-table'
 
 interface SessionSecurityClientProps {
@@ -30,126 +29,54 @@ export function SessionSecurityClient({ snapshot }: SessionSecurityClientProps) 
       ? snapshot.records
       : snapshot.records.filter((r) => r.risk_level === selectedRisk)
 
+  const summaryCards = [
+    {
+      key: 'total',
+      icon: ActivitySquare,
+      title: 'Total Sessions',
+      value: snapshot.totalCount.toLocaleString(),
+      helper: 'Active user sessions',
+    },
+    {
+      key: 'critical',
+      icon: ShieldX,
+      title: 'Critical Risk',
+      value: snapshot.criticalCount.toLocaleString(),
+      valueAdornment: <Badge variant="destructive">Critical</Badge>,
+      helper: 'Require immediate action',
+    },
+    {
+      key: 'high',
+      icon: TriangleAlert,
+      title: 'High Risk',
+      value: snapshot.highRiskCount.toLocaleString(),
+      valueAdornment: <Badge variant="outline">High risk</Badge>,
+      helper: 'Monitor closely',
+    },
+    {
+      key: 'mfa',
+      icon: ShieldCheck,
+      title: 'MFA Enabled',
+      value: snapshot.mfaEnabledCount.toLocaleString(),
+      valueAdornment: <Badge variant="secondary">MFA</Badge>,
+      helper: 'Protected sessions',
+    },
+  ] as const
+
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <ActivitySquare className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Total Sessions</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.totalCount}</CardTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>Active user sessions</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <ShieldX className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Critical Risk</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.criticalCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="destructive">Critical</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Require immediate action</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <TriangleAlert className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>High Risk</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.highRiskCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="outline">High risk</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Monitor closely</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>MFA Enabled</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.mfaEnabledCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="secondary">MFA</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Protected sessions</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
+        {summaryCards.map(({ key, icon, ...card }) => {
+          const Icon = icon
+          return (
+            <AdminMetricCard
+              key={key}
+              icon={<Icon className="size-5" aria-hidden="true" />}
+              {...card}
+            />
+          )
+        })}
       </div>
 
       {/* Data Table */}
@@ -167,7 +94,7 @@ export function SessionSecurityClient({ snapshot }: SessionSecurityClientProps) 
           </ItemGroup>
         </CardHeader>
         <CardContent>
-          <ButtonGroup className="mb-4">
+          <ButtonGroup aria-label="Filter by risk level">
             <Button
               onClick={() => setSelectedRisk(null)}
               size="sm"

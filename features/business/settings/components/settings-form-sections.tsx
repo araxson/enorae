@@ -37,11 +37,16 @@ export function BookingStatusSection({ isAcceptingBookings, onToggle }: BookingS
       <AccordionTrigger>Booking Status</AccordionTrigger>
       <AccordionContent>
         <FieldSet className="flex flex-col gap-6 pt-4">
-          <Field orientation="horizontal">
-            <FieldLabel>Accept New Bookings</FieldLabel>
-            <FieldContent>
-              <Switch checked={isAcceptingBookings} onCheckedChange={onToggle} />
-              <FieldDescription>
+          <Field orientation="responsive">
+            <FieldLabel htmlFor="accept-new-bookings">Accept new bookings</FieldLabel>
+            <FieldContent className="flex flex-col items-start gap-2 @md/field-group:flex-row @md/field-group:items-center @md/field-group:justify-end @md/field-group:gap-4">
+              <Switch
+                id="accept-new-bookings"
+                checked={isAcceptingBookings}
+                onCheckedChange={onToggle}
+                aria-describedby="accept-new-bookings-description"
+              />
+              <FieldDescription id="accept-new-bookings-description">
                 Allow customers to book appointments online.
               </FieldDescription>
             </FieldContent>

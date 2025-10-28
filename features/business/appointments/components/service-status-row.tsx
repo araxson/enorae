@@ -35,7 +35,7 @@ export function ServiceStatusRow({
           </div>
         </div>
 
-        <ButtonGroup className="flex-1 justify-end md:flex-none">
+        <ButtonGroup aria-label="Service actions">
           {!isCancelled ? (
             <Button
               variant="outline"
@@ -69,13 +69,13 @@ export function ServiceStatusRow({
 function getStatusIcon(status: string | null) {
   switch (status) {
     case 'completed':
-      return <CheckCircle2 className="h-5 w-5 text-primary" />
+      return <CheckCircle2 className="size-5 text-primary" />
     case 'in_progress':
-      return <Clock className="h-5 w-5 text-secondary" />
+      return <Clock className="size-5 text-secondary" />
     case 'cancelled':
-      return <XCircle className="h-5 w-5 text-destructive" />
+      return <XCircle className="size-5 text-destructive" />
     default:
-      return <Circle className="h-5 w-5 text-muted-foreground/40" />
+      return <Circle className="size-5 text-muted-foreground/40" />
   }
 }
 

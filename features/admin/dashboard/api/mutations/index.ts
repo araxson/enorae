@@ -1,4 +1,3 @@
-'use server'
 
 // Re-export all mutation functions
 export { verifyUserEmail } from './verify-user-email'

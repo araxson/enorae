@@ -12,7 +12,14 @@ import {
 } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import type { CustomerMetrics } from '@/features/business/insights/api/queries'
 
@@ -26,19 +33,19 @@ interface CustomerListItemProps {
 const getSegmentIcon = (segment: string) => {
   switch (segment) {
     case 'VIP':
-      return <Crown className="h-4 w-4 text-accent" />
+      return <Crown className="size-4 text-accent" />
     case 'Loyal':
-      return <Heart className="h-4 w-4 text-destructive" />
+      return <Heart className="size-4 text-destructive" />
     case 'Regular':
-      return <Users className="h-4 w-4 text-secondary" />
+      return <Users className="size-4 text-secondary" />
     case 'At Risk':
-      return <AlertTriangle className="h-4 w-4 text-destructive" />
+      return <AlertTriangle className="size-4 text-destructive" />
     case 'New':
-      return <UserPlus className="h-4 w-4 text-primary" />
+      return <UserPlus className="size-4 text-primary" />
     case 'Churned':
-      return <UserX className="h-4 w-4 text-muted-foreground" />
+      return <UserX className="size-4 text-muted-foreground" />
     default:
-      return <Users className="h-4 w-4 text-muted-foreground" />
+      return <Users className="size-4 text-muted-foreground" />
   }
 }
 
@@ -50,55 +57,36 @@ export function CustomerListItem({
 }: CustomerListItemProps) {
   return (
     <Fragment>
-      <article className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
-        <div className="flex-1 space-y-2">
-          <div className="flex items-center gap-2">
-            <div className="font-semibold">{customer.customer_name}</div>
-            <Badge variant="outline" className="flex items-center gap-1">
-              {getSegmentIcon(customer.segment)}
+      <Item>
+        <ItemMedia variant="icon">
+          {getSegmentIcon(customer.segment)}
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>
+            {customer.customer_name}
+            <Badge variant="outline">
               {customer.segment}
             </Badge>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground md:grid-cols-4">
-            <div>
-              <span className="font-semibold">{customer.total_visits}</span> visits
-            </div>
-            <div>
-              <span className="font-semibold">
-                {formatCurrency(customer.lifetime_value)}
-              </span>{' '}
-              LTV
-            </div>
-            <div>
-              <span className="font-semibold">{customer.favorite_service_name}</span>{' '}
-              favorite
-            </div>
+          </ItemTitle>
+          <ItemDescription>
+            {customer.total_visits} visits • {formatCurrency(customer.lifetime_value)} LTV • {customer.favorite_service_name} favorite
             {customer.average_rating > 0 && (
-              <div className="flex items-center gap-1">
-                <Star className="h-3 w-3 fill-accent text-accent" />
-                <span className="font-semibold">
-                  {customer.average_rating.toFixed(1)}
-                </span>
-              </div>
+              <>
+                {' '}• <Star className="inline size-3 fill-accent text-accent" /> {customer.average_rating.toFixed(1)}
+              </>
             )}
-          </div>
-
-          <div className="text-xs text-muted-foreground">
-            Last visit: {new Date(customer.last_visit_date).toLocaleDateString()} •
-            Favorite staff: {customer.favorite_staff_name}
-          </div>
-
+          </ItemDescription>
+          <ItemDescription>
+            Last visit: {new Date(customer.last_visit_date).toLocaleDateString()} • Favorite staff: {customer.favorite_staff_name}
+          </ItemDescription>
           {customer.cancellation_rate > 20 && (
-            <Badge variant="destructive">
-              <span className="text-xs">
-                High cancellation rate ({formatPercentage(customer.cancellation_rate)})
-              </span>
+            <Badge variant="destructive" className="mt-2 w-fit">
+              High cancellation rate ({formatPercentage(customer.cancellation_rate)})
             </Badge>
           )}
-        </div>
-      </article>
-      {!isLast && <Separator />}
+        </ItemContent>
+      </Item>
+      {!isLast && <ItemSeparator />}
     </Fragment>
   )
 }

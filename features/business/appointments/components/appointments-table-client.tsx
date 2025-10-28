@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import {
   Empty,
@@ -16,13 +16,6 @@ import { confirmAppointment, cancelAppointment, completeAppointment } from '@/fe
 import { useAppointmentsFilter } from './appointments-table/use-appointments-filter'
 import { AppointmentsFilterControls } from './appointments-table/filter-controls'
 import { AppointmentsTableRow } from './appointments-table/table-row'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 interface AppointmentsTableClientProps {
   appointments: AppointmentWithDetails[]
@@ -41,7 +34,7 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
     return (
       <Empty>
         <EmptyMedia variant="icon">
-          <Calendar className="h-6 w-6" />
+          <Calendar className="size-6" />
         </EmptyMedia>
         <EmptyHeader>
           <EmptyTitle>No appointments yet</EmptyTitle>
@@ -59,28 +52,32 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="items-start justify-between gap-4">
-            <ItemContent>
-              <ItemTitle>Appointments</ItemTitle>
-            </ItemContent>
-            <ItemActions className="flex flex-col gap-3 md:flex-row md:items-center">
-              <AppointmentsFilterControls
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                statusFilter={statusFilter}
-                onStatusChange={setStatusFilter}
-              />
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Appointments</CardTitle>
+        <CardDescription>Filter and manage upcoming and recent bookings</CardDescription>
       </CardHeader>
       <CardContent>
-        {filteredAppointments.length === 0 ? (
-          <Table>
-            <TableBody>
+        <div className="mb-4">
+          <AppointmentsFilterControls
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            statusFilter={statusFilter}
+            onStatusChange={setStatusFilter}
+          />
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date & Time</TableHead>
+              <TableHead>Customer</TableHead>
+              <TableHead>Staff</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredAppointments.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5}>
+                <TableCell colSpan={5} className="h-24 text-center">
                   <Empty>
                     <EmptyHeader>
                       <EmptyTitle>No matching appointments</EmptyTitle>
@@ -89,21 +86,8 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
                   </Empty>
                 </TableCell>
               </TableRow>
-            </TableBody>
-          </Table>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date & Time</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Staff</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredAppointments.map((appointment) => (
+            ) : (
+              filteredAppointments.map((appointment) => (
                 <AppointmentsTableRow
                   key={appointment.id}
                   appointment={appointment}
@@ -111,10 +95,10 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
                   onComplete={handleComplete}
                   onCancel={handleCancel}
                 />
-              ))}
-            </TableBody>
-          </Table>
-        )}
+              ))
+            )}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   )

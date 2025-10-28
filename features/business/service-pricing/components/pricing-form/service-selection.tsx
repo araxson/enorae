@@ -62,7 +62,7 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
         <ItemHeader>
           <div className="flex items-center gap-2">
             <ItemMedia variant="icon">
-              <DollarSign className="h-4 w-4" aria-hidden="true" />
+              <DollarSign className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemTitle>Base Pricing</ItemTitle>
           </div>

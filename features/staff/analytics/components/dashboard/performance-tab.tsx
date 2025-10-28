@@ -21,14 +21,8 @@ export function PerformanceTab({ metrics }: PerformanceTabProps) {
     <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Appointment Statistics</CardTitle>
-                <CardDescription>Your appointment performance metrics</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Appointment Statistics</CardTitle>
+          <CardDescription>Your appointment performance metrics</CardDescription>
         </CardHeader>
         <CardContent>
           <ItemGroup className="gap-3">
@@ -70,14 +64,8 @@ export function PerformanceTab({ metrics }: PerformanceTabProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Performance Rates</CardTitle>
-                <CardDescription>Completion and cancellation metrics</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Performance Rates</CardTitle>
+          <CardDescription>Completion and cancellation metrics</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

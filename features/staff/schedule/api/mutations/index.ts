@@ -1,4 +1,3 @@
-'use server'
 
 // Schedule mutations
 export { createStaffSchedule } from './create'

@@ -36,41 +36,49 @@ export function RevenueByChain({ data }: RevenueByChainProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent>
         {data.length === 0 ? (
           <Empty>
             <EmptyHeader>
               <EmptyTitle>No chain revenue data available</EmptyTitle>
-              <EmptyDescription>Revenue metrics populate after chains process transactions.</EmptyDescription>
+              <EmptyDescription>
+                Revenue metrics populate after chains process transactions.
+              </EmptyDescription>
             </EmptyHeader>
           </Empty>
         ) : (
-          <ItemGroup className="divide-y">
-            {data.map((row) => (
-              <Item key={row.chainName} className="grid gap-3 p-4 md:grid-cols-2">
-                <ItemContent>
-                  <ItemTitle>{row.chainName}</ItemTitle>
-                  <ItemDescription className="text-xs text-muted-foreground">
-                    {row.salonCount} salons
-                  </ItemDescription>
-                </ItemContent>
-                <ItemContent>
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <span>Total revenue</span>
-                    <span className="font-semibold">{formatCurrency(row.totalRevenue)}</span>
-                  </div>
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <span>% of platform</span>
-                    <span>{((row.totalRevenue / totalRevenue) * 100).toFixed(1)}%</span>
-                  </div>
-                  <div className="flex flex-wrap justify-between gap-2">
-                    <span>Avg per salon</span>
-                    <span>{formatCurrency(row.totalRevenue / row.salonCount)}</span>
-                  </div>
-                </ItemContent>
-              </Item>
-            ))}
-          </ItemGroup>
+          <div className="divide-y">
+            <ItemGroup>
+              {data.map((row) => (
+                <Item key={row.chainName}>
+                  <ItemContent>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="flex flex-col gap-1">
+                        <ItemTitle>{row.chainName}</ItemTitle>
+                        <ItemDescription className="text-xs text-muted-foreground">
+                          {row.salonCount} salons
+                        </ItemDescription>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex flex-wrap justify-between gap-2">
+                          <span>Total revenue</span>
+                          <span className="font-semibold">{formatCurrency(row.totalRevenue)}</span>
+                        </div>
+                        <div className="flex flex-wrap justify-between gap-2">
+                          <span>% of platform</span>
+                          <span>{((row.totalRevenue / totalRevenue) * 100).toFixed(1)}%</span>
+                        </div>
+                        <div className="flex flex-wrap justify-between gap-2">
+                          <span>Avg per salon</span>
+                          <span>{formatCurrency(row.totalRevenue / row.salonCount)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </ItemContent>
+                </Item>
+              ))}
+            </ItemGroup>
+          </div>
         )}
       </CardContent>
     </Card>

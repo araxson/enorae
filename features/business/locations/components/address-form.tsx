@@ -85,7 +85,7 @@ export function AddressForm({ locationId, address, onSuccess }: Props) {
         <AdditionalInfoSection address={address} />
         <AddressValidation address={address} />
 
-        <ButtonGroup className="justify-end">
+        <ButtonGroup aria-label="Form actions">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? (
               <>

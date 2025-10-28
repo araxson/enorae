@@ -9,14 +9,7 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import { Kbd } from '@/components/ui/kbd'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { Search, Sparkles, X } from 'lucide-react'
 import { listingCopy } from './listing.data'
 
@@ -29,32 +22,40 @@ interface SearchHeaderProps {
 export function SearchHeader({ query, onQueryChange, onSearch }: SearchHeaderProps) {
   return (
     <header className="flex flex-col gap-4">
-      <ItemGroup className="gap-4">
-        <Item
-          className="flex-col items-center text-center sm:items-start sm:text-left"
-          variant="muted"
-        >
+      <div
+        className="group/item-group flex flex-col gap-4"
+        data-slot="item-group"
+        role="list"
+      >
+        <Item variant="muted">
           <ItemHeader>
-            <Badge variant="outline">
-              <Sparkles className="mr-2 h-4 w-4" aria-hidden="true" />
-              {listingCopy.badge}
-            </Badge>
+            <div className="flex w-full justify-center sm:justify-start">
+              <Badge variant="outline">
+                <Sparkles className="mr-2 size-4" aria-hidden="true" />
+                {listingCopy.badge}
+              </Badge>
+            </div>
           </ItemHeader>
           <ItemContent>
-            <ItemTitle>{listingCopy.title}</ItemTitle>
-            <ItemDescription>{listingCopy.description}</ItemDescription>
+            <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
+              <ItemTitle>{listingCopy.title}</ItemTitle>
+              <ItemDescription>{listingCopy.description}</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
-      </ItemGroup>
+      </div>
       <div className="flex flex-col gap-3 sm:flex-row">
         <InputGroup className="flex-1">
           <InputGroupAddon>
             <Search className="size-4" aria-hidden="true" />
           </InputGroupAddon>
           <InputGroupInput
+            type="search"
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder={listingCopy.searchPlaceholder}
+            aria-label="Search listings"
+            autoComplete="off"
           />
           {query ? (
             <InputGroupAddon align="inline-end">
@@ -70,18 +71,17 @@ export function SearchHeader({ query, onQueryChange, onSearch }: SearchHeaderPro
           ) : null}
         </InputGroup>
         <Button type="button" className="gap-2" onClick={onSearch}>
-          <Search className="h-4 w-4" aria-hidden="true" />
+          <Search className="size-4" aria-hidden="true" />
           {listingCopy.searchButton}
         </Button>
       </div>
-      <Item
-        className="w-full flex-col items-center text-center sm:w-auto sm:items-start sm:text-left"
-        variant="muted"
-      >
+      <Item variant="muted">
         <ItemContent>
-          <ItemDescription>
-            Press <Kbd>Enter</Kbd> to search instantly or refine your filters first.
-          </ItemDescription>
+          <div className="flex w-full flex-col items-center text-center sm:items-start sm:text-left">
+            <ItemDescription>
+              Press <Kbd>Enter</Kbd> to search instantly or refine your filters first.
+            </ItemDescription>
+          </div>
         </ItemContent>
       </Item>
     </header>

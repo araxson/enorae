@@ -52,7 +52,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Search className="h-4 w-4" aria-hidden="true" />
+              <Search className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Search &amp; filter</ItemTitle>
@@ -71,18 +71,23 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               <FieldContent>
                 <InputGroup>
                   <InputGroupAddon>
-                    <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                    <Search className="size-4 text-muted-foreground" aria-hidden="true" />
                   </InputGroupAddon>
                   <InputGroupInput
                     id="salon-search"
+                    type="search"
                     placeholder="Search salons..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    aria-label="Search salons"
+                    autoComplete="off"
                   />
-                  <InputGroupButton type="submit" className="gap-2">
-                    <Search className="h-4 w-4" aria-hidden="true" />
-                    Search
-                  </InputGroupButton>
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton type="submit" className="gap-2" aria-label="Submit search">
+                      <Search className="size-4" aria-hidden="true" />
+                      Search
+                    </InputGroupButton>
+                  </InputGroupAddon>
                 </InputGroup>
               </FieldContent>
             </Field>
@@ -91,7 +96,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
             <CollapsibleTrigger asChild>
               <Button variant="outline" className="w-full gap-2">
-                <SlidersHorizontal className="h-4 w-4" />
+                <SlidersHorizontal className="size-4" />
                 {isFiltersOpen ? 'Hide filters' : 'Show filters'}
               </Button>
             </CollapsibleTrigger>

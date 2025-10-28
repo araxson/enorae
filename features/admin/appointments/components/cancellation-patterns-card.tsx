@@ -21,45 +21,57 @@ const formatPercent = (value: number) => `${(value * 100).toFixed(1)}%`
 
 export function CancellationPatternsCard({ patterns }: CancellationPatternsCardProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <AlertTriangle className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Cancellation Patterns</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {patterns.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No cancellation hotspots detected</EmptyTitle>
-              <EmptyDescription>Patterns display once salons accumulate notable cancellation trends.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <ItemGroup className="space-y-2">
-            {patterns.slice(0, 6).map((pattern) => (
-              <Item key={pattern.label} variant="outline" className="flex-col items-start gap-2">
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <AlertTriangle className="size-4" />
+                </ItemMedia>
                 <ItemContent>
-                  <ItemTitle>{pattern.label}</ItemTitle>
-                  <ItemDescription>{pattern.description}</ItemDescription>
+                  <ItemTitle>Cancellation Patterns</ItemTitle>
                 </ItemContent>
-                <ItemActions>
-                  <Badge variant="outline">
-                    {pattern.count} · {formatPercent(pattern.share)}
-                  </Badge>
-                </ItemActions>
               </Item>
-            ))}
-          </ItemGroup>
-        )}
-      </CardContent>
-    </Card>
+            </ItemGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {patterns.length === 0 ? (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No cancellation hotspots detected</EmptyTitle>
+                  <EmptyDescription>
+                    Patterns display once salons accumulate notable cancellation trends.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="space-y-2">
+                <ItemGroup>
+                  {patterns.slice(0, 6).map((pattern) => (
+                    <Item key={pattern.label} variant="outline">
+                      <ItemContent>
+                        <div className="flex flex-col items-start gap-2">
+                          <ItemTitle>{pattern.label}</ItemTitle>
+                          <ItemDescription>{pattern.description}</ItemDescription>
+                        </div>
+                      </ItemContent>
+                      <ItemActions>
+                        <Badge variant="outline">
+                          {pattern.count} · {formatPercent(pattern.share)}
+                        </Badge>
+                      </ItemActions>
+                    </Item>
+                  ))}
+                </ItemGroup>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

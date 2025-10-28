@@ -23,7 +23,7 @@ export function FeaturedSalonsSection({
       <ItemGroup className="mb-4 items-center gap-2">
         <Item className="items-center gap-2">
           <ItemMedia variant="icon">
-            <Sparkles className="h-5 w-5 text-accent" />
+            <Sparkles className="size-5 text-accent" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Featured Salons</ItemTitle>

@@ -16,16 +16,15 @@ export async function BlockedTimesManagement() {
 
     return (
       <div className="mx-auto max-w-6xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
-        <Item variant="outline" className="flex-col gap-2">
+        <Item variant="outline">
           <ItemHeader>
-            <div className="flex flex-col gap-1">
-              <ItemTitle>Blocked times</ItemTitle>
-              <ItemDescription>
-                Manage blocked time slots to prevent bookings during specific periods.
-              </ItemDescription>
-            </div>
+            <ItemTitle>Blocked times</ItemTitle>
           </ItemHeader>
-          <ItemContent />
+          <ItemContent>
+            <ItemDescription>
+              Manage blocked time slots to prevent bookings during specific periods.
+            </ItemDescription>
+          </ItemContent>
         </Item>
 
         <div className="space-y-6">

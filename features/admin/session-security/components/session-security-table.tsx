@@ -158,7 +158,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                 <TableCell>
                   {record.security_flags.length > 0 ? (
                     <div className="flex items-center gap-1">
-                      <ShieldAlert className="h-4 w-4 text-destructive" />
+                      <ShieldAlert className="size-4 text-destructive" />
                       <Badge variant="destructive">{record.security_flags.length} flags</Badge>
                     </div>
                   ) : (
@@ -177,7 +177,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                         aria-label={`Open session actions for ${record.user_email ?? 'user'}`}
                         disabled={isLoading}
                       >
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreHorizontal className="size-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

@@ -2,7 +2,6 @@
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import {
   Activity,
@@ -34,6 +33,8 @@ interface OperationalMetricsDashboardProps {
   }
 }
 
+const metricValueClasses = 'text-2xl font-semibold leading-none tracking-tight'
+
 export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashboardProps) {
   const getUtilizationColor = (percentage: number) => {
     if (percentage >= 80) return 'text-primary'
@@ -45,7 +46,7 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
     <Item variant="outline" className="flex-col gap-6">
       <ItemHeader>
         <ItemMedia variant="icon">
-          <Gauge className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+          <Gauge className="size-5 text-muted-foreground" aria-hidden="true" />
         </ItemMedia>
         <ItemContent>
           <ItemTitle>Operational Metrics</ItemTitle>
@@ -57,42 +58,45 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
           {/* Utilization Metrics */}
           <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Alert className="flex flex-col gap-3">
-              <Activity className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <Activity className="size-5 text-muted-foreground" aria-hidden="true" />
               <div className="flex flex-col gap-2">
                 <AlertTitle>Capacity Utilization</AlertTitle>
-                <CardTitle>
-                  <span className={getUtilizationColor(metrics.capacityUtilization)}>
-                    {metrics.capacityUtilization}%
-                  </span>
-                </CardTitle>
+                <p
+                  className={cn(
+                    metricValueClasses,
+                    getUtilizationColor(metrics.capacityUtilization)
+                  )}
+                >
+                  {metrics.capacityUtilization}%
+                </p>
                 <Progress value={metrics.capacityUtilization} className="h-2" />
                 <AlertDescription>Overall capacity usage</AlertDescription>
               </div>
             </Alert>
 
             <Alert className="flex flex-col gap-3">
-              <Users className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <Users className="size-5 text-muted-foreground" aria-hidden="true" />
               <div className="flex flex-col gap-2">
                 <AlertTitle>Staff Utilization</AlertTitle>
-                <CardTitle>
-                  <span className={getUtilizationColor(metrics.staffUtilization)}>
-                    {metrics.staffUtilization}%
-                  </span>
-                </CardTitle>
+                <p
+                  className={cn(metricValueClasses, getUtilizationColor(metrics.staffUtilization))}
+                >
+                  {metrics.staffUtilization}%
+                </p>
                 <Progress value={metrics.staffUtilization} className="h-2" />
                 <AlertDescription>Staff productivity</AlertDescription>
               </div>
             </Alert>
 
             <Alert className="flex flex-col gap-3">
-              <Target className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <Target className="size-5 text-muted-foreground" aria-hidden="true" />
               <div className="flex flex-col gap-2">
                 <AlertTitle>Booking Fill Rate</AlertTitle>
-                <CardTitle>
-                  <span className={getUtilizationColor(metrics.bookingFillRate)}>
-                    {metrics.bookingFillRate}%
-                  </span>
-                </CardTitle>
+                <p
+                  className={cn(metricValueClasses, getUtilizationColor(metrics.bookingFillRate))}
+                >
+                  {metrics.bookingFillRate}%
+                </p>
                 <Progress value={metrics.bookingFillRate} className="h-2" />
                 <AlertDescription>Schedule efficiency</AlertDescription>
               </div>
@@ -104,7 +108,7 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
             <Item variant="outline" className="flex-col gap-3">
               <ItemHeader>
                 <ItemMedia variant="icon">
-                  <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                  <Clock className="size-5 text-muted-foreground" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>Average Wait Time</ItemTitle>
@@ -112,14 +116,14 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
                 </ItemContent>
               </ItemHeader>
               <ItemContent>
-                <CardTitle>{metrics.averageWaitTime} min</CardTitle>
+                <p className={metricValueClasses}>{metrics.averageWaitTime} min</p>
               </ItemContent>
             </Item>
 
             <Item variant="outline" className="flex-col gap-3">
               <ItemHeader>
                 <ItemMedia variant="icon">
-                  <Calendar className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                  <Calendar className="size-5 text-muted-foreground" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>Appointments/Day</ItemTitle>
@@ -127,7 +131,7 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
                 </ItemContent>
               </ItemHeader>
               <ItemContent>
-                <CardTitle>{metrics.appointmentsPerDay}</CardTitle>
+                <p className={metricValueClasses}>{metrics.appointmentsPerDay}</p>
               </ItemContent>
             </Item>
           </ItemGroup>
@@ -135,7 +139,7 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
           {/* Peak Hours */}
           {metrics.peakHours.length > 0 && (
             <Alert>
-              <TrendingUp className="h-4 w-4" />
+              <TrendingUp className="size-4" />
               <div className="flex flex-col gap-2">
                 <AlertTitle>Peak Hours</AlertTitle>
                 <AlertDescription>Busiest times of day</AlertDescription>
@@ -154,3 +158,4 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
     </Item>
   )
 }
+import { cn } from '@/lib/utils/index'

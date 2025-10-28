@@ -46,24 +46,29 @@ export function ProfileSearchPanel({
   }
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup className="gap-4">
-          <Item variant="muted">
-            <ItemContent>
-              <CardTitle>User Directory</CardTitle>
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+          <ItemGroup className="gap-4">
+            <Item variant="muted">
+              <ItemContent>
+                <CardTitle>User Directory</CardTitle>
             </ItemContent>
           </Item>
           <Item variant="muted" className="flex-1">
             <ItemContent>
               <InputGroup aria-label="Search profiles">
                 <InputGroupAddon>
-                  <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  <Search className="size-4 text-muted-foreground" aria-hidden="true" />
                 </InputGroupAddon>
                 <InputGroupInput
+                  type="search"
                   value={searchTerm}
                   onChange={handleChange}
                   placeholder="Search by name, email, or username"
+                  aria-label="Search profiles"
+                  autoComplete="off"
                 />
                 <InputGroupAddon align="inline-end">
                   {searchTerm ? (
@@ -73,7 +78,7 @@ export function ProfileSearchPanel({
                       size="icon-sm"
                       variant="ghost"
                     >
-                      <X className="h-4 w-4" aria-hidden="true" />
+                      <X className="size-4" aria-hidden="true" />
                     </InputGroupButton>
                   ) : null}
                 </InputGroupAddon>
@@ -81,22 +86,25 @@ export function ProfileSearchPanel({
             </ItemContent>
           </Item>
         </ItemGroup>
-      </CardHeader>
-      <CardContent className="flex h-full flex-col gap-4">
-        {isSearching && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Spinner />
-            Searching profiles…
-          </div>
-        )}
+        </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex h-full flex-col gap-4">
+            {isSearching && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Spinner />
+                Searching profiles…
+              </div>
+            )}
 
-        <Card>
-          <CardContent className="p-0">
-            <ScrollArea className="h-96">
-              {results.length === 0 ? (
-                <Empty>
-                  <EmptyHeader>
-                    <EmptyTitle>No profiles found</EmptyTitle>
+            <Card>
+              <CardContent>
+                <div className="-m-6">
+                  <ScrollArea className="h-96">
+                    {results.length === 0 ? (
+                      <Empty>
+                        <EmptyHeader>
+                          <EmptyTitle>No profiles found</EmptyTitle>
                     <EmptyDescription>Try adjusting the search query or filters to locate a user.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
@@ -147,10 +155,13 @@ export function ProfileSearchPanel({
                   })}
                 </ItemGroup>
               )}
-            </ScrollArea>
-          </CardContent>
-        </Card>
-      </CardContent>
-    </Card>
+                  </ScrollArea>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

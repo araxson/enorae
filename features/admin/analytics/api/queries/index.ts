@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Re-export all platform metrics queries
 export {
   getPlatformMetrics,

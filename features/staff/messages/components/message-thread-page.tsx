@@ -33,10 +33,10 @@ export async function MessageThreadPage({ threadId }: MessageThreadPageProps) {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-6">
-        <ButtonGroup className="w-fit">
+        <ButtonGroup aria-label="Navigation">
           <Button asChild variant="ghost" size="sm">
             <Link href="/staff/messages">
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="mr-2 size-4" />
               Back to Messages
             </Link>
           </Button>

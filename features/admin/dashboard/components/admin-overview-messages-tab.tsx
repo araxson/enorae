@@ -1,13 +1,23 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { MessageSquare } from 'lucide-react'
 import type { MessagesOverview } from './admin-overview-types'
 import { safeFormatDate } from './admin-overview-utils'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemFooter,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -34,9 +44,15 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
         <CardContent>
           <Empty>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <MessageSquare aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No messages yet</EmptyTitle>
-              <EmptyDescription>Inbound and outbound messages will appear as conversations start.</EmptyDescription>
+              <EmptyDescription>
+                Inbound and outbound messages will appear as conversations start.
+              </EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>Activate messaging channels to begin tracking conversations.</EmptyContent>
           </Empty>
         </CardContent>
       </Card>
@@ -61,18 +77,24 @@ export function AdminOverviewMessagesTab({ messages }: MessagesTabProps) {
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-80 pr-4">
-          <ItemGroup className="space-y-3">
+          <ItemGroup>
             {rows.map((msg) => (
-              <Item key={msg['id']} variant="outline" className="flex-col gap-3">
-                <ItemContent>
+              <Item key={msg['id']} variant="outline" size="sm" className="flex-col gap-3">
+                <ItemHeader>
                   <ItemTitle>{msg['subject'] || 'No subject'}</ItemTitle>
+                </ItemHeader>
+                <ItemContent>
                   <ItemDescription>
                     {msg['customer_name'] || 'Unknown customer'} • {msg['salon_name'] || 'Unknown salon'}
                   </ItemDescription>
-                  <span className="text-xs text-muted-foreground">
-                    {safeFormatDate(msg['created_at'], 'MMM d, HH:mm')}
-                  </span>
                 </ItemContent>
+                <ItemFooter>
+                  <ItemDescription>
+                    <time className="text-xs text-muted-foreground" dateTime={msg['created_at'] || undefined}>
+                      {safeFormatDate(msg['created_at'], 'MMM d, HH:mm')}
+                    </time>
+                  </ItemDescription>
+                </ItemFooter>
               </Item>
             ))}
           </ItemGroup>

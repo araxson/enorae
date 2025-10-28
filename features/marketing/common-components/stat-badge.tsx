@@ -2,7 +2,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -17,15 +16,17 @@ interface StatBadgeProps {
 
 export function StatBadge({ icon: Icon, value, label }: StatBadgeProps) {
   return (
-    <Item className="flex-col items-center text-center" variant="outline">
-      <ItemHeader className="flex flex-col items-center gap-3">
-        <ItemMedia variant="icon">
-          <Icon className="size-5" aria-hidden="true" />
-        </ItemMedia>
-        <ItemTitle>{value}</ItemTitle>
-      </ItemHeader>
+    <Item variant="outline">
       <ItemContent>
-        <ItemDescription>{label}</ItemDescription>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <ItemMedia variant="icon">
+            <Icon className="size-5" aria-hidden="true" />
+          </ItemMedia>
+          <div className="flex flex-col">
+            <ItemTitle>{value}</ItemTitle>
+            <ItemDescription>{label}</ItemDescription>
+          </div>
+        </div>
       </ItemContent>
     </Item>
   )

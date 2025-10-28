@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Commission stats
 export {
   getStaffCommission,

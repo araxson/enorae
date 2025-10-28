@@ -92,7 +92,7 @@ export function CustomerList({
                         </div>
                         {customer.average_rating > 0 ? (
                           <div className="flex items-center gap-1">
-                            <Star className="h-3 w-3 fill-star-filled text-star-filled" />
+                            <Star className="size-3 fill-star-filled text-star-filled" />
                             <span className="font-medium">{customer.average_rating.toFixed(1)}</span>
                           </div>
                         ) : null}

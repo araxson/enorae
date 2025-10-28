@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -9,13 +9,6 @@ import { Badge } from '@/components/ui/badge'
 import { sendTestNotification } from '@/features/business/notifications/api/mutations'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { useToast } from '@/lib/hooks/use-toast'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 type NotificationPreviewPanelProps = {
   templates: NotificationTemplate[]
@@ -66,18 +59,10 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Test &amp; Preview</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>
-                Send yourself a notification preview to confirm template quality and delivery
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Test &amp; Preview</CardTitle>
+        <CardDescription>
+          Send yourself a notification preview to confirm template quality and delivery
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
@@ -97,15 +82,17 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
 
         {template ? (
           <Card>
-            <CardHeader className="flex flex-row items-center gap-2 pb-2">
-              <Badge variant="outline">
-                {formatEventLabel(template.event)}
-              </Badge>
-              <Badge variant="secondary">
-                {formatChannelLabel(template.channel)}
-              </Badge>
+            <CardHeader>
+              <CardTitle>{template.name}</CardTitle>
+              <CardDescription>
+                {formatEventLabel(template.event)} · {formatChannelLabel(template.channel)}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 pt-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="outline">{formatEventLabel(template.event)}</Badge>
+                <Badge variant="secondary">{formatChannelLabel(template.channel)}</Badge>
+              </div>
               {template.subject ? (
                 <p className="text-sm font-semibold">{template.subject}</p>
               ) : null}

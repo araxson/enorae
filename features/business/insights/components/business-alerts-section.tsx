@@ -48,7 +48,7 @@ export function BusinessAlertsSection({ alerts }: BusinessAlertsSectionProps) {
               key={alert.id}
               variant={alert.severity === 'critical' ? 'destructive' : 'default'}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="size-4" />
               <AlertTitle>{alert.metric}</AlertTitle>
               <AlertDescription>
                 <div className="flex items-center justify-between">

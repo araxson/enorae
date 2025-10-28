@@ -7,9 +7,11 @@ export function PrivacyPage() {
   return (
     <main className="flex flex-col gap-16">
       <MarketingSection spacing="compact">
-        <Item className="flex-col items-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>Understand how Enorae protects your information across the platform.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>Understand how Enorae protects your information across the platform.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

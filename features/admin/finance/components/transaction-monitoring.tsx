@@ -37,22 +37,22 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
         <StatCard
           label="Total Transactions"
           value={metrics.totalTransactions.toString()}
-          icon={<Activity className="h-4 w-4" />}
+          icon={<Activity className="size-4" />}
         />
         <StatCard
           label="Unique Salons"
           value={metrics.uniqueSalons.toString()}
-          icon={<Building2 className="h-4 w-4" />}
+          icon={<Building2 className="size-4" />}
         />
         <StatCard
           label="Unique Customers"
           value={metrics.uniqueCustomers.toString()}
-          icon={<Users className="h-4 w-4" />}
+          icon={<Users className="size-4" />}
         />
         <StatCard
           label="Payment Methods"
           value={Object.keys(metrics.paymentMethods).length.toString()}
-          icon={<CreditCard className="h-4 w-4" />}
+          icon={<CreditCard className="size-4" />}
         />
       </div>
 
@@ -66,8 +66,9 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
             </Item>
           </ItemGroup>
         </CardHeader>
-        <CardContent className="p-0">
-          <Table>
+        <CardContent>
+          <div className="-m-6">
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Date</TableHead>
@@ -119,7 +120,8 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
                 ))
               )}
             </TableBody>
-          </Table>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

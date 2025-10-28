@@ -11,12 +11,16 @@ import { missionData } from './mission.data'
 export function Mission() {
   return (
     <MarketingSection spacing="compact">
-      <Item className="mx-auto flex-col items-center text-center" variant="muted">
+      <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>{missionData.title}</ItemTitle>
+          <div className="w-full text-center">
+            <ItemTitle>{missionData.title}</ItemTitle>
+          </div>
         </ItemHeader>
         <ItemContent>
-          <ItemDescription>{missionData.description}</ItemDescription>
+          <div className="flex flex-col items-center text-center">
+            <ItemDescription>{missionData.description}</ItemDescription>
+          </div>
         </ItemContent>
       </Item>
 

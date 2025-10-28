@@ -62,9 +62,9 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
               {rules.length} {rules.length === 1 ? 'rule' : 'rules'} configured
             </p>
           </div>
-          <ButtonGroup>
+          <ButtonGroup aria-label="Rule management">
             <Button onClick={handleCreate} disabled={servicesWithoutRules.length === 0}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="size-4 mr-2" />
               Add Rule
             </Button>
           </ButtonGroup>
@@ -74,7 +74,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Timer className="h-8 w-8" aria-hidden="true" />
+                <Timer className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No booking rules</EmptyTitle>
               <EmptyDescription>
@@ -82,9 +82,9 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              <ButtonGroup>
+              <ButtonGroup aria-label="Create rule">
                 <Button onClick={handleCreate}>
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="size-4 mr-2" />
                   Create First Rule
                 </Button>
               </ButtonGroup>
@@ -104,7 +104,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                   <div className="flex flex-col gap-3">
                     {rule.duration_minutes !== null && rule.duration_minutes !== undefined ? (
                       <div className="flex items-center gap-3">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <Clock className="size-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Duration:</span>
                         <span>{rule.duration_minutes} min</span>
                       </div>
@@ -112,7 +112,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
                     {rule.buffer_minutes !== null && rule.buffer_minutes !== undefined ? (
                       <div className="flex items-center gap-3">
-                        <Timer className="h-4 w-4 text-muted-foreground" />
+                        <Timer className="size-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Buffer:</span>
                         <span>{rule.buffer_minutes} min</span>
                       </div>
@@ -120,7 +120,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
                     {rule.min_advance_booking_hours !== null && rule.min_advance_booking_hours !== undefined ? (
                       <div className="flex items-center gap-3">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <Calendar className="size-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Min Advance:</span>
                         <span>{rule.min_advance_booking_hours}h</span>
                       </div>
@@ -128,7 +128,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
 
                     {rule.max_advance_booking_days !== null && rule.max_advance_booking_days !== undefined ? (
                       <div className="flex items-center gap-3">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <Calendar className="size-4 text-muted-foreground" />
                         <span className="text-muted-foreground">Max Advance:</span>
                         <span>{rule.max_advance_booking_days} days</span>
                       </div>
@@ -136,7 +136,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
                   </div>
                 </ItemContent>
                 <ItemActions>
-                  <ButtonGroup className="w-full">
+                  <ButtonGroup aria-label="Rule actions">
                     <Button variant="outline" size="sm" onClick={() => handleEdit(rule)} className="w-full">
                       Edit Rule
                     </Button>

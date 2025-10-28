@@ -72,7 +72,7 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
 
         {error ? <FieldError>{error}</FieldError> : null}
 
-        <ButtonGroup className="w-full sm:w-auto">
+        <ButtonGroup aria-label="Actions">
           <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
             {isSubmitting ? (
               <>
@@ -81,7 +81,7 @@ export function MessageForm({ threadId, onSuccess }: MessageFormProps) {
               </>
             ) : (
               <>
-                <Send className="h-4 w-4" />
+                <Send className="size-4" />
                 <span>Send Message</span>
               </>
             )}

@@ -24,7 +24,7 @@ export function DashboardHeader({ isVIP, loyaltyTier }: DashboardHeaderProps) {
         {isVIP ? (
           <>
             <ItemMedia variant="icon">
-              <Crown className="h-4 w-4" aria-hidden="true" />
+              <Crown className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>VIP member</ItemTitle>

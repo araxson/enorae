@@ -73,7 +73,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Building2 className="h-8 w-8" aria-hidden="true" />
+            <Building2 className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No salon chains found</EmptyTitle>
           <EmptyDescription>Chains appear here once created.</EmptyDescription>
@@ -111,7 +111,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
                   size="sm"
                   onClick={() => router.push(`/business/chains/${chain['id']}`)}
                 >
-                  <Eye className="h-4 w-4 mr-2" />
+                  <Eye className="size-4 mr-2" />
                   View
                 </Button>
                 {onEdit ? (
@@ -120,7 +120,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
                     size="sm"
                     onClick={() => onEdit(chain)}
                   >
-                    <Edit2 className="h-4 w-4 mr-2" />
+                    <Edit2 className="size-4 mr-2" />
                     Edit
                   </Button>
                 ) : null}
@@ -129,7 +129,7 @@ export function ChainsList({ chains, onEdit }: ChainsListProps) {
                   size="sm"
                   onClick={() => setDeleteId(chain['id'])}
                 >
-                  <Trash2 className="h-4 w-4 mr-2" />
+                  <Trash2 className="size-4 mr-2" />
                   Delete
                 </Button>
               </ButtonGroup>

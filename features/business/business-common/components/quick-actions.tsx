@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Calendar, Users, Scissors, Package, Settings, Sparkles } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from '@/components/ui/button-group'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -13,13 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 const primaryActions = [
   {
     href: '/business/appointments',
@@ -54,37 +47,33 @@ export function QuickActions() {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <ItemContent>
-              <ItemTitle>Quick Actions</ItemTitle>
-            </ItemContent>
-            <ItemActions>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    More shortcuts
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <Link href="/business/time-off">Request time off</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/business/settings/account">Update account settings</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/business/reviews">Respond to reviews</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Quick Actions</CardTitle>
+        <CardDescription>Jump into daily operations and growth tasks.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <ButtonGroup className="w-full">
+          <div className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  More shortcuts
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href="/business/time-off">Request time off</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/business/settings/account">Update account settings</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/business/reviews">Respond to reviews</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <ButtonGroup aria-label="Core operations">
             <ButtonGroupText className="hidden sm:flex">
               Core operations
             </ButtonGroupText>
@@ -93,7 +82,7 @@ export function QuickActions() {
                 <TooltipTrigger asChild>
                   <Button asChild variant="outline" className="h-auto flex-1 flex-col gap-2 py-4">
                     <Link href={action.href}>
-                      <action.icon className="h-5 w-5" />
+                      <action.icon className="size-5" />
                       <span className="text-xs font-medium">{action.label}</span>
                     </Link>
                   </Button>
@@ -105,7 +94,7 @@ export function QuickActions() {
 
           <Separator />
 
-          <ButtonGroup className="w-full">
+          <ButtonGroup aria-label="Growth and settings">
             <ButtonGroupText className="hidden sm:flex">
               Growth
             </ButtonGroupText>
@@ -114,7 +103,7 @@ export function QuickActions() {
                 <TooltipTrigger asChild>
                   <Button asChild variant="outline" className="h-auto flex-1 flex-col gap-2 py-4">
                     <Link href={action.href}>
-                      <action.icon className="h-5 w-5" />
+                      <action.icon className="size-5" />
                       <span className="text-xs font-medium">{action.label}</span>
                     </Link>
                   </Button>
@@ -127,7 +116,7 @@ export function QuickActions() {
               <TooltipTrigger asChild>
                 <Button asChild variant="outline" className="h-auto flex-1 flex-col gap-2 py-4">
                   <Link href="/business/settings/salon">
-                    <Settings className="h-5 w-5" />
+                    <Settings className="size-5" />
                     <span className="text-xs font-medium">Settings</span>
                   </Link>
                 </Button>

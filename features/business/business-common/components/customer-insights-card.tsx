@@ -55,26 +55,26 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
           <ItemGroup className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
               {
-                icon: <Users className="h-5 w-5 text-muted-foreground" />,
+                icon: <Users className="size-5 text-muted-foreground" />,
                 title: data.totalCustomers,
                 description: 'Total Customers',
               },
               {
-                icon: <UserPlus className="h-5 w-5 text-primary" />,
+                icon: <UserPlus className="size-5 text-primary" />,
                 title: data.newCustomers,
                 description: `New (${newCustomerPercentage}%)`,
               },
               {
-                icon: <Repeat className="h-5 w-5 text-secondary" />,
+                icon: <Repeat className="size-5 text-secondary" />,
                 title: data.returningCustomers,
                 description: 'Returning',
               },
               {
                 icon:
                   data.retentionRate >= 50 ? (
-                    <TrendingUp className="h-5 w-5 text-primary" />
+                    <TrendingUp className="size-5 text-primary" />
                   ) : (
-                    <TrendingDown className="h-5 w-5 text-destructive" />
+                    <TrendingDown className="size-5 text-destructive" />
                   ),
                 title: `${data.retentionRate.toFixed(1)}%`,
                 description: 'Retention Rate',
@@ -101,7 +101,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
               <ItemHeader className="items-center justify-between">
                 <ItemTitle>Avg Lifetime Value</ItemTitle>
                 <ItemActions className="flex-none">
-                  <DollarSign className="h-5 w-5 text-muted-foreground" />
+                  <DollarSign className="size-5 text-muted-foreground" />
                 </ItemActions>
               </ItemHeader>
               <ItemContent className="space-y-1">
@@ -114,7 +114,7 @@ export function CustomerInsightsCard({ data }: CustomerInsightsCardProps) {
               <ItemHeader className="items-center justify-between">
                 <ItemTitle>Avg Order Value</ItemTitle>
                 <ItemActions className="flex-none">
-                  <DollarSign className="h-5 w-5 text-muted-foreground" />
+                  <DollarSign className="size-5 text-muted-foreground" />
                 </ItemActions>
               </ItemHeader>
               <ItemContent className="space-y-1">

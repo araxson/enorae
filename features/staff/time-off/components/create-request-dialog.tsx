@@ -72,7 +72,7 @@ export function CreateRequestDialog({
           <DialogHeader>
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <CalendarCheck2 className="h-4 w-4" aria-hidden="true" />
+                <CalendarCheck2 className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <DialogTitle>Request time off</DialogTitle>
@@ -93,7 +93,7 @@ export function CreateRequestDialog({
           />
 
           <DialogFooter>
-            <ButtonGroup className="justify-end">
+            <ButtonGroup aria-label="Dialog actions">
               <Button
                 type="button"
                 variant="outline"

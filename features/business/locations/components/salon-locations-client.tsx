@@ -29,7 +29,7 @@ export function SalonLocationsClient({ initialLocations }: SalonLocationsClientP
     <div className="space-y-6">
       <div className="flex items-center justify-end">
         <Button onClick={() => setIsFormOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="size-4 mr-2" />
           Add Location
         </Button>
       </div>

@@ -12,7 +12,6 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
@@ -37,10 +36,30 @@ type Props = {
 }
 
 const metrics = [
-  { key: 'total_referrals', title: 'Total referrals', icon: Users },
-  { key: 'successful_referrals', title: 'Successful', icon: Check },
-  { key: 'pending_referrals', title: 'Pending', icon: MessageSquare },
-  { key: 'total_bonus_points', title: 'Bonus points', icon: Gift },
+  {
+    key: 'total_referrals',
+    title: 'Total referrals',
+    description: 'Friends invited',
+    icon: Users,
+  },
+  {
+    key: 'successful_referrals',
+    title: 'Successful referrals',
+    description: 'Completed signups',
+    icon: Check,
+  },
+  {
+    key: 'pending_referrals',
+    title: 'Pending referrals',
+    description: 'Awaiting responses',
+    icon: MessageSquare,
+  },
+  {
+    key: 'total_bonus_points',
+    title: 'Bonus points',
+    description: 'Rewards earned',
+    icon: Gift,
+  },
 ] as const
 
 export function ReferralDashboard({ referralCode, stats, history }: Props) {
@@ -49,10 +68,10 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
       <Card>
         <CardContent className="p-6">
           <Empty>
-            <EmptyMedia variant="icon">
-              <Users className="h-6 w-6" aria-hidden="true" />
-            </EmptyMedia>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Users className="size-6" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>Referrals coming soon</EmptyTitle>
               <EmptyDescription>
                 Invite rewards aren&apos;t available yet. We&apos;ll notify you once referrals
@@ -75,20 +94,16 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           const Icon = metric.icon
           return (
             <Card key={metric.key}>
-              <CardHeader className="gap-3">
-                <ItemGroup>
-                  <Item variant="muted" size="sm">
-                    <ItemMedia variant="icon">
-                      <Icon className="h-5 w-5" aria-hidden="true" />
-                    </ItemMedia>
-                    <ItemContent>
-                      <CardDescription>{metric.title}</CardDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
-                <CardTitle>{stats[metric.key]}</CardTitle>
+              <CardHeader>
+                <CardTitle>{metric.title}</CardTitle>
+                <CardDescription>{metric.description}</CardDescription>
               </CardHeader>
-              <CardContent />
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <p className="text-2xl font-semibold text-foreground">{stats[metric.key]}</p>
+                  <Icon className="size-5 text-muted-foreground" aria-hidden="true" />
+                </div>
+              </CardContent>
             </Card>
           )
         })}
@@ -102,30 +117,22 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <CardDescription>{referralCode.code}</CardDescription>
+          <p className="font-mono text-lg font-semibold text-foreground">{referralCode.code}</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <CardTitle>Referral history</CardTitle>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <History className="h-5 w-5" aria-hidden="true" />
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Referral history</CardTitle>
+          <CardDescription>Track invite activity as the program rolls out.</CardDescription>
         </CardHeader>
         <CardContent>
           {history.length === 0 ? (
             <Empty>
-              <EmptyMedia variant="icon">
-                <History className="h-6 w-6" aria-hidden="true" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <History className="size-6" aria-hidden="true" />
+                </EmptyMedia>
                 <EmptyTitle>No referrals recorded yet</EmptyTitle>
                 <EmptyDescription>
                   Share your code when the program launches to start earning rewards.
@@ -143,7 +150,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
                         {formatDistanceToNow(new Date(referral.created_at), { addSuffix: true })}
                       </ItemDescription>
                     </ItemContent>
-                    <ItemActions className="flex-none">
+                    <ItemActions>
                       <Badge variant={referral.status === 'completed' ? 'default' : 'secondary'}>
                         {referral.status === 'completed' ? 'Completed' : 'Pending'}
                       </Badge>

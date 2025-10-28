@@ -42,7 +42,8 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
   if (isLoading) {
     return (
       <Card>
-        <CardHeader className="pb-4">
+        <CardHeader>
+          <div className="pb-4">
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
@@ -50,11 +51,14 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
               </ItemContent>
             </Item>
           </ItemGroup>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <Skeleton className="h-16 w-full" />
-          <Skeleton className="h-4 w-1/2" />
-          <Skeleton className="h-4 w-1/3" />
+        <CardContent>
+          <div className="space-y-4">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-4 w-1/2" />
+            <Skeleton className="h-4 w-1/3" />
+          </div>
         </CardContent>
       </Card>
     )
@@ -63,7 +67,8 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
   if (!profile) {
     return (
       <Card>
-        <CardHeader className="pb-2">
+        <CardHeader>
+          <div className="pb-2">
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
@@ -71,6 +76,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
               </ItemContent>
             </Item>
           </ItemGroup>
+          </div>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -88,7 +94,8 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
 
   return (
     <Card>
-      <CardHeader className="pb-4">
+      <CardHeader>
+        <div className="pb-4">
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
@@ -96,10 +103,12 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
             </ItemContent>
           </Item>
         </ItemGroup>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
-          <Avatar className="h-16 w-16">
+      <CardContent>
+        <div className="space-y-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center">
+          <Avatar className="size-16">
             <AvatarImage src={metadata.avatarUrl ?? undefined} />
             <AvatarFallback className="bg-muted text-lg font-semibold">
               {getInitials(metadata.fullName, summary.email)}
@@ -111,7 +120,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
                 {metadata.fullName || summary.fullName || 'No name on record'}
               </p>
               <p className="text-sm text-muted-foreground flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5" />
+                <Mail className="size-3.5" />
                 {summary.email ?? 'No email available'}
               </p>
               {summary.username && (
@@ -130,7 +139,7 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
                 </Badge>
               ) : (
                 <Badge variant="secondary">
-                  <ShieldQuestion className="mr-1 h-3 w-3" />
+                  <ShieldQuestion className="mr-1 size-3" />
                   Role missing
                 </Badge>
               )}
@@ -176,48 +185,49 @@ export function ProfileSummaryCard({ profile, isLoading }: ProfileSummaryCardPro
           </Item>
         </ItemGroup>
 
-        {roles.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-muted-foreground">Active roles</p>
-            <div className="flex flex-wrap gap-2">
-              {roles.map((role) => (
-                <Badge key={role.id} variant="outline">
-                  <UserCircle2 className="mr-1 h-3 w-3" />
-                  {role.role.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
-                </Badge>
-              ))}
+          {roles.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-semibold text-muted-foreground">Active roles</p>
+              <div className="flex flex-wrap gap-2">
+                {roles.map((role) => (
+                  <Badge key={role.id} variant="outline">
+                    <UserCircle2 className="mr-1 size-3" />
+                    {role.role.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {(metadata.tags.length > 0 || metadata.interests.length > 0) && (
-          <div className="grid gap-4 sm:grid-cols-2">
-            {metadata.tags.length > 0 && (
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground">Tags</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {metadata.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">
-                      {tag}
-                    </Badge>
-                  ))}
+          {(metadata.tags.length > 0 || metadata.interests.length > 0) && (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {metadata.tags.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground">Tags</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {metadata.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            {metadata.interests.length > 0 && (
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground">Interests</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {metadata.interests.map((interest) => (
-                    <Badge key={interest} variant="secondary">
-                      {interest}
-                    </Badge>
-                  ))}
+              )}
+              {metadata.interests.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground">Interests</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {metadata.interests.map((interest) => (
+                      <Badge key={interest} variant="secondary">
+                        {interest}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   )

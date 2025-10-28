@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatDateSimple as formatDate } from '@/lib/utils/date-time'
 import type { TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
@@ -26,14 +26,10 @@ interface TeamTimeOffCalendarProps {
 export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps) {
   return (
     <div className="flex flex-col gap-6">
-      <ItemGroup>
-        <Item variant="muted">
-          <ItemContent>
-            <CardTitle>Team Time Off Calendar</CardTitle>
-            <ItemDescription>Track upcoming leave for everyone on the team.</ItemDescription>
-          </ItemContent>
-        </Item>
-      </ItemGroup>
+      <div className="space-y-1">
+        <h2 className="text-xl font-semibold">Team Time Off Calendar</h2>
+        <p className="text-sm text-muted-foreground">Track upcoming leave for everyone on the team.</p>
+      </div>
       {entries.length === 0 ? (
         <Card>
           <CardContent>
@@ -55,21 +51,17 @@ export function TeamTimeOffCalendarSection({ entries }: TeamTimeOffCalendarProps
             return (
               <Card key={`${entry.staff_id}-${entry.start_at}`}>
                 <CardHeader>
-                  <ItemGroup>
-                    <Item>
-                      <ItemContent>
-                        <ItemTitle>{entry.staff_name}</ItemTitle>
-                        {entry.staff_title ? (
-                          <ItemDescription>{entry.staff_title}</ItemDescription>
-                        ) : null}
-                      </ItemContent>
-                      <ItemActions>
-                        <Badge variant={entry.status === 'approved' ? 'default' : 'secondary'}>
-                          {entry.status}
-                        </Badge>
-                      </ItemActions>
-                    </Item>
-                  </ItemGroup>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <CardTitle>{entry.staff_name}</CardTitle>
+                      {entry.staff_title ? (
+                        <CardDescription>{entry.staff_title}</CardDescription>
+                      ) : null}
+                    </div>
+                    <Badge variant={entry.status === 'approved' ? 'default' : 'secondary'}>
+                      {entry.status}
+                    </Badge>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <ItemGroup>

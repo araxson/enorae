@@ -74,7 +74,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <MessageCircle className="h-8 w-8" aria-hidden="true" />
+            <MessageCircle className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No messages found</EmptyTitle>
           <EmptyDescription>Start a conversation to see it listed here.</EmptyDescription>
@@ -111,7 +111,7 @@ export function MessageThreadList({ threads }: MessageThreadListProps) {
                       aria-label="Archive thread"
                       disabled={isArchiving}
                     >
-                      <Archive className="h-4 w-4" />
+                      <Archive className="size-4" />
                     </Button>
                   </ButtonGroup>
                 </ItemActions>

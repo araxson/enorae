@@ -74,7 +74,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
         <div className="flex w-full items-start justify-between">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4" aria-hidden="true" />
+              <User className="size-4" aria-hidden="true" />
               <ItemTitle>{request['staff_name'] || 'Unknown Staff'}</ItemTitle>
             </div>
             {request['staff_title'] ? <ItemDescription>{request['staff_title']}</ItemDescription> : null}
@@ -103,7 +103,7 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
 
           {request['duration_days'] ? (
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
               <span>{request['duration_days']} day(s)</span>
             </div>
           ) : null}

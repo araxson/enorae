@@ -64,7 +64,7 @@ export async function BusinessDashboardPage() {
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <ShieldAlert className="h-8 w-8" aria-hidden="true" />
+                  <ShieldAlert className="size-8" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>Access denied</EmptyTitle>
                 <EmptyDescription>
@@ -91,7 +91,7 @@ export async function BusinessDashboardPage() {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Store className="h-8 w-8" aria-hidden="true" />
+                <Store className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No Salon Found</EmptyTitle>
               <EmptyDescription>

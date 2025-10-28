@@ -17,9 +17,11 @@ export function SalonProfileView({ salon, services = [] }: SalonProfileViewProps
       containerClassName="max-w-6xl"
       groupClassName="gap-8"
     >
-      <Item className="flex-col" variant="muted">
+      <Item variant="muted">
         <ItemContent>
-          <ItemDescription>Overview of {salon['name'] || 'this salon'}, services, and booking details.</ItemDescription>
+          <div className="flex flex-col">
+            <ItemDescription>Overview of {salon['name'] || 'this salon'}, services, and booking details.</ItemDescription>
+          </div>
         </ItemContent>
       </Item>
       <SalonHero salon={salon} />

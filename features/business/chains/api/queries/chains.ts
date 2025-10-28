@@ -42,17 +42,18 @@ async function getChainSalonRows(
   }
 
   const { data: salonRows, error: salonRowsError } = await supabase
-    .from('salons_view')
+    .schema('organization')
+    .from('salons')
     .select('id, name')
     .eq('chain_id', chainId)
+    .eq('owner_id', ownerId)
     .is('deleted_at', null)
-    .returns<Pick<SalonViewRow, 'id' | 'name'>[]>()
+    .returns<Pick<SalonRecord, 'id' | 'name'>[]>()
 
   if (salonRowsError) throw salonRowsError
 
-  return (salonRows ?? []).filter(
-    (row): row is { id: string; name: string } => Boolean(row.id)
-  )
+  return (salonRows ?? [])
+    .filter((row): row is { id: string; name: string } => Boolean(row.id))
 }
 
 /**

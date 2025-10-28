@@ -25,7 +25,7 @@ export function ProfileSidebar({ profile, metadata }: ProfileSidebarProps) {
     <Card>
       <CardContent>
         <div className="flex flex-col items-center gap-6 py-6 text-center">
-          <Avatar className="h-24 w-24">
+          <Avatar className="size-24">
             <AvatarImage src={metadata?.avatar_url || profile.avatar || undefined} />
             <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
           </Avatar>

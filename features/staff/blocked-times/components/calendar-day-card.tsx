@@ -44,7 +44,7 @@ export function CalendarDayCard({ day, blockedTimes, appointments }: CalendarDay
               {appointments.slice(0, 3).map((apt) => (
                 <div key={apt.id} className="rounded bg-info/10 p-2">
                   <div className="flex items-start gap-1">
-                    <Clock className="h-3 w-3 mt-0.5 flex-shrink-0 text-info" />
+                    <Clock className="size-3 mt-0.5 flex-shrink-0 text-info" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-muted-foreground truncate">
                         {apt.start_time ? format(parseISO(apt.start_time), 'h:mm a') : 'TBD'}
@@ -69,7 +69,7 @@ export function CalendarDayCard({ day, blockedTimes, appointments }: CalendarDay
               {blockedTimes.slice(0, 2).map((bt) => (
                 <div key={bt.id} className="rounded bg-destructive/10 p-2">
                   <div className="flex items-start gap-1">
-                    <Ban className="h-3 w-3 mt-0.5 flex-shrink-0 text-destructive" />
+                    <Ban className="size-3 mt-0.5 flex-shrink-0 text-destructive" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-muted-foreground truncate">
                         {bt.start_time ? format(parseISO(bt.start_time), 'h:mm a') : 'TBD'}

@@ -4,18 +4,17 @@ import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/types'
 import { AlertTriangle, Gauge, ShieldX } from 'lucide-react'
+import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { RateLimitTable } from './rate-limit-table'
 
 interface RateLimitClientProps {
@@ -30,96 +29,46 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
       ? snapshot.records
       : snapshot.records.filter((r) => r.status === selectedStatus)
 
+  const summaryCards = [
+    {
+      key: 'total',
+      icon: Gauge,
+      title: 'Total Tracked',
+      value: snapshot.totalCount.toLocaleString(),
+      helper: 'Active rate limit entries',
+    },
+    {
+      key: 'blocked',
+      icon: ShieldX,
+      title: 'Currently Blocked',
+      value: snapshot.blockedCount.toLocaleString(),
+      valueAdornment: <Badge variant="destructive">Blocked</Badge>,
+      helper: 'Identifiers at limit',
+    },
+    {
+      key: 'warning',
+      icon: AlertTriangle,
+      title: 'Warnings',
+      value: snapshot.warningCount.toLocaleString(),
+      valueAdornment: <Badge variant="secondary">Warning</Badge>,
+      helper: 'Approaching limit',
+    },
+  ] as const
+
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <Gauge className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Total Tracked</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.totalCount}</CardTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>Active rate limit entries</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <ShieldX className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Currently Blocked</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.blockedCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="destructive">Blocked</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Identifiers at limit</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemMedia variant="icon">
-                  <AlertTriangle className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>Warnings</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardHeader>
-          <CardContent>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-2">
-                <ItemContent>
-                  <CardTitle>{snapshot.warningCount}</CardTitle>
-                </ItemContent>
-                <ItemActions>
-                  <Badge variant="secondary">Warning</Badge>
-                </ItemActions>
-                <ItemContent>
-                  <ItemDescription>Approaching limit</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-          </CardContent>
-        </Card>
+        {summaryCards.map(({ key, icon, ...card }) => {
+          const Icon = icon
+          return (
+            <AdminMetricCard
+              key={key}
+              icon={<Icon className="size-5" aria-hidden="true" />}
+              {...card}
+            />
+          )
+        })}
       </div>
 
       {/* Data Table */}
@@ -137,7 +86,7 @@ export function RateLimitClient({ snapshot }: RateLimitClientProps) {
           </ItemGroup>
         </CardHeader>
         <CardContent>
-          <ButtonGroup className="mb-4">
+          <ButtonGroup aria-label="Filter by status">
             <Button
               onClick={() => setSelectedStatus(null)}
               size="sm"

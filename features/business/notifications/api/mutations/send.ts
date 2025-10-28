@@ -2,7 +2,8 @@
 import 'server-only'
 
 import type { Json } from '@/lib/types/database.types'
-import { notificationSchema, getSupabaseClient, ensureRecipientAuthorized, revalidateNotifications, notificationIdsSchema } from './helpers'
+import { getSupabaseClient, ensureRecipientAuthorized } from './helpers'
+import { notificationSchema, revalidateNotifications, notificationIdsSchema } from './utilities'
 
 export async function sendNotification(input: {
   userId: string

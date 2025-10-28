@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import { SessionList } from '.'
 import type { Session } from '../types'
 
@@ -14,20 +13,14 @@ export function SessionsFeatureContent({ sessions, currentSessionId }: SessionsF
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Active Sessions</CardTitle>
-              </ItemContent>
-              {sessions.filter((s) => s['is_active']).length > 1 ? (
-                <ItemActions>
-                  <Button variant="destructive" size="sm">
-                    Revoke All Other Sessions
-                  </Button>
-                </ItemActions>
-              ) : null}
-            </Item>
-          </ItemGroup>
+          <div className="flex items-center justify-between gap-4">
+            <CardTitle>Active Sessions</CardTitle>
+            {sessions.filter((s) => s['is_active']).length > 1 ? (
+              <Button variant="destructive" size="sm">
+                Revoke All Other Sessions
+              </Button>
+            ) : null}
+          </div>
         </CardHeader>
       </Card>
 

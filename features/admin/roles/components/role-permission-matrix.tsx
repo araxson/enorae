@@ -64,30 +64,32 @@ export function RolePermissionMatrix({ roles }: RolePermissionMatrixProps) {
           Aggregated permissions across active assignments. Use row actions to refine individual role permissions.
         </p>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {roleEntries.map(([role, permissions]) => (
-          <div key={role} className="space-y-2">
-            <div className="text-sm font-medium capitalize">{role.replace(/_/g, ' ')}</div>
-            {permissions.size === 0 ? (
-              <Empty>
-                <EmptyHeader>
-                  <EmptyTitle>No custom permissions</EmptyTitle>
-                  <EmptyDescription>Assign granular capabilities to extend this role beyond defaults.</EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            ) : (
-              <ItemGroup>
-                {Array.from(permissions).map((permission) => (
-                  <Item key={permission} variant="outline">
-                    <ItemContent>
-                      <ItemTitle>{permission}</ItemTitle>
-                    </ItemContent>
-                  </Item>
-                ))}
-              </ItemGroup>
-            )}
-          </div>
-        ))}
+      <CardContent>
+        <div className="space-y-4">
+          {roleEntries.map(([role, permissions]) => (
+            <div key={role} className="space-y-2">
+              <div className="text-sm font-medium capitalize">{role.replace(/_/g, ' ')}</div>
+              {permissions.size === 0 ? (
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyTitle>No custom permissions</EmptyTitle>
+                    <EmptyDescription>Assign granular capabilities to extend this role beyond defaults.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              ) : (
+                <ItemGroup>
+                  {Array.from(permissions).map((permission) => (
+                    <Item key={permission} variant="outline">
+                      <ItemContent>
+                        <ItemTitle>{permission}</ItemTitle>
+                      </ItemContent>
+                    </Item>
+                  ))}
+                </ItemGroup>
+              )}
+            </div>
+          ))}
+        </div>
       </CardContent>
     </Card>
   )

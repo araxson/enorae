@@ -21,15 +21,15 @@ export function DigestInfo({ digest, details }: { digest: string; details: strin
         <div className="flex items-center gap-6">
           <p className="font-mono">Error ID: {digest}</p>
           <ButtonGroup>
-            <Button variant="ghost" size="sm" onClick={handleCopy} className="h-7 gap-1">
+            <Button variant="ghost" size="sm" onClick={handleCopy}>
               {copied ? (
                 <>
-                  <Check className="h-3 w-3" />
+                  <Check className="size-3" />
                   Copied
                 </>
               ) : (
                 <>
-                  <Copy className="h-3 w-3" />
+                  <Copy className="size-3" />
                   Copy
                 </>
               )}

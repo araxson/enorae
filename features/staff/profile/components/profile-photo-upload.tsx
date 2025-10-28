@@ -12,11 +12,6 @@ import {
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 interface ProfilePhotoUploadProps {
   currentPhotoUrl?: string | null
@@ -59,14 +54,8 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Profile Photo</CardTitle>
-              <CardDescription>Upload a clear photo so clients recognize you.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Profile Photo</CardTitle>
+        <CardDescription>Upload a clear photo so clients recognize you.</CardDescription>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-4">
@@ -74,7 +63,7 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
           <Field>
             <FieldContent>
               <div className="flex items-center gap-6">
-                <Avatar className="h-24 w-24">
+                <Avatar className="size-24">
                   <AvatarImage src={currentPhotoUrl || undefined} alt={userName} />
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
@@ -98,7 +87,7 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
                         <>Uploading...</>
                       ) : (
                         <>
-                          <Camera className="h-4 w-4 mr-2" />
+                          <Camera className="size-4 mr-2" />
                           Change Photo
                         </>
                       )}

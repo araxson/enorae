@@ -56,7 +56,7 @@ export async function DatabaseHealth() {
       <section className="py-12 md:py-16 lg:py-20">
         <div className="container mx-auto">
           <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="size-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>
               {error instanceof Error ? error.message : 'Failed to load database health data'}

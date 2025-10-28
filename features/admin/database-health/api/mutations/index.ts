@@ -1,4 +1,3 @@
-'use server'
 
 /**
  * Database health mutations

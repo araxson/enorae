@@ -3,7 +3,6 @@
 import { useEffect, useId, useState } from 'react'
 import { Search, X } from 'lucide-react'
 
-import { Input } from '@/components/ui/input'
 import {
   InputGroup,
   InputGroupAddon,
@@ -68,14 +67,16 @@ export function SearchInput({
       <FieldContent>
         <InputGroup>
           <InputGroupAddon>
-            <Search className="h-4 w-4" aria-hidden="true" />
+            <Search className="size-4" aria-hidden="true" />
           </InputGroupAddon>
           <InputGroupInput
             id={resolvedId}
+            type="search"
             aria-label={accessibleLabel}
             value={internalValue}
             onChange={(e) => setInternalValue(e.target.value)}
             placeholder={placeholder}
+            autoComplete="off"
           />
           {internalValue ? (
             <InputGroupAddon align="inline-end">
@@ -86,7 +87,7 @@ export function SearchInput({
                 onClick={handleClear}
                 aria-label="Clear search"
               >
-                <X className="h-4 w-4" />
+                <X className="size-4" />
               </InputGroupButton>
             </InputGroupAddon>
           ) : null}

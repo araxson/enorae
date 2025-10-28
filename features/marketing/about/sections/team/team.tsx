@@ -11,25 +11,27 @@ import { teamData } from './team.data'
 export function Team() {
   return (
     <MarketingSection spacing="compact">
-      <Item className="mx-auto flex-col items-center text-center" variant="muted">
+      <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>{teamData.title}</ItemTitle>
+          <div className="w-full text-center">
+            <ItemTitle>{teamData.title}</ItemTitle>
+          </div>
         </ItemHeader>
         <ItemContent>
-          <ItemDescription>{teamData.description}</ItemDescription>
+          <div className="flex flex-col items-center text-center">
+            <ItemDescription>{teamData.description}</ItemDescription>
+          </div>
         </ItemContent>
       </Item>
 
       <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
         {teamData.stats.map((stat) => (
-          <Item
-            key={stat.label}
-            className="flex-col items-center text-center"
-            variant="outline"
-          >
+          <Item key={stat.label} variant="outline">
             <ItemContent>
-              <ItemTitle>{stat.value}</ItemTitle>
-              <ItemDescription>{stat.label}</ItemDescription>
+              <div className="flex flex-col items-center text-center">
+                <ItemTitle>{stat.value}</ItemTitle>
+                <ItemDescription>{stat.label}</ItemDescription>
+              </div>
             </ItemContent>
           </Item>
         ))}

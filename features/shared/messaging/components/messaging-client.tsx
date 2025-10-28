@@ -26,20 +26,22 @@ export function MessagingClient({ threads, salonId }: MessagingClientProps) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <ItemGroup className="gap-2">
-          <Item variant="muted" className="flex-col items-start gap-2">
-            <ItemContent>
-              <ItemTitle>Messages</ItemTitle>
-              <ItemDescription>
-                Communicate with salons about your appointments.
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <div className="flex flex-col gap-2">
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemTitle>Messages</ItemTitle>
+                <ItemDescription>
+                  Communicate with salons about your appointments.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
         {salonId && (
-          <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2">
-            <Plus className="h-4 w-4" />
-            New conversation
+          <Button onClick={() => setIsCreateDialogOpen(true)}>
+            <Plus className="size-4" />
+            <span>New conversation</span>
           </Button>
         )}
       </div>

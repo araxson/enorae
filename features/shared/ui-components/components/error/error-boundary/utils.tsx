@@ -35,12 +35,12 @@ export const ERROR_DESCRIPTIONS: Record<ErrorType, string> = {
 export function getErrorIcon(type: ErrorType) {
   switch (type) {
     case 'network':
-      return <WifiOff className="h-5 w-5 text-destructive" />
+      return <WifiOff className="size-5 text-destructive" />
     case 'auth':
-      return <ShieldAlert className="h-5 w-5 text-destructive" />
+      return <ShieldAlert className="size-5 text-destructive" />
     case 'server':
-      return <ServerCrash className="h-5 w-5 text-destructive" />
+      return <ServerCrash className="size-5 text-destructive" />
     default:
-      return <AlertCircle className="h-5 w-5 text-destructive" />
+      return <AlertCircle className="size-5 text-destructive" />
   }
 }

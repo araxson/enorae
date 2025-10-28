@@ -1,17 +1,10 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { format } from 'date-fns'
 import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 type RedemptionTrendChartProps = {
   trend: ReturnType<typeof buildCouponEffectiveness>['trend']
@@ -21,16 +14,8 @@ export function RedemptionTrendChart({ trend }: RedemptionTrendChartProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Redemption Trend</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>Daily coupon usage and discount impact</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Redemption Trend</CardTitle>
+        <CardDescription>Daily coupon usage and discount impact</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer

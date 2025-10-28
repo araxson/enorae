@@ -77,7 +77,7 @@ export function PasswordForm() {
             <FieldGroup className="gap-6">
               {success && (
                 <Alert>
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="size-4" />
                 <AlertTitle>Password updated</AlertTitle>
                 <AlertDescription>Password updated successfully</AlertDescription>
               </Alert>
@@ -85,7 +85,7 @@ export function PasswordForm() {
 
               {error && (
                 <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
+                  <AlertCircle className="size-4" />
                   <AlertTitle>Update failed</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
@@ -102,6 +102,7 @@ export function PasswordForm() {
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       required
                       disabled={isSubmitting}
+                      autoComplete="current-password"
                     />
                     <InputGroupAddon align="inline-end">
                       <InputGroupButton
@@ -109,8 +110,9 @@ export function PasswordForm() {
                         disabled={isSubmitting}
                         variant="ghost"
                         size="icon-sm"
+                        aria-label={showCurrent ? 'Hide current password' : 'Show current password'}
                       >
-                        {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showCurrent ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </InputGroupButton>
                     </InputGroupAddon>
                   </InputGroup>
@@ -129,6 +131,7 @@ export function PasswordForm() {
                       required
                       minLength={8}
                       disabled={isSubmitting}
+                      autoComplete="new-password"
                     />
                     <InputGroupAddon align="inline-end">
                       <InputGroupButton
@@ -136,8 +139,9 @@ export function PasswordForm() {
                         disabled={isSubmitting}
                         variant="ghost"
                         size="icon-sm"
+                        aria-label={showNew ? 'Hide new password' : 'Show new password'}
                       >
-                        {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showNew ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </InputGroupButton>
                     </InputGroupAddon>
                   </InputGroup>
@@ -157,6 +161,7 @@ export function PasswordForm() {
                       required
                       minLength={8}
                       disabled={isSubmitting}
+                      autoComplete="new-password"
                     />
                     <InputGroupAddon align="inline-end">
                       <InputGroupButton
@@ -164,8 +169,9 @@ export function PasswordForm() {
                         disabled={isSubmitting}
                         variant="ghost"
                         size="icon-sm"
+                        aria-label={showConfirm ? 'Hide confirm password' : 'Show confirm password'}
                       >
-                        {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showConfirm ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </InputGroupButton>
                     </InputGroupAddon>
                   </InputGroup>

@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Re-export all public queries and types for clean imports
 export * from './customers'
 export * from './segments'

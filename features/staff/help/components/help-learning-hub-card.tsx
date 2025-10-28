@@ -26,14 +26,8 @@ export function HelpLearningHubCard({ tracks }: HelpLearningHubCardProps) {
   return (
     <Card id="learning-hub">
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Learning hub</CardTitle>
-              <CardDescription>Follow tailored training tracks to sharpen your craft.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Learning hub</CardTitle>
+        <CardDescription>Follow tailored training tracks to sharpen your craft.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

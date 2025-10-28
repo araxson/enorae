@@ -66,7 +66,7 @@ export function MetricsSummary({ totals, performance }: MetricsSummaryProps) {
       {items.map(({ title, icon: Icon, value, helper, badge }) => (
         <Item key={title} variant="outline" className="flex-col items-start gap-4">
           <ItemMedia variant="icon">
-            <Icon className="h-4 w-4" />
+            <Icon className="size-4" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>{title}</ItemTitle>

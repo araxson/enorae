@@ -25,13 +25,6 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-} from '@/components/ui/item'
-
 interface SupportContactSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -41,15 +34,9 @@ export function SupportContactSheet({ open, onOpenChange }: SupportContactSheetP
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="flex flex-col">
-        <SheetHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <SheetTitle>Schedule a callback</SheetTitle>
-                <ItemDescription>Select availability and preferred channel.</ItemDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+        <SheetHeader className="text-left">
+          <SheetTitle>Schedule a callback</SheetTitle>
+          <SheetDescription>Select availability and preferred channel.</SheetDescription>
         </SheetHeader>
 
         <ScrollArea className="flex-1">
@@ -92,7 +79,7 @@ export function SupportContactSheet({ open, onOpenChange }: SupportContactSheetP
         </ScrollArea>
 
         <SheetFooter>
-          <ButtonGroup className="justify-end">
+          <ButtonGroup aria-label="Actions">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>

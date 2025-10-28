@@ -11,7 +11,7 @@ export function TodayHoursBanner({ hours }: TodayHoursBannerProps) {
 
   return (
     <Alert>
-      <Clock className="h-4 w-4" />
+      <Clock className="size-4" />
       <AlertTitle>Today&apos;s hours</AlertTitle>
       <AlertDescription>
         {hours['is_closed'] ? (

@@ -1,6 +1,5 @@
 import { type ComponentProps, type ReactNode } from 'react'
 
-import { ItemGroup } from '@/components/ui/item'
 import { cn } from '@/lib/utils'
 
 const spacingMap = {
@@ -36,9 +35,7 @@ export function MarketingSection({
           containerClassName,
         )}
       >
-        <ItemGroup className={cn('gap-8', groupClassName)}>
-          {children}
-        </ItemGroup>
+        <div className={cn('flex flex-col gap-8', groupClassName)}>{children}</div>
       </div>
     </section>
   )

@@ -9,15 +9,7 @@ import {
   UserX,
 } from 'lucide-react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 import type { InsightsSummary } from '@/features/business/insights/api/queries'
@@ -39,37 +31,19 @@ export function CustomerSegmentationCard({ summary }: CustomerSegmentationCardPr
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Customer Segmentation</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>
-                Customer distribution across different segments
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Customer Segmentation</CardTitle>
+        <CardDescription>Customer distribution across different segments</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
           {segmentCards.map(({ label, value, icon: Icon, iconClass }) => (
             <Card key={label}>
-              <CardHeader className="items-center justify-center pb-2">
-                <ItemGroup className="items-center justify-center">
-                  <Item className="flex-col items-center gap-2">
-                    <ItemMedia>
-                      <Icon className={cn('h-6 w-6', iconClass)} aria-hidden="true" />
-                    </ItemMedia>
-                    <ItemContent>
-                      <ItemTitle>{label}</ItemTitle>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
+              <CardHeader>
+                <CardTitle>{label}</CardTitle>
               </CardHeader>
-              <CardContent className="pt-0 flex items-center justify-center">
-                <CardTitle>{value}</CardTitle>
+              <CardContent className="flex flex-col items-center gap-2 pt-0">
+                <Icon className={cn('size-6', iconClass)} aria-hidden="true" />
+                <p className="text-2xl font-semibold leading-none tracking-tight">{value}</p>
               </CardContent>
             </Card>
           ))}

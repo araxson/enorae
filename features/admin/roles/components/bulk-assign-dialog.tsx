@@ -140,7 +140,7 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <div className="flex items-center gap-2">
-            <Users className="h-5 w-5" />
+            <Users className="size-5" />
             <DialogTitle>Bulk assign roles</DialogTitle>
           </div>
           <DialogDescription>
@@ -151,46 +151,55 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
         <div className="flex flex-col gap-8">
           {rows.map((row, index) => (
             <Card key={index}>
-              <CardHeader className="pb-2">
-                <ItemGroup>
-                  <Item className="flex-col items-start gap-1">
-                    <ItemContent>
-                      <ItemTitle>Assignment {index + 1}</ItemTitle>
-                    </ItemContent>
-                    <ItemContent>
-                      <ItemDescription>Configure user, role, and optional salon.</ItemDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-0">
-                <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                  <Field className="flex-1">
-                    <FieldLabel htmlFor={`user-${index}`}>User ID *</FieldLabel>
-                    <FieldContent>
-                      <Input
-                        id={`user-${index}`}
-                        value={row.userId}
-                        onChange={(event) => handleRowChange(index, { userId: event.target.value })}
-                        placeholder="User UUID"
-                      />
-                    </FieldContent>
-                  </Field>
-                  <Button variant="ghost" size="sm" onClick={() => handleRemoveRow(index)} disabled={rows.length === 1}>
-                    Remove
-                  </Button>
+              <CardHeader>
+                <div className="pb-2">
+                  <ItemGroup>
+                    <Item className="flex-col items-start gap-1">
+                      <ItemContent>
+                        <ItemTitle>Assignment {index + 1}</ItemTitle>
+                      </ItemContent>
+                      <ItemContent>
+                        <ItemDescription>Configure user, role, and optional salon.</ItemDescription>
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
                 </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4 pt-0">
+                  <div className="flex flex-col gap-6 md:flex-row md:items-center">
+                    <Field className="flex-1">
+                      <FieldLabel htmlFor={`user-${index}`}>User ID *</FieldLabel>
+                      <FieldContent>
+                        <Input
+                          id={`user-${index}`}
+                          value={row.userId}
+                          onChange={(event) => handleRowChange(index, { userId: event.target.value })}
+                          placeholder="User UUID"
+                        />
+                      </FieldContent>
+                    </Field>
+                    <Button variant="ghost" size="sm" onClick={() => handleRemoveRow(index)} disabled={rows.length === 1}>
+                      Remove
+                    </Button>
+                  </div>
 
-                <RoleSelector
-                  role={row.role}
-                  onRoleChange={(value) => handleRowChange(index, { role: value })}
-                  templateId={row.templateId}
-                  onTemplateChange={(template) => handleTemplateSelect(index, template)}
-                />
+                  <RoleSelector
+                    role={row.role}
+                    onRoleChange={(value) => handleRowChange(index, { role: value })}
+                    templateId={row.templateId}
+                    onTemplateChange={(template) => handleTemplateSelect(index, template)}
+                  />
 
-                {row.role && ROLES_NEEDING_SALON.includes(row.role) && (
-                  <SalonSelector salons={salons} value={row.salonId} onChange={(value) => handleRowChange(index, { salonId: value })} required />
-                )}
+                  {row.role && ROLES_NEEDING_SALON.includes(row.role) && (
+                    <SalonSelector
+                      salons={salons}
+                      value={row.salonId}
+                      onChange={(value) => handleRowChange(index, { salonId: value })}
+                      required
+                    />
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}

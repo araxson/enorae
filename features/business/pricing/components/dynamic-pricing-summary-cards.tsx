@@ -1,18 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
-import {
-  TrendingUp,
-  DollarSign,
-  Zap,
-} from 'lucide-react'
+import { DollarSign, TrendingUp, Zap } from 'lucide-react'
 
 interface PricingRule {
   adjustment_type: 'discount' | 'surge'
@@ -31,75 +20,54 @@ export function DynamicPricingSummaryCards({
   servicesCount,
   formatCurrency,
 }: DynamicPricingSummaryCardsProps) {
+  const surgeCount = rules.filter((rule) => rule.adjustment_type === 'surge').length
+  const discountCount = rules.filter((rule) => rule.adjustment_type === 'discount').length
+
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <Card>
         <CardHeader>
-          <div className="pb-2">
-            <ItemGroup>
-              <Item className="items-center justify-between gap-2">
-                <ItemContent>
-                  <ItemTitle>Active Rules</ItemTitle>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Zap className="h-4 w-4 text-accent" />
-                </ItemActions>
-              </Item>
-            </ItemGroup>
-          </div>
+          <CardTitle>Active Rules</CardTitle>
+          <CardDescription>Pricing adjustments currently applied.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{rules.length}</CardTitle>
-          <CardDescription>
-            {rules.filter(r => r.adjustment_type === 'surge').length} surges,{' '}
-            {rules.filter(r => r.adjustment_type === 'discount').length} discounts
-          </CardDescription>
+        <CardContent className="space-y-1">
+          <div className="flex items-start justify-between">
+            <p className="text-3xl font-semibold tracking-tight">{rules.length}</p>
+            <Zap className="size-4 text-primary" aria-hidden="true" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {surgeCount} surges · {discountCount} discounts
+          </p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <div className="pb-2">
-            <ItemGroup>
-              <Item className="items-center justify-between gap-2">
-                <ItemContent>
-                  <ItemTitle>Revenue Potential</ItemTitle>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                </ItemActions>
-              </Item>
-            </ItemGroup>
-          </div>
+          <CardTitle>Revenue Potential</CardTitle>
+          <CardDescription>Projected monthly lift from dynamic pricing.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{formatCurrency(totalPotentialRevenue)}</CardTitle>
-          <CardDescription>
-            Estimated monthly increase
-          </CardDescription>
+        <CardContent className="space-y-1">
+          <div className="flex items-start justify-between">
+            <p className="text-3xl font-semibold tracking-tight">
+              {formatCurrency(totalPotentialRevenue)}
+            </p>
+            <TrendingUp className="size-4 text-primary" aria-hidden="true" />
+          </div>
+          <p className="text-sm text-muted-foreground">Estimated monthly increase</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <div className="pb-2">
-            <ItemGroup>
-              <Item className="items-center justify-between gap-2">
-                <ItemContent>
-                  <ItemTitle>Services Optimized</ItemTitle>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                </ItemActions>
-              </Item>
-            </ItemGroup>
-          </div>
+          <CardTitle>Services Optimized</CardTitle>
+          <CardDescription>Menu items currently using automation.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{servicesCount}</CardTitle>
-          <CardDescription>
-            Dynamic pricing enabled
-          </CardDescription>
+        <CardContent className="space-y-1">
+          <div className="flex items-start justify-between">
+            <p className="text-3xl font-semibold tracking-tight">{servicesCount}</p>
+            <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />
+          </div>
+          <p className="text-sm text-muted-foreground">Dynamic pricing enabled</p>
         </CardContent>
       </Card>
     </div>

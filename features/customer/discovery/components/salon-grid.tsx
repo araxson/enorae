@@ -58,7 +58,7 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
     return (
       <Empty>
         <EmptyMedia variant="icon">
-          <Search className="h-10 w-10" aria-hidden="true" />
+          <Search className="size-10" aria-hidden="true" />
         </EmptyMedia>
         <EmptyHeader>
           <EmptyTitle>No salons found</EmptyTitle>
@@ -78,7 +78,7 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
       <ItemGroup>
         <Item variant="muted" size="sm">
           <ItemMedia variant="icon">
-            <Search className="h-4 w-4" aria-hidden="true" />
+            <Search className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Salon results</ItemTitle>

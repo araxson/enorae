@@ -24,12 +24,7 @@ type ClientDetailDialogProps = {
   onOpenChange: (open: boolean) => void
 }
 
-export function ClientDetailDialog({
-  client,
-  staffId,
-  open,
-  onOpenChange,
-}: ClientDetailDialogProps) {
+export function ClientDetailDialog({ client, staffId, open, onOpenChange }: ClientDetailDialogProps) {
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(false)
 
@@ -90,7 +85,7 @@ export function ClientDetailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+      <DialogContent>
         <DialogHeader>
           <ItemGroup>
             <Item variant="muted" size="sm">
@@ -102,66 +97,60 @@ export function ClientDetailDialog({
           </ItemGroup>
         </DialogHeader>
 
-        <div className="flex flex-col gap-6">
-          <div className="grid gap-4 md:grid-cols-2">
+        <ItemGroup className="grid gap-3 sm:grid-cols-2">
+          <Item variant="outline" size="sm">
+            <ItemMedia variant="icon">
+              <User className="size-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>{client['customer_name'] || 'Walk-in Customer'}</ItemTitle>
+              {client['customer_id'] ? (
+                <ItemDescription>ID {client['customer_id']}</ItemDescription>
+              ) : null}
+            </ItemContent>
+          </Item>
+          {client['customer_email'] ? (
             <Item variant="outline" size="sm">
               <ItemMedia variant="icon">
-                <User className="h-5 w-5" aria-hidden="true" />
+                <Mail className="size-5" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>{client['customer_name'] || 'Walk-in Customer'}</ItemTitle>
-                {client['customer_id'] ? (
-                  <ItemDescription>ID {client['customer_id']}</ItemDescription>
-                ) : null}
+                <ItemTitle>{client['customer_email']}</ItemTitle>
+                <ItemDescription>Email</ItemDescription>
               </ItemContent>
             </Item>
-
-            {client['customer_email'] ? (
-              <Item variant="outline" size="sm">
-                <ItemMedia variant="icon">
-                  <Mail className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{client['customer_email']}</ItemTitle>
-                  <ItemDescription>Email</ItemDescription>
-                </ItemContent>
-              </Item>
-            ) : null}
-
+          ) : null}
+          <Item variant="outline" size="sm">
+            <ItemMedia variant="icon">
+              <Calendar className="size-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>{client['total_appointments']}</ItemTitle>
+              <ItemDescription>Total appointments</ItemDescription>
+            </ItemContent>
+          </Item>
+          {client['total_revenue'] !== undefined && client['total_revenue'] !== null ? (
             <Item variant="outline" size="sm">
               <ItemMedia variant="icon">
-                <Calendar className="h-5 w-5" aria-hidden="true" />
+                <DollarSign className="size-5" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>{client['total_appointments']}</ItemTitle>
-                <ItemDescription>Total appointments</ItemDescription>
+                <ItemTitle>${Number(client['total_revenue']).toFixed(2)}</ItemTitle>
+                <ItemDescription>Total revenue</ItemDescription>
               </ItemContent>
             </Item>
+          ) : null}
+        </ItemGroup>
 
-            {client['total_revenue'] !== undefined && client['total_revenue'] !== null ? (
-              <Item variant="outline" size="sm">
-                <ItemMedia variant="icon">
-                  <DollarSign className="h-5 w-5" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>${Number(client['total_revenue']).toFixed(2)}</ItemTitle>
-                  <ItemDescription>Total revenue</ItemDescription>
-                </ItemContent>
-              </Item>
-            ) : null}
-          </div>
-
-          <div>
-            <ItemGroup className="mb-4">
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <ItemTitle>Appointment History</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-            <ClientAppointmentHistory appointments={appointments} loading={loading} />
-          </div>
-        </div>
+        <ItemGroup className="mt-4 gap-3">
+          <Item variant="muted" size="sm">
+            <ItemContent>
+              <ItemTitle>Appointment history</ItemTitle>
+              <ItemDescription>Recent services, status, and duration.</ItemDescription>
+            </ItemContent>
+          </Item>
+          <ClientAppointmentHistory appointments={appointments} loading={loading} />
+        </ItemGroup>
       </DialogContent>
     </Dialog>
   )

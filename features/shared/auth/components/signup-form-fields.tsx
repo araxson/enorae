@@ -6,10 +6,15 @@ import {
   Field,
   FieldContent,
   FieldDescription,
-  FieldLabel,
   FieldGroup,
+  FieldLabel,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
+import { User, Mail } from 'lucide-react'
 
 interface SignupFormFieldsProps {
   password: string
@@ -28,28 +33,39 @@ export function SignupFormFields({
     <FieldGroup className="gap-6">
       <Field>
         <FieldLabel htmlFor="fullName">Full Name</FieldLabel>
-        <FieldContent>
-          <Input
+        <InputGroup>
+          <InputGroupAddon>
+            <User className="size-4 text-muted-foreground" aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
             id="fullName"
             name="fullName"
             type="text"
             placeholder="John Doe"
+            autoComplete="name"
+            autoCapitalize="words"
             required
           />
-        </FieldContent>
+        </InputGroup>
       </Field>
 
       <Field>
         <FieldLabel htmlFor="email">Email</FieldLabel>
-        <FieldContent>
-          <Input
+        <InputGroup>
+          <InputGroupAddon>
+            <Mail className="size-4 text-muted-foreground" aria-hidden="true" />
+          </InputGroupAddon>
+          <InputGroupInput
             id="email"
             name="email"
             type="email"
             placeholder="you@example.com"
+            autoComplete="email"
+            autoCorrect="off"
+            spellCheck={false}
             required
           />
-        </FieldContent>
+        </InputGroup>
       </Field>
 
       <Field>
@@ -61,6 +77,7 @@ export function SignupFormFields({
             value={password}
             onChange={(e) => onPasswordChange(e.target.value)}
             placeholder="Create a strong password"
+            autoComplete="new-password"
             required
           />
           {password ? (
@@ -80,6 +97,7 @@ export function SignupFormFields({
             value={confirmPassword}
             onChange={(e) => onConfirmPasswordChange(e.target.value)}
             placeholder="Confirm your password"
+            autoComplete="new-password"
             required
           />
           {confirmPassword && password !== confirmPassword ? (

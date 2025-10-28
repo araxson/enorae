@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin, Star, Shield, Sparkles, TrendingUp, Search } from 'lucide-react'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item'
@@ -38,6 +38,8 @@ interface SalonCardProps {
 }
 
 function SalonCard({ salon, featured = false }: SalonCardProps) {
+  const isFeaturedSalon = featured || salon.is_featured
+
   return (
     <Link
       href={`/customer/salons/${salon.slug}`}
@@ -45,35 +47,47 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
     >
       <Card className="h-full">
         <CardHeader>
-          <div className="flex items-start justify-between gap-2">
-            <CardTitle>{salon.name}</CardTitle>
-            <div className="flex gap-1">
-              {salon.is_verified && <Shield className="h-4 w-4 text-secondary" aria-label="Verified salon" />}
-              {(featured || salon.is_featured) && <Sparkles className="h-4 w-4 text-accent" aria-label="Featured salon" />}
-            </div>
-          </div>
-          <CardDescription>
-            <MapPin className="h-3 w-3 text-muted-foreground inline" aria-hidden="true" />
-            {' '}
-            {formatAddress(salon.address)}
-          </CardDescription>
+          <CardTitle>{salon.name}</CardTitle>
         </CardHeader>
-        <CardContent>
-          <ItemGroup>
+        <CardContent className="space-y-4">
+          {isFeaturedSalon || salon.is_verified ? (
+            <div className="flex flex-wrap items-center gap-2">
+              {salon.is_verified ? (
+                <Badge variant="outline" className="inline-flex items-center gap-1">
+                  <Shield className="size-3.5" aria-hidden="true" />
+                  Verified
+                </Badge>
+              ) : null}
+              {isFeaturedSalon ? (
+                <Badge variant="secondary" className="inline-flex items-center gap-1">
+                  <Sparkles className="size-3.5" aria-hidden="true" />
+                  Featured
+                </Badge>
+              ) : null}
+            </div>
+          ) : null}
+          <ItemGroup className="gap-3">
+            <Item variant="muted" className="items-center gap-3">
+              <ItemMedia variant="icon">
+                <MapPin className="size-4 text-muted-foreground" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemDescription>{formatAddress(salon.address)}</ItemDescription>
+              </ItemContent>
+            </Item>
             <Item>
               <ItemMedia variant="icon">
-                <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+                <Star className="size-4 fill-accent text-accent" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>{formatRating(salon.rating_average)}</ItemTitle>
               </ItemContent>
               <ItemActions className="flex-none gap-2">
-                {featured && <Badge variant="secondary">Featured</Badge>}
-                {!featured && salon.similarity_score && (
+                {!featured && salon.similarity_score ? (
                   <Badge variant="outline">
                     {Math.round(salon.similarity_score * 100)}% match
                   </Badge>
-                )}
+                ) : null}
               </ItemActions>
             </Item>
           </ItemGroup>
@@ -96,7 +110,7 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
           <ItemGroup className="mb-4 flex items-center gap-2">
             <Item className="items-center gap-2">
               <ItemMedia variant="icon">
-                <Sparkles className="h-5 w-5 text-accent" />
+                <Sparkles className="size-5 text-accent" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Featured Salons</ItemTitle>
@@ -127,7 +141,7 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
           <ItemGroup className="mb-4 flex items-center gap-2">
             <Item className="items-center gap-2">
               <ItemMedia variant="icon">
-                <TrendingUp className="h-5 w-5" />
+                <TrendingUp className="size-5" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Search Results ({results.length})</ItemTitle>
@@ -158,7 +172,7 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
           <CardContent className="p-6">
             <Empty>
               <EmptyMedia variant="icon">
-                <Search className="h-6 w-6" />
+                <Search className="size-6" />
               </EmptyMedia>
               <EmptyHeader>
                 <EmptyTitle>No salons found</EmptyTitle>

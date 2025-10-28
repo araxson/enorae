@@ -39,63 +39,59 @@ export function NotificationsPreferencesTab({
     <div className="space-y-4">
       <FieldSet>
         <FieldLegend>Notification preferences</FieldLegend>
-        <FieldGroup className="gap-4">
+        <FieldGroup>
           <Field orientation="responsive">
-            <FieldLabel htmlFor="email-notifications">Email notifications</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="email-notifications">Email notifications</FieldLabel>
               <FieldDescription>Receive updates via email</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="email-notifications"
-                checked={emailNotifications}
-                onCheckedChange={setEmailNotifications}
-              />
             </FieldContent>
+            <Switch
+              id="email-notifications"
+              checked={emailNotifications}
+              onCheckedChange={setEmailNotifications}
+            />
           </Field>
 
           <Field orientation="responsive">
-            <FieldLabel htmlFor="sms-notifications">SMS notifications</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="sms-notifications">SMS notifications</FieldLabel>
               <FieldDescription>Receive text message alerts</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="sms-notifications"
-                checked={smsNotifications}
-                onCheckedChange={setSmsNotifications}
-              />
             </FieldContent>
+            <Switch
+              id="sms-notifications"
+              checked={smsNotifications}
+              onCheckedChange={setSmsNotifications}
+            />
           </Field>
 
           <Field orientation="responsive">
-            <FieldLabel htmlFor="appointment-reminders">Appointment reminders</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="appointment-reminders">Appointment reminders</FieldLabel>
               <FieldDescription>Get reminders before appointments</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="appointment-reminders"
-                checked={appointmentReminders}
-                onCheckedChange={setAppointmentReminders}
-              />
             </FieldContent>
+            <Switch
+              id="appointment-reminders"
+              checked={appointmentReminders}
+              onCheckedChange={setAppointmentReminders}
+            />
           </Field>
 
           <Field orientation="responsive">
-            <FieldLabel htmlFor="marketing-emails">Marketing emails</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="marketing-emails">Marketing emails</FieldLabel>
               <FieldDescription>Receive promotional offers and news</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="marketing-emails"
-                checked={marketingEmails}
-                onCheckedChange={setMarketingEmails}
-              />
             </FieldContent>
+            <Switch
+              id="marketing-emails"
+              checked={marketingEmails}
+              onCheckedChange={setMarketingEmails}
+            />
           </Field>
         </FieldGroup>
       </FieldSet>
 
       <Alert>
-        <Shield className="h-4 w-4" />
+        <Shield className="size-4" />
         <AlertTitle>Privacy &amp; Data</AlertTitle>
         <AlertDescription>
           Your preferences are stored securely and only used to improve your experience. You can

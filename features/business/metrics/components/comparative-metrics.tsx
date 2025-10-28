@@ -38,12 +38,12 @@ function formatValue(value: number, unit: 'currency' | 'number' | 'percentage' =
 
 function changeIndicator(change: number) {
   if (change > 1) {
-    return { icon: <ArrowUpRight className="h-4 w-4 text-primary" />, tone: 'text-primary' }
+    return { icon: <ArrowUpRight className="size-4 text-primary" />, tone: 'text-primary' }
   }
   if (change < -1) {
-    return { icon: <ArrowDownRight className="h-4 w-4 text-destructive" />, tone: 'text-destructive' }
+    return { icon: <ArrowDownRight className="size-4 text-destructive" />, tone: 'text-destructive' }
   }
-  return { icon: <Equal className="h-4 w-4 text-muted-foreground" />, tone: 'text-muted-foreground' }
+  return { icon: <Equal className="size-4 text-muted-foreground" />, tone: 'text-muted-foreground' }
 }
 
 export function ComparativeMetrics({ comparison, periodLabel = 'Last 7 days' }: ComparativeMetricsProps) {

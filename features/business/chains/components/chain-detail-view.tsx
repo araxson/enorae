@@ -1,10 +1,4 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getChainAnalytics, getChainSalons } from '@/features/business/chains/api/queries'
 import { ChainLocationsList } from './chain-locations-list'
 import { ChainAnalyticsCards } from './chain-analytics-cards'
@@ -35,13 +29,7 @@ export async function ChainDetailView({ chainId, chainName }: ChainDetailViewPro
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <ItemTitle>Location Performance</ItemTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Location Performance</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <ChainLocationsList locations={analytics.locationMetrics} salons={salons} />

@@ -17,7 +17,7 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
     <>
       <Item variant="outline" className="flex-col gap-3">
         <ItemHeader className="items-center gap-2">
-          <Scissors className="h-4 w-4" />
+          <Scissors className="size-4" />
           <ItemTitle>Service Revenue</ItemTitle>
         </ItemHeader>
         <ItemContent>
@@ -30,7 +30,7 @@ export function RevenueBreakdownCards({ aggregated }: Props) {
 
       <Item variant="outline" className="flex-col gap-3">
         <ItemHeader className="items-center gap-2">
-          <Package className="h-4 w-4" />
+          <Package className="size-4" />
           <ItemTitle>Product Revenue</ItemTitle>
         </ItemHeader>
         <ItemContent>

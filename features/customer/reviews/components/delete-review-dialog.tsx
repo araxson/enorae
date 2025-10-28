@@ -56,7 +56,7 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
       <DialogTrigger asChild>
         {children || (
           <Button variant="ghost" size="sm" className="flex-1">
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 className="mr-2 size-4" />
             Delete
           </Button>
         )}
@@ -78,14 +78,14 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
 
         {error && (
           <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
+            <AlertCircle className="size-4" />
             <AlertTitle>Delete failed</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
         <DialogFooter>
-          <ButtonGroup className="w-full justify-end gap-2">
+          <ButtonGroup aria-label="Actions">
             <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
               Cancel
             </Button>

@@ -1,5 +1,3 @@
-import 'server-only'
-
 export type { SalonView, AppointmentWithDetails } from '../types'
 
 export { getUserSalon, getUserSalonIds } from './salon'

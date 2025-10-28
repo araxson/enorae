@@ -37,32 +37,36 @@ export function RoleAuditTimeline({ events }: RoleAuditTimelineProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {events.map((event) => (
-          <ItemGroup key={event.id}>
-            <Item className="flex-col items-start gap-1">
-              <ItemContent>
-                <span className="text-sm font-medium">{event.action}</span>
-              </ItemContent>
-              <ItemContent>
-                <ItemDescription>
-                  {formatDistanceToNow(new Date(event.createdAt), { addSuffix: true })}
-                  {event.userId ? ` · User ${event.userId.slice(0, 8)}` : ''}
-                </ItemDescription>
-              </ItemContent>
-              {event.metadata ? (
-                <ItemContent className="w-full">
-                  <ScrollArea className="rounded-md bg-muted">
-                    <pre className="p-2 text-xs text-muted-foreground">
-                      {JSON.stringify(event.metadata, null, 2)}
-                    </pre>
-                    <ScrollBar orientation="horizontal" />
-                  </ScrollArea>
+      <CardContent>
+        <div className="space-y-4">
+          {events.map((event) => (
+            <ItemGroup key={event.id}>
+              <Item className="flex-col items-start gap-1">
+                <ItemContent>
+                  <span className="text-sm font-medium">{event.action}</span>
                 </ItemContent>
-              ) : null}
-            </Item>
-          </ItemGroup>
-        ))}
+                <ItemContent>
+                  <ItemDescription>
+                    {formatDistanceToNow(new Date(event.createdAt), { addSuffix: true })}
+                    {event.userId ? ` · User ${event.userId.slice(0, 8)}` : ''}
+                  </ItemDescription>
+                </ItemContent>
+                {event.metadata ? (
+                  <ItemContent className="w-full">
+                    <div className="rounded-md bg-muted">
+                      <ScrollArea>
+                        <pre className="p-2 text-xs text-muted-foreground">
+                          {JSON.stringify(event.metadata, null, 2)}
+                        </pre>
+                        <ScrollBar orientation="horizontal" />
+                      </ScrollArea>
+                    </div>
+                  </ItemContent>
+                ) : null}
+              </Item>
+            </ItemGroup>
+          ))}
+        </div>
       </CardContent>
     </Card>
   )

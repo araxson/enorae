@@ -77,9 +77,9 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
               </Badge>
             </TableCell>
             <TableCell className="text-right">
-              <ButtonGroup className="ml-auto justify-end">
+              <ButtonGroup aria-label="Actions">
                 <Button variant="ghost" size="sm" onClick={handleEdit(service)} aria-label={`Edit service ${service['service_id']}`}>
-                  <Edit className="h-4 w-4" />
+                  <Edit className="size-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -88,7 +88,7 @@ export function ServicesTable({ services, onEdit, onDelete }: ServicesTableProps
                   disabled={services.length <= 1}
                   aria-label={`Delete service ${service['service_id']}`}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="size-4" />
                 </Button>
               </ButtonGroup>
             </TableCell>

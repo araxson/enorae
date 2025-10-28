@@ -31,7 +31,7 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <MessageCircle className="h-8 w-8" aria-hidden="true" />
+            <MessageCircle className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No messages yet</EmptyTitle>
           <EmptyDescription>Start chatting to see conversation history here.</EmptyDescription>

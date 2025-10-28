@@ -13,9 +13,11 @@ export function HomePage() {
   return (
     <main className="flex flex-col gap-16 pb-16">
       <MarketingSection spacing="compact">
-        <Item className="flex-col items-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>Everything visitors need to understand Enorae at a glance.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>Everything visitors need to understand Enorae at a glance.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

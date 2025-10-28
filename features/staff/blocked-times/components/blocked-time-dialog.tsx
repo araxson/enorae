@@ -22,7 +22,7 @@ export function BlockedTimeDialog({ open, onOpenChange, blockedTime }: BlockedTi
         <DialogHeader>
           <Item variant="muted" size="sm">
             <ItemMedia variant="icon">
-              <Clock className="h-4 w-4" aria-hidden="true" />
+              <Clock className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <DialogTitle>

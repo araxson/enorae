@@ -49,29 +49,35 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
               </ItemDescription>
             </ItemContent>
             <ItemActions className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Badge variant="secondary" className="justify-start gap-1">
-                <Database className="h-3 w-3" />
-                {summary.unusedIndexCount} unused indexes
-              </Badge>
-              <Badge variant="secondary" className="justify-start gap-1">
-                <Clock className="h-3 w-3" />
-                {summary.staleStatistics} stale stats
-              </Badge>
+              <div className="flex items-center gap-1">
+                <Badge variant="secondary">
+                  <Database className="mr-1 size-3" />
+                  {summary.unusedIndexCount} unused indexes
+                </Badge>
+              </div>
+              <div className="flex items-center gap-1">
+                <Badge variant="secondary">
+                  <Clock className="mr-1 size-3" />
+                  {summary.staleStatistics} stale stats
+                </Badge>
+              </div>
             </ItemActions>
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <Tabs defaultValue="recommendations" className="w-full">
+      <CardContent>
+        <div className="space-y-6">
+          <Tabs defaultValue="recommendations">
           <TabsList>
             <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
             <TabsTrigger value="indexes">Unused Indexes</TabsTrigger>
             <TabsTrigger value="statistics">Statistics Health</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="recommendations" className="space-y-4">
-            {recommendations.length > 0 ? (
-              <Table>
+          <TabsContent value="recommendations">
+            <div className="space-y-4">
+              {recommendations.length > 0 ? (
+                <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Priority</TableHead>
@@ -104,18 +110,19 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
                     </TableRow>
                   ))}
                 </TableBody>
-              </Table>
-            ) : (
-              <Empty>
-                <EmptyMedia variant="icon">
-                  <AlertCircle />
-                </EmptyMedia>
-                <EmptyHeader>
-                  <EmptyTitle>No optimization recommendations</EmptyTitle>
-                  <EmptyDescription>Your database is running optimally right now.</EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            )}
+                </Table>
+              ) : (
+                <Empty>
+                  <EmptyMedia variant="icon">
+                    <AlertCircle />
+                  </EmptyMedia>
+                  <EmptyHeader>
+                    <EmptyTitle>No optimization recommendations</EmptyTitle>
+                    <EmptyDescription>Your database is running optimally right now.</EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              )}
+            </div>
           </TabsContent>
 
           <TabsContent value="indexes">
@@ -209,7 +216,8 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
               </Empty>
             )}
           </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </CardContent>
     </Card>
   )

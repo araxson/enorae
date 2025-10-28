@@ -9,14 +9,7 @@ import { NotificationHistoryTable } from './components/notification-history-tabl
 import { NotificationTemplatesManager } from './components/notification-templates-manager'
 import { NotificationPreferencesForm } from './components/notification-preferences-form'
 import { NotificationPreviewPanel } from './components/notification-preview-panel'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function BusinessNotificationManagement() {
   const [history, stats, templates, preferences] = await Promise.all([
@@ -31,18 +24,10 @@ export async function BusinessNotificationManagement() {
       <div className="flex flex-col gap-8">
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-1">
-                <ItemContent>
-                  <ItemTitle>Notification center</ItemTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>
-                    Monitor delivery health, manage templates, and configure automation preferences.
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Notification center</CardTitle>
+            <CardDescription>
+              Monitor delivery health, manage templates, and configure automation preferences.
+            </CardDescription>
           </CardHeader>
         </Card>
 
@@ -60,18 +45,10 @@ export async function BusinessNotificationManagement() {
 
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-1">
-                <ItemContent>
-                  <ItemTitle>Delivery history</ItemTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>
-                    Recent notifications and delivery statuses for auditing and troubleshooting.
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Delivery history</CardTitle>
+            <CardDescription>
+              Recent notifications and delivery statuses for auditing and troubleshooting.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <NotificationHistoryTable history={history} />

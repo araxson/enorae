@@ -45,7 +45,7 @@ export function ChainCard({ chain }: ChainCardProps) {
           <ItemGroup>
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Store className="h-4 w-4" aria-hidden="true" />
+                <Store className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Locations</ItemTitle>

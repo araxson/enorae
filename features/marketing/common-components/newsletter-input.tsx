@@ -36,9 +36,11 @@ export function NewsletterInput({
           value={email}
           onChange={(event) => onEmailChange(event.target.value)}
           disabled={isPending}
+          autoCorrect="off"
+          spellCheck={false}
         />
         {email ? (
-          <InputGroupAddon>
+          <InputGroupAddon align="inline-end">
             <InputGroupButton
               size="icon-sm"
               variant="ghost"

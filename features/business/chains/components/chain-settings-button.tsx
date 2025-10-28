@@ -21,7 +21,7 @@ export function ChainSettingsButton({
   return (
     <>
       <Button onClick={() => setSettingsOpen(true)}>
-        <Settings className="h-4 w-4 mr-2" />
+        <Settings className="size-4 mr-2" />
         Bulk Settings
       </Button>
 

@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { updateStaffMetadata } from '@/features/staff/profile/api/mutations'
@@ -10,13 +9,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   InputGroup,
   InputGroupAddon,
+  InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 import {
   Empty,
   EmptyDescription,
@@ -73,14 +68,8 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Certifications & Licenses</CardTitle>
-              <CardDescription>Keep your credentials current.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Certifications & Licenses</CardTitle>
+        <CardDescription>Keep your credentials current.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -98,9 +87,15 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
               disabled={isSaving}
             />
             <InputGroupAddon align="inline-end">
-              <Button type="button" onClick={handleAdd} disabled={!newCert.trim() || isSaving} size="sm">
-                <Plus className="h-4 w-4" />
-              </Button>
+              <InputGroupButton
+                type="button"
+                onClick={handleAdd}
+                disabled={!newCert.trim() || isSaving}
+                size="sm"
+                aria-label="Add certification"
+              >
+                <Plus className="size-4" />
+              </InputGroupButton>
             </InputGroupAddon>
           </InputGroup>
 
@@ -116,7 +111,7 @@ export function CertificationsEditor({ initialCertifications = [] }: Certificati
                     onClick={() => handleRemove(cert)}
                     disabled={isSaving}
                   >
-                    <X className="h-3 w-3" />
+                    <X className="size-3" />
                   </Button>
                 </Badge>
               ))}

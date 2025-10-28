@@ -86,7 +86,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
           </ItemContent>
           <ItemActions>
             <Button variant="outline" size="sm" onClick={refresh} disabled={isRefreshing}>
-              {isRefreshing ? <Spinner className="mr-2 h-4 w-4" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              {isRefreshing ? <Spinner className="mr-2 size-4" /> : <RefreshCw className="mr-2 size-4" />}
               Refresh
             </Button>
           </ItemActions>
@@ -95,7 +95,7 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
 
       {error && (
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
+          <AlertCircle className="size-4" />
           <AlertTitle>Unable to refresh security data</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>

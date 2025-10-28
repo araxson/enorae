@@ -1,7 +1,6 @@
 'use client'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -65,11 +64,13 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
           <ItemGroup className="flex-1 gap-2">
             <Item className="items-start gap-3">
               <ItemMedia variant="icon">
-                <Icon className={`h-5 w-5 ${tone}`} aria-hidden="true" />
+                <Icon className={`size-5 ${tone}`} aria-hidden="true" />
               </ItemMedia>
               <ItemContent className="flex flex-col gap-1">
                 <AlertTitle>{label}</AlertTitle>
-                <CardTitle>{value.toLocaleString()}</CardTitle>
+                <span className="text-2xl font-semibold leading-none text-foreground">
+                  {value.toLocaleString()}
+                </span>
                 <AlertDescription>{description}</AlertDescription>
               </ItemContent>
             </Item>
@@ -81,11 +82,13 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
         <ItemGroup className="flex-1 gap-2">
           <Item className="items-start gap-3">
             <ItemMedia variant="icon">
-              <Gauge className="h-5 w-5 text-secondary" aria-hidden="true" />
+              <Gauge className="size-5 text-secondary" aria-hidden="true" />
             </ItemMedia>
             <ItemContent className="flex flex-col gap-1">
               <AlertTitle>Average compliance</AlertTitle>
-              <CardTitle>{stats.averageCompliance}%</CardTitle>
+              <span className="text-2xl font-semibold leading-none text-foreground">
+                {stats.averageCompliance}%
+              </span>
               <AlertDescription>License and policy adherence across salons</AlertDescription>
             </ItemContent>
           </Item>

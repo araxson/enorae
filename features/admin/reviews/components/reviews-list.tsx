@@ -36,13 +36,15 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             </Item>
           </ItemGroup>
         </CardHeader>
-        <CardContent className="pt-6">
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No reviews found</EmptyTitle>
-              <EmptyDescription>No review activity found yet.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
+        <CardContent>
+          <div className="pt-6">
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No reviews found</EmptyTitle>
+                <EmptyDescription>No review activity found yet.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </div>
         </CardContent>
       </Card>
     )
@@ -56,7 +58,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             <ItemGroup>
               <Item className="flex-col items-start gap-2" variant="muted" size="sm">
                 <ItemMedia variant="icon">
-                  <Building2 className="h-4 w-4" />
+                  <Building2 className="size-4" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>{review['salon_name']}</ItemTitle>
@@ -68,7 +70,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
                         return (
                           <Star
                             key={i}
-                            className={`h-4 w-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
+                            className={`size-4 ${isFilled ? 'text-accent' : 'text-muted-foreground'}`}
                             fill={isFilled ? 'currentColor' : 'none'}
                           />
                         )
@@ -88,9 +90,9 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
             </ItemGroup>
           </CardHeader>
           <CardContent>
-              <div className="flex flex-col gap-6">
-                {review['title'] && <p className="font-medium">{review['title']}</p>}
-                {review['comment'] && <CardDescription>{review['comment']}</CardDescription>}
+            <div className="flex flex-col gap-6">
+              {review['title'] && <p className="font-medium">{review['title']}</p>}
+              {review['comment'] && <CardDescription>{review['comment']}</CardDescription>}
 
               <Separator />
               <div className="grid grid-cols-3 gap-4 pt-2">
@@ -117,12 +119,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               <Separator />
               <div className="flex items-center justify-between pt-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <User className="w-3 h-3" />
+                  <User className="size-3" />
                   <CardDescription>{review['customer_name'] || 'Anonymous'}</CardDescription>
                 </div>
                 <div className="text-right">
                   <CardDescription>
-                    {review['created_at'] ? format(new Date(review['created_at']), 'MMM dd, yyyy') : 'N/A'}
+                    {review['created_at']
+                      ? format(new Date(review['created_at']), 'MMM dd, yyyy')
+                      : 'N/A'}
                   </CardDescription>
                   {review['helpful_count'] && review['helpful_count'] > 0 && (
                     <CardDescription>{review['helpful_count']} found helpful</CardDescription>
@@ -131,12 +135,14 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               </div>
 
               {review['has_response'] && review['response_date'] && (
-                <Alert className="mt-4">
-                  <AlertTitle>Salon Response</AlertTitle>
-                  <AlertDescription>
-                    Responded on {format(new Date(review['response_date']), 'MMM dd, yyyy')}
-                  </AlertDescription>
-                </Alert>
+                <div className="mt-4">
+                  <Alert>
+                    <AlertTitle>Salon Response</AlertTitle>
+                    <AlertDescription>
+                      Responded on {format(new Date(review['response_date']), 'MMM dd, yyyy')}
+                    </AlertDescription>
+                  </Alert>
+                </div>
               )}
             </div>
           </CardContent>

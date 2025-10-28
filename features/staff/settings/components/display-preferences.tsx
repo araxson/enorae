@@ -14,11 +14,6 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 interface DisplayPreferencesProps {
   initialPreferences: DisplayPreferences
@@ -46,14 +41,8 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Display Preferences</CardTitle>
-              <CardDescription>Customize your interface.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Display Preferences</CardTitle>
+        <CardDescription>Customize your interface.</CardDescription>
       </CardHeader>
       <CardContent>
         <FieldSet>

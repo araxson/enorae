@@ -40,10 +40,10 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
   if (transactions.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <Receipt className="h-6 w-6" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Receipt className="size-6" />
+          </EmptyMedia>
           <EmptyTitle>No transactions yet</EmptyTitle>
           <EmptyDescription>
             Your completed appointments will appear here once you make a booking.
@@ -61,16 +61,18 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
   return (
     <Card>
       <CardContent>
-        <ItemGroup className="mb-4">
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <ItemDescription>
-                {transactions.length}{' '}
-                {transactions.length === 1 ? 'transaction recorded' : 'transactions recorded'}
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <div className="mb-4">
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <ItemDescription>
+                  {transactions.length}{' '}
+                  {transactions.length === 1 ? 'transaction recorded' : 'transactions recorded'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>

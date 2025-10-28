@@ -48,7 +48,7 @@ export async function AdminUsersClient() {
                       <CardDescription>All accounts created within the platform.</CardDescription>
                     </ItemContent>
                     <ItemActions>
-                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <Users className="size-4 text-muted-foreground" />
                     </ItemActions>
                   </Item>
                 </ItemGroup>
@@ -67,7 +67,7 @@ export async function AdminUsersClient() {
                       <CardDescription>Users with an active login status.</CardDescription>
                     </ItemContent>
                     <ItemActions>
-                      <UserCheck className="h-4 w-4 text-primary" />
+                      <UserCheck className="size-4 text-primary" />
                     </ItemActions>
                   </Item>
                 </ItemGroup>
@@ -86,7 +86,7 @@ export async function AdminUsersClient() {
                       <CardDescription>Accounts currently disabled by admins.</CardDescription>
                     </ItemContent>
                     <ItemActions>
-                      <UserX className="h-4 w-4 text-destructive" />
+                      <UserX className="size-4 text-destructive" />
                     </ItemActions>
                   </Item>
                 </ItemGroup>
@@ -105,7 +105,7 @@ export async function AdminUsersClient() {
                       <CardDescription>Users assigned to one or more roles.</CardDescription>
                     </ItemContent>
                     <ItemActions>
-                      <Shield className="h-4 w-4 text-secondary" />
+                      <Shield className="size-4 text-secondary" />
                     </ItemActions>
                   </Item>
                 </ItemGroup>
@@ -127,12 +127,14 @@ export async function AdminUsersClient() {
                 </Item>
               </ItemGroup>
             </CardHeader>
-            <CardContent className="flex flex-wrap gap-4">
-              {overview.roleBreakdown.map((role) => (
-                <Badge key={role.role} variant="outline">
-                  {role.role.replace('_', ' ')}: {role.count}
-                </Badge>
-              ))}
+            <CardContent>
+              <div className="flex flex-wrap gap-4">
+                {overview.roleBreakdown.map((role) => (
+                  <Badge key={role.role} variant="outline">
+                    {role.role.replace('_', ' ')}: {role.count}
+                  </Badge>
+                ))}
+              </div>
             </CardContent>
           </Card>
 

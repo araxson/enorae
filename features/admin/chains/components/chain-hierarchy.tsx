@@ -27,7 +27,7 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
         <ItemGroup>
           <Item variant="muted">
             <ItemMedia variant="icon">
-              <Building2 className="h-5 w-5" />
+              <Building2 className="size-5" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>Chain Hierarchy: {chainName}</CardTitle>
@@ -35,8 +35,9 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="p-0">
-        <Table>
+      <CardContent>
+        <div className="-m-6">
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Salon Name</TableHead>
@@ -68,7 +69,7 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
                       <ItemGroup>
                         <Item variant="muted" className="items-center gap-1 text-sm text-muted-foreground">
                           <ItemMedia variant="icon">
-                            <MapPin className="h-3 w-3" />
+                            <MapPin className="size-3" />
                           </ItemMedia>
                           <ItemContent>
                             <ItemDescription>
@@ -84,7 +85,7 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
                   <TableCell className="text-right">
                     {salon.ratingAverage !== null ? (
                       <div className="flex items-center justify-end gap-1">
-                        <Star className="h-3 w-3 text-primary" fill="currentColor" />
+                        <Star className="size-3 text-primary" fill="currentColor" />
                         <span className="font-medium">{salon.ratingAverage.toFixed(1)}</span>
                       </div>
                     ) : (
@@ -104,7 +105,8 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
               ))
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   )

@@ -12,7 +12,6 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils/index'
 import type { RevenueForecast } from '@/lib/utils/metrics'
 
@@ -43,20 +42,23 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
   const upcoming = chartData.filter((point) => point.actual === null)
   const nextForecast = upcoming[0]
   const growthColor = forecast.projectedGrowth >= 0 ? 'text-primary' : 'text-destructive'
+  const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
 
   return (
     <Item variant="outline" className="flex-col gap-4">
-      <ItemHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <div>
-          <ItemTitle>Revenue Forecast</ItemTitle>
-          <ItemDescription>Projected revenue using trend analysis</ItemDescription>
+      <ItemHeader>
+        <div className="flex w-full flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div>
+            <ItemTitle>Revenue Forecast</ItemTitle>
+            <ItemDescription>Projected revenue using trend analysis</ItemDescription>
+          </div>
+          {nextForecast ? (
+            <Badge variant={forecast.projectedGrowth >= 0 ? 'default' : 'destructive'}>
+              Next: ${nextForecast.forecast.toLocaleString()} · {forecast.projectedGrowth >= 0 ? '+' : ''}
+              {forecast.projectedGrowth.toFixed(1)}%
+            </Badge>
+          ) : null}
         </div>
-        {nextForecast ? (
-          <Badge variant={forecast.projectedGrowth >= 0 ? 'default' : 'destructive'}>
-            Next: ${nextForecast.forecast.toLocaleString()} · {forecast.projectedGrowth >= 0 ? '+' : ''}
-            {forecast.projectedGrowth.toFixed(1)}%
-          </Badge>
-        ) : null}
       </ItemHeader>
       <ItemContent>
         <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
@@ -111,7 +113,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
             <Item variant="muted" className="flex-col">
               <ItemContent className="gap-2">
                 <ItemTitle>Avg daily revenue</ItemTitle>
-                <CardTitle>${forecast.averageRevenue.toFixed(0)}</CardTitle>
+                <p className={metricValueClass}>${forecast.averageRevenue.toFixed(0)}</p>
               </ItemContent>
             </Item>
 

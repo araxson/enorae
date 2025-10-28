@@ -30,14 +30,8 @@ export function CustomerRelationshipsTab({ customerRelationships }: CustomerRela
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Top Customers</CardTitle>
-                <CardDescription>Your most loyal customers</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Top Customers</CardTitle>
+          <CardDescription>Your most loyal customers</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

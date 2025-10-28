@@ -31,55 +31,67 @@ const LABELS: Record<FraudAlert['type'], string> = {
 
 export function FraudAlertsPanel({ alerts }: FraudAlertsPanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <ShieldAlert className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <CardTitle>Fraud &amp; Abuse Signals</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {alerts.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No suspicious activity detected</EmptyTitle>
-              <EmptyDescription>Fraud signals surface automatically when risk thresholds trigger.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <div className="space-y-2">
-            {alerts.slice(0, 8).map((alert) => (
-              <Alert key={alert.id} variant={alert.score >= 0.8 ? 'destructive' : 'default'}>
-                <ShieldAlert className="h-4 w-4" />
-                <ItemGroup>
-                  <Item className="items-start gap-2" variant="muted" size="sm">
-                    <ItemContent>
-                      <AlertTitle>{LABELS[alert.type]}</AlertTitle>
-                      <AlertDescription>{alert.summary}</AlertDescription>
-                      <AlertDescription className="mt-1">
-                        {alert.relatedAppointmentIds.length} linked appointment(s)
-                        {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
-                        {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
-                      </AlertDescription>
-                    </ItemContent>
-                    <ItemActions>
-                      <Badge variant={getVariant(alert.score)}>
-                        Risk {(alert.score * 100).toFixed(0)}%
-                      </Badge>
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </Alert>
-            ))}
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <ShieldAlert className="size-4" />
+                </ItemMedia>
+                <ItemContent>
+                  <CardTitle>Fraud &amp; Abuse Signals</CardTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {alerts.length === 0 ? (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No suspicious activity detected</EmptyTitle>
+                  <EmptyDescription>
+                    Fraud signals surface automatically when risk thresholds trigger.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="space-y-2">
+                {alerts.slice(0, 8).map((alert) => (
+                  <Alert key={alert.id} variant={alert.score >= 0.8 ? 'destructive' : 'default'}>
+                    <ShieldAlert className="size-4" />
+                    <ItemGroup>
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <div className="space-y-2">
+                            <AlertTitle>{LABELS[alert.type]}</AlertTitle>
+                            <AlertDescription>
+                              <p>{alert.summary}</p>
+                              <p className="mt-1">
+                                {alert.relatedAppointmentIds.length} linked appointment(s)
+                                {alert.customerId ? ` · Customer ${alert.customerId}` : ''}
+                                {alert.salonId ? ` · Salon ${alert.salonId}` : ''}
+                              </p>
+                            </AlertDescription>
+                          </div>
+                        </ItemContent>
+                        <ItemActions>
+                          <Badge variant={getVariant(alert.score)}>
+                            Risk {(alert.score * 100).toFixed(0)}%
+                          </Badge>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
+                  </Alert>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

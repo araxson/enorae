@@ -89,7 +89,7 @@ export function PricingCard({ pricing, onEdit }: PricingCardProps) {
           </div>
 
           {onEdit ? (
-            <ButtonGroup className="justify-end">
+            <ButtonGroup aria-label="Actions">
               <Button size="sm" variant="outline" onClick={() => onEdit(pricing)}>
                 Edit
               </Button>

@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect, useCallback, useId } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 

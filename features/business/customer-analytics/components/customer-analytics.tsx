@@ -4,14 +4,7 @@ import { ChurnRiskTable, ReactivationOpportunities, SegmentationOverview } from 
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getCustomerInsights, getCustomerSegmentation, getCustomerCohorts } from '@/features/business/analytics/api/queries'
 import { getAtRiskCustomers, getReactivationOpportunities } from '@/features/business/insights/api/queries/churn-prediction'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function CustomerAnalytics() {
   const salon = await getUserSalon()
@@ -38,18 +31,10 @@ export async function CustomerAnalytics() {
       <div className="flex flex-col gap-8">
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item className="flex-col items-start gap-1">
-                <ItemContent>
-                  <ItemTitle>Customer intelligence</ItemTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>
-                    Deep dive into lifetime value, retention, and churn risk to focus on the right customers.
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Customer intelligence</CardTitle>
+            <CardDescription>
+              Deep dive into lifetime value, retention, and churn risk to focus on the right customers.
+            </CardDescription>
           </CardHeader>
         </Card>
 
@@ -77,13 +62,7 @@ export async function CustomerAnalytics() {
 
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item>
-                <ItemContent>
-                  <ItemTitle>Cohort retention</ItemTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <CardTitle>Cohort retention</CardTitle>
           </CardHeader>
           <CardContent>
             <CohortsTable cohorts={cohorts} start={start} end={end} />

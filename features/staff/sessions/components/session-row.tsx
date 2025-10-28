@@ -18,11 +18,11 @@ type SessionRowProps = {
 function getDeviceIcon(deviceType: string | null | undefined) {
   switch (deviceType?.toLowerCase()) {
     case 'mobile':
-      return <Smartphone className="h-4 w-4" />
+      return <Smartphone className="size-4" />
     case 'tablet':
-      return <Tablet className="h-4 w-4" />
+      return <Tablet className="size-4" />
     default:
-      return <Monitor className="h-4 w-4" />
+      return <Monitor className="size-4" />
   }
 }
 
@@ -65,7 +65,7 @@ export function SessionRow({
             disabled={isRevoking && pendingSessionId === session['id']}
             aria-label="Revoke session"
           >
-            <X className="h-4 w-4" />
+            <X className="size-4" />
           </Button>
         ) : null}
       </TableCell>

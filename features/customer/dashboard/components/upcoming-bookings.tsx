@@ -25,7 +25,6 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemHeader,
   ItemMedia,
   ItemSeparator,
   ItemTitle,
@@ -40,21 +39,21 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Upcoming Appointments</CardTitle>
-          <CardDescription>Your scheduled appointments will appear here</CardDescription>
+          <CardTitle>Upcoming appointments</CardTitle>
+          <CardDescription>Your scheduled appointments will appear here.</CardDescription>
         </CardHeader>
         <CardContent>
           <Empty>
-            <EmptyMedia variant="icon">
-              <Calendar className="h-6 w-6" />
-            </EmptyMedia>
             <EmptyHeader>
-              <EmptyTitle>No Upcoming Appointments</EmptyTitle>
-              <EmptyDescription>You don't have any upcoming appointments</EmptyDescription>
+              <EmptyMedia variant="icon">
+                <Calendar className="size-6" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No upcoming appointments</EmptyTitle>
+              <EmptyDescription>You don't have any upcoming appointments.</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button asChild>
-                <Link href="/customer/salons">Book an Appointment</Link>
+                <Link href="/customer/salons">Book an appointment</Link>
               </Button>
             </EmptyContent>
           </Empty>
@@ -75,18 +74,18 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
 
   return (
     <Card>
-      <CardHeader className="pb-4">
+      <CardHeader>
         <ItemGroup>
-          <Item className="items-center justify-between gap-3">
-            <ItemContent className="space-y-1">
-              <ItemTitle>Upcoming Appointments</ItemTitle>
+          <Item>
+            <ItemContent>
+              <ItemTitle>Upcoming appointments</ItemTitle>
               <ItemDescription>{appointments.length} scheduled</ItemDescription>
             </ItemContent>
-            <ItemActions className="flex-none">
+            <ItemActions>
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/customer/appointments">
-                  View All
-                  <ChevronRight className="ml-1 h-4 w-4" />
+                  View all
+                  <ChevronRight className="ml-1 size-4" aria-hidden="true" />
                 </Link>
               </Button>
             </ItemActions>
@@ -97,7 +96,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       <CardContent className="p-0">
         <ScrollArea className="h-96">
           <div className="p-6">
-            <ItemGroup className="gap-4">
+            <ItemGroup>
             {appointments.map((appointment, index) => {
               const salonInitials = getInitials(appointment['salon_name'] || 'Salon')
               const appointmentDate = appointment['start_time']
@@ -107,43 +106,32 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
               return (
                 <Fragment key={appointment['id']}>
                     <Item variant="outline" size="sm">
-                      <ItemMedia variant="icon">
-                        <Avatar className="h-10 w-10 border-2 border-background">
-                          <AvatarFallback className="bg-primary/10 text-primary">
-                            {salonInitials}
-                          </AvatarFallback>
+                      <ItemMedia>
+                        <Avatar>
+                          <AvatarFallback>{salonInitials}</AvatarFallback>
                         </Avatar>
                       </ItemMedia>
                       <ItemContent>
-                        <ItemHeader>
-                          <ItemTitle>{appointment['salon_name'] || 'Salon TBD'}</ItemTitle>
+                        <ItemTitle>
+                          {appointment['salon_name'] || 'Salon TBD'}
                           <Badge variant={getStatusVariant(appointment['status'])}>
                             {appointment['status'] || 'pending'}
                           </Badge>
-                        </ItemHeader>
+                        </ItemTitle>
                         <ItemDescription>{appointmentDate}</ItemDescription>
                         <ItemDescription>
-                          <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock className="h-3 w-3" aria-hidden="true" />
-                            <span>{formatAppointmentTime(appointment['start_time'])}</span>
-                          </span>
+                          <Clock className="inline size-3" aria-hidden="true" />
+                          {' '}{formatAppointmentTime(appointment['start_time'])}
                         </ItemDescription>
                         {appointment['salon_name'] ? (
                           <ItemDescription>
-                            <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-                              <MapPin className="h-3 w-3" aria-hidden="true" />
-                              <span>View location</span>
-                            </span>
+                            <MapPin className="inline size-3" aria-hidden="true" />
+                            {' '}View location
                           </ItemDescription>
                         ) : null}
                       </ItemContent>
-                      <ItemActions className="ml-auto">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="opacity-0 transition-opacity group-hover/item:opacity-100"
-                          asChild
-                        >
+                      <ItemActions>
+                        <Button variant="ghost" size="sm" asChild>
                           <Link href={`/customer/appointments/${appointment['id']}`}>
                             View
                           </Link>
@@ -159,11 +147,11 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
         </ScrollArea>
       </CardContent>
       <Separator />
-      <CardFooter className="pt-4">
-        <Button variant="outline" asChild className="w-full">
+      <CardFooter>
+        <Button variant="outline" asChild>
           <Link href="/customer/salons">
-            <Store className="mr-2 h-4 w-4" />
-            Book Another Appointment
+            <Store className="mr-2 size-4" />
+            Book another appointment
           </Link>
         </Button>
       </CardFooter>

@@ -51,7 +51,7 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
               <Empty>
                 <EmptyHeader>
                   <EmptyMedia variant="icon">
-                    <MapPin className="h-6 w-6" aria-hidden="true" />
+                    <MapPin className="size-6" aria-hidden="true" />
                   </EmptyMedia>
                   <EmptyTitle>No locations found in this chain</EmptyTitle>
                   <EmptyDescription>Add salons to this chain to see shared performance.</EmptyDescription>
@@ -69,7 +69,7 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
                     <div className="font-medium">{location.salonName}</div>
                     {salon?.city && (
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="h-3 w-3" />
+                        <MapPin className="size-3" />
                         {salon.city}
                       </div>
                     )}
@@ -79,7 +79,7 @@ export function ChainLocationsList({ locations, salons }: ChainLocationsListProp
                 <TableCell className="text-right">${location.revenue.toLocaleString()}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
-                    <Star className="h-3 w-3 text-primary" fill="currentColor" />
+                    <Star className="size-3 text-primary" fill="currentColor" />
                     <span>{location.rating.toFixed(1)}</span>
                     <span className="text-xs text-muted-foreground">({location.reviewCount})</span>
                   </div>

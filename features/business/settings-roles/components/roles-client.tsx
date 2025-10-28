@@ -68,7 +68,7 @@ export function RolesClient({ roles, availableStaff, salonId }: RolesClientProps
         </Item>
         <ItemActions className="flex-none">
           <Button onClick={() => setIsAssignDialogOpen(true)} disabled={isPending}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Assign Role
           </Button>
         </ItemActions>

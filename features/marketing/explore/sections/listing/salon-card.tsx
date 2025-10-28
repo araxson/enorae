@@ -51,30 +51,32 @@ export function SalonCard({ salon, index, onBook }: SalonCardProps) {
           </div>
         ) : null}
       </CardHeader>
-      <CardContent className="flex-1">
-        <ItemGroup className="gap-2">
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <MapPin className="size-4" aria-hidden="true" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemDescription>{location}</ItemDescription>
-            </ItemContent>
-          </Item>
-          {salon['rating_average'] ? (
+      <CardContent>
+        <div className="flex-1">
+          <ItemGroup>
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <Star className="size-4" aria-hidden="true" />
+                <MapPin className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>{Number(salon['rating_average']).toFixed(1)}</ItemTitle>
-                <ItemDescription>{salon['rating_count'] ?? 0} reviews</ItemDescription>
+                <ItemDescription>{location}</ItemDescription>
               </ItemContent>
             </Item>
-          ) : null}
-        </ItemGroup>
+            {salon['rating_average'] ? (
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <Star className="size-4" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{Number(salon['rating_average']).toFixed(1)}</ItemTitle>
+                  <ItemDescription>{salon['rating_count'] ?? 0} reviews</ItemDescription>
+                </ItemContent>
+              </Item>
+            ) : null}
+          </ItemGroup>
+        </div>
       </CardContent>
-      <CardFooter className="pt-0">
+      <CardFooter>
         <Button className="w-full" onClick={() => onBook(salon['slug'])}>
           {listingCopy.ctaLabel}
         </Button>

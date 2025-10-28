@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Staff schedule queries
 export { getStaffSchedules, getStaffMemberSchedule } from './staff-schedules'
 

@@ -85,16 +85,16 @@ export function BlockedTimeForm({
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
         <ItemTitle>Block time slot</ItemTitle>
       </ItemHeader>
       <form onSubmit={handleSubmit} className="space-y-6">
         <ItemContent>
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
           {error && (
             <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <AlertTitle>Failed to block time</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
@@ -129,19 +129,19 @@ export function BlockedTimeForm({
           </Field>
 
           <Separator />
-          <div className="space-y-4 pt-4">
-            <Field orientation="horizontal" className="items-center gap-4">
-              <FieldLabel htmlFor="is_recurring" className="flex items-center gap-2">
-                <Repeat className="h-4 w-4" />
-                Make this a recurring block
+          <div className="flex flex-col gap-4 pt-4">
+            <Field orientation="horizontal">
+              <FieldLabel htmlFor="is_recurring">
+                <span className="flex items-center gap-2">
+                  <Repeat className="size-4" />
+                  Make this a recurring block
+                </span>
               </FieldLabel>
-              <FieldContent className="flex-none">
-                <Checkbox
-                  id="is_recurring"
-                  checked={isRecurring}
-                  onCheckedChange={(checked) => setIsRecurring(!!checked)}
-                />
-              </FieldContent>
+              <Checkbox
+                id="is_recurring"
+                checked={isRecurring}
+                onCheckedChange={(checked) => setIsRecurring(!!checked)}
+              />
             </Field>
 
             {isRecurring && (
@@ -151,7 +151,7 @@ export function BlockedTimeForm({
           </div>
         </ItemContent>
         <ItemFooter>
-          <ButtonGroup className="ml-auto flex flex-wrap gap-2">
+          <ButtonGroup aria-label="Form actions">
             {onCancel ? (
               <Button type="button" variant="outline" onClick={onCancel}>
                 Cancel

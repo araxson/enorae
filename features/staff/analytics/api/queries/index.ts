@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Performance metrics
 export { getStaffPerformanceMetrics } from './performance'
 export type { StaffPerformanceMetrics } from './performance'

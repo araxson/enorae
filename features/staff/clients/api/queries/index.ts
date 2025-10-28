@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Client list operations
 export { getStaffClients } from './client-list'
 export type { ClientWithHistory } from './client-list'

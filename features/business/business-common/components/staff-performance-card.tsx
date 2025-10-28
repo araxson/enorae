@@ -80,7 +80,7 @@ export function StaffPerformanceCard({
             <Fragment key={member.id}>
               <Item variant="outline" size="sm" className="items-center transition-colors hover:bg-muted/50">
                 <ItemMedia className="flex items-center gap-3">
-                  <span className="flex h-6 w-6 items-center justify-center text-sm font-semibold text-muted-foreground">
+                  <span className="flex size-6 items-center justify-center text-sm font-semibold text-muted-foreground">
                     #{index + 1}
                   </span>
                   <Avatar>
@@ -96,12 +96,12 @@ export function StaffPerformanceCard({
                 </ItemContent>
                 <ItemActions className="grid w-52 grid-cols-2 gap-4">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <CardDescription>{member.appointmentCount}</CardDescription>
+                    <Calendar className="size-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">{member.appointmentCount}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <CardDescription>{formatCurrency(member.totalRevenue)}</CardDescription>
+                    <DollarSign className="size-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">{formatCurrency(member.totalRevenue)}</span>
                   </div>
                 </ItemActions>
                 {member.trend && member.trendPercentage !== undefined ? (
@@ -111,7 +111,7 @@ export function StaffPerformanceCard({
                     }
                     className="ml-2"
                   >
-                    <TrendingUp className="mr-1 h-3 w-3" />
+                    <TrendingUp className="mr-1 size-3" />
                     {member.trendPercentage}%
                   </Badge>
                 ) : null}

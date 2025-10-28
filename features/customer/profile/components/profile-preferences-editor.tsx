@@ -71,7 +71,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Shield className="h-4 w-4" aria-hidden="true" />
+              <Shield className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>Account Preferences</CardTitle>
@@ -86,11 +86,11 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
         <Tabs defaultValue="regional" className="space-y-4">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="regional">
-              <Globe className="mr-2 h-4 w-4" />
+              <Globe className="mr-2 size-4" />
               Regional
             </TabsTrigger>
             <TabsTrigger value="notifications">
-              <Bell className="mr-2 h-4 w-4" />
+              <Bell className="mr-2 size-4" />
               Notifications
             </TabsTrigger>
           </TabsList>

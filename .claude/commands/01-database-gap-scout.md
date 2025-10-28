@@ -2,7 +2,7 @@
 **Core Principle:** Database is source of truth—code must conform to database, never the reverse.
 
 **Mission:**
-1. Read database schema using Supabase MCP (READ-ONLY) and focus on one customer portal
+1. Read database schema using Supabase MCP (READ-ONLY) and focus on one portal
 2. Find ALL mismatches between database and code
 4. Fix mismatches by aligning code to database
 
@@ -65,60 +65,11 @@ find features -name "queries.ts" -o -name "mutations.ts"
 
 ### PHASE 1: Fix Schema Mismatches (Type A)
 
-**Non-existent table/view:**
-```typescript
-// ❌ BEFORE
-await supabase.from('services').select('*')
-
-// ✅ AFTER - Use actual table from database
-await supabase.from('catalog_services_view').select('*')
-// OR comment out if shouldn't exist
-```
-
-**Non-existent column:**
-```typescript
-// ❌ BEFORE
-const name = service.service_name
-
-// ✅ AFTER - Use actual column
-const name = service.name
-```
-
-**Non-existent RPC:**
-```typescript
-// ❌ BEFORE
-await supabase.rpc('calc_total', { userId })
-
-// ✅ AFTER - Use query instead
-await supabase.from('orders_view').select('total').eq('user_id', userId)
-```
-
-**Type mismatch:**
-```typescript
-// ❌ BEFORE
-const date: string = row.created_at
-
-// ✅ AFTER
-const date: string | null = row.created_at
-```
-
 ### PHASE 2: Implement Features (Type B)
 
 For each CRITICAL/HIGH gap:
 
-**1. Create structure:**
-```
-features/[portal]/[feature]/
-├── components/
-├── api/
-│   ├── queries.ts      # 'server-only'
-│   └── mutations.ts    # 'use server'
-├── types.ts
-├── schema.ts
-└── index.tsx
-```
-
-**2. Implementation checklist:**
+**1. Implementation checklist:**
 - [ ] Verify table/view exists (Supabase MCP)
 - [ ] Verify all columns exist (Supabase MCP)
 - [ ] `queries.ts` has `'server-only'`

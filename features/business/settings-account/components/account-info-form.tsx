@@ -62,7 +62,7 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
             <FieldGroup className="gap-6">
               {success && (
                 <Alert>
-                  <CheckCircle className="h-4 w-4" />
+                  <CheckCircle className="size-4" />
                 <AlertTitle>Profile updated</AlertTitle>
                 <AlertDescription>Profile updated successfully</AlertDescription>
               </Alert>
@@ -70,7 +70,7 @@ export function AccountInfoForm({ profile }: AccountInfoFormProps) {
 
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Update failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>

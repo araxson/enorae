@@ -1,5 +1,3 @@
-import 'server-only'
-
 // Sentiment analysis
 export { analyzeSentiment, type SentimentResult } from './sentiment'
 

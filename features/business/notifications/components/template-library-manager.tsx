@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState, useTransition } from 'react'
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PlusCircle } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
@@ -16,14 +16,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 type NotificationTemplatesManagerProps = {
   templates: NotificationTemplate[]
@@ -135,29 +127,23 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
     <>
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <ItemContent className="flex flex-col gap-1">
-                <ItemTitle>Notification Templates</ItemTitle>
-                <ItemDescription>
-                  Manage reusable communication templates for campaigns and automations
-                </ItemDescription>
-              </ItemContent>
-              <ItemActions>
-                <Button variant="default" onClick={() => handleOpen()} disabled={isPending}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  New Template
-                </Button>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Notification Templates</CardTitle>
+          <CardDescription>
+            Manage reusable communication templates for campaigns and automations
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <div className="flex justify-end">
+            <Button variant="default" onClick={() => handleOpen()} disabled={isPending}>
+              <PlusCircle className="mr-2 size-4" />
+              New Template
+            </Button>
+          </div>
           {templates.length === 0 ? (
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <PlusCircle className="h-8 w-8" aria-hidden="true" />
+                  <PlusCircle className="size-8" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No templates configured</EmptyTitle>
                 <EmptyDescription>

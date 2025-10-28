@@ -35,7 +35,7 @@ export function StaffFiltersDropdown({ filters, toggles }: StaffFiltersDropdownP
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" aria-label="Display options">
-          <Filter className="h-4 w-4" aria-hidden="true" />
+          <Filter className="size-4" aria-hidden="true" />
           <span className="sr-only">Display options</span>
         </Button>
       </DropdownMenuTrigger>

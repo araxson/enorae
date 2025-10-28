@@ -2,7 +2,6 @@
 
 import type { ComponentType, ReactNode } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -129,16 +128,19 @@ export function RevenueCard({
   // Format amount
   const formattedAmount = formatCurrency(amount, { currency })
 
+  const primaryValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+  const iconColorClass = 'text-muted-foreground'
+
   return (
     <Item role="article" aria-label={`${title} revenue metric`} variant="outline" className={`flex-col gap-4 ${cardClasses}`}>
-      <ItemHeader className="items-start justify-between">
+      <ItemHeader>
         <div className="space-y-1">
           <ItemTitle>{title}</ItemTitle>
           {subtitle ? <ItemDescription>{subtitle}</ItemDescription> : null}
         </div>
         {IconComponent ? (
-          <ItemActions className="flex-none text-muted-foreground">
-            <IconComponent className="h-4 w-4" aria-hidden="true" />
+          <ItemActions>
+            <IconComponent className={cn('size-4', iconColorClass)} aria-hidden="true" />
           </ItemActions>
         ) : null}
       </ItemHeader>
@@ -151,7 +153,7 @@ export function RevenueCard({
                 {compact ? (
                   <ItemTitle>{formattedAmount}</ItemTitle>
                 ) : (
-                  <CardTitle>{formattedAmount}</CardTitle>
+                  <p className={primaryValueClass}>{formattedAmount}</p>
                 )}
                 {growthRate !== undefined && (
                   <Badge
@@ -159,9 +161,9 @@ export function RevenueCard({
                     className="flex items-center gap-1"
                   >
                     {growthRate >= 0 ? (
-                      <TrendingUp className="h-3 w-3" />
+                      <TrendingUp className="size-3" />
                     ) : (
-                      <TrendingDown className="h-3 w-3" />
+                      <TrendingDown className="size-3" />
                     )}
                     {formatPercentage(Math.abs(growthRate), { includeSign: true })}
                   </Badge>
@@ -174,9 +176,9 @@ export function RevenueCard({
           {growthRate !== undefined && (
             <div className="flex gap-2 items-center">
               {growthRate >= 0 ? (
-                <ArrowUpRight className="h-3 w-3 text-primary" aria-hidden="true" />
+                <ArrowUpRight className="size-3 text-primary" aria-hidden="true" />
               ) : (
-                <ArrowDownRight className="h-3 w-3 text-destructive" aria-hidden="true" />
+                <ArrowDownRight className="size-3 text-destructive" aria-hidden="true" />
               )}
               <div
                 className={cn(

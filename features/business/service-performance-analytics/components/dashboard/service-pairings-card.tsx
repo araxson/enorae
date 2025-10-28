@@ -16,7 +16,7 @@ export function ServicePairingsCard({ pairings }: { pairings: ServicePairing[] }
   return (
     <Item variant="outline" className="flex-col gap-3">
       <ItemHeader className="items-center gap-2">
-        <Link2 className="h-5 w-5" />
+        <Link2 className="size-5" />
         <ItemTitle>Service Pairings</ItemTitle>
       </ItemHeader>
       <ItemContent className="space-y-2">

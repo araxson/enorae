@@ -1,4 +1,3 @@
-'use server'
 
 // Creation operations
 export { createTimeOffRequest } from './creation'

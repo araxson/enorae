@@ -49,7 +49,7 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Crown className="h-5 w-5" aria-hidden="true" />
+              <Crown className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>VIP status</CardTitle>
@@ -70,7 +70,7 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
                 <ItemGroup>
                   <Item>
                     <ItemMedia variant="icon">
-                      <Crown className="h-4 w-4" aria-hidden="true" />
+                      <Crown className="size-4" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <span className="text-2xl font-semibold text-foreground">{value}</span>
@@ -96,7 +96,7 @@ export function VIPStatusCard({ vipStatus }: VIPStatusCardProps) {
                 <ItemGroup>
                   <Item>
                     <ItemMedia variant="icon">
-                      <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+                      <TrendingUp className="size-4 text-primary" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <span className="text-2xl font-semibold text-foreground">

@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
@@ -45,37 +45,27 @@ export function PriceScenariosTab({
   return (
     <Card>
       <CardHeader>
-        <ItemGroup className="items-start justify-between gap-4">
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Price Scenarios</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>
-                See how pricing changes throughout the week
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-          <ItemActions className="flex-none">
-            <Select value={selectedDay} onValueChange={onDayChange}>
-              <SelectTrigger className="w-44">
-                <SelectValue placeholder="Filter by day" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Days</SelectItem>
-                <SelectItem value="monday">Monday</SelectItem>
-                <SelectItem value="tuesday">Tuesday</SelectItem>
-                <SelectItem value="wednesday">Wednesday</SelectItem>
-                <SelectItem value="thursday">Thursday</SelectItem>
-                <SelectItem value="friday">Friday</SelectItem>
-                <SelectItem value="saturday">Saturday</SelectItem>
-                <SelectItem value="sunday">Sunday</SelectItem>
-              </SelectContent>
-            </Select>
-          </ItemActions>
-        </ItemGroup>
+        <CardTitle>Price Scenarios</CardTitle>
+        <CardDescription>See how pricing changes throughout the week</CardDescription>
       </CardHeader>
       <CardContent>
+        <div className="flex justify-end">
+          <Select value={selectedDay} onValueChange={onDayChange}>
+            <SelectTrigger className="w-44">
+              <SelectValue placeholder="Filter by day" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Days</SelectItem>
+              <SelectItem value="monday">Monday</SelectItem>
+              <SelectItem value="tuesday">Tuesday</SelectItem>
+              <SelectItem value="wednesday">Wednesday</SelectItem>
+              <SelectItem value="thursday">Thursday</SelectItem>
+              <SelectItem value="friday">Friday</SelectItem>
+              <SelectItem value="saturday">Saturday</SelectItem>
+              <SelectItem value="sunday">Sunday</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <ItemGroup className="flex flex-col gap-3">
           {filteredScenarios.map((scenario) => (
             <Item
@@ -84,9 +74,7 @@ export function PriceScenariosTab({
               className="items-center justify-between gap-3"
             >
               <ItemContent className="flex items-center gap-3">
-                <ItemTitle className="w-24 font-medium">
-                  {getDayName(scenario.day)}
-                </ItemTitle>
+                <div className="w-24 font-medium">{getDayName(scenario.day)}</div>
                 <ItemDescription>{formatTime(scenario.hour)}</ItemDescription>
               </ItemContent>
               <ItemActions className="flex items-center gap-4">

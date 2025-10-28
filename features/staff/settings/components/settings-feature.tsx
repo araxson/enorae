@@ -1,6 +1,5 @@
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 import { NotificationPreferences, PrivacySettings, DisplayPreferences } from './index'
 import { getUserPreferences } from '../api/queries'
 import type { UserPreferences } from '../types'
@@ -12,13 +11,7 @@ export async function SettingsFeature() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Settings & Preferences</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Settings & Preferences</CardTitle>
         </CardHeader>
       </Card>
 

@@ -93,21 +93,17 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>{request.staff?.profiles?.['username'] || 'Staff member'}</CardTitle>
-              <CardDescription>
-                {request['request_type']?.replace('_', ' ').toUpperCase() || 'N/A'}
-              </CardDescription>
-            </ItemContent>
-            <ItemActions>
-              <Badge variant={getStatusVariant(request['status'] || '')}>
-                {request['status'] ? formatStatus(request['status']) : 'Unknown'}
-              </Badge>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1">
+            <CardTitle>{request.staff?.profiles?.['username'] || 'Staff member'}</CardTitle>
+            <CardDescription>
+              {request['request_type']?.replace('_', ' ').toUpperCase() || 'N/A'}
+            </CardDescription>
+          </div>
+          <Badge variant={getStatusVariant(request['status'] || '')}>
+            {request['status'] ? formatStatus(request['status']) : 'Unknown'}
+          </Badge>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

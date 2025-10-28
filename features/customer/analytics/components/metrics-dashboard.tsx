@@ -10,14 +10,12 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
 import { Badge } from '@/components/ui/badge'
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -58,28 +56,21 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon
 
           return (
             <Card key={stat['title']}>
-              <CardHeader className="space-y-3">
-                <ItemGroup>
-                  <Item variant="muted" size="sm">
-                    <ItemMedia variant="icon">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                    </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>{stat['title']}</ItemTitle>
-                    <ItemDescription>{stat['description']}</ItemDescription>
-                  </ItemContent>
-                  </Item>
-                </ItemGroup>
+              <CardHeader>
+                <CardTitle>{stat['title']}</CardTitle>
+                <CardDescription>{stat['description']}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+                  <Icon className="size-5 text-muted-foreground" aria-hidden="true" />
+                </div>
               </CardContent>
             </Card>
           )
@@ -88,24 +79,16 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemMedia variant="icon">
-                <TrendingUp className="h-5 w-5 text-primary" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>Favorite services</ItemTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Favorite services</CardTitle>
+          <CardDescription>Your most booked services</CardDescription>
         </CardHeader>
         <CardContent>
           {metrics.favoriteServices.length === 0 ? (
             <Empty>
-              <EmptyMedia variant="icon">
-                <TrendingUp className="h-6 w-6" aria-hidden="true" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <TrendingUp className="size-6" aria-hidden="true" />
+                </EmptyMedia>
                 <EmptyTitle>No favorite services yet</EmptyTitle>
                 <EmptyDescription>
                   Book more appointments to see your most-loved services appear here.
@@ -120,7 +103,7 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
                     <ItemContent>
                       <ItemTitle>{service.service}</ItemTitle>
                     </ItemContent>
-                    <ItemActions className="flex-none">
+                    <ItemActions>
                       <Badge variant="secondary">
                         {service.count} {service.count === 1 ? 'booking' : 'bookings'}
                       </Badge>
@@ -136,24 +119,16 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item className="flex-col items-start gap-1">
-              <ItemContent>
-                <ItemTitle>Recent activity</ItemTitle>
-              </ItemContent>
-              <ItemContent>
-                <ItemDescription>Latest customer appointments</ItemDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Recent activity</CardTitle>
+          <CardDescription>Latest customer appointments</CardDescription>
         </CardHeader>
         <CardContent>
           {metrics.recentActivity.length === 0 ? (
             <Empty>
-              <EmptyMedia variant="icon">
-                <Calendar className="h-6 w-6" aria-hidden="true" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Calendar className="size-6" aria-hidden="true" />
+                </EmptyMedia>
                 <EmptyTitle>No recent activity</EmptyTitle>
                 <EmptyDescription>
                   Recent appointments will display here once you start booking.
@@ -176,13 +151,15 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
                         <ItemTitle>{appointment['service_name'] || 'Service'}</ItemTitle>
                         <ItemDescription>{appointment['salon_name'] || 'Salon'}</ItemDescription>
                       </ItemContent>
-                      <ItemActions className="flex-none flex-col items-end gap-1">
-                        <span>
-                          {appointment['start_time']
-                            ? new Date(appointment['start_time']).toLocaleDateString()
-                            : 'N/A'}
-                        </span>
-                        <Badge variant="outline">{statusLabel}</Badge>
+                      <ItemActions>
+                        <div className="flex flex-col items-end gap-1">
+                          <span>
+                            {appointment['start_time']
+                              ? new Date(appointment['start_time']).toLocaleDateString()
+                              : 'N/A'}
+                          </span>
+                          <Badge variant="outline">{statusLabel}</Badge>
+                        </div>
                       </ItemActions>
                     </Item>
                     {index < metrics.recentActivity.length - 1 ? <ItemSeparator /> : null}

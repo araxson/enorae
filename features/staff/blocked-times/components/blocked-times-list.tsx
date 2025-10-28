@@ -75,7 +75,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Clock className="h-8 w-8" aria-hidden="true" />
+            <Clock className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No blocked times</EmptyTitle>
           <EmptyDescription>Create a blocked time to prevent bookings during specific periods.</EmptyDescription>
@@ -134,14 +134,14 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <ButtonGroup className="ml-auto">
+                  <ButtonGroup aria-label="Blocked time actions">
                     {onEdit && (
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => onEdit(blockedTime)}
                       >
-                        <Pencil className="h-4 w-4" />
+                        <Pencil className="size-4" />
                       </Button>
                     )}
                     <Button
@@ -151,7 +151,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                       disabled={isDeleting && pendingDeleteId === blockedTime['id']}
                       aria-label="Delete blocked time"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="size-4" />
                     </Button>
                   </ButtonGroup>
                 </TableCell>

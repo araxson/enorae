@@ -11,11 +11,6 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { PieChart } from 'lucide-react'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 import type { ServiceRevenue } from '@/features/staff/commission/api/queries'
 
@@ -28,19 +23,13 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
     return (
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Revenue by Service</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Revenue by Service</CardTitle>
         </CardHeader>
         <CardContent>
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <PieChart className="h-8 w-8" aria-hidden="true" />
+                <PieChart className="size-8" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No service data available</EmptyTitle>
               <EmptyDescription>Once services generate revenue, the breakdown appears here.</EmptyDescription>
@@ -56,14 +45,8 @@ export function ServiceBreakdown({ data }: ServiceBreakdownProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Revenue by Service</CardTitle>
-              <CardDescription>This month&apos;s performance breakdown</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Revenue by Service</CardTitle>
+        <CardDescription>This month&apos;s performance breakdown</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>

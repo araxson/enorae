@@ -21,9 +21,11 @@ const iconMap = {
 export function Values() {
   return (
     <MarketingSection spacing="compact" className="bg-muted/30">
-      <Item className="mx-auto flex-col items-center text-center" variant="muted">
+      <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>{valuesData.title}</ItemTitle>
+          <div className="w-full text-center">
+            <ItemTitle>{valuesData.title}</ItemTitle>
+          </div>
         </ItemHeader>
       </Item>
 

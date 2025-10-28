@@ -20,22 +20,24 @@ interface EmptyStateProps {
 export function EmptyState({ onReset }: EmptyStateProps) {
   return (
     <Card>
-      <CardContent className="py-12">
-        <Empty>
-          <EmptyMedia variant="icon">
-            <Search className="size-6" aria-hidden="true" />
-          </EmptyMedia>
-          <EmptyHeader>
-            <EmptyTitle>{listingCopy.emptyTitle}</EmptyTitle>
-            <EmptyDescription>{listingCopy.emptyDescription}</EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Button variant="outline" onClick={onReset} className="gap-2">
-              <Sparkles className="size-4" aria-hidden="true" />
-              {listingCopy.resetLabel}
-            </Button>
-          </EmptyContent>
-        </Empty>
+      <CardContent>
+        <div className="py-12">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <Search className="size-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>{listingCopy.emptyTitle}</EmptyTitle>
+              <EmptyDescription>{listingCopy.emptyDescription}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button variant="outline" onClick={onReset}>
+                <Sparkles className="size-4" aria-hidden="true" />
+                {listingCopy.resetLabel}
+              </Button>
+            </EmptyContent>
+          </Empty>
+        </div>
       </CardContent>
     </Card>
   )

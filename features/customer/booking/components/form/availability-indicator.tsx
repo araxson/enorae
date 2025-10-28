@@ -31,15 +31,15 @@ export function AvailabilityIndicator({
 
   const getIcon = () => {
     if (status === 'checking' || isCheckingAvailability) {
-      return <Spinner className="h-4 w-4" aria-hidden="true" />
+      return <Spinner className="size-4" aria-hidden="true" />
     }
     if (status === 'available') {
-      return <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+      return <CheckCircle2 className="size-4" aria-hidden="true" />
     }
     if (status === 'unavailable') {
-      return <XCircle className="h-4 w-4" aria-hidden="true" />
+      return <XCircle className="size-4" aria-hidden="true" />
     }
-    return <AlertCircle className="h-4 w-4" aria-hidden="true" />
+    return <AlertCircle className="size-4" aria-hidden="true" />
   }
 
   const statusLabel =

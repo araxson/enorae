@@ -9,9 +9,11 @@ export function AboutPage() {
   return (
     <main className="flex flex-col gap-16">
       <MarketingSection spacing="compact">
-        <Item className="flex-col items-center text-center" variant="muted">
+        <Item variant="muted">
           <ItemContent>
-            <ItemDescription>Learn how Enorae started, what drives us, and the team bringing it to life.</ItemDescription>
+            <div className="flex flex-col items-center text-center">
+              <ItemDescription>Learn how Enorae started, what drives us, and the team bringing it to life.</ItemDescription>
+            </div>
           </ItemContent>
         </Item>
       </MarketingSection>

@@ -120,7 +120,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {salon['rating_average'] ? (
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Star className="h-4 w-4 fill-accent text-accent" />
+                <Star className="size-4 fill-accent text-accent" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>{Number(salon['rating_average']).toFixed(1)}</ItemTitle>
@@ -137,7 +137,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {salon['formatted_address'] ? (
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <MapPin className="h-4 w-4" />
+                <MapPin className="size-4" />
               </ItemMedia>
               <ItemContent>
                 <ItemDescription>
@@ -152,7 +152,7 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
           {typeof salon['booking_lead_time_hours'] === 'number' ? (
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Clock className="h-4 w-4" />
+                <Clock className="size-4" />
               </ItemMedia>
               <ItemContent>
                 <ItemDescription>

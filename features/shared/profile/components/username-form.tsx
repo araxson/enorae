@@ -50,16 +50,14 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-4">
+    <Item variant="outline">
       <ItemHeader>
-        <div className="flex flex-col gap-1">
-          <ItemTitle>Username</ItemTitle>
-          <ItemDescription>
-            Your unique username is used to identify you across the platform
-          </ItemDescription>
-        </div>
+        <ItemTitle>Username</ItemTitle>
       </ItemHeader>
       <ItemContent>
+        <ItemDescription>
+          Your unique username is used to identify you across the platform
+        </ItemDescription>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <Field>
@@ -87,7 +85,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
               <Button type="submit" disabled={isSubmitting || username === currentUsername}>
                 {isSubmitting ? (
                   <>
-                    <Spinner className="size-4" />
+                    <Spinner />
                     <span>Updating...</span>
                   </>
                 ) : (

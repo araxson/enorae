@@ -13,10 +13,7 @@ export function Hero() {
           <ItemDescription>Understand platform expectations before booking or offering services.</ItemDescription>
         </ItemContent>
       </Item>
-      <ButtonGroup
-        aria-label="Terms hero actions"
-        className="flex flex-wrap justify-center gap-2"
-      >
+      <ButtonGroup aria-label="Terms hero actions">
         <Button asChild size="lg">
           <Link href="/privacy">View privacy policy</Link>
         </Button>

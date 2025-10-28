@@ -52,7 +52,7 @@ export async function ServicesCategoryPage({
       groupClassName="gap-8"
     >
       <div className="flex flex-col gap-4">
-        <Item className="flex-col" variant="muted">
+        <Item variant="muted">
           <ItemHeader>
             <ItemTitle>{category.name}</ItemTitle>
           </ItemHeader>
@@ -71,7 +71,7 @@ export async function ServicesCategoryPage({
       />
 
       <div className="flex flex-col gap-4">
-        <Item className="flex-col" variant="muted">
+        <Item variant="muted">
           <ItemHeader>
             <ItemTitle>{category.name} Services</ItemTitle>
           </ItemHeader>
@@ -82,7 +82,7 @@ export async function ServicesCategoryPage({
       <Separator />
 
       <div className="flex flex-col gap-4">
-        <Item className="flex-col" variant="muted">
+        <Item variant="muted">
           <ItemHeader>
             <ItemTitle>Salons Offering {category.name}</ItemTitle>
           </ItemHeader>

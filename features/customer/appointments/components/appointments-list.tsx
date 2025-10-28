@@ -52,10 +52,10 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <CalendarX className="h-6 w-6" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <CalendarX className="size-6" />
+          </EmptyMedia>
           <EmptyTitle>No appointments yet</EmptyTitle>
           <EmptyDescription>
             Book your first appointment at a salon
@@ -94,16 +94,16 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
 
         return (
           <Item key={appointment['id']} variant="outline" className="flex h-full flex-col gap-4 p-6">
-            <ItemHeader className="flex-col items-start gap-1 p-0">
+            <ItemHeader>
               <ItemTitle>{appointment['salon_name'] || 'Unnamed Salon'}</ItemTitle>
               <ItemDescription>{appointment['service_name'] || 'Service'}</ItemDescription>
             </ItemHeader>
-            <ItemContent className="gap-4 p-0">
+            <ItemContent className="gap-4">
               <ItemGroup className="gap-3">
                 {startTime ? (
                   <Item variant="muted" size="sm">
                     <ItemMedia variant="icon">
-                      <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                      <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <ItemTitle>Scheduled</ItemTitle>
@@ -126,13 +126,13 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
                     <ItemTitle>Status</ItemTitle>
                     <ItemDescription>{statusLabel}</ItemDescription>
                   </ItemContent>
-                  <ItemActions className="flex-none">
+                  <ItemActions>
                     <Badge variant={statusVariantValue}>{statusLabel}</Badge>
                   </ItemActions>
                 </Item>
               </ItemGroup>
             </ItemContent>
-            <ItemFooter className="p-0">
+            <ItemFooter>
               <Button asChild variant="outline" className="w-full">
                 <Link href={`/customer/appointments/${appointment['id']}`}>
                   View details

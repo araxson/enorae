@@ -1,5 +1,4 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -66,7 +65,7 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader>
         <ItemMedia variant="icon">
-          <TrendingUp className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+          <TrendingUp className="size-5 text-muted-foreground" aria-hidden="true" />
         </ItemMedia>
         <ItemContent>
           <ItemTitle>Customer Segmentation</ItemTitle>
@@ -80,10 +79,10 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
           {segments.map(({ label, count, icon: Icon, variant, iconColor }) => (
             <Item key={label} className={`flex-col items-center gap-2 py-4 ${variant}`}>
               <ItemMedia variant="icon">
-                <Icon className={`h-6 w-6 ${iconColor}`} aria-hidden="true" />
+                <Icon className={`size-6 ${iconColor}`} aria-hidden="true" />
               </ItemMedia>
               <ItemContent className="flex flex-col items-center gap-1">
-                <CardTitle>{count}</CardTitle>
+                <p className="text-2xl font-semibold leading-none tracking-tight">{count}</p>
                 <ItemDescription>{label}</ItemDescription>
               </ItemContent>
             </Item>
@@ -91,7 +90,7 @@ export function SegmentationCard({ summary }: SegmentationCardProps) {
         </ItemGroup>
       </ItemContent>
       <Alert>
-        <TrendingUp className="h-4 w-4" />
+        <TrendingUp className="size-4" />
         <AlertDescription>
           Tailor campaigns for at-risk and churned segments to rebalance your funnel.
         </AlertDescription>

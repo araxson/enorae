@@ -64,12 +64,12 @@ export function AuditLogsFilters({ onFilterChange }: AuditLogsFiltersProps) {
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader>
         <ItemTitle>
-          <Filter className="h-4 w-4" />
+          <Filter className="size-4" />
           Filters
         </ItemTitle>
         <ItemActions>
           <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-2">
-            <X className="h-4 w-4" />
+            <X className="size-4" />
             Clear
           </Button>
         </ItemActions>

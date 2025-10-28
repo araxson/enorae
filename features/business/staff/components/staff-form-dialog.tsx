@@ -86,7 +86,7 @@ export function StaffFormDialog({ open, onClose, staff, onSuccess }: StaffFormDi
           <div className="space-y-6">
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Save failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>

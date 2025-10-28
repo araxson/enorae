@@ -47,14 +47,8 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Privacy Settings</CardTitle>
-              <CardDescription>Control who can see your information.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Privacy Settings</CardTitle>
+        <CardDescription>Control who can see your information.</CardDescription>
       </CardHeader>
       <CardContent>
         <FieldSet>

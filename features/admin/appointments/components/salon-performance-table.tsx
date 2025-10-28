@@ -23,18 +23,21 @@ const formatPercent = (num: number, denom: number) => {
 
 export function SalonPerformanceTable({ salons }: SalonPerformanceTableProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>Top Performing Salons</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="w-full">
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <ItemTitle>Top Performing Salons</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="w-full">
           {salons.length === 0 ? (
             <Empty>
               <EmptyHeader>
@@ -72,7 +75,8 @@ export function SalonPerformanceTable({ salons }: SalonPerformanceTableProps) {
           )}
           {salons.length === 0 ? null : <ScrollBar orientation="horizontal" />}
         </ScrollArea>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

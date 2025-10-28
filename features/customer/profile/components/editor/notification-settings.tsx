@@ -40,69 +40,67 @@ export function NotificationSettings({
 }: NotificationSettingsProps) {
   return (
     <div>
-      <ItemGroup className="mb-4">
-        <Item variant="muted" size="sm">
-          <ItemMedia variant="icon">
-            <Bell className="h-4 w-4" />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>Notification Preferences</ItemTitle>
-          </ItemContent>
-        </Item>
-      </ItemGroup>
+      <div className="mb-4">
+        <ItemGroup>
+          <Item variant="muted" size="sm">
+            <ItemMedia variant="icon">
+              <Bell className="size-4" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Notification Preferences</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
+      </div>
       <FieldSet>
         <FieldLegend className="sr-only">Notification preferences</FieldLegend>
-        <FieldGroup className="gap-4">
+        <FieldGroup>
           <Field orientation="responsive">
-            <FieldLabel htmlFor="email-notifications">Email notifications</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="email-notifications">Email notifications</FieldLabel>
               <FieldDescription>Receive updates via email</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="email-notifications"
-                checked={emailNotifications}
-                onCheckedChange={onEmailNotificationsChange}
-              />
             </FieldContent>
+            <Switch
+              id="email-notifications"
+              checked={emailNotifications}
+              onCheckedChange={onEmailNotificationsChange}
+            />
           </Field>
 
           <Field orientation="responsive">
-            <FieldLabel htmlFor="sms-notifications">SMS notifications</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="sms-notifications">SMS notifications</FieldLabel>
               <FieldDescription>Receive text message alerts</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="sms-notifications"
-                checked={smsNotifications}
-                onCheckedChange={onSmsNotificationsChange}
-              />
             </FieldContent>
+            <Switch
+              id="sms-notifications"
+              checked={smsNotifications}
+              onCheckedChange={onSmsNotificationsChange}
+            />
           </Field>
 
           <Field orientation="responsive">
-            <FieldLabel htmlFor="appointment-reminders">Appointment reminders</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="appointment-reminders">Appointment reminders</FieldLabel>
               <FieldDescription>Get reminders before appointments</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="appointment-reminders"
-                checked={appointmentReminders}
-                onCheckedChange={onAppointmentRemindersChange}
-              />
             </FieldContent>
+            <Switch
+              id="appointment-reminders"
+              checked={appointmentReminders}
+              onCheckedChange={onAppointmentRemindersChange}
+            />
           </Field>
 
           <Field orientation="responsive">
-            <FieldLabel htmlFor="marketing-emails">Marketing emails</FieldLabel>
-            <FieldContent className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <FieldContent>
+              <FieldLabel htmlFor="marketing-emails">Marketing emails</FieldLabel>
               <FieldDescription>Receive promotional offers and news</FieldDescription>
-              <Switch
-                className="sm:ml-4"
-                id="marketing-emails"
-                checked={marketingEmails}
-                onCheckedChange={onMarketingEmailsChange}
-              />
             </FieldContent>
+            <Switch
+              id="marketing-emails"
+              checked={marketingEmails}
+              onCheckedChange={onMarketingEmailsChange}
+            />
           </Field>
         </FieldGroup>
       </FieldSet>

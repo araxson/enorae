@@ -57,7 +57,7 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
               <TabsTrigger value="view">View profile</TabsTrigger>
               <TabsTrigger value="edit">
                 <span className="flex items-center gap-2">
-                  <Edit className="h-4 w-4" aria-hidden="true" />
+                  <Edit className="size-4" aria-hidden="true" />
                   Edit profile
                 </span>
               </TabsTrigger>

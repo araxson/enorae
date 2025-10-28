@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   InputGroup,
+  InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
@@ -41,9 +42,16 @@ export function CouponBasicSection({ formData, onChange, onGenerateCode }: Coupo
               placeholder="e.g., SAVE20"
               required
             />
-            <InputGroupButton type="button" variant="outline" onClick={onGenerateCode}>
-              Generate
-            </InputGroupButton>
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                type="button"
+                variant="outline"
+                onClick={onGenerateCode}
+                aria-label="Generate coupon code"
+              >
+                Generate
+              </InputGroupButton>
+            </InputGroupAddon>
           </InputGroup>
         </FieldContent>
         <FieldDescription>Codes are automatically uppercased for consistency.</FieldDescription>

@@ -23,7 +23,7 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
         <ItemGroup>
           <Item variant="muted" className="items-center gap-2">
             <ItemContent className="flex items-center gap-2">
-              <Network className="h-4 w-4" aria-hidden="true" />
+              <Network className="size-4" aria-hidden="true" />
               <CardTitle>IP Access Control</CardTitle>
             </ItemContent>
           </Item>
@@ -48,13 +48,13 @@ export function IpAccessPanel({ events }: IpAccessPanelProps) {
                       <Badge variant={event.isGranted ? 'outline' : 'destructive'}>
                         {event.isGranted ? (
                           <>
-                            <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
+                            <CheckCircle2 className="size-3" aria-hidden="true" />
                             {' '}
                             Allowed
                           </>
                         ) : (
                           <>
-                            <XCircle className="h-3 w-3" aria-hidden="true" />
+                            <XCircle className="size-3" aria-hidden="true" />
                             {' '}
                             Blocked
                           </>

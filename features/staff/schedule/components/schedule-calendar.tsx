@@ -53,7 +53,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
       <div className="flex justify-end">
         {onAdd && (
           <Button onClick={onAdd}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Add Schedule
           </Button>
         )}
@@ -70,7 +70,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
               {onAdd && (
                 <EmptyContent>
                   <Button onClick={onAdd}>
-                    <Plus className="mr-2 h-4 w-4" />
+                    <Plus className="mr-2 size-4" />
                     Add Schedule
                   </Button>
                 </EmptyContent>
@@ -87,13 +87,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
             return (
               <Card key={day}>
                 <CardHeader>
-                  <ItemGroup>
-                    <Item variant="muted" size="sm">
-                      <ItemContent>
-                        <CardTitle>{formatDayName(day)}</CardTitle>
-                      </ItemContent>
-                    </Item>
-                  </ItemGroup>
+                  <CardTitle>{formatDayName(day)}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ItemGroup className="gap-3">
@@ -126,7 +120,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                                     size="icon"
                                     onClick={() => onEdit(schedule)}
                                   >
-                                    <Edit2 className="h-4 w-4" />
+                                    <Edit2 className="size-4" />
                                     <span className="sr-only">Edit</span>
                                   </Button>
                                 ) : null}
@@ -136,7 +130,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                                     size="icon"
                                     onClick={() => onDelete(schedule['id']!)}
                                   >
-                                    <Trash2 className="h-4 w-4" />
+                                    <Trash2 className="size-4" />
                                     <span className="sr-only">Delete</span>
                                   </Button>
                                 ) : null}

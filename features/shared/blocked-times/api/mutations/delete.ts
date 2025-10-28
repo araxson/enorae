@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PATHS, UUID_REGEX } from './shared'

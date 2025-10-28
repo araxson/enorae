@@ -1,5 +1,3 @@
-'use server'
-
 import { createBlockedTime as createBlockedTimeAction } from './mutations/create'
 import { updateBlockedTime as updateBlockedTimeAction } from './mutations/update'
 import { deleteBlockedTime as deleteBlockedTimeAction } from './mutations/delete'

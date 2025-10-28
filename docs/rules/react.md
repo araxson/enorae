@@ -316,7 +316,7 @@ export function TaskChecklist({ tasks }: { tasks: Task[] }) {
 
   return state.map((task) => (
     <button key={task.id} onClick={() => handleToggle(task)} className="flex items-center gap-2">
-      <span className="h-4 w-4 rounded border" data-complete={task.completed} />
+      <span className="size-4 rounded border" data-complete={task.completed} />
       <span className={task.completed ? 'line-through text-muted-foreground' : ''}>{task.title}</span>
     </button>
   ))

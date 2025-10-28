@@ -24,14 +24,8 @@ export function BalanceTab({ balance }: BalanceTabProps) {
     <div className="grid gap-6 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Time Off Balance ({balance.year})</CardTitle>
-                <CardDescription>Your annual time off allocation and usage</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Time Off Balance ({balance.year})</CardTitle>
+          <CardDescription>Your annual time off allocation and usage</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

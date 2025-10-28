@@ -77,7 +77,7 @@ export function UserDropdown({
       >
         <DropdownMenuLabel>
           <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8 rounded-lg">
+            <Avatar className="size-8 rounded-lg">
               <AvatarImage src={user.avatar || undefined} alt={user.name} />
               <AvatarFallback className="rounded-lg">
                 {getInitials(user.name, user.email)}
@@ -93,20 +93,20 @@ export function UserDropdown({
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href={profileRoute}>
-              <User className="mr-2 h-4 w-4" aria-hidden="true" />
+              <User className="mr-2 size-4" aria-hidden="true" />
               Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={settingsRoute}>
-              <Settings className="mr-2 h-4 w-4" aria-hidden="true" />
+              <Settings className="mr-2 size-4" aria-hidden="true" />
               Settings
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
+          <LogOut className="mr-2 size-4" aria-hidden="true" />
           Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>

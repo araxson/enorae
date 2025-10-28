@@ -100,7 +100,7 @@ export function FreshnessTable({ tables }: FreshnessTableProps) {
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <ButtonGroup className="justify-end">
+                  <ButtonGroup aria-label="Table actions">
                     <Button
                       size="sm"
                       variant="outline"

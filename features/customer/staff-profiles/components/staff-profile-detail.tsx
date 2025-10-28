@@ -22,31 +22,33 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
   return (
     <div className="flex flex-col gap-8">
       <Card>
-        <CardHeader className="p-6 pb-4">
-          <ItemGroup>
-            <Item className="flex-wrap items-start justify-between gap-4">
-              <ItemContent className="max-w-xl space-y-2">
-                <ItemTitle>{profile['title'] || 'Staff Member'}</ItemTitle>
-                {profile['bio'] ? <ItemDescription>{profile['bio']}</ItemDescription> : null}
-              </ItemContent>
-              {profile.average_rating ? (
-                <ItemActions className="flex items-center gap-2">
-                  <Star className="h-5 w-5" aria-hidden="true" />
-                  <ItemDescription>{profile.average_rating.toFixed(1)}</ItemDescription>
-                  <ItemDescription>
-                    ({profile.review_count ?? 0} reviews)
-                  </ItemDescription>
-                </ItemActions>
-              ) : null}
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <div className="flex flex-col gap-4 pb-4">
+            <ItemGroup>
+              <Item className="flex-wrap items-start justify-between gap-4">
+                <ItemContent className="max-w-xl space-y-2">
+                  <ItemTitle>{profile['title'] || 'Staff Member'}</ItemTitle>
+                  {profile['bio'] ? <ItemDescription>{profile['bio']}</ItemDescription> : null}
+                </ItemContent>
+                {profile.average_rating ? (
+                  <ItemActions className="flex items-center gap-2">
+                    <Star className="size-5" aria-hidden="true" />
+                    <ItemDescription>{profile.average_rating.toFixed(1)}</ItemDescription>
+                    <ItemDescription>
+                      ({profile.review_count ?? 0} reviews)
+                    </ItemDescription>
+                  </ItemActions>
+                ) : null}
+              </Item>
+            </ItemGroup>
+          </div>
         </CardHeader>
         <CardContent className="p-6 pt-0">
           <ItemGroup className="gap-4">
             {profile['email'] ? (
               <Item variant="muted">
                 <ItemMedia variant="icon">
-                  <Mail className="h-4 w-4" aria-hidden="true" />
+                  <Mail className="size-4" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemDescription>{profile['email']}</ItemDescription>
@@ -97,24 +99,26 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {profile.services.map((service) => (
               <Card key={service['id']}>
-                <CardHeader className="p-4 pb-2">
-                  <ItemGroup className="gap-2">
-                    <Item className="items-start justify-between gap-3">
-                      <ItemContent>
-                        <ItemTitle>{service['name']}</ItemTitle>
-                      </ItemContent>
-                      {service['price'] ? (
-                        <ItemActions className="flex-none">
-                          <Badge variant="secondary">${service['price']}</Badge>
+                <CardHeader>
+                  <div className="flex flex-col gap-2 pb-2">
+                    <ItemGroup className="gap-2">
+                      <Item className="items-start justify-between gap-3">
+                        <ItemContent>
+                          <ItemTitle>{service['name']}</ItemTitle>
+                        </ItemContent>
+                        {service['price'] ? (
+                          <ItemActions className="flex-none">
+                            <Badge variant="secondary">${service['price']}</Badge>
+                          </ItemActions>
+                        ) : null}
+                      </Item>
+                      {service['category_name'] ? (
+                        <ItemActions className="justify-end">
+                          <Badge variant="secondary">{service['category_name']}</Badge>
                         </ItemActions>
                       ) : null}
-                    </Item>
-                    {service['category_name'] ? (
-                      <ItemActions className="justify-end">
-                        <Badge variant="secondary">{service['category_name']}</Badge>
-                      </ItemActions>
-                    ) : null}
-                  </ItemGroup>
+                    </ItemGroup>
+                  </div>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
                   <ItemGroup className="gap-3">
@@ -128,7 +132,7 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
                     {service['duration_minutes'] ? (
                       <Item variant="muted">
                         <ItemContent className="flex items-center gap-2">
-                          <Briefcase className="h-3 w-3" aria-hidden="true" />
+                          <Briefcase className="size-3" aria-hidden="true" />
                           <ItemTitle>{service['duration_minutes']} minutes</ItemTitle>
                         </ItemContent>
                       </Item>
@@ -143,19 +147,21 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
 
       {profile['salon_id'] ? (
         <Card>
-          <CardHeader className="p-6 pb-2">
-            <ItemGroup>
-              <Item className="flex-col items-start gap-1">
-                <ItemContent>
-                  <ItemTitle>Book an Appointment</ItemTitle>
-                </ItemContent>
-                <ItemContent>
-                  <ItemDescription>
-                    Schedule a session with {profile['title'] || 'this staff member'}
-                  </ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+          <CardHeader>
+            <div className="flex flex-col gap-1 pb-2">
+              <ItemGroup>
+                <Item className="flex-col items-start gap-1">
+                  <ItemContent>
+                    <ItemTitle>Book an Appointment</ItemTitle>
+                  </ItemContent>
+                  <ItemContent>
+                    <ItemDescription>
+                      Schedule a session with {profile['title'] || 'this staff member'}
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
+            </div>
           </CardHeader>
           <CardContent className="px-6">
             <CardDescription>

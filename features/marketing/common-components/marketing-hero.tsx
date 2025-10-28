@@ -5,7 +5,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemGroup,
 } from '@/components/ui/item'
 import { cn } from '@/lib/utils'
@@ -38,19 +37,23 @@ export function MarketingHero({
   return (
     <MarketingSection spacing={spacingVariant} groupClassName="gap-0">
       <Card>
-        <CardHeader className={cn('gap-4 md:gap-6', headerAlignment)}>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{subtitle}</CardDescription>
+        <CardHeader>
+          <div className={cn('flex flex-col gap-4 md:gap-6', headerAlignment)}>
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>{subtitle}</CardDescription>
+          </div>
         </CardHeader>
-        <CardContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
-          <ItemGroup>
-            <Item variant="muted">
-              <ItemHeader className="flex flex-col gap-1">
-                <ItemDescription>{description}</ItemDescription>
-              </ItemHeader>
-            </Item>
-          </ItemGroup>
-          {children}
+        <CardContent>
+          <div className={cn('flex w-full flex-col gap-6', contentAlignment)}>
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <ItemDescription>{description}</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+            {children}
+          </div>
         </CardContent>
       </Card>
     </MarketingSection>

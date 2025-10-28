@@ -33,7 +33,7 @@ function StarRating({ rating }: { rating: number | null }) {
 
   return (
     <Badge variant="secondary" className="gap-1">
-      <Star className="h-3 w-3 fill-accent text-accent" aria-hidden="true" />
+      <Star className="size-3 fill-accent text-accent" aria-hidden="true" />
       <span>{validRating} / 5</span>
       <span className="sr-only">{validRating} out of 5 stars</span>
     </Badge>
@@ -44,10 +44,10 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
   if (reviews.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <Star className="h-6 w-6" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Star className="size-6" />
+          </EmptyMedia>
           <EmptyTitle>No reviews yet</EmptyTitle>
           <EmptyDescription>
             Share feedback after your next appointment to help others discover great salons.
@@ -66,7 +66,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
     <div className="grid gap-6">
       {reviews.map((review) => (
         <Item key={review['id']} variant="outline" className="flex flex-col gap-4 p-6">
-          <ItemHeader className="items-start gap-3 p-0">
+          <ItemHeader>
             <ItemContent>
               <ItemTitle>Salon review</ItemTitle>
               {review['salon_name'] ? <ItemDescription>{review['salon_name']}</ItemDescription> : null}
@@ -75,7 +75,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               <StarRating rating={review['rating']} />
             </ItemActions>
           </ItemHeader>
-          <ItemContent className="gap-4 p-0">
+          <ItemContent className="gap-4">
             <ItemGroup>
               <Item>
                 <ItemContent>
@@ -100,11 +100,11 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               ) : null}
             </ItemGroup>
           </ItemContent>
-          <ItemFooter className="p-0">
-            <ButtonGroup className="w-full flex-col gap-2 sm:flex-row" orientation="horizontal">
+          <ItemFooter>
+            <ButtonGroup aria-label="Review actions" orientation="horizontal">
               <EditReviewDialog review={review}>
                 <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
-                  <Star className="mr-2 h-4 w-4" aria-hidden="true" />
+                  <Star className="mr-2 size-4" aria-hidden="true" />
                   Edit review
                 </Button>
               </EditReviewDialog>

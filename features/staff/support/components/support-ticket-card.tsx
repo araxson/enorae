@@ -32,14 +32,8 @@ export function SupportTicketCard() {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Start a support ticket</CardTitle>
-              <CardDescription>The more detail you share, the faster we can assist.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Start a support ticket</CardTitle>
+        <CardDescription>The more detail you share, the faster we can assist.</CardDescription>
       </CardHeader>
       <CardContent>
         <FieldSet>

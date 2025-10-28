@@ -56,9 +56,11 @@ export function SalonsTable({ salons }: SalonsTableProps) {
 
   return (
     <>
-      <Card className="hidden md:block">
-        <CardContent className="p-0">
-          <ScrollArea className="w-full">
+      <div className="hidden md:block">
+        <Card>
+          <CardContent>
+            <div className="-m-6">
+              <ScrollArea className="w-full">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -101,7 +103,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
 
                 <TableCell>
                   <div className="flex items-center gap-1">
-                    <Users className="h-3 w-3 text-muted-foreground" />
+                    <Users className="size-3 text-muted-foreground" />
                     <span className="text-sm">{salon['staff_count'] || 0}</span>
                   </div>
                   {salon.staffCapacityRatio > 1 && (
@@ -160,39 +162,44 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                 ))}
               </TableBody>
             </Table>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </CardContent>
-      </Card>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <div className="space-y-4 md:hidden">
         {salons.map((salon) => (
           <Card key={salon['id']}>
-            <CardHeader className="pb-2">
-              <ItemGroup>
-                <Item className="items-start justify-between gap-2">
-                  <ItemContent className="flex flex-col gap-1">
-                    <ItemTitle>{salon['name']}</ItemTitle>
-                    <ItemDescription>
-                      {salon['created_at'] ? format(new Date(salon['created_at']), 'MMM dd, yyyy') : 'Created date unavailable'}
-                    </ItemDescription>
-                  </ItemContent>
-                  <ItemActions>
-                    <Badge
-                      variant={
-                        COMPLIANCE_BADGE_VARIANT[
-                          salon.complianceLevel as keyof typeof COMPLIANCE_BADGE_VARIANT
-                        ]
-                      }
-                    >
-                      {salon.complianceScore}
-                    </Badge>
-                  </ItemActions>
-                </Item>
-              </ItemGroup>
+            <CardHeader>
+              <div className="pb-2">
+                <ItemGroup>
+                  <Item className="items-start justify-between gap-2">
+                    <ItemContent className="flex flex-col gap-1">
+                      <ItemTitle>{salon['name']}</ItemTitle>
+                      <ItemDescription>
+                        {salon['created_at'] ? format(new Date(salon['created_at']), 'MMM dd, yyyy') : 'Created date unavailable'}
+                      </ItemDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      <Badge
+                        variant={
+                          COMPLIANCE_BADGE_VARIANT[
+                            salon.complianceLevel as keyof typeof COMPLIANCE_BADGE_VARIANT
+                          ]
+                        }
+                      >
+                        {salon.complianceScore}
+                      </Badge>
+                    </ItemActions>
+                  </Item>
+                </ItemGroup>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-3 pt-0">
-              <div className="grid grid-cols-2 gap-3">
+            <CardContent>
+              <div className="space-y-3 pt-0">
+                <div className="grid grid-cols-2 gap-3">
                 <div>
                   <span className="block font-medium">Type</span>
                   <span className="capitalize text-muted-foreground">salon</span>
@@ -213,7 +220,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                 <div>
                   <span className="block font-medium">Staff</span>
                   <span className="flex items-center gap-1 text-muted-foreground">
-                    <Users className="h-3 w-3" />
+                    <Users className="size-3" />
                     {salon['staff_count'] || 0}
                   </span>
                   {salon.staffCapacityRatio > 1 && (
@@ -238,6 +245,7 @@ export function SalonsTable({ salons }: SalonsTableProps) {
                         : `${Math.abs(salon.licenseDaysRemaining)} days overdue`}
                     </span>
                   )}
+                </div>
                 </div>
               </div>
             </CardContent>

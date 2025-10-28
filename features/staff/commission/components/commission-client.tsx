@@ -65,14 +65,12 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader>
-          <Item variant="muted" size="sm">
-            <ItemMedia variant="icon">
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Today&apos;s earnings</ItemTitle>
-            </ItemContent>
-          </Item>
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-muted p-2">
+              <DollarSign className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+            <CardTitle>Today&apos;s earnings</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.todayEarnings.toFixed(2)}</div>
@@ -82,14 +80,12 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
 
       <Card>
         <CardHeader>
-          <Item variant="muted" size="sm">
-            <ItemMedia variant="icon">
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>This week</ItemTitle>
-            </ItemContent>
-          </Item>
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-muted p-2">
+              <Calendar className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+            <CardTitle>This week</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.weekEarnings.toFixed(2)}</div>
@@ -99,14 +95,12 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
 
       <Card>
         <CardHeader>
-          <Item variant="muted" size="sm">
-            <ItemMedia variant="icon">
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>This month</ItemTitle>
-            </ItemContent>
-          </Item>
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-muted p-2">
+              <TrendingUp className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+            <CardTitle>This month</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.monthEarnings.toFixed(2)}</div>
@@ -116,14 +110,12 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
 
       <Card>
         <CardHeader>
-          <Item variant="muted" size="sm">
-            <ItemMedia variant="icon">
-              <PieChart className="h-4 w-4 text-muted-foreground" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Average per appointment</ItemTitle>
-            </ItemContent>
-          </Item>
+          <div className="flex items-center gap-3">
+            <span className="rounded-full bg-muted p-2">
+              <PieChart className="size-4 text-muted-foreground" aria-hidden />
+            </span>
+            <CardTitle>Average per appointment</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-semibold">${commission.avgPerAppointment.toFixed(2)}</div>

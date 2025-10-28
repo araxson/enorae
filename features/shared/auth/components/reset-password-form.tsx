@@ -73,7 +73,7 @@ export function ResetPasswordForm() {
             <div className="flex flex-col gap-6">
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Password reset failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>

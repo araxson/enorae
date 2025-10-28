@@ -100,7 +100,7 @@ export function AdminSettingsClient() {
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
           <Alert>
-            <Info className="h-4 w-4" />
+            <Info className="size-4" />
             <AlertTitle>Configuration Status</AlertTitle>
             <AlertDescription>
               Settings functionality will be implemented in a future update.
@@ -112,13 +112,14 @@ export function AdminSettingsClient() {
             {sections.map((section) => {
               const Icon = section.icon
               return (
-                <Card key={section.id} className="relative">
-                  <CardHeader>
+                <div key={section.id} className="relative">
+                  <Card>
+                    <CardHeader>
                     <ItemGroup>
                       <Item className="items-start justify-between gap-2">
                         <ItemContent className="flex items-center gap-2">
                           <ItemMedia variant="icon">
-                            <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                            <Icon className="size-5 text-primary" aria-hidden="true" />
                           </ItemMedia>
                           <ItemTitle>{section.title}</ItemTitle>
                         </ItemContent>
@@ -135,28 +136,28 @@ export function AdminSettingsClient() {
                       </Item>
                     </ItemGroup>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <ul className="space-y-2">
-                      {section.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Separator />
-                    <ButtonGroup className="w-full">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        disabled={!section.available}
-                        className="w-full"
-                      >
-                        Configure
-                      </Button>
-                    </ButtonGroup>
-                  </CardContent>
-                </Card>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <ul className="space-y-2">
+                          {section.features.map((feature) => (
+                            <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <div className="size-1.5 rounded-full bg-primary" />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                        <Separator />
+                        <ButtonGroup aria-label="Section actions">
+                          <div className="w-full">
+                            <Button variant="outline" size="sm" disabled={!section.available}>
+                              Configure
+                            </Button>
+                          </div>
+                        </ButtonGroup>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               )
             })}
           </div>

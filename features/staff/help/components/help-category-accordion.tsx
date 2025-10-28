@@ -6,14 +6,6 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
-
 type ResourceCategory = {
   id: string
   name: string
@@ -32,31 +24,19 @@ export function HelpCategoryAccordion({ categories }: HelpCategoryAccordionProps
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Categories</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Categories</CardTitle>
       </CardHeader>
       <CardContent>
         <Accordion type="multiple" className="space-y-3">
           {categories.map((category) => (
             <AccordionItem key={category.id} value={category.id}>
               <AccordionTrigger>
-                <ItemGroup>
-                  <Item variant="muted" size="sm">
-                    <ItemContent>
-                      <ItemTitle>{category.name}</ItemTitle>
-                    </ItemContent>
-                    <ItemActions>
-                      <Badge variant="outline">Follow</Badge>
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
+                <div className="flex w-full items-center justify-between gap-4 text-left">
+                  <span className="text-sm font-medium">{category.name}</span>
+                  <Badge variant="outline">Follow</Badge>
+                </div>
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
+              <AccordionContent className="text-sm text-muted-foreground">
                 {category.description}
               </AccordionContent>
             </AccordionItem>

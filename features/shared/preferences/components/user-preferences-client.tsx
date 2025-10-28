@@ -53,20 +53,28 @@ export function UserPreferencesClient({ initialPreferences }: UserPreferencesCli
         </p>
       </div>
 
-      <Tabs defaultValue="advanced" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="advanced">Regional & Locale</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-        </TabsList>
+      <div className="w-full">
+        <Tabs defaultValue="advanced">
+          <div className="grid w-full grid-cols-2">
+            <TabsList>
+              <TabsTrigger value="advanced">Regional & Locale</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            </TabsList>
+          </div>
 
-        <TabsContent value="advanced" className="mt-6">
-          <AdvancedPreferencesForm initialPreferences={advancedPrefs} />
-        </TabsContent>
+          <TabsContent value="advanced">
+            <div className="mt-6">
+              <AdvancedPreferencesForm initialPreferences={advancedPrefs} />
+            </div>
+          </TabsContent>
 
-        <TabsContent value="notifications" className="mt-6">
-          <NotificationPreferencesForm initialPreferences={notificationPrefs} />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="notifications">
+            <div className="mt-6">
+              <NotificationPreferencesForm initialPreferences={notificationPrefs} />
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   )
 }

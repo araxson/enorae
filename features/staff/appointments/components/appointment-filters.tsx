@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search } from 'lucide-react'
 import {
@@ -34,12 +33,15 @@ export function AppointmentFilters({
       {showSearch ? (
         <InputGroup className="flex-1">
           <InputGroupAddon>
-            <Search className="h-4 w-4" aria-hidden="true" />
+            <Search className="size-4" aria-hidden="true" />
           </InputGroupAddon>
           <InputGroupInput
+            type="search"
             placeholder="Search by customer name or email..."
             value={searchValue ?? localSearch}
             onChange={(event) => handleSearchChange(event.target.value)}
+            aria-label="Search appointments"
+            autoComplete="off"
           />
         </InputGroup>
       ) : null}

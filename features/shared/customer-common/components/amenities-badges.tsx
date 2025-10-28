@@ -1,12 +1,6 @@
 import { Wifi, Car, Accessibility, Coffee, CreditCard, DollarSign } from 'lucide-react'
 
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-} from '@/components/ui/item'
+import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 interface AmenitiesBadgesProps {
@@ -33,29 +27,23 @@ export function AmenitiesBadges({ amenities, limit, className }: AmenitiesBadges
   const hasMore = limit && amenities.length > limit
 
   return (
-    <ItemGroup className={cn('flex flex-wrap gap-2', className)}>
+    <div className={cn('flex flex-wrap gap-2', className)}>
       {displayAmenities.map((amenity) => {
         const Icon = AMENITY_ICONS[amenity]
         return (
-          <Item key={amenity} variant="muted">
-            {Icon && (
-              <ItemMedia variant="icon">
-                <Icon className="h-3 w-3" />
-              </ItemMedia>
-            )}
-            <ItemContent>
-              <ItemDescription>{amenity}</ItemDescription>
-            </ItemContent>
-          </Item>
+          <Badge key={amenity} variant="secondary">
+            <span className="flex items-center gap-2">
+              {Icon ? <Icon className="size-3" aria-hidden="true" /> : null}
+              <span>{amenity}</span>
+            </span>
+          </Badge>
         )
       })}
-      {hasMore && (
-        <Item variant="muted">
-          <ItemContent>
-            <ItemDescription>+{amenities.length - limit!} more</ItemDescription>
-          </ItemContent>
-        </Item>
-      )}
-    </ItemGroup>
+      {hasMore ? (
+        <Badge variant="secondary">
+          <span>+{amenities.length - limit!} more</span>
+        </Badge>
+      ) : null}
+    </div>
   )
 }

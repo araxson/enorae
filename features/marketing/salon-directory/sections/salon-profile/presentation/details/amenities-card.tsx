@@ -34,7 +34,7 @@ export function AmenitiesCard({ salon }: AmenitiesCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted" className="flex-col gap-1">
+            <Item variant="muted">
               <ItemHeader>
                 <ItemTitle>Amenity updates</ItemTitle>
               </ItemHeader>

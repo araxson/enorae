@@ -1,19 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MapPin, Check, AlertCircle } from 'lucide-react'
 import { EXTERNAL_APIS } from '@/lib/config/env'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
 import { AddressSearchField } from './address-search-field'
 import { MapDisplay } from './map-display'
 
@@ -33,24 +26,20 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup className="flex items-center justify-between">
-          <Item>
-            <ItemContent>
-              <ItemTitle>Map &amp; Coordinates</ItemTitle>
-            </ItemContent>
-            <ItemMedia variant="icon">
-              <MapPin className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-            </ItemMedia>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Map &amp; Coordinates</CardTitle>
+        <CardDescription>Validate the precise location before publishing.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <MapPin className="size-5" aria-hidden="true" />
+            <span className="text-sm font-medium">Interactive location check</span>
+          </div>
           <Separator />
 
           {!EXTERNAL_APIS.GOOGLE_MAPS.isEnabled() && (
             <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <AlertTitle>Google Maps Not Configured</AlertTitle>
               <AlertDescription>
                 Address autocomplete and geocoding are unavailable. Please configure NEXT_PUBLIC_GOOGLE_MAPS_API_KEY.
@@ -62,7 +51,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
 
           {selectedAddress && (
             <Alert>
-              <Check className="h-4 w-4" />
+              <Check className="size-4" />
               <AlertTitle>Address located</AlertTitle>
               <AlertDescription>
                 {selectedAddress['formatted_address']}

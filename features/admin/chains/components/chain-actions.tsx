@@ -31,7 +31,6 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
-import { ButtonGroup } from '@/components/ui/button-group'
 
 interface ChainActionsProps {
   chainId: string
@@ -131,9 +130,9 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
       {message && (
         <Alert variant={message.type === 'error' ? 'destructive' : 'default'} className="mb-4">
           {message.type === 'success' ? (
-            <CheckCircle2 className="h-4 w-4" />
+            <CheckCircle2 className="size-4" />
           ) : (
-            <XCircle className="h-4 w-4" />
+            <XCircle className="size-4" />
           )}
           <AlertTitle>{message.type === 'success' ? 'Action completed' : 'Action failed'}</AlertTitle>
           <AlertDescription>{message.text}</AlertDescription>
@@ -143,30 +142,30 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" aria-label={`Open actions for ${chainName}`}>
-            <MoreHorizontal className="h-4 w-4" />
+            <MoreHorizontal className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           {!isVerified ? (
             <DropdownMenuItem onClick={() => openDialog('verify')}>
-              <CheckCircle2 className="mr-2 h-4 w-4" />
+              <CheckCircle2 className="mr-2 size-4" />
               Verify Chain
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem onClick={() => openDialog('unverify')}>
-              <XCircle className="mr-2 h-4 w-4" />
+              <XCircle className="mr-2 size-4" />
               Unverify Chain
             </DropdownMenuItem>
           )}
 
           {isActive ? (
             <DropdownMenuItem onClick={() => openDialog('deactivate')}>
-              <PowerOff className="mr-2 h-4 w-4" />
+              <PowerOff className="mr-2 size-4" />
               Deactivate
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem onClick={() => openDialog('activate')}>
-              <Power className="mr-2 h-4 w-4" />
+              <Power className="mr-2 size-4" />
               Activate
             </DropdownMenuItem>
           )}
@@ -174,7 +173,7 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
           <DropdownMenuSeparator />
 
           <DropdownMenuItem onClick={() => openDialog('delete')}>
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 className="mr-2 size-4" />
             Delete Chain
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -185,7 +184,7 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
           <AlertDialogHeader>
             <AlertDialogTitle>{getActionText().title}</AlertDialogTitle>
             <AlertDialogDescription>{getActionText().description}</AlertDialogDescription>
-            <AlertDialogDescription className="mt-2">Chain: {chainName}</AlertDialogDescription>
+            <AlertDialogDescription>Chain: {chainName}</AlertDialogDescription>
           </AlertDialogHeader>
           <Field data-invalid={Boolean(reasonError)}>
             <FieldLabel htmlFor="chain-reason">Reason (required)</FieldLabel>
@@ -204,19 +203,17 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
             {reasonError ? <FieldError>{reasonError}</FieldError> : null}
           </Field>
           <AlertDialogFooter>
-            <ButtonGroup>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleAction} disabled={isLoading} className="flex items-center gap-2">
-                {isLoading ? (
-                  <>
-                    <Spinner className="size-4" />
-                    <span>Processing…</span>
-                  </>
-                ) : (
-                  <span>Confirm</span>
-                )}
-              </AlertDialogAction>
-            </ButtonGroup>
+            <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleAction} disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Spinner className="mr-2 size-4" />
+                  <span>Processing…</span>
+                </>
+              ) : (
+                <span>Confirm</span>
+              )}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

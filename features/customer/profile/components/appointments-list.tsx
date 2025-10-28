@@ -1,11 +1,5 @@
 import { format } from 'date-fns'
 import { AppointmentCard } from '@/features/shared/appointments'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import type { Database } from '@/lib/types/database.types'
 import {
   Empty,
@@ -45,10 +39,10 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
   if (appointments.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <Calendar className="h-6 w-6" aria-hidden="true" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Calendar className="size-6" aria-hidden="true" />
+          </EmptyMedia>
           <EmptyTitle>No appointments yet</EmptyTitle>
           <EmptyDescription>
             Schedule your next visit to see appointments listed here.
@@ -66,7 +60,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
       <ItemGroup>
         <Item variant="muted" size="sm">
           <ItemMedia variant="icon">
-            <Calendar className="h-4 w-4" aria-hidden="true" />
+            <Calendar className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Appointments</ItemTitle>

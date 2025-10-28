@@ -25,9 +25,9 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
+            <Avatar className="size-12">
               <AvatarFallback className="bg-secondary/10">
-                <Activity className="h-6 w-6 text-secondary" aria-hidden="true" />
+                <Activity className="size-6 text-secondary" aria-hidden="true" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">
@@ -44,9 +44,9 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
+            <Avatar className="size-12">
               <AvatarFallback className="bg-primary/10">
-                <CheckCircle2 className="h-6 w-6 text-primary" aria-hidden="true" />
+                <CheckCircle2 className="size-6 text-primary" aria-hidden="true" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">
@@ -63,9 +63,9 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
+            <Avatar className="size-12">
               <AvatarFallback className="bg-destructive/10">
-                <XCircle className="h-6 w-6 text-destructive" aria-hidden="true" />
+                <XCircle className="size-6 text-destructive" aria-hidden="true" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">
@@ -82,9 +82,9 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
+            <Avatar className="size-12">
               <AvatarFallback className="bg-accent/10">
-                <AlertTriangle className="h-6 w-6 text-accent" aria-hidden="true" />
+                <AlertTriangle className="size-6 text-accent" aria-hidden="true" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">
@@ -101,9 +101,9 @@ export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
       <Item variant="outline" className="flex-col gap-4">
         <ItemHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
+            <Avatar className="size-12">
               <AvatarFallback className="bg-accent/10">
-                <AlertTriangle className="h-6 w-6 text-accent" aria-hidden="true" />
+                <AlertTriangle className="size-6 text-accent" aria-hidden="true" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">

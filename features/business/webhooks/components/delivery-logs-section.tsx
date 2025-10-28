@@ -26,13 +26,13 @@ function getStatusColor(status: string) {
 function getStatusIcon(status: string) {
   switch (status) {
     case 'delivered':
-      return <CheckCircle className="h-4 w-4" />
+      return <CheckCircle className="size-4" />
     case 'failed':
-      return <AlertCircle className="h-4 w-4" />
+      return <AlertCircle className="size-4" />
     case 'pending':
-      return <Clock className="h-4 w-4" />
+      return <Clock className="size-4" />
     default:
-      return <Activity className="h-4 w-4" />
+      return <Activity className="size-4" />
   }
 }
 

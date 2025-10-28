@@ -1,15 +1,8 @@
 'use client'
 
-import { Card, CardHeader } from '@/components/ui/card'
 import { Users, UserCheck, Calendar, DollarSign } from 'lucide-react'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 type ClientStatsProps = {
   clients: ClientWithHistory[]
@@ -23,48 +16,47 @@ export function ClientStats({ clients }: ClientStatsProps) {
 
   const stats = [
     {
-      label: 'Total Clients',
+      label: 'Total clients',
       value: totalClients.toString(),
       icon: Users,
-      color: 'text-secondary',
+      helper: 'Across your entire book',
     },
     {
-      label: 'Repeat Clients',
+      label: 'Repeat clients',
       value: repeatClients.toString(),
       icon: UserCheck,
-      color: 'text-primary',
+      helper: 'Booked more than once',
     },
     {
       label: 'Appointments',
       value: totalAppointments.toString(),
       icon: Calendar,
-      color: 'text-accent',
+      helper: 'All-time completed visits',
     },
     {
-      label: 'Total Revenue',
+      label: 'Total revenue',
       value: `$${totalRevenue.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-accent',
+      helper: 'Lifetime value across clients',
     },
   ]
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => {
         const Icon = stat.icon
         return (
           <Card key={stat.label}>
             <CardHeader>
-              <Item variant="muted" size="sm">
-                <ItemMedia variant="icon">
-                  <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{stat.value}</ItemTitle>
-                  <ItemDescription>{stat.label}</ItemDescription>
-                </ItemContent>
-              </Item>
+              <CardTitle>{stat.label}</CardTitle>
+              <CardDescription>{stat.helper}</CardDescription>
             </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="text-2xl font-semibold leading-none">{stat.value}</div>
+                <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
+              </div>
+            </CardContent>
           </Card>
         )
       })}

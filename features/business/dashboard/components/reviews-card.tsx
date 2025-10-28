@@ -4,12 +4,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { CardTitle } from '@/components/ui/card'
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-  ButtonGroupText,
-} from '@/components/ui/button-group'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
@@ -25,12 +19,18 @@ type ReviewsCardProps = {
 }
 
 export function ReviewsCard({ stats }: ReviewsCardProps) {
+  const ratingValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   if (stats.totalReviews === 0) {
     return (
-      <Item variant="outline" className="flex-col gap-4">
-        <ItemHeader className="items-center gap-2">
-          <Star className="h-5 w-5" />
-          <ItemTitle>Customer Reviews</ItemTitle>
+      <Item variant="outline">
+        <ItemHeader>
+          <ItemContent>
+            <div className="flex items-center gap-2">
+              <Star className="size-5" />
+              <ItemTitle>Customer Reviews</ItemTitle>
+            </div>
+          </ItemContent>
         </ItemHeader>
         <ItemContent>
           <Empty>
@@ -48,23 +48,24 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
   }
 
   return (
-    <Item variant="outline" className="flex-col gap-6">
-      <ItemHeader className="gap-4">
-        <ButtonGroup className="w-full items-center justify-between">
-          <ButtonGroupText className="flex items-center gap-2">
-            <Star className="h-5 w-5" />
+    <Item variant="outline">
+      <ItemHeader>
+        <ItemContent>
+          <div className="flex items-center gap-2">
+            <Star className="size-5" />
             <ItemTitle>Customer Reviews</ItemTitle>
-          </ButtonGroupText>
-          <ButtonGroupSeparator />
+          </div>
+        </ItemContent>
+        <ItemActions>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button asChild variant="outline" size="sm">
-                <Link href="/business/reviews">View All</Link>
+                <Link href="/business/reviews">View all</Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent>Open review inbox</TooltipContent>
           </Tooltip>
-        </ButtonGroup>
+        </ItemActions>
       </ItemHeader>
       <ItemContent>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -72,25 +73,27 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
           <div className="flex flex-col gap-6">
             <Field>
               <FieldLabel>Average rating</FieldLabel>
-              <FieldContent className="gap-2">
-                <div className="flex items-baseline gap-2">
-                  <CardTitle>{stats.averageRating.toFixed(1)}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    {[...Array(5)].map((_, i) => {
-                      const isFilled = i < Math.round(stats.averageRating)
-                      return (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${isFilled ? 'text-primary' : 'text-muted-foreground'}`}
-                          fill={isFilled ? 'currentColor' : 'none'}
-                        />
-                      )
-                    })}
+              <FieldContent>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-baseline gap-2">
+                    <p className={ratingValueClass}>{stats.averageRating.toFixed(1)}</p>
+                    <div className="flex items-center gap-2">
+                      {[...Array(5)].map((_, i) => {
+                        const isFilled = i < Math.round(stats.averageRating)
+                        return (
+                          <Star
+                            key={i}
+                            className={`size-4 ${isFilled ? 'text-primary' : 'text-muted-foreground'}`}
+                            fill={isFilled ? 'currentColor' : 'none'}
+                          />
+                        )
+                      })}
+                    </div>
                   </div>
+                  <FieldDescription>
+                    Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
+                  </FieldDescription>
                 </div>
-                <FieldDescription>
-                  Based on {stats.totalReviews} {stats.totalReviews === 1 ? 'review' : 'reviews'}
-                </FieldDescription>
               </FieldContent>
             </Field>
 
@@ -101,7 +104,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Alert>
-                      <MessageSquare className="h-4 w-4" />
+                      <MessageSquare className="size-4" />
                       <AlertTitle>Responses needed</AlertTitle>
                       <AlertDescription>
                         {stats.pendingResponses}{' '}
@@ -116,7 +119,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Alert variant="destructive">
-                      <AlertTriangle className="h-4 w-4" />
+                      <AlertTriangle className="size-4" />
                       <AlertTitle>Flagged reviews</AlertTitle>
                       <AlertDescription>
                         {stats.flaggedCount}{' '}
@@ -133,24 +136,28 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
           {/* Rating Distribution */}
           <div className="flex flex-col gap-2">
             <FieldLabel>Rating distribution</FieldLabel>
-            <ItemGroup className="space-y-2">
-              {stats.ratingDistribution.map(({ rating, count }) => {
-                const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
-                return (
-                  <Item key={rating} className="items-center gap-3">
-                    <ItemContent className="flex items-center gap-2">
-                      <ItemTitle>{rating} stars</ItemTitle>
-                      <div className="flex-1">
-                        <Progress value={percentage} className="h-2" />
-                      </div>
-                    </ItemContent>
-                    <ItemActions className="flex-none">
-                      <ItemDescription>{count}</ItemDescription>
-                    </ItemActions>
-                  </Item>
-                )
-              })}
-            </ItemGroup>
+            <div className="space-y-2">
+              <ItemGroup>
+                {stats.ratingDistribution.map(({ rating, count }) => {
+                  const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
+                  return (
+                    <Item key={rating}>
+                      <ItemContent>
+                        <div className="flex items-center gap-2">
+                          <ItemTitle>{rating} stars</ItemTitle>
+                          <div className="flex-1">
+                            <Progress value={percentage} className="h-2" />
+                          </div>
+                        </div>
+                      </ItemContent>
+                      <ItemActions>
+                        <ItemDescription>{count}</ItemDescription>
+                      </ItemActions>
+                    </Item>
+                  )
+                })}
+              </ItemGroup>
+            </div>
           </div>
         </div>
       </ItemContent>

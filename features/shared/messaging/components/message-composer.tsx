@@ -104,7 +104,6 @@ export function MessageComposer({
             placeholder={placeholder}
             disabled={disabled || isSubmitting}
             rows={3}
-            className="resize-none"
           />
           <FieldDescription>
             Message recipients are notified instantly.
@@ -112,7 +111,7 @@ export function MessageComposer({
         </FieldContent>
       </Field>
 
-      <ButtonGroup className="w-full justify-between">
+      <ButtonGroup aria-label="Actions">
         <ButtonGroupText asChild>
           <span className="flex items-center gap-1 text-sm">
             Press
@@ -123,20 +122,21 @@ export function MessageComposer({
             to send
           </span>
         </ButtonGroupText>
-        <ButtonGroupSeparator className="hidden sm:block" />
+        <div className="hidden sm:block">
+          <ButtonGroupSeparator />
+        </div>
         <Button
           type="submit"
           disabled={disabled || isSubmitting || !content.trim()}
-          className="gap-2"
         >
           {isSubmitting ? (
             <>
-              <Spinner className="size-4" />
+              <Spinner />
               <span>Sending...</span>
             </>
           ) : (
             <>
-              <Send className="h-4 w-4" />
+              <Send className="size-4" />
               <span>Send message</span>
             </>
           )}

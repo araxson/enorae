@@ -15,6 +15,7 @@ import {
 import { Kbd } from '@/components/ui/kbd'
 import {
   InputGroup,
+  InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
@@ -52,10 +53,18 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
               }
             }}
             placeholder={placeholder}
+            autoComplete="off"
           />
-          <InputGroupButton type="button" variant="outline" onClick={handleAdd}>
-            Add
-          </InputGroupButton>
+          <InputGroupAddon align="inline-end">
+            <InputGroupButton
+              type="button"
+              variant="outline"
+              onClick={handleAdd}
+              aria-label="Add item"
+            >
+              Add
+            </InputGroupButton>
+          </InputGroupAddon>
         </InputGroup>
         <FieldDescription className="text-xs text-muted-foreground">
           Press <Kbd>Enter</Kbd> to add quickly.
@@ -71,7 +80,7 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
               className="ml-1 hover:text-destructive"
               aria-label={`Remove ${item}`}
             >
-              <X className="h-3 w-3" />
+              <X className="size-3" />
             </button>
           </Badge>
         ))}

@@ -84,7 +84,7 @@ export function RescheduleRequestDialog({
       <DialogTrigger asChild>
         {children || (
           <Button variant="outline" className="w-full">
-            <Calendar className="mr-2 h-4 w-4" />
+            <Calendar className="mr-2 size-4" />
             Request reschedule
           </Button>
         )}
@@ -103,14 +103,14 @@ export function RescheduleRequestDialog({
             <FieldLegend>Request details</FieldLegend>
             <FieldGroup className="gap-4">
               <Field>
-                <FieldLabel htmlFor="current-time">Current appointment</FieldLabel>
-                <FieldContent>
-                  <InputGroup>
-                    <InputGroupAddon>
-                      <Calendar className="h-4 w-4" aria-hidden="true" />
-                    </InputGroupAddon>
-                    <InputGroupInput
-                      id="current-time"
+              <FieldLabel htmlFor="current-time">Current appointment</FieldLabel>
+              <FieldContent>
+                <InputGroup data-disabled>
+                  <InputGroupAddon>
+                    <Calendar className="size-4" aria-hidden="true" />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    id="current-time"
                       value={currentDate.toLocaleString('en-US', {
                         weekday: 'short',
                         year: 'numeric',
@@ -130,16 +130,17 @@ export function RescheduleRequestDialog({
                 <FieldContent>
                   <InputGroup>
                     <InputGroupAddon>
-                      <Calendar className="h-4 w-4" aria-hidden="true" />
+                      <Calendar className="size-4" aria-hidden="true" />
                     </InputGroupAddon>
-                    <InputGroupInput
-                      id="newStartTime"
-                      name="newStartTime"
-                      type="datetime-local"
-                      min={minDateTime.toISOString().slice(0, 16)}
-                      required
-                      aria-describedby="new-start-time-help"
-                    />
+                <InputGroupInput
+                  id="newStartTime"
+                  name="newStartTime"
+                  type="datetime-local"
+                  min={minDateTime.toISOString().slice(0, 16)}
+                  required
+                  aria-describedby="new-start-time-help"
+                  autoComplete="off"
+                />
                   </InputGroup>
                   <p id="new-start-time-help" className="text-xs text-muted-foreground">
                     Must be at least 24 hours from now
@@ -165,7 +166,7 @@ export function RescheduleRequestDialog({
 
           <div className="space-y-4">
             <Alert>
-              <AlertCircle className="h-4 w-4" />
+              <AlertCircle className="size-4" />
               <AlertTitle>Reschedule request</AlertTitle>
               <AlertDescription>
                 Your reschedule request will be sent to the salon for approval. You&apos;ll be
@@ -173,7 +174,7 @@ export function RescheduleRequestDialog({
                 <ItemGroup className="mt-3 gap-2">
                   <Item variant="muted" size="sm">
                     <ItemMedia variant="icon">
-                      <Calendar className="h-4 w-4" aria-hidden="true" />
+                      <Calendar className="size-4" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <ItemTitle>Salon review</ItemTitle>
@@ -182,7 +183,7 @@ export function RescheduleRequestDialog({
                   </Item>
                   <Item variant="muted" size="sm">
                     <ItemMedia variant="icon">
-                      <AlertCircle className="h-4 w-4" aria-hidden="true" />
+                      <AlertCircle className="size-4" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <ItemTitle>Status updates</ItemTitle>
@@ -195,7 +196,7 @@ export function RescheduleRequestDialog({
 
             {error && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
+                <AlertCircle className="size-4" />
                 <AlertTitle>Submission failed</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
@@ -203,7 +204,7 @@ export function RescheduleRequestDialog({
           </div>
 
           <DialogFooter>
-            <ButtonGroup className="w-full justify-end gap-2">
+            <ButtonGroup aria-label="Dialog actions">
               <Button
                 type="button"
                 variant="outline"

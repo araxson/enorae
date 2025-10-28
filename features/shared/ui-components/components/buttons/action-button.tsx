@@ -75,7 +75,7 @@ export function ActionButton({
     >
       {loading ? (
         <>
-          <Spinner className="size-4" aria-hidden="true" />
+          <Spinner aria-hidden="true" />
           <span>{loadingText ?? children}</span>
         </>
       ) : (

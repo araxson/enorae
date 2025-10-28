@@ -37,7 +37,7 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Timer className="h-5 w-5" aria-hidden="true" />
+              <Timer className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Query Performance</ItemTitle>
@@ -48,8 +48,9 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <Tabs defaultValue="slow" className="w-full">
+      <CardContent>
+        <div className="space-y-6">
+          <Tabs defaultValue="slow">
           <TabsList>
             <TabsTrigger value="slow">Slow Queries</TabsTrigger>
             <TabsTrigger value="frequent">Most Called</TabsTrigger>
@@ -178,7 +179,8 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
               </Empty>
             )}
           </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </CardContent>
     </Card>
   )

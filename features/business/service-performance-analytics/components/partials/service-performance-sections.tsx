@@ -85,9 +85,9 @@ export function ProfitabilitySection({ profitability }: { profitability: Service
 
 export function ServiceOverviewSection({ services }: { services: ServicePerformance[] }) {
   const getPerformanceIcon = (cancellationRate: number) => {
-    if (cancellationRate < 10) return <TrendingUp className="h-4 w-4 text-primary" />
-    if (cancellationRate > 20) return <TrendingDown className="h-4 w-4 text-destructive" />
-    return <BarChart3 className="h-4 w-4 text-accent" />
+    if (cancellationRate < 10) return <TrendingUp className="size-4 text-primary" />
+    if (cancellationRate > 20) return <TrendingDown className="size-4 text-destructive" />
+    return <BarChart3 className="size-4 text-accent" />
   }
 
   return (
@@ -132,7 +132,7 @@ export function ServiceOverviewSection({ services }: { services: ServicePerforma
                     <p className="text-muted-foreground">Avg Rating</p>
                     <div className="flex items-center gap-1">
                       <p>{service.avg_rating?.toFixed(1) || 'N/A'}</p>
-                      <Star className="h-4 w-4 text-accent" />
+                      <Star className="size-4 text-accent" />
                     </div>
                   </div>
                   <div>
@@ -206,13 +206,16 @@ export function DurationAccuracySection({ durationAccuracy }: { durationAccuracy
     <Accordion type="single" collapsible className="w-full">
       {durationAccuracy.map((entry) => (
         <AccordionItem key={entry.service_id} value={entry.service_id}>
-          <AccordionTrigger className="flex items-center justify-between">
-            <span>{entry.service_name}</span>
-            {entry.variance != null && (
-              <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="ml-2">
-                {entry.variance > 0 ? '+' : ''}{entry.variance} min
-              </Badge>
-            )}
+          <AccordionTrigger>
+            <div className="flex w-full items-center justify-between">
+              <span>{entry.service_name}</span>
+              {entry.variance != null && (
+                <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="ml-2">
+                  {entry.variance > 0 ? '+' : ''}
+                  {entry.variance} min
+                </Badge>
+              )}
+            </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-2 text-muted-foreground">
             <div className="flex items-center justify-between">

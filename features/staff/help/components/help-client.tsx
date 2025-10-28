@@ -60,7 +60,7 @@ export function StaffHelpClient({
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="Save current view" onClick={() => setIsFeedbackOpen(true)}>
-              <Bookmark className="h-4 w-4" />
+              <Bookmark className="size-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>Collect feedback & bookmarks</TooltipContent>

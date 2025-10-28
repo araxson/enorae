@@ -46,30 +46,26 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1">
-            <CardTitle>{transaction.salon?.name || 'Unknown Salon'}</CardTitle>
-            <CardDescription>
-              {format(transactionDate, 'PPP')} at {format(transactionDate, 'p')}
-            </CardDescription>
-          </div>
+        <CardTitle>{transaction.salon?.name || 'Unknown Salon'}</CardTitle>
+        <CardDescription>
+          {format(transactionDate, 'PPP')} at {format(transactionDate, 'p')}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex justify-end">
           <Badge variant={getTypeColor(transaction.transaction_type || null)}>
             {transaction.transaction_type || 'Unknown'}
           </Badge>
         </div>
-      </CardHeader>
-      <CardContent>
         <ItemGroup className="gap-3">
           {transaction.staff ? (
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <Briefcase className="h-4 w-4" aria-hidden="true" />
+                <Briefcase className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Staff member</ItemTitle>
-                <ItemDescription className="text-foreground">
-                  {transaction.staff.full_name}
-                </ItemDescription>
+                <p className="text-sm text-foreground">{transaction.staff.full_name}</p>
               </ItemContent>
             </Item>
           ) : null}
@@ -77,13 +73,11 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           {transaction.payment_method ? (
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <CreditCard className="h-4 w-4" aria-hidden="true" />
+                <CreditCard className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Payment method</ItemTitle>
-                <ItemDescription className="capitalize">
-                  {transaction.payment_method}
-                </ItemDescription>
+                <p className="capitalize text-sm text-foreground">{transaction.payment_method}</p>
               </ItemContent>
             </Item>
           ) : null}
@@ -91,7 +85,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           {transaction.appointment ? (
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <CalendarIcon className="h-4 w-4" aria-hidden="true" />
+                <CalendarIcon className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Related appointment</ItemTitle>

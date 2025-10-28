@@ -85,7 +85,7 @@ export function SearchBarSection({
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Search className="h-5 w-5" aria-hidden="true" />
+              <Search className="size-5" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>Advanced Salon Search</CardTitle>
@@ -102,9 +102,10 @@ export function SearchBarSection({
             <PopoverTrigger asChild>
               <InputGroup>
                 <InputGroupAddon>
-                  <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  <Search className="size-4 text-muted-foreground" aria-hidden="true" />
                 </InputGroupAddon>
                 <InputGroupInput
+                  type="search"
                   placeholder="Search by salon name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -115,16 +116,19 @@ export function SearchBarSection({
                     }
                   }}
                   aria-label="Search salons"
+                  autoComplete="off"
                 />
-                <InputGroupButton
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={handleSearch}
-                  aria-label="Run search"
-                >
-                  <Search className="h-4 w-4" aria-hidden="true" />
-                </InputGroupButton>
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={handleSearch}
+                    aria-label="Run search"
+                  >
+                    <Search className="size-4" aria-hidden="true" />
+                  </InputGroupButton>
+                </InputGroupAddon>
               </InputGroup>
             </PopoverTrigger>
             <PopoverContent align="start" className="p-0">

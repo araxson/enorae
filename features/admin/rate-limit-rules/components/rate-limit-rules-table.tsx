@@ -127,7 +127,7 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" disabled={isLoading || !hasRuleId} aria-label={`Actions for rate limit rule ${rule.endpoint}`}>
-                          <MoreHorizontal className="h-4 w-4" />
+                          <MoreHorizontal className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

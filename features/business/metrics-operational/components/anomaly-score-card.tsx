@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertTriangle } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 type AnomalyScoreCardProps = {
   anomalyScore: number
@@ -12,26 +11,14 @@ export function AnomalyScoreCard({ anomalyScore }: AnomalyScoreCardProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>Anomaly Score</ItemTitle>
-              <ItemDescription>{statusMessage}</ItemDescription>
-            </ItemContent>
-            <ItemActions className="flex-none text-muted-foreground">
-              <AlertTriangle className="h-4 w-4" />
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Anomaly Score</CardTitle>
+        <CardDescription>{statusMessage}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <CardTitle>{anomalyScore.toFixed(2)}</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardContent className="flex items-start justify-between">
+        <p className="text-2xl font-semibold leading-none tracking-tight">
+          {anomalyScore.toFixed(2)}
+        </p>
+        <AlertTriangle className="size-4 text-destructive" aria-hidden="true" />
       </CardContent>
     </Card>
   )

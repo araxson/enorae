@@ -72,10 +72,10 @@ export function SessionList({ sessions }: SessionListProps) {
   if (sessions.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <Info className="h-6 w-6" aria-hidden="true" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Info className="size-6" aria-hidden="true" />
+          </EmptyMedia>
           <EmptyTitle>No active sessions</EmptyTitle>
           <EmptyDescription>
             You&apos;re not signed in on any other devices right now.
@@ -108,7 +108,7 @@ export function SessionList({ sessions }: SessionListProps) {
 
       {error && (
         <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
+          <AlertCircle className="size-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
@@ -116,7 +116,7 @@ export function SessionList({ sessions }: SessionListProps) {
 
       {success && (
         <Alert>
-          <CheckCircle2 className="h-4 w-4" />
+          <CheckCircle2 className="size-4" />
           <AlertTitle>Success</AlertTitle>
           <AlertDescription>{success}</AlertDescription>
         </Alert>

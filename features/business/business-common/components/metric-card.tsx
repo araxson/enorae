@@ -2,7 +2,6 @@
 
 import type { ReactNode, ComponentType } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
@@ -138,20 +137,22 @@ export function MetricCard(props: MetricCardProps) {
     .filter(Boolean)
     .join(' ')
 
+  const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   return (
     <Item role="article" aria-label={`${title} metric`} variant="outline" className={`flex-col gap-3 ${cardClasses}`}>
-      <ItemHeader className="items-center justify-between">
+      <ItemHeader>
         <ItemTitle>{title}</ItemTitle>
         {IconComponent && (
-          <ItemActions className="flex-none">
-            <IconComponent className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <ItemActions>
+            <IconComponent className="size-4 text-muted-foreground" aria-hidden="true" />
           </ItemActions>
         )}
       </ItemHeader>
       <ItemContent>
         {props.variant === 'progress' && (
           <div className="flex flex-col gap-2">
-            <CardTitle>{value}</CardTitle>
+            <p className={metricValueClass}>{value}</p>
             <Progress
               value={props.progress}
               className={`h-1 ${props.progressClass ?? ''}`}
@@ -164,15 +165,15 @@ export function MetricCard(props: MetricCardProps) {
         {props.variant === 'trend' && (
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-end justify-between">
-              <CardTitle>{value}</CardTitle>
+              <p className={metricValueClass}>{value}</p>
               <Badge
                 variant={props.trend >= 0 ? 'default' : 'destructive'}
                 className="flex items-center gap-1"
               >
                 {props.trend >= 0 ? (
-                  <TrendingUp className="h-3 w-3" />
+                  <TrendingUp className="size-3" />
                 ) : (
-                  <TrendingDown className="h-3 w-3" />
+                  <TrendingDown className="size-3" />
                 )}
                 {formatPercentage(Math.abs(props.trend))}
               </Badge>
@@ -183,7 +184,7 @@ export function MetricCard(props: MetricCardProps) {
 
         {props.variant === 'highlight' && (
           <div className="flex flex-col gap-2">
-            <CardTitle>{value}</CardTitle>
+            <p className={metricValueClass}>{value}</p>
             {props.highlight}
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
@@ -191,7 +192,7 @@ export function MetricCard(props: MetricCardProps) {
 
         {(!props.variant || props.variant === 'default') && (
           <div className="flex flex-col gap-2">
-            <CardTitle>{value}</CardTitle>
+            <p className={metricValueClass}>{value}</p>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}

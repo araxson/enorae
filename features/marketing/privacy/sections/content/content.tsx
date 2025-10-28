@@ -14,13 +14,13 @@ export function Content() {
       containerClassName="max-w-6xl"
       groupClassName="mx-auto max-w-3xl gap-4"
     >
-      <Item className="flex-col" variant="muted">
+      <Item variant="muted">
         <ItemContent>
           <ItemDescription>We explain what data we collect, how it’s used, and your control options.</ItemDescription>
         </ItemContent>
       </Item>
       {contentData.sections.map((section) => (
-        <Item key={section.title} className="flex-col" variant="outline">
+        <Item key={section.title} variant="outline">
           <ItemContent>
             <ItemTitle>{section.title}</ItemTitle>
             <ItemDescription>{section.content}</ItemDescription>

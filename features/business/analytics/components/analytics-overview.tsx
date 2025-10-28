@@ -1,5 +1,4 @@
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import type { AnalyticsOverview } from '@/features/business/analytics/api/queries'
 import {
   Item,
@@ -64,25 +63,27 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
     },
   ]
 
+  const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
+
   return (
     <ItemGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
         <Item key={card.title} variant="outline" className="flex-col gap-3">
-          <ItemHeader className="items-start">
+          <ItemHeader>
             <ItemTitle>{card.title}</ItemTitle>
-            <ItemActions className="flex-none">
-              <card.icon className={`h-4 w-4 ${card.iconColor}`} />
+            <ItemActions>
+              <card.icon className={`size-4 ${card.iconColor}`} />
             </ItemActions>
           </ItemHeader>
           <ItemContent className="flex flex-col gap-2">
             <div className="flex items-baseline gap-2">
-              <CardTitle>{card.value}</CardTitle>
+              <p className={metricValueClass}>{card.value}</p>
               {card.trend !== undefined && (
                 <Badge variant={card.trend >= 0 ? 'default' : 'destructive'}>
                   {card.trend >= 0 ? (
-                    <TrendingUp className="mr-1 h-3 w-3" />
+                    <TrendingUp className="mr-1 size-3" />
                   ) : (
-                    <TrendingDown className="mr-1 h-3 w-3" />
+                    <TrendingDown className="mr-1 size-3" />
                   )}
                   {formatPercent(Math.abs(card.trend))}
                 </Badge>

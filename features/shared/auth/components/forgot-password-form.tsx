@@ -15,7 +15,6 @@ import {
   FieldGroup,
   FieldSet,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Item,
@@ -25,6 +24,11 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 
 export function ForgotPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +59,7 @@ export function ForgotPasswordForm() {
           <ItemHeader>
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="flex items-center justify-center">
-                <Mail className="h-12 w-12 text-primary" aria-hidden="true" />
+                <Mail className="size-12 text-primary" aria-hidden="true" />
               </div>
               <ItemTitle>Check your email</ItemTitle>
               <ItemDescription>
@@ -67,7 +71,7 @@ export function ForgotPasswordForm() {
           <ItemContent>
             <FieldSet className="gap-6">
               <Alert>
-                <CheckCircle2 className="h-4 w-4 text-primary" />
+                <CheckCircle2 className="size-4 text-primary" />
                 <AlertTitle>Reset link sent</AlertTitle>
                 <AlertDescription>
                   Click the link in the email to reset your password. The link will expire in 1
@@ -89,10 +93,10 @@ export function ForgotPasswordForm() {
           </ItemContent>
 
           <ItemFooter>
-            <ButtonGroup className="w-full">
+            <ButtonGroup aria-label="Navigation">
               <Button variant="outline" asChild className="w-full">
                 <Link href="/login">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  <ArrowLeft className="mr-2 size-4" />
                   Back to login
                 </Link>
               </Button>
@@ -120,7 +124,7 @@ export function ForgotPasswordForm() {
             <FieldSet className="gap-6">
               {error ? (
                 <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
+                  <AlertCircle className="size-4" />
                   <AlertTitle>Reset failed</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
@@ -130,16 +134,23 @@ export function ForgotPasswordForm() {
                 <Field>
                   <FieldLabel htmlFor="email">Email address</FieldLabel>
                   <FieldContent>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      required
-                      autoFocus
-                    />
+                    <InputGroup>
+                      <InputGroupAddon>
+                        <Mail className="size-4 text-muted-foreground" aria-hidden="true" />
+                      </InputGroupAddon>
+                      <InputGroupInput
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="you@example.com"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        required
+                        autoFocus
+                        autoCorrect="off"
+                        spellCheck={false}
+                      />
+                    </InputGroup>
                     <FieldDescription>
                       We&apos;ll send a password reset link to this email
                     </FieldDescription>
@@ -150,7 +161,7 @@ export function ForgotPasswordForm() {
           </ItemContent>
 
           <ItemFooter>
-            <ButtonGroup className="w-full flex-col gap-4">
+            <ButtonGroup aria-label="Form actions">
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (
                   <>
@@ -164,7 +175,7 @@ export function ForgotPasswordForm() {
 
               <Button variant="ghost" asChild className="w-full">
                 <Link href="/login">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  <ArrowLeft className="mr-2 size-4" />
                   Back to login
                 </Link>
               </Button>

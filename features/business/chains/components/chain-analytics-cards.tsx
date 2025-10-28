@@ -1,12 +1,4 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Briefcase, Building2, DollarSign, Star, Users } from 'lucide-react'
 
 interface ChainAnalytics {
@@ -27,113 +19,65 @@ export function ChainAnalyticsCards({ analytics }: ChainAnalyticsCardsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
-        <CardHeader className="pb-2">
-          <ItemGroup>
-            <Item className="items-center justify-between gap-2">
-              <ItemContent>
-                <ItemTitle>Total Locations</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <Building2 className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Total Locations</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analytics.totalLocations}</div>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-2xl font-bold">{analytics.totalLocations}</p>
+          <Building2 className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="pb-2">
-          <ItemGroup>
-            <Item className="items-center justify-between gap-2">
-              <ItemContent>
-                <ItemTitle>Total Revenue</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Total Revenue</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">${analytics.totalRevenue.toLocaleString()}</div>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-2xl font-bold">
+            ${analytics.totalRevenue.toLocaleString()}
+          </p>
+          <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="pb-2">
-          <ItemGroup>
-            <Item className="items-center justify-between gap-2">
-              <ItemContent>
-                <ItemTitle>Average Rating</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <Star className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Average Rating</CardTitle>
+          <CardDescription>{analytics.totalReviews} reviews</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analytics.averageRating.toFixed(1)}</div>
-          <ItemDescription className="text-xs">
-            {analytics.totalReviews} reviews
-          </ItemDescription>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-2xl font-bold">{analytics.averageRating.toFixed(1)}</p>
+          <Star className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="pb-2">
-          <ItemGroup>
-            <Item className="items-center justify-between gap-2">
-              <ItemContent>
-                <ItemTitle>Total Staff</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Total Staff</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analytics.totalStaff}</div>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-2xl font-bold">{analytics.totalStaff}</p>
+          <Users className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="pb-2">
-          <ItemGroup>
-            <Item className="items-center justify-between gap-2">
-              <ItemContent>
-                <ItemTitle>Total Appointments</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <Calendar className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Total Appointments</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analytics.totalAppointments}</div>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-2xl font-bold">{analytics.totalAppointments}</p>
+          <Calendar className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader className="pb-2">
-          <ItemGroup>
-            <Item className="items-center justify-between gap-2">
-              <ItemContent>
-                <ItemTitle>Total Services</ItemTitle>
-              </ItemContent>
-              <ItemMedia variant="icon">
-                <Briefcase className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              </ItemMedia>
-            </Item>
-          </ItemGroup>
+        <CardHeader>
+          <CardTitle>Total Services</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{analytics.totalServices}</div>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-2xl font-bold">{analytics.totalServices}</p>
+          <Briefcase className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
     </div>

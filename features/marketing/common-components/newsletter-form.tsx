@@ -5,7 +5,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { toast } from 'sonner'
@@ -72,22 +71,24 @@ export function NewsletterForm({
   }
 
   return (
-    <Item variant="outline" className="w-full max-w-md flex-col gap-4">
-      <ItemHeader>
-        <div className="flex flex-col gap-1">
-          <ItemTitle>{title}</ItemTitle>
-          <ItemDescription>{description}</ItemDescription>
-        </div>
-      </ItemHeader>
-      <ItemContent>
-        <NewsletterInput
-          email={email}
-          onEmailChange={setEmail}
-          onSubmit={handleSubmit}
-          isPending={isPending}
-          buttonText={buttonText}
-        />
-      </ItemContent>
-    </Item>
+    <div className="w-full max-w-md">
+      <Item variant="outline">
+        <ItemContent>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <ItemTitle>{title}</ItemTitle>
+              <ItemDescription>{description}</ItemDescription>
+            </div>
+            <NewsletterInput
+              email={email}
+              onEmailChange={setEmail}
+              onSubmit={handleSubmit}
+              isPending={isPending}
+              buttonText={buttonText}
+            />
+          </div>
+        </ItemContent>
+      </Item>
+    </div>
   )
 }

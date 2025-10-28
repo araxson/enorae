@@ -1,7 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 
 import type { CustomerRelationship } from '@/features/staff/analytics/api/queries'
 import { formatCurrency } from './utils'
@@ -14,14 +13,8 @@ export function CustomersTab({ customerRelationships }: CustomersTabProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Top Customers</CardTitle>
-              <CardDescription>Your most loyal customers</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Top Customers</CardTitle>
+        <CardDescription>Your most loyal customers</CardDescription>
       </CardHeader>
       <CardContent>
         {customerRelationships.length > 0 ? (

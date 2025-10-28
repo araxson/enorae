@@ -54,7 +54,7 @@ export function AppointmentDetailDialog({
         <DialogHeader>
           <Item variant="muted" size="sm">
             <ItemMedia variant="icon">
-              <Calendar className="h-4 w-4" aria-hidden="true" />
+              <Calendar className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <DialogTitle>Appointment Details</DialogTitle>
@@ -71,7 +71,7 @@ export function AppointmentDetailDialog({
           <ItemGroup className="grid gap-4 md:grid-cols-2">
             <Item>
               <ItemMedia variant="icon">
-                <Calendar className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                <Calendar className="size-5 text-muted-foreground" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Date</ItemTitle>
@@ -85,7 +85,7 @@ export function AppointmentDetailDialog({
 
             <Item>
               <ItemMedia variant="icon">
-                <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                <Clock className="size-5 text-muted-foreground" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Time</ItemTitle>
@@ -112,7 +112,7 @@ export function AppointmentDetailDialog({
             <ItemGroup>
               <Item>
                 <ItemMedia variant="icon">
-                  <User className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                  <User className="size-5 text-muted-foreground" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>Customer ID</ItemTitle>
@@ -136,7 +136,7 @@ export function AppointmentDetailDialog({
               {appointment.confirmation_code ? (
                 <Item>
                   <ItemMedia variant="icon">
-                    <Hash className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                    <Hash className="size-5 text-muted-foreground" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>Confirmation code</ItemTitle>
@@ -148,7 +148,7 @@ export function AppointmentDetailDialog({
               {appointment.duration_minutes ? (
                 <Item>
                   <ItemMedia variant="icon">
-                    <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                    <Clock className="size-5 text-muted-foreground" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>Duration</ItemTitle>

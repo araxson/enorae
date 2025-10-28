@@ -58,9 +58,9 @@ export function IncidentTimeline({ incidents }: IncidentTimelineProps) {
   return (
     <Accordion type="multiple" className="w-full space-y-2">
       {incidents.map((incident) => (
-        <AccordionItem value={incident.id} key={incident.id} className="border rounded-lg">
-          <AccordionTrigger className="px-4 hover:no-underline">
-            <div className="flex items-center justify-between w-full pr-4">
+        <AccordionItem value={incident.id} key={incident.id} className="rounded-lg border">
+          <AccordionTrigger>
+            <div className="flex w-full items-center justify-between px-4">
               <div className="flex items-center gap-3 text-left">
                 <span className="font-medium">{incident.event_type}</span>
                 <span className="text-sm text-muted-foreground">

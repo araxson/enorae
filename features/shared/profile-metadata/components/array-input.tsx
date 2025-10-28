@@ -61,7 +61,7 @@ export function ArrayInput({ label, items, onAdd, onRemove, placeholder }: Array
                 onClick={() => onRemove(index)}
                 className="ml-1 hover:text-destructive"
               >
-                <X className="h-3 w-3" />
+                <X className="size-3" />
               </button>
             </Badge>
           ))}

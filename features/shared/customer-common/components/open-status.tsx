@@ -22,7 +22,7 @@ export function OpenStatus({ isOpen, nextOpenTime, className }: OpenStatusProps)
       className={cn('w-fit gap-2', className)}
     >
       <ItemMedia variant="icon">
-        <Clock className="h-3 w-3" aria-hidden="true" />
+        <Clock className="size-3" aria-hidden="true" />
       </ItemMedia>
       <ItemContent>
         <ItemDescription>

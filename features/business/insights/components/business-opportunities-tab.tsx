@@ -28,15 +28,16 @@ export function BusinessOpportunitiesTab({ opportunities }: BusinessOpportunitie
         {opportunities.map((opp, idx) => (
           <Card key={idx}>
             <CardHeader>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" aria-hidden="true" />
-                <CardTitle>{opp.title}</CardTitle>
-              </div>
+              <CardTitle>{opp.title}</CardTitle>
               <CardDescription>{opp.description}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <TrendingUp className="size-5" aria-hidden="true" />
+                <span className="text-sm font-medium">{opp.type}</span>
+              </div>
               <Alert>
-                <Lightbulb className="h-4 w-4" />
+                <Lightbulb className="size-4" />
                 <AlertDescription>
                   <span className="font-medium">{opp.potential}</span>
                 </AlertDescription>

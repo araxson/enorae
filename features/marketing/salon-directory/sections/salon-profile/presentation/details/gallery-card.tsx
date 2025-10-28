@@ -34,7 +34,7 @@ export function GalleryCard({ salon }: GalleryCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted" className="flex-col gap-1">
+            <Item variant="muted">
               <ItemHeader>
                 <ItemTitle>Visual preview</ItemTitle>
               </ItemHeader>

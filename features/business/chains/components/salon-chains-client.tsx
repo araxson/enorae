@@ -43,7 +43,7 @@ export function SalonChainsClient({ initialChains }: SalonChainsClientProps) {
         </Item>
         <ItemActions className="flex-none">
           <Button onClick={() => setCreateDialogOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 size-4" />
             Create Chain
           </Button>
         </ItemActions>

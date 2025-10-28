@@ -105,7 +105,8 @@ export function ProfileMetadataForm({ profile, onUpdated }: ProfileMetadataFormP
 
   return (
     <Card>
-      <CardHeader className="pb-2">
+      <CardHeader>
+        <div className="pb-2">
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
@@ -114,6 +115,7 @@ export function ProfileMetadataForm({ profile, onUpdated }: ProfileMetadataFormP
             </ItemContent>
           </Item>
         </ItemGroup>
+        </div>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">

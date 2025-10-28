@@ -39,7 +39,7 @@ export function ServiceList({ services }: ServiceListProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Clock className="h-6 w-6" aria-hidden="true" />
+                <Clock className="size-6" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No services available</EmptyTitle>
               <EmptyDescription>
@@ -95,7 +95,7 @@ export function ServiceList({ services }: ServiceListProps) {
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         {service['duration_minutes'] ? (
                           <div className="flex items-center gap-2 text-muted-foreground">
-                            <Clock className="h-4 w-4" aria-hidden="true" />
+                            <Clock className="size-4" aria-hidden="true" />
                             <Badge variant="outline">{service['duration_minutes']} min</Badge>
                           </div>
                         ) : null}

@@ -111,25 +111,25 @@ export function BulkActionsMenu({ selectedIds, onClearSelection }: BulkActionsMe
         <DropdownMenuTrigger asChild>
           <Button variant="outline">
             Bulk Actions ({selectedIds.length})
-            <ChevronDown className="ml-2 h-4 w-4" />
+            <ChevronDown className="ml-2 size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem onClick={() => handleAction('confirm')}>
-            <CheckCircle className="mr-2 h-4 w-4" />
+            <CheckCircle className="mr-2 size-4" />
             Confirm Selected
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleAction('complete')}>
-            <Clock className="mr-2 h-4 w-4" />
+            <Clock className="mr-2 size-4" />
             Mark as Completed
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => handleAction('cancel')}>
-            <XCircle className="mr-2 h-4 w-4" />
+            <XCircle className="mr-2 size-4" />
             Cancel Selected
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => handleAction('no_show')}>
-            <Ban className="mr-2 h-4 w-4" />
+            <Ban className="mr-2 size-4" />
             Mark as No-Show
           </DropdownMenuItem>
         </DropdownMenuContent>

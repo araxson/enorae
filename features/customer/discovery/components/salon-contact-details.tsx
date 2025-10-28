@@ -72,7 +72,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
     return (
       <Empty>
         <EmptyMedia variant="icon">
-          <Phone className="h-6 w-6" aria-hidden="true" />
+          <Phone className="size-6" aria-hidden="true" />
         </EmptyMedia>
         <EmptyHeader>
           <EmptyTitle>No contact information available</EmptyTitle>
@@ -93,7 +93,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
         <ItemGroup>
           <Item>
             <ItemMedia variant="icon">
-              <Phone className="h-4 w-4" aria-hidden="true" />
+              <Phone className="size-4" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Contact information</ItemTitle>
@@ -109,7 +109,7 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
             return (
               <Item key={method.label} variant="outline">
                 <ItemMedia variant="icon">
-                  <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>{method.label}</ItemTitle>

@@ -1,16 +1,14 @@
 'use client'
 
 import { Dispatch, SetStateAction } from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Heart, X } from 'lucide-react'
 import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemGroup,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 import {
@@ -47,25 +45,16 @@ export function InterestsSection({
     <div>
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemMedia variant="icon">
-                <Heart className="h-4 w-4" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>Interests</ItemTitle>
-                <ItemDescription>Personal topics you care about</ItemDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Interests</CardTitle>
+          <CardDescription>Personal topics you care about</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           {interests.length === 0 ? (
             <Empty>
-              <EmptyMedia variant="icon">
-                <Heart className="h-4 w-4" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Heart className="size-4" />
+                </EmptyMedia>
                 <EmptyTitle>No interests yet</EmptyTitle>
                 <EmptyDescription>Add topics to personalize your recommendations.</EmptyDescription>
               </EmptyHeader>
@@ -77,7 +66,7 @@ export function InterestsSection({
                   <ItemContent>
                     <ItemTitle>{interest}</ItemTitle>
                   </ItemContent>
-                  <ItemActions className="flex-none">
+                  <ItemActions>
                     <Button
                       type="button"
                       variant="ghost"
@@ -85,7 +74,7 @@ export function InterestsSection({
                       onClick={() => removeInterest(interest)}
                       aria-label={`Remove ${interest}`}
                     >
-                      <X className="h-3 w-3" />
+                      <X className="size-3" />
                     </Button>
                   </ItemActions>
                 </Item>
@@ -96,7 +85,7 @@ export function InterestsSection({
       </Card>
       <InputGroup>
         <InputGroupAddon>
-          <Heart className="h-4 w-4" aria-hidden="true" />
+          <Heart className="size-4" aria-hidden="true" />
         </InputGroupAddon>
         <InputGroupInput
           placeholder="Add an interest (e.g., Hair Color, Nail Art)"
@@ -108,10 +97,18 @@ export function InterestsSection({
               addInterest()
             }
           }}
+          autoComplete="off"
         />
-        <InputGroupButton type="button" variant="outline" onClick={addInterest}>
-          Add
-        </InputGroupButton>
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            type="button"
+            variant="outline"
+            onClick={addInterest}
+            aria-label="Add interest"
+          >
+            Add
+          </InputGroupButton>
+        </InputGroupAddon>
       </InputGroup>
     </div>
   )

@@ -31,7 +31,7 @@ export function PopularityRanking({ services, formatCurrency }: PopularityRankin
   return (
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader className="items-center gap-2">
-        <TrendingUp className="h-5 w-5" />
+        <TrendingUp className="size-5" />
         <ItemTitle>Most Popular Services</ItemTitle>
       </ItemHeader>
       <ItemContent>

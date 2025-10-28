@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -32,7 +32,7 @@ export function StaffList({ staff }: StaffListProps) {
     return (
       <Empty>
         <EmptyMedia variant="icon">
-          <Users className="h-6 w-6" aria-hidden="true" />
+          <Users className="size-6" aria-hidden="true" />
         </EmptyMedia>
         <EmptyHeader>
           <EmptyTitle>No staff members</EmptyTitle>
@@ -47,6 +47,7 @@ export function StaffList({ staff }: StaffListProps) {
     <Card>
       <CardHeader>
         <CardTitle>Staff Members</CardTitle>
+        <CardDescription>Overview of active team members and their profile details.</CardDescription>
       </CardHeader>
       <CardContent>
         <ItemGroup className="gap-3">

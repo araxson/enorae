@@ -32,20 +32,23 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
   const hasRows = rows.length > 0
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>Growth Trend (Last 14 snapshots)</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="w-full">
-          {hasRows ? (
-            <Table>
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <ItemTitle>Growth Trend (Last 14 snapshots)</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="w-full">
+            {hasRows ? (
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Date</TableHead>
@@ -77,9 +80,10 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
               </EmptyHeader>
             </Empty>
           )}
-          {hasRows ? <ScrollBar orientation="horizontal" /> : null}
-        </ScrollArea>
-      </CardContent>
-    </Card>
+            {hasRows ? <ScrollBar orientation="horizontal" /> : null}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

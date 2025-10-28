@@ -117,10 +117,10 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
                         variant="ghost"
                         size="sm"
                         disabled={isLoading}
-                        className="h-8 w-8 p-0"
+                        className="size-8 p-0"
                         aria-label={`Open TOAST actions for ${table.table_name}`}
                       >
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreHorizontal className="size-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

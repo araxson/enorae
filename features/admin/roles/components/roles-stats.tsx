@@ -1,5 +1,4 @@
 import { Badge } from '@/components/ui/badge'
-import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -27,11 +26,13 @@ export function RolesStats({ stats }: RoleStatsProps) {
         <ItemHeader>
           <ItemTitle>Total Assignments</ItemTitle>
           <ItemMedia variant="icon">
-            <Shield className="h-4 w-4 text-secondary" aria-hidden="true" />
+            <Shield className="size-4 text-secondary" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent className="flex flex-col gap-2">
-          <CardTitle>{totalAssignments}</CardTitle>
+          <span className="text-2xl font-semibold leading-none text-foreground">
+            {totalAssignments}
+          </span>
           <ItemDescription>All role assignments across the platform</ItemDescription>
         </ItemContent>
       </Item>
@@ -40,11 +41,13 @@ export function RolesStats({ stats }: RoleStatsProps) {
         <ItemHeader>
           <ItemTitle>Active Roles</ItemTitle>
           <ItemMedia variant="icon">
-            <UserCheck className="h-4 w-4 text-primary" aria-hidden="true" />
+            <UserCheck className="size-4 text-primary" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent className="flex flex-col gap-2">
-          <CardTitle>{totalActive}</CardTitle>
+          <span className="text-2xl font-semibold leading-none text-foreground">
+            {totalActive}
+          </span>
           <ItemDescription>Role assignments currently active</ItemDescription>
         </ItemContent>
       </Item>
@@ -53,11 +56,13 @@ export function RolesStats({ stats }: RoleStatsProps) {
         <ItemHeader>
           <ItemTitle>Inactive Roles</ItemTitle>
           <ItemMedia variant="icon">
-            <UserX className="h-4 w-4 text-accent" aria-hidden="true" />
+            <UserX className="size-4 text-accent" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent className="flex flex-col gap-2">
-          <CardTitle>{totalInactive}</CardTitle>
+          <span className="text-2xl font-semibold leading-none text-foreground">
+            {totalInactive}
+          </span>
           <ItemDescription>Assignments awaiting reactivation</ItemDescription>
         </ItemContent>
       </Item>
@@ -66,11 +71,13 @@ export function RolesStats({ stats }: RoleStatsProps) {
         <ItemHeader>
           <ItemTitle>Role Types</ItemTitle>
           <ItemMedia variant="icon">
-            <Users className="h-4 w-4 text-primary" aria-hidden="true" />
+            <Users className="size-4 text-primary" aria-hidden="true" />
           </ItemMedia>
         </ItemHeader>
         <ItemContent className="flex flex-col gap-2">
-          <CardTitle>{uniqueRoles}</CardTitle>
+          <span className="text-2xl font-semibold leading-none text-foreground">
+            {uniqueRoles}
+          </span>
           <ItemDescription>Total unique roles with recent assignments</ItemDescription>
           <div className="mt-1 flex flex-wrap gap-1">
             {Object.entries(stats)

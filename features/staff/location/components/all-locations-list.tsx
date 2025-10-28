@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/empty'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -51,17 +50,13 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
         return (
           <Card key={location['id']}>
             <CardHeader>
-              <ItemGroup>
-                <Item variant="muted" size="sm">
-                  <ItemContent>
-                    <CardTitle>{location.location_name || location['name']}</CardTitle>
-                  </ItemContent>
-                  <ItemActions className="flex gap-2">
-                    {isCurrent ? <Badge variant="default">Your Location</Badge> : null}
-                    {location['is_primary'] ? <Badge variant="outline">Primary</Badge> : null}
-                  </ItemActions>
-                </Item>
-              </ItemGroup>
+              <div className="flex items-start justify-between gap-3">
+                <CardTitle>{location.location_name || location['name']}</CardTitle>
+                <div className="flex gap-2">
+                  {isCurrent ? <Badge variant="default">Your Location</Badge> : null}
+                  {location['is_primary'] ? <Badge variant="outline">Primary</Badge> : null}
+                </div>
+              </div>
             </CardHeader>
             {(address || location.phone_number) && (
               <CardContent>
@@ -69,7 +64,7 @@ export function AllLocationsList({ locations, currentLocationId }: AllLocationsL
                   {address ? (
                     <Item variant="muted" size="sm">
                       <ItemMedia variant="icon">
-                        <MapPin className="h-3 w-3" aria-hidden="true" />
+                        <MapPin className="size-3" aria-hidden="true" />
                       </ItemMedia>
                       <ItemContent>
                         <ItemDescription>{address}</ItemDescription>

@@ -24,56 +24,70 @@ const formatCurrency = (value: number | null) => {
 
 export function DisputesPanel({ disputes }: DisputesPanelProps) {
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-4">
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <Scale className="h-4 w-4" />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>Dispute Queue</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {disputes.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No high-risk appointments</EmptyTitle>
-              <EmptyDescription>The dispute queue fills when appointments trigger elevated risk checks.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <div className="space-y-2">
-            {disputes.slice(0, 6).map((item) => (
-              <Alert key={item.appointmentId} variant="default">
-                <Scale className="h-4 w-4" />
-                <ItemGroup>
-                  <Item className="items-start gap-2" variant="muted" size="sm">
-                    <ItemContent>
-                      <AlertTitle>{item.customerName || 'Unknown customer'}</AlertTitle>
-                      <AlertDescription>
-                        {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
-                      </AlertDescription>
-                      <AlertDescription className="mt-1">{item.reason}</AlertDescription>
-                      <AlertDescription className="mt-1 font-medium">
-                        Recommended: {item.recommendedAction}
-                      </AlertDescription>
-                    </ItemContent>
-                    <ItemActions>
-                      <Badge variant="secondary">
-                        {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char: string) => char.toUpperCase())}
-                      </Badge>
-                    </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </Alert>
-            ))}
+    <div className="h-full">
+      <Card>
+        <CardHeader>
+          <div className="pb-4">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemMedia variant="icon">
+                  <Scale className="size-4" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Dispute Queue</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {disputes.length === 0 ? (
+              <Empty>
+                <EmptyHeader>
+                  <EmptyTitle>No high-risk appointments</EmptyTitle>
+                  <EmptyDescription>
+                    The dispute queue fills when appointments trigger elevated risk checks.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            ) : (
+              <div className="space-y-2">
+                {disputes.slice(0, 6).map((item) => (
+                  <Alert key={item.appointmentId} variant="default">
+                    <Scale className="size-4" />
+                    <ItemGroup>
+                      <Item variant="muted" size="sm">
+                        <ItemContent>
+                          <div className="space-y-2">
+                            <AlertTitle>{item.customerName || 'Unknown customer'}</AlertTitle>
+                            <AlertDescription>
+                              <p>
+                                {item.salonName || 'Unknown salon'} · {formatCurrency(item.amount)}
+                              </p>
+                              <p className="mt-1">{item.reason}</p>
+                              <p className="mt-1 font-medium text-foreground">
+                                Recommended: {item.recommendedAction}
+                              </p>
+                            </AlertDescription>
+                          </div>
+                        </ItemContent>
+                        <ItemActions>
+                          <Badge variant="secondary">
+                            {(item.status || '').replace(/_/g, ' ').replace(/\b\w/g, (char: string) =>
+                              char.toUpperCase()
+                            )}
+                          </Badge>
+                        </ItemActions>
+                      </Item>
+                    </ItemGroup>
+                  </Alert>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

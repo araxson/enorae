@@ -80,7 +80,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
             <ItemDescription>Showing {logs.length} entries</ItemDescription>
           </div>
           <Button variant="outline" size="sm" onClick={exportLogs} className="gap-2">
-            <Download className="h-4 w-4" />
+            <Download className="size-4" />
             Export CSV
           </Button>
         </ItemHeader>
@@ -128,14 +128,14 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                         {log.is_success ? (
                           <Badge variant="default">
                             <span className="flex items-center gap-1">
-                              <CheckCircle2 className="h-3 w-3" />
+                              <CheckCircle2 className="size-3" />
                               Success
                             </span>
                           </Badge>
                         ) : (
                           <Badge variant="destructive">
                             <span className="flex items-center gap-1">
-                              <XCircle className="h-3 w-3" />
+                              <XCircle className="size-3" />
                               Failed
                             </span>
                           </Badge>
@@ -148,7 +148,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                           onClick={() => setSelectedLog(log)}
                           className="gap-2"
                         >
-                          <Eye className="h-4 w-4" />
+                          <Eye className="size-4" />
                           View
                         </Button>
                       </TableCell>

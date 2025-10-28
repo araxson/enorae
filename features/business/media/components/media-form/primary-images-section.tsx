@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Field,
@@ -10,12 +10,6 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 type PrimaryImagesSectionProps = {
   logoUrl: string
   coverImageUrl: string
@@ -25,13 +19,7 @@ export function PrimaryImagesSection({ logoUrl, coverImageUrl }: PrimaryImagesSe
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>Primary Images</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Primary Images</CardTitle>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-6">

@@ -41,18 +41,24 @@ export function ChainDetail({ chain }: ChainDetailProps) {
                 ) : null}
               </ItemContent>
               {chain['is_verified'] ? (
-                <ItemActions className="flex-none">
-                  <Badge variant="default">Verified</Badge>
+                <ItemActions>
+                  <div className="flex-none">
+                    <Badge variant="default">Verified</Badge>
+                  </div>
                 </ItemActions>
               ) : null}
             </Item>
           </ItemGroup>
         </CardHeader>
         <CardContent>
-          <ItemGroup className="gap-4 md:grid md:grid-cols-2">
+          <div
+            className="group/item-group flex flex-col gap-4 md:grid md:grid-cols-2"
+            data-slot="item-group"
+            role="list"
+          >
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Store className="h-4 w-4" aria-hidden="true" />
+                <Store className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Locations</ItemTitle>
@@ -63,20 +69,20 @@ export function ChainDetail({ chain }: ChainDetailProps) {
             </Item>
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Users className="h-4 w-4" aria-hidden="true" />
+                <Users className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Staff members</ItemTitle>
                 <ItemDescription>{chain['staff_count'] || 0}</ItemDescription>
               </ItemContent>
             </Item>
-          </ItemGroup>
+          </div>
         </CardContent>
         <CardFooter>
           <ItemGroup>
             <Item variant="muted" size="sm">
               <ItemMedia variant="icon">
-                <Store className="h-4 w-4" aria-hidden="true" />
+                <Store className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Footprint</ItemTitle>
@@ -103,65 +109,77 @@ export function ChainDetail({ chain }: ChainDetailProps) {
                         <CardTitle>{salon['name']}</CardTitle>
                       </ItemContent>
                       {salon['is_verified'] ? (
-                        <ItemActions className="flex-none">
-                          <Badge variant="secondary">Verified</Badge>
+                        <ItemActions>
+                          <div className="flex-none">
+                            <Badge variant="secondary">Verified</Badge>
+                          </div>
                         </ItemActions>
                       ) : null}
                     </Item>
                   </ItemGroup>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <ItemGroup className="gap-2">
-                    {salon['formatted_address'] ? (
-                      <Item variant="muted" size="sm">
-                        <ItemMedia variant="icon">
-                          <MapPin className="h-3 w-3" aria-hidden="true" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemDescription>{salon['formatted_address']}</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ) : null}
+                <CardContent>
+                  <div className="space-y-3">
+                    <div
+                      className="group/item-group flex flex-col gap-2"
+                      data-slot="item-group"
+                      role="list"
+                    >
+                      {salon['formatted_address'] ? (
+                        <Item variant="muted" size="sm">
+                          <ItemMedia variant="icon">
+                            <MapPin className="size-3" aria-hidden="true" />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemDescription>{salon['formatted_address']}</ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      ) : null}
 
-                    {typeof salon['rating_average'] === 'number' ? (
-                      <Item variant="muted" size="sm">
-                        <ItemContent>
-                          <ItemTitle>Rating</ItemTitle>
-                          <ItemDescription>
-                            ⭐ {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
-                          </ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ) : null}
-                  </ItemGroup>
+                      {typeof salon['rating_average'] === 'number' ? (
+                        <Item variant="muted" size="sm">
+                          <ItemContent>
+                            <ItemTitle>Rating</ItemTitle>
+                            <ItemDescription>
+                              ⭐ {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
+                            </ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      ) : null}
+                    </div>
+                  </div>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild variant="outline" size="sm" className="w-full">
-                    <Link href={`/customer/book/${salon['id']}`}>
-                      View salon
-                    </Link>
-                  </Button>
+                  <div className="w-full">
+                    <Button asChild variant="outline" size="sm">
+                      <Link href={`/customer/book/${salon['id']}`}>
+                        View salon
+                      </Link>
+                    </Button>
+                  </div>
                 </CardFooter>
               </Card>
             ))}
           </div>
         ) : (
           <Card>
-            <CardContent className="p-6">
-              <Empty>
-                <EmptyMedia variant="icon">
-                  <MapPin className="h-6 w-6" aria-hidden="true" />
-                </EmptyMedia>
-                <EmptyHeader>
-                  <EmptyTitle>No locations found</EmptyTitle>
-                  <EmptyDescription>
-                    This chain hasn&apos;t listed individual salon locations yet.
-                  </EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>
-                  Check back soon for new locations or follow the chain for updates.
-                </EmptyContent>
-              </Empty>
+            <CardContent>
+              <div className="p-6">
+                <Empty>
+                  <EmptyMedia variant="icon">
+                    <MapPin className="size-6" aria-hidden="true" />
+                  </EmptyMedia>
+                  <EmptyHeader>
+                    <EmptyTitle>No locations found</EmptyTitle>
+                    <EmptyDescription>
+                      This chain hasn&apos;t listed individual salon locations yet.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                  <EmptyContent>
+                    Check back soon for new locations or follow the chain for updates.
+                  </EmptyContent>
+                </Empty>
+              </div>
             </CardContent>
           </Card>
         )}

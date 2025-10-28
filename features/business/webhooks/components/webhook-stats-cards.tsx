@@ -1,8 +1,7 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Activity, AlertCircle, CheckCircle, Clock } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import type { WebhookStats } from '@/features/business/webhooks/api/queries'
 
 type WebhookStatsCardsProps = {
@@ -14,76 +13,49 @@ export function WebhookStatsCards({ stats }: WebhookStatsCardsProps) {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <CardTitle>Total Webhooks</CardTitle>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <Activity className="h-4 w-4 text-muted-foreground" />
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Total Webhooks</CardTitle>
+          <CardDescription>Active endpoints responding</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{stats.total_webhooks}</CardTitle>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-3xl font-semibold tracking-tight">{stats.total_webhooks}</p>
+          <Activity className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <CardTitle>Success Rate</CardTitle>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <CheckCircle className="h-4 w-4 text-primary" />
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Success Rate</CardTitle>
+          <CardDescription>{stats.successful_deliveries} successful deliveries</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{stats.success_rate.toFixed(1)}%</CardTitle>
-          <p className="text-xs text-muted-foreground">{stats.successful_deliveries} successful</p>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-3xl font-semibold tracking-tight">
+            {stats.success_rate.toFixed(1)}%
+          </p>
+          <CheckCircle className="size-4 text-primary" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <CardTitle>Failed Deliveries</CardTitle>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <AlertCircle className="h-4 w-4 text-destructive" />
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Failed Deliveries</CardTitle>
+          <CardDescription>Require follow-up</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{stats.failed_deliveries}</CardTitle>
-          <p className="text-xs text-muted-foreground">Require attention</p>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-3xl font-semibold tracking-tight">{stats.failed_deliveries}</p>
+          <AlertCircle className="size-4 text-destructive" aria-hidden="true" />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <CardTitle>Avg Delivery Time</CardTitle>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Avg Delivery Time</CardTitle>
+          <CardDescription>{stats.pending_deliveries} currently pending</CardDescription>
         </CardHeader>
-        <CardContent>
-          <CardTitle>{Math.round(stats.avg_delivery_time)}ms</CardTitle>
-          <p className="text-xs text-muted-foreground">{stats.pending_deliveries} pending</p>
+        <CardContent className="flex items-start justify-between">
+          <p className="text-3xl font-semibold tracking-tight">
+            {Math.round(stats.avg_delivery_time)}ms
+          </p>
+          <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
         </CardContent>
       </Card>
     </div>

@@ -64,7 +64,7 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Scissors className="h-8 w-8" aria-hidden="true" />
+            <Scissors className="size-8" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No coupons created yet</EmptyTitle>
           <EmptyDescription>Create your first coupon to attract and retain customers.</EmptyDescription>

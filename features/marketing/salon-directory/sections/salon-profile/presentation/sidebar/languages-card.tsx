@@ -34,7 +34,7 @@ export function LanguagesCard({ salon }: LanguagesCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted" className="flex-col gap-1">
+            <Item variant="muted">
               <ItemHeader>
                 <ItemTitle>Language support</ItemTitle>
               </ItemHeader>

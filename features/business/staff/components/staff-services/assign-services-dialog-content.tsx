@@ -111,7 +111,7 @@ export function AssignServicesDialogContent({
       </div>
 
       <DialogFooter className="gap-2 sm:gap-2">
-        <ButtonGroup className="w-full sm:w-auto">
+        <ButtonGroup aria-label="Actions">
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>

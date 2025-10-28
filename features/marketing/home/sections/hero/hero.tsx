@@ -1,10 +1,7 @@
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-} from '@/components/ui/button-group'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import { MarketingHero, TrustBadge } from '@/features/marketing/common-components'
 
@@ -23,16 +20,12 @@ export function Hero() {
         </ItemContent>
       </Item>
       <div className="flex w-full flex-col items-center gap-6">
-        <ButtonGroup
-          aria-label="Home hero actions"
-          className="flex flex-wrap justify-center gap-2 px-2"
-        >
+        <ButtonGroup aria-label="Home hero actions">
           <Button asChild size="lg">
             <Link href={heroContent.primaryCta.href}>
               {heroContent.primaryCta.label}
             </Link>
           </Button>
-          <ButtonGroupSeparator className="hidden sm:flex" />
           <Button asChild variant="outline" size="lg">
             <Link href={heroContent.secondaryCta.href}>
               {heroContent.secondaryCta.label}

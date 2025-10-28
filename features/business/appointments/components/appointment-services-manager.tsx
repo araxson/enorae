@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
@@ -132,9 +132,9 @@ export function AppointmentServicesManager({
                 <ItemTitle>Services</ItemTitle>
               </ItemContent>
               <ItemActions>
-                <ButtonGroup>
+                <ButtonGroup aria-label="Service actions">
                   <Button onClick={() => setShowAddDialog(true)} size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="size-4 mr-2" />
                     Add Service
                   </Button>
                 </ButtonGroup>
@@ -202,13 +202,13 @@ export function AppointmentServicesManager({
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <ButtonGroup className="ml-auto justify-end">
+                        <ButtonGroup aria-label="Service row actions">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => setEditingService(service)}
                           >
-                            <Edit className="h-4 w-4" />
+                            <Edit className="size-4" />
                           </Button>
                           <Button
                             variant="ghost"
@@ -216,7 +216,7 @@ export function AppointmentServicesManager({
                             onClick={() => setDeletingService(service)}
                             disabled={services.length <= 1}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="size-4" />
                           </Button>
                         </ButtonGroup>
                       </TableCell>
@@ -237,7 +237,9 @@ export function AppointmentServicesManager({
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-muted-foreground">Total Price</p>
-                  <CardTitle>{formatCurrency(totalPrice)}</CardTitle>
+                  <p className="text-2xl font-semibold leading-none tracking-tight">
+                    {formatCurrency(totalPrice)}
+                  </p>
                 </div>
               </div>
             </>

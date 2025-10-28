@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import {
@@ -28,7 +28,6 @@ import {
 import { DashboardCommandButton } from './dashboard-command-button'
 import { DashboardPreferencesSheet } from './dashboard-preferences-sheet'
 import { DashboardQuickFiltersDrawer } from './dashboard-quick-filters-drawer'
-import { ButtonGroup } from '@/components/ui/button-group'
 
 const NAVIGATION_ITEMS = [
   { label: 'Overview', href: '#overview' },
@@ -60,47 +59,49 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
   const [timeframe, setTimeframe] = useState<'7' | '30' | '90'>('30')
 
   return (
-    <Item variant="outline" className="flex-col gap-6">
-      <ItemHeader className="flex flex-wrap items-center justify-between gap-4">
+    <Item variant="outline">
+      <ItemHeader>
         <div className="flex flex-wrap items-center gap-3">
-          <Avatar className="h-9 w-9">
+          <Avatar className="size-9">
             <AvatarFallback>{salonName.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-            <div className="min-w-0 space-y-1">
+          <div className="min-w-0 space-y-1">
             <ItemTitle>{salonName}</ItemTitle>
             <ItemDescription>
               Review bookings, revenue, and reputation signals at a glance.
             </ItemDescription>
           </div>
           {isTenantOwner && totalLocations ? (
-            <Badge variant="secondary" className="flex items-center gap-1">
-              <LayoutDashboard className="h-3 w-3" aria-hidden="true" />
-              {totalLocations} locations
+            <Badge variant="secondary">
+              <span className="flex items-center gap-1">
+                <LayoutDashboard className="size-3" aria-hidden="true" />
+                {totalLocations} locations
+              </span>
             </Badge>
           ) : null}
         </div>
 
-        <ItemActions className="flex items-center gap-3">
-          <ButtonGroup className="flex items-center gap-3">
-            <DashboardCommandButton navigationItems={NAVIGATION_ITEMS} commandItems={COMMAND_ITEMS} />
-            <DashboardPreferencesSheet />
-            <DashboardQuickFiltersDrawer />
+        <ItemActions>
+          <DashboardCommandButton navigationItems={NAVIGATION_ITEMS} commandItems={COMMAND_ITEMS} />
+          <DashboardPreferencesSheet />
+          <DashboardQuickFiltersDrawer />
+          <TooltipProvider delayDuration={150}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button asChild variant="outline" className="hidden md:inline-flex">
+                <Button asChild variant="outline">
                   <Link href="/business/support">Support</Link>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Contact support or browse help center</TooltipContent>
             </Tooltip>
-          </ButtonGroup>
+          </TooltipProvider>
         </ItemActions>
       </ItemHeader>
 
-      <ItemContent className="space-y-4">
-        <Field orientation="responsive" className="items-center justify-between gap-3">
+      <ItemContent>
+        <Field orientation="responsive">
           <FieldLabel>Timeframe</FieldLabel>
-          <FieldContent className="flex items-center gap-3">
+          <FieldContent>
             <Select value={timeframe} onValueChange={(value) => setTimeframe(value as typeof timeframe)}>
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Select timeframe" />
@@ -114,20 +115,24 @@ export function DashboardToolbar({ salonName, isTenantOwner, totalLocations }: D
               </SelectContent>
             </Select>
           </FieldContent>
-          <FieldContent className="flex items-center gap-3 text-xs text-muted-foreground">
-            <Badge variant="outline" className="flex items-center gap-1">
-              Timeframe {timeframe} days
-            </Badge>
-            <Badge variant="outline" className="flex items-center gap-1">
-              {isTenantOwner ? 'Tenant owner' : 'Team member'}
-            </Badge>
+          <FieldContent>
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <Badge variant="outline">
+                <span className="flex items-center gap-1">Timeframe {timeframe} days</span>
+              </Badge>
+              <Badge variant="outline">
+                <span className="flex items-center gap-1">
+                  {isTenantOwner ? 'Tenant owner' : 'Team member'}
+                </span>
+              </Badge>
+            </div>
           </FieldContent>
         </Field>
 
         <Separator />
 
         <Alert>
-          <Target className="h-4 w-4 text-primary" aria-hidden="true" />
+          <Target className="size-4 text-primary" aria-hidden="true" />
           <AlertTitle>Weekly momentum</AlertTitle>
           <AlertDescription>
             Confirmation rate is holding steady. Encourage stylists to respond to pending bookings to keep the momentum.

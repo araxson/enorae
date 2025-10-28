@@ -1,16 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardHeader, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card'
 import { updateServiceStatus } from '@/features/business/appointments/api/mutations'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useToast } from '@/lib/hooks/use-toast'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 import { ServiceCompletionCard } from './service-completion-card'
 import { ServiceStatusRow } from './service-status-row'
 
@@ -77,13 +71,7 @@ export function AppointmentServiceProgress({
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <ItemTitle>Service Status</ItemTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Service Status</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">

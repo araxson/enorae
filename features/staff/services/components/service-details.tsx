@@ -30,7 +30,7 @@ export function ServiceDetails({
       {effectiveDuration && (
         <Item size="sm" variant="muted">
           <ItemMedia variant="icon">
-            <Clock className="h-4 w-4" aria-hidden="true" />
+            <Clock className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>{effectiveDuration} minutes</ItemTitle>
@@ -41,7 +41,7 @@ export function ServiceDetails({
       {effectivePrice && (
         <Item size="sm" variant="muted">
           <ItemMedia variant="icon">
-            <DollarSign className="h-4 w-4" aria-hidden="true" />
+            <DollarSign className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>${effectivePrice}</ItemTitle>
@@ -52,7 +52,7 @@ export function ServiceDetails({
       {performedCount != null && performedCount > 0 && (
         <Item size="sm" variant="muted">
           <ItemMedia variant="icon">
-            <TrendingUp className="h-4 w-4" aria-hidden="true" />
+            <TrendingUp className="size-4" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Performed {performedCount} times</ItemTitle>
@@ -62,7 +62,7 @@ export function ServiceDetails({
       {ratingAverage && ratingCount && ratingCount > 0 && (
         <Item size="sm" variant="muted">
           <ItemMedia variant="icon">
-            <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
+            <Star className="size-4 fill-accent text-accent" aria-hidden="true" />
           </ItemMedia>
           <ItemContent>
             <ItemTitle>{ratingAverage.toFixed(1)} rating</ItemTitle>

@@ -13,7 +13,6 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { CardTitle } from '@/components/ui/card'
 
 import type { SalonMetricsData } from '@/features/business/metrics/api/queries'
 
@@ -25,12 +24,14 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
   if (!metrics) {
     return (
       <Item variant="outline" className="flex-col gap-4">
-        <ItemHeader className="items-center justify-center">
-          <ItemTitle>No metrics data available</ItemTitle>
-          <ItemDescription>Metrics will be generated automatically.</ItemDescription>
+        <ItemHeader>
+          <div className="flex w-full flex-col items-center gap-1 text-center">
+            <ItemTitle>No metrics data available</ItemTitle>
+            <ItemDescription>Metrics will be generated automatically.</ItemDescription>
+          </div>
         </ItemHeader>
         <ItemContent className="flex flex-col items-center justify-center py-6">
-          <DollarSign className="h-12 w-12 text-muted-foreground mb-4" />
+          <DollarSign className="size-12 text-muted-foreground mb-4" />
         </ItemContent>
       </Item>
     )
@@ -43,6 +44,8 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
       currency: 'USD',
     }).format(amount)
   }
+
+  const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
 
   return (
     <div className="space-y-6">
@@ -59,53 +62,53 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
 
       <ItemGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Item variant="outline" className="flex-col gap-2">
-          <ItemHeader className="items-center justify-between">
+          <ItemHeader>
             <ItemTitle>Total Bookings</ItemTitle>
-            <ItemActions className="flex-none">
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+            <ItemActions>
+              <Calendar className="size-4 text-muted-foreground" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <CardTitle>{metrics.total_bookings ?? 'N/A'}</CardTitle>
+            <p className={metricValueClass}>{metrics.total_bookings ?? 'N/A'}</p>
             <ItemDescription>All time bookings</ItemDescription>
           </ItemContent>
         </Item>
 
         <Item variant="outline" className="flex-col gap-2">
-          <ItemHeader className="items-center justify-between">
+          <ItemHeader>
             <ItemTitle>Total Revenue</ItemTitle>
-            <ItemActions className="flex-none">
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <ItemActions>
+              <DollarSign className="size-4 text-muted-foreground" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <CardTitle>{formatCurrency(metrics.total_revenue)}</CardTitle>
+            <p className={metricValueClass}>{formatCurrency(metrics.total_revenue)}</p>
             <ItemDescription>Lifetime earnings</ItemDescription>
           </ItemContent>
         </Item>
 
         <Item variant="outline" className="flex-col gap-2">
-          <ItemHeader className="items-center justify-between">
+          <ItemHeader>
             <ItemTitle>Average Rating</ItemTitle>
-            <ItemActions className="flex-none">
-              <Star className="h-4 w-4 text-muted-foreground" />
+            <ItemActions>
+              <Star className="size-4 text-muted-foreground" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <CardTitle>{metrics.rating_average?.toFixed(1) ?? 'N/A'}</CardTitle>
+            <p className={metricValueClass}>{metrics.rating_average?.toFixed(1) ?? 'N/A'}</p>
             <ItemDescription>{metrics.rating_count ?? 0} reviews</ItemDescription>
           </ItemContent>
         </Item>
 
         <Item variant="outline" className="flex-col gap-2">
-          <ItemHeader className="items-center justify-between">
+          <ItemHeader>
             <ItemTitle>Employee Count</ItemTitle>
-            <ItemActions className="flex-none">
-              <Users className="h-4 w-4 text-muted-foreground" />
+            <ItemActions>
+              <Users className="size-4 text-muted-foreground" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <CardTitle>{metrics.employee_count ?? 'N/A'}</CardTitle>
+            <p className={metricValueClass}>{metrics.employee_count ?? 'N/A'}</p>
             <ItemDescription>Active staff members</ItemDescription>
           </ItemContent>
         </Item>

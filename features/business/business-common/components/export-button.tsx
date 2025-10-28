@@ -79,7 +79,7 @@ export function ExportButton({ data, filename, variant = 'outline', size = 'sm' 
   if (data.length === 0) {
     return (
       <Button variant={variant} size={size} disabled>
-        <Download className="h-4 w-4 mr-2" />
+        <Download className="size-4 mr-2" />
         Export
       </Button>
     )
@@ -89,17 +89,17 @@ export function ExportButton({ data, filename, variant = 'outline', size = 'sm' 
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={variant} size={size} disabled={isExporting}>
-          <Download className="h-4 w-4 mr-2" />
+          <Download className="size-4 mr-2" />
           {isExporting ? 'Exporting...' : 'Export'}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={exportToCSV}>
-          <FileSpreadsheet className="h-4 w-4 mr-2" />
+          <FileSpreadsheet className="size-4 mr-2" />
           Export as CSV
         </DropdownMenuItem>
         <DropdownMenuItem onClick={exportToJSON}>
-          <FileText className="h-4 w-4 mr-2" />
+          <FileText className="size-4 mr-2" />
           Export as JSON
         </DropdownMenuItem>
       </DropdownMenuContent>

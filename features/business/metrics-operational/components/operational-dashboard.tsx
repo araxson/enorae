@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Item, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 import type { Database } from '@/lib/types/database.types'
 import { PeakHourCard } from './peak-hour-card'
@@ -22,13 +21,7 @@ export function OperationalDashboard({ metrics }: OperationalDashboardProps) {
     return (
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <ItemTitle>Operational Metrics</ItemTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Operational Metrics</CardTitle>
         </CardHeader>
         <CardContent>
           <Empty>

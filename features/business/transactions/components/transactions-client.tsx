@@ -74,17 +74,17 @@ export function TransactionsClient({
           </ItemContent>
         </Item>
         <ItemActions className="flex-none">
-          <ButtonGroup className="flex-wrap justify-end">
+          <ButtonGroup aria-label="Transaction actions">
             <Button variant="outline" onClick={() => setIsReportDialogOpen(true)}>
-              <FileText className="mr-2 h-4 w-4" />
+              <FileText className="mr-2 size-4" />
               Generate Report
             </Button>
             <Button variant="outline" onClick={handleExportCSV} disabled={transactions.length === 0}>
-              <Download className="mr-2 h-4 w-4" />
+              <Download className="mr-2 size-4" />
               Export CSV
             </Button>
             <Button onClick={() => setIsCreateDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="mr-2 size-4" />
               Record Transaction
             </Button>
           </ButtonGroup>

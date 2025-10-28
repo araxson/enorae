@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
 type SalonView = Database['public']['Views']['salons_view']['Row']
+type SalonRecord = Database['organization']['Tables']['salons']['Row']
 
 export async function getUserSalon(): Promise<SalonView> {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -44,18 +45,24 @@ export async function getUserSalonIds(): Promise<string[]> {
 
     if (chain) {
       const { data: chainSalons, error: chainError } = await supabase
-        .from('salons_view')
+        .schema('organization')
+        .from('salons')
         .select('id')
         .eq('chain_id', chain.id)
+        .eq('owner_id', session.user.id)
         .is('deleted_at', null)
+        .returns<Pick<SalonRecord, 'id'>[]>()
 
       if (chainError) {
         console.error('[getUserSalonIds] Chain salons query error:', chainError)
         return []
       }
 
-      const salons = (chainSalons || []) as Array<{ id: string }>
-      return salons.map((salon) => salon.id)
+      const salonIds = (chainSalons || [])
+        .map((salon) => salon.id)
+        .filter((id): id is string => Boolean(id))
+
+      return salonIds
     }
 
     const salonId = await requireUserSalonId()

@@ -93,10 +93,13 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
                   <Search className="size-4" aria-hidden="true" />
                 </InputGroupAddon>
                 <InputGroupInput
+                  type="search"
                   placeholder="Search salons by name, description..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  aria-label="Search salons"
+                  autoComplete="off"
                 />
                 {searchTerm ? (
                   <InputGroupAddon align="inline-end">
@@ -125,7 +128,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
                 <FieldContent>
                   <Select value={selectedCity} onValueChange={setSelectedCity}>
                     <SelectTrigger className="w-52">
-                      <MapPin className="mr-2 h-4 w-4" aria-hidden="true" />
+                      <MapPin className="mr-2 size-4" aria-hidden="true" />
                       <SelectValue placeholder="Select city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -147,7 +150,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
                 <FieldContent>
                   <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                     <SelectTrigger className="w-52">
-                      <Filter className="mr-2 h-4 w-4" aria-hidden="true" />
+                      <Filter className="mr-2 size-4" aria-hidden="true" />
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -172,16 +175,18 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
           </Item>
         </FieldSet>
       </CardContent>
-      <CardFooter className="flex flex-wrap items-center justify-end gap-3">
-        {hasActiveFilters && (
-          <Button variant="outline" size="sm" onClick={handleClear}>
-            <X className="mr-2 h-4 w-4" aria-hidden="true" />
-            Clear
+      <CardFooter>
+        <div className="flex flex-wrap items-center justify-end gap-3">
+          {hasActiveFilters && (
+            <Button variant="outline" size="sm" onClick={handleClear}>
+              <X className="mr-2 size-4" aria-hidden="true" />
+              Clear
+            </Button>
+          )}
+          <Button size="sm" onClick={handleSearch}>
+            Search
           </Button>
-        )}
-        <Button size="sm" onClick={handleSearch}>
-          Search
-        </Button>
+        </div>
       </CardFooter>
     </Card>
   )

@@ -26,9 +26,11 @@ interface MetricsGridProps {
  * ```tsx
  * <MetricsGrid maxColumns={4}>
  *   <Card>
- *     <CardHeader className="flex items-center justify-between pb-2">
- *       <CardTitle>Total Salons</CardTitle>
- *       <Building2 className="h-4 w-4" aria-hidden />
+ *     <CardHeader>
+ *       <div className="flex items-center justify-between pb-2">
+ *         <CardTitle>Total Salons</CardTitle>
+ *         <Building2 className="size-4" aria-hidden />
+ *       </div>
  *     </CardHeader>
  *     <CardContent>
  *       <CardTitle>100</CardTitle>

@@ -81,7 +81,7 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
         <ItemGroup>
           <Item variant="muted">
             <ItemMedia variant="icon">
-              <CreditCard className="h-5 w-5" />
+              <CreditCard className="size-5" />
             </ItemMedia>
             <ItemContent>
               <CardTitle>Subscription Management</CardTitle>
@@ -90,93 +90,93 @@ export function ChainSubscription({ chainId, chainName, currentTier }: ChainSubs
           </Item>
         </ItemGroup>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {message && (
-          <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
+      <CardContent>
+        <div className="space-y-4">
+          {message && (
+            <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
             {message.type === 'success' ? (
-              <CheckCircle2 className="h-4 w-4" />
+              <CheckCircle2 className="size-4" />
             ) : (
-              <XCircle className="h-4 w-4" />
+              <XCircle className="size-4" />
             )}
             <AlertTitle>{message.type === 'success' ? 'Subscription updated' : 'Update failed'}</AlertTitle>
             <AlertDescription>{message.text}</AlertDescription>
+            </Alert>
+          )}
+
+          <div className="space-y-2">
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <ItemTitle>Current tier</ItemTitle>
+                  {currentTierInfo?.description ? (
+                    <ItemDescription>{currentTierInfo.description}</ItemDescription>
+                  ) : null}
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant="outline">{currentTierInfo?.label || 'Free'}</Badge>
+                </ItemActions>
+              </Item>
+            </ItemGroup>
+          </div>
+
+          <FieldGroup className="space-y-4">
+            <Field>
+              <FieldLabel>Update Subscription Tier</FieldLabel>
+              <FieldContent>
+                <Select value={selectedTier} onValueChange={setSelectedTier}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select tier" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SUBSCRIPTION_TIERS.map((tier) => (
+                      <SelectItem key={tier.value} value={tier.value}>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{tier.label}</span>
+                          <CardDescription>{tier.description}</CardDescription>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FieldContent>
+            </Field>
+
+            <Field>
+              <FieldLabel htmlFor="subscription-reason">Reason (optional)</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  id="subscription-reason"
+                  value={reason}
+                  onChange={(event) => setReason(event.target.value)}
+                  placeholder="Add context for this change (optional, max 500 characters)"
+                  rows={3}
+                />
+                <FieldDescription>Helps audit why subscription tiers change.</FieldDescription>
+              </FieldContent>
+            </Field>
+          </FieldGroup>
+
+          <ButtonGroup aria-label="Actions">
+            <Button onClick={handleUpdateSubscription} disabled={isLoading || selectedTier === currentTier}>
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Updating…</span>
+                </>
+              ) : (
+                <span>Update Subscription</span>
+              )}
+            </Button>
+          </ButtonGroup>
+
+          <Alert>
+            <AlertTitle>Note</AlertTitle>
+            <AlertDescription>
+              Subscription changes take effect immediately. Chains will be notified of any tier changes.
+            </AlertDescription>
           </Alert>
-        )}
-
-        <ItemGroup className="gap-2">
-          <Item>
-            <ItemContent>
-              <ItemTitle>Current tier</ItemTitle>
-              {currentTierInfo?.description ? (
-                <ItemDescription>{currentTierInfo.description}</ItemDescription>
-              ) : null}
-            </ItemContent>
-            <ItemActions>
-              <Badge variant="outline">{currentTierInfo?.label || 'Free'}</Badge>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
-
-        <FieldGroup className="space-y-4">
-          <Field>
-            <FieldLabel>Update Subscription Tier</FieldLabel>
-            <FieldContent>
-              <Select value={selectedTier} onValueChange={setSelectedTier}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select tier" />
-                </SelectTrigger>
-                <SelectContent>
-                  {SUBSCRIPTION_TIERS.map((tier) => (
-                    <SelectItem key={tier.value} value={tier.value}>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{tier.label}</span>
-                        <CardDescription>{tier.description}</CardDescription>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FieldContent>
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="subscription-reason">Reason (optional)</FieldLabel>
-            <FieldContent>
-              <Textarea
-                id="subscription-reason"
-                value={reason}
-                onChange={(event) => setReason(event.target.value)}
-                placeholder="Add context for this change (optional, max 500 characters)"
-                rows={3}
-              />
-              <FieldDescription>Helps audit why subscription tiers change.</FieldDescription>
-            </FieldContent>
-          </Field>
-        </FieldGroup>
-
-        <ButtonGroup className="w-full justify-end">
-          <Button
-            onClick={handleUpdateSubscription}
-            disabled={isLoading || selectedTier === currentTier}
-            className="w-full"
-          >
-            {isLoading ? (
-              <>
-                <Spinner className="size-4" />
-                <span>Updating…</span>
-              </>
-            ) : (
-              <span>Update Subscription</span>
-            )}
-          </Button>
-        </ButtonGroup>
-
-        <Alert>
-          <AlertTitle>Note</AlertTitle>
-          <AlertDescription>
-            Subscription changes take effect immediately. Chains will be notified of any tier changes.
-          </AlertDescription>
-        </Alert>
+        </div>
       </CardContent>
     </Card>
   )

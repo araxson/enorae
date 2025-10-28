@@ -72,7 +72,8 @@ export function SalonCard({
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
-        <Card className={cn('w-full overflow-hidden', className)}>
+        <div className={cn('w-full overflow-hidden', className)}>
+          <Card>
           {image && (
             <div className="aspect-video w-full overflow-hidden bg-muted relative">
               <Image src={image} alt={name} fill className="object-cover" />
@@ -80,7 +81,8 @@ export function SalonCard({
           )}
 
           <CardHeader>
-            <ItemGroup className="gap-3">
+            <div className="flex flex-col gap-3">
+              <ItemGroup>
               <Item variant="muted">
                 <ItemContent>
                   <CardTitle>{name}</CardTitle>
@@ -89,7 +91,7 @@ export function SalonCard({
               {rating !== undefined && (
                 <Item variant="muted">
                   <ItemMedia variant="icon">
-                    <Star className="h-4 w-4 text-accent" fill="currentColor" />
+                    <Star className="size-4 text-accent" fill="currentColor" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemTitle>{rating.toFixed(1)}</ItemTitle>
@@ -99,11 +101,13 @@ export function SalonCard({
                   </ItemContent>
                 </Item>
               )}
-            </ItemGroup>
+              </ItemGroup>
+            </div>
           </CardHeader>
 
           <CardContent>
-            <ItemGroup className="gap-3">
+            <div className="flex flex-col gap-3">
+              <ItemGroup>
               {description && (
                 <Item variant="muted">
                   <ItemContent>
@@ -113,7 +117,7 @@ export function SalonCard({
               )}
               <Item variant="muted">
                 <ItemMedia variant="icon">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
+                  <MapPin className="size-4 text-muted-foreground" />
                 </ItemMedia>
                 <ItemContent>
                   <ItemDescription>{location}</ItemDescription>
@@ -122,7 +126,7 @@ export function SalonCard({
               {hours && (
                 <Item variant="muted">
                   <ItemMedia variant="icon">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <Clock className="size-4 text-muted-foreground" />
                   </ItemMedia>
                   <ItemContent>
                     <ItemDescription>{hours}</ItemDescription>
@@ -132,31 +136,34 @@ export function SalonCard({
               <SalonStats staffCount={staffCount} servicesCount={servicesCount} />
               <SpecialtiesTags specialties={specialties || null} limit={3} />
               <AmenitiesBadges amenities={amenities || null} limit={3} />
-            </ItemGroup>
+              </ItemGroup>
+            </div>
           </CardContent>
 
-          <CardFooter className="p-6 pt-0">
-            <ButtonGroup className="w-full items-stretch">
-              <Button
-                className="flex-1"
-                onClick={onBook}
-                disabled={!isAcceptingBookings}
-              >
-                {isAcceptingBookings ? 'Book Appointment' : 'Not Accepting Bookings'}
-              </Button>
+          <CardFooter>
+            <ButtonGroup aria-label="Actions">
+              <div className="flex-1">
+                <Button
+                  onClick={onBook}
+                  disabled={!isAcceptingBookings}
+                >
+                  {isAcceptingBookings ? 'Book Appointment' : 'Not Accepting Bookings'}
+                </Button>
+              </div>
               {favoriteAction ?? null}
             </ButtonGroup>
           </CardFooter>
-        </Card>
+          </Card>
+        </div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-56">
+      <ContextMenuContent>
         <ContextMenuItem onClick={onBook}>
-          <Calendar className="mr-2 h-4 w-4" />
+          <Calendar className="size-4" />
           Book Appointment
         </ContextMenuItem>
         {onViewDetails && (
           <ContextMenuItem onClick={onViewDetails}>
-            <Info className="mr-2 h-4 w-4" />
+            <Info className="size-4" />
             View Details
           </ContextMenuItem>
         )}
@@ -164,7 +171,7 @@ export function SalonCard({
           <>
             <ContextMenuSeparator />
             <ContextMenuItem onClick={onShare}>
-              <Share2 className="mr-2 h-4 w-4" />
+              <Share2 className="size-4" />
               Share
             </ContextMenuItem>
           </>

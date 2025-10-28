@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Item,
@@ -39,18 +39,10 @@ export function PricingRulesTab({
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>Active Pricing Rules</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>
-                Time-based pricing adjustments for demand optimization
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Active Pricing Rules</CardTitle>
+        <CardDescription>
+          Time-based pricing adjustments for demand optimization
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ItemGroup className="flex flex-col gap-3">
@@ -68,19 +60,19 @@ export function PricingRulesTab({
               >
                 <ItemContent className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <Calendar className="size-4 text-muted-foreground" />
                     <Badge variant="outline">{getDayName(rule.day_of_week)}</Badge>
                   </div>
                   <ItemDescription className="flex items-center gap-2 text-sm">
-                    <Clock className="h-3 w-3" />
+                    <Clock className="size-3" />
                     {formatTime(rule.hour_start)} - {formatTime(rule.hour_end)}
                   </ItemDescription>
                 </ItemContent>
                 <ItemActions className="flex items-center gap-2">
                   {isSurge ? (
-                    <TrendingUp className="h-4 w-4 text-primary" />
+                    <TrendingUp className="size-4 text-primary" />
                   ) : (
-                    <TrendingDown className="h-4 w-4 text-secondary" />
+                    <TrendingDown className="size-4 text-secondary" />
                   )}
                   <Badge variant={isSurge ? 'default' : 'secondary'}>{badgeLabel}</Badge>
                 </ItemActions>

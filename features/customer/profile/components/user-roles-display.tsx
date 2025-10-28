@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Shield, Building2 } from 'lucide-react'
+import { Building2 } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
 
 type UserRole = Database['identity']['Tables']['user_roles']['Row']
 
@@ -40,16 +40,8 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemMedia variant="icon">
-              <Shield className="h-5 w-5" aria-hidden="true" />
-            </ItemMedia>
-            <ItemContent>
-              <CardTitle>Active Roles</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Active roles</CardTitle>
+        <CardDescription>Roles linked to your customer account</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -59,23 +51,16 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
             return (
               <Card key={userRole.id}>
                 <CardHeader>
-                  <ItemGroup>
-                    <Item>
-                      <ItemContent>
-                        <CardTitle>{getRoleDisplayName(userRole.role)}</CardTitle>
-                      </ItemContent>
-                      <ItemActions className="flex-none">
-                        <Badge variant={getRoleBadgeVariant(userRole.role)}>{badgeLabel}</Badge>
-                      </ItemActions>
-                    </Item>
-                  </ItemGroup>
+                  <CardTitle>{getRoleDisplayName(userRole.role)}</CardTitle>
+                  <CardDescription>{badgeLabel}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
+                  <Badge variant={getRoleBadgeVariant(userRole.role)}>{badgeLabel}</Badge>
                   {userRole.salon_id ? (
                     <ItemGroup>
                       <Item variant="muted" size="sm">
                         <ItemMedia variant="icon">
-                          <Building2 className="h-3 w-3" aria-hidden="true" />
+                          <Building2 className="size-3" aria-hidden="true" />
                         </ItemMedia>
                         <ItemContent>
                           <ItemDescription>Salon-specific role</ItemDescription>
@@ -88,21 +73,17 @@ export function UserRolesDisplay({ roles }: UserRolesDisplayProps) {
                     <ItemGroup>
                       <Item variant="muted" size="sm">
                         <ItemContent>
-                          <ItemDescription>
-                            <span className="text-xs text-muted-foreground">Permissions</span>
-                          </ItemDescription>
-                          <ItemDescription>
-                            <div className="flex flex-wrap gap-1 text-xs">
-                              {userRole.permissions.slice(0, 5).map((permission: string, idx: number) => (
-                                <Badge key={idx} variant="outline">
-                                  {String(permission)}
-                                </Badge>
-                              ))}
-                              {userRole.permissions.length > 5 && (
-                                <Badge variant="outline">+{userRole.permissions.length - 5} more</Badge>
-                              )}
-                            </div>
-                          </ItemDescription>
+                          <p className="text-xs font-medium text-muted-foreground">Permissions</p>
+                          <div className="flex flex-wrap gap-1 text-xs text-muted-foreground">
+                            {userRole.permissions.slice(0, 5).map((permission: string, idx: number) => (
+                              <Badge key={idx} variant="outline">
+                                {String(permission)}
+                              </Badge>
+                            ))}
+                            {userRole.permissions.length > 5 && (
+                              <Badge variant="outline">+{userRole.permissions.length - 5} more</Badge>
+                            )}
+                          </div>
                         </ItemContent>
                       </Item>
                     </ItemGroup>

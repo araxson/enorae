@@ -19,7 +19,7 @@ export async function AppointmentsManagement() {
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Empty>
           <EmptyMedia variant="icon">
-            <AlertCircle className="h-6 w-6" aria-hidden="true" />
+            <AlertCircle className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyHeader>
             <EmptyTitle>Authentication Required</EmptyTitle>
@@ -36,7 +36,7 @@ export async function AppointmentsManagement() {
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
         <Empty>
           <EmptyMedia variant="icon">
-            <Calendar className="h-6 w-6" aria-hidden="true" />
+            <Calendar className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyHeader>
             <EmptyTitle>No salon found</EmptyTitle>

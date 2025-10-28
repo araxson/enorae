@@ -42,32 +42,39 @@ export function ErrorBoundary({
   return (
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto flex min-h-[60vh] w-full max-w-6xl flex-col items-center gap-6 px-4 sm:px-6 lg:px-8">
-        <Item variant="outline" className="w-full max-w-lg border-destructive/50">
-          <ItemHeader>
-            <div className="flex gap-6">
-              {getErrorIcon(errorType)}
-              <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
-                {title ?? ERROR_TITLES[errorType]}
-              </h2>
-            </div>
-          </ItemHeader>
+        <div className="w-full max-w-lg">
+          <Item variant="outline">
+            <ItemHeader>
+              <div className="flex gap-6">
+                {getErrorIcon(errorType)}
+                <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
+                  {title ?? ERROR_TITLES[errorType]}
+                </h2>
+              </div>
+            </ItemHeader>
 
-          <ItemContent>
-            <div className="flex flex-col gap-6">
-              <p>
-                {description ?? ERROR_DESCRIPTIONS[errorType]}
-              </p>
+            <ItemContent>
+              <div className="flex flex-col gap-6">
+                <p>
+                  {description ?? ERROR_DESCRIPTIONS[errorType]}
+                </p>
 
-              {error.digest && <DigestInfo digest={error.digest} details={copyDetails} />}
+                {error.digest && <DigestInfo digest={error.digest} details={copyDetails} />}
 
-              {showErrorDetails && <DevelopmentDetails message={error.message} />}
-            </div>
-          </ItemContent>
+                {showErrorDetails && <DevelopmentDetails message={error.message} />}
+              </div>
+            </ItemContent>
 
-          <ItemFooter>
-            <ErrorBoundaryActions reset={reset} homeHref={homeHref} homeLabel={homeLabel} isLoading={false} />
-          </ItemFooter>
-        </Item>
+            <ItemFooter>
+              <ErrorBoundaryActions
+                reset={reset}
+                homeHref={homeHref}
+                homeLabel={homeLabel}
+                isLoading={false}
+              />
+            </ItemFooter>
+          </Item>
+        </div>
       </div>
     </section>
   )

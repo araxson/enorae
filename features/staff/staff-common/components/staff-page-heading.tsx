@@ -57,7 +57,7 @@ export function StaffPageHeading({
               <ItemTitle>{title}</ItemTitle>
             </ItemContent>
             <ItemActions className="hidden items-center gap-2 sm:flex">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+              <Sparkles className="size-3.5" aria-hidden="true" />
               <Badge variant="secondary">Staff Portal</Badge>
             </ItemActions>
           </Item>

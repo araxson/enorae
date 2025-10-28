@@ -50,7 +50,7 @@ export function CustomerInsightsDashboard({
             <ItemTitle>${metrics.lifetime_value.toFixed(2)}</ItemTitle>
           </div>
           <ItemActions className="flex-none">
-            <DollarSign className="h-8 w-8 text-primary" />
+            <DollarSign className="size-8 text-primary" />
           </ItemActions>
         </ItemHeader>
         <ItemContent>
@@ -65,7 +65,7 @@ export function CustomerInsightsDashboard({
             <ItemTitle>${metrics.avg_ticket.toFixed(2)}</ItemTitle>
           </div>
           <ItemActions className="flex-none">
-            <TrendingUp className="h-8 w-8 text-secondary" />
+            <TrendingUp className="size-8 text-secondary" />
           </ItemActions>
         </ItemHeader>
         <ItemContent>
@@ -80,7 +80,7 @@ export function CustomerInsightsDashboard({
             <ItemTitle>{visitStats.avg_days_between_visits}d</ItemTitle>
           </div>
           <ItemActions className="flex-none">
-            <Calendar className="h-8 w-8 text-primary" />
+            <Calendar className="size-8 text-primary" />
           </ItemActions>
         </ItemHeader>
         <ItemContent>
@@ -95,7 +95,7 @@ export function CustomerInsightsDashboard({
             <ItemDescription>Cancellation and no-show trends</ItemDescription>
           </div>
           <ItemActions className="flex-none">
-            <Star className="h-8 w-8 text-accent" />
+            <Star className="size-8 text-accent" />
           </ItemActions>
         </ItemHeader>
         <ItemContent className="flex gap-2">
@@ -129,7 +129,7 @@ export function CustomerInsightsDashboard({
           {favoriteStaff ? (
             <div className="flex items-center gap-2">
               <Separator orientation="vertical" className="h-12" decorative />
-              <Users className="h-5 w-5 text-muted-foreground" />
+              <Users className="size-5 text-muted-foreground" />
               <div className="space-y-1">
                 <ItemDescription>Favorite staff</ItemDescription>
                 <ItemTitle>{favoriteStaff.name}</ItemTitle>

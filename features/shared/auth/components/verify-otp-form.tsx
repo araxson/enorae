@@ -7,25 +7,20 @@ import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Shield } from 'lucide-react'
-import { OTPInput } from './otp-input'
 import { ResendOTP } from './resend-otp'
 import {
   Field,
-  FieldContent,
   FieldDescription,
-  FieldLabel,
   FieldGroup,
-  FieldSet,
+  FieldLabel,
 } from '@/components/ui/field'
-import { ButtonGroup } from '@/components/ui/button-group'
+import { Card, CardContent } from '@/components/ui/card'
 import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemFooter,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '@/components/ui/input-otp'
 
 interface VerifyOTPFormProps {
   email?: string
@@ -81,81 +76,96 @@ export function VerifyOTPForm({
   }
 
   return (
-    <div className="w-full max-w-md">
-      <Item variant="outline" className="flex flex-col gap-4">
-        <ItemHeader>
-          <div className="flex flex-col items-center gap-4 text-center">
-            <Shield className="h-12 w-12 text-primary" aria-hidden="true" />
-            <ItemTitle>Verify your email</ItemTitle>
-            <ItemDescription>
-              Enter the 6-digit code sent to <strong>{email}</strong>
-            </ItemDescription>
-          </div>
-        </ItemHeader>
+    <div className="flex flex-col gap-6">
+      <Card className="overflow-hidden p-0">
+        <CardContent className="grid p-0 md:grid-cols-2">
+          <div className="flex flex-col gap-6 p-6 md:p-8">
+            <FieldGroup className="gap-6">
+              <div className="flex flex-col items-center gap-4 text-center">
+                <Shield className="size-12 text-primary" aria-hidden="true" />
+                <h1 className="text-2xl font-bold">Enter verification code</h1>
+                <p className="text-muted-foreground text-sm text-balance">
+                  We sent a 6-digit code to <span className="font-medium">{email}</span>
+                </p>
+              </div>
 
-        <ItemContent>
-          <FieldSet className="gap-6">
-          {error ? (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Verification failed</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          ) : null}
+              {error ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="size-4" />
+                  <AlertTitle>Verification failed</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              ) : null}
 
-          <FieldGroup className="gap-6">
-            <Field>
-              <FieldLabel>Verification code</FieldLabel>
-              <FieldContent className="items-center gap-4">
-                <OTPInput
-                  length={6}
+              <Field>
+                <FieldLabel htmlFor="otp">Verification code</FieldLabel>
+                <InputOTP
+                  id="otp"
+                  maxLength={6}
+                  value={otp}
                   onChange={setOtp}
-                  onComplete={setOtp}
                   disabled={loading}
-                />
-                <FieldDescription className="flex items-center justify-center gap-2 text-center">
-                  <span className="font-medium text-muted-foreground">
+                  containerClassName="justify-center gap-4"
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+                <FieldDescription className="flex flex-col items-center gap-2 text-center text-sm">
+                  <span className="text-muted-foreground">
                     Didn&apos;t receive the code?
                   </span>
                   <ResendOTP onResend={handleResend} cooldownSeconds={60} />
                 </FieldDescription>
-              </FieldContent>
-            </Field>
-          </FieldGroup>
+              </Field>
 
-          {otp.length === 6 ? (
-            <Alert>
-              <CheckCircle2 className="h-4 w-4 text-primary" />
-              <AlertTitle>Ready to verify</AlertTitle>
-              <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
-            </Alert>
-          ) : null}
-          </FieldSet>
-        </ItemContent>
+              {otp.length === 6 ? (
+                <Alert>
+                  <CheckCircle2 className="size-4 text-primary" />
+                  <AlertTitle>Ready to verify</AlertTitle>
+                  <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
+                </Alert>
+              ) : null}
 
-        <ItemFooter>
-          <ButtonGroup className="w-full flex-col gap-4">
-            <Button
-              onClick={handleVerify}
-              className="w-full"
-              disabled={loading || otp.length !== 6}
-            >
-              {loading ? (
-                <>
-                  <Spinner className="size-4" />
-                  <span>Verifying...</span>
-                </>
-              ) : (
-              <span>Verify code</span>
-              )}
-            </Button>
-
-            <p className="text-sm font-medium text-center text-muted-foreground">
-              Check your spam folder if you don&apos;t see the email
-            </p>
-          </ButtonGroup>
-        </ItemFooter>
-      </Item>
+              <Field className="space-y-2">
+                <Button onClick={handleVerify} disabled={loading || otp.length !== 6}>
+                  {loading ? (
+                    <>
+                      <Spinner className="size-4" />
+                      <span>Verifying...</span>
+                    </>
+                  ) : (
+                    <span>Verify code</span>
+                  )}
+                </Button>
+                <FieldDescription className="text-center text-sm">
+                  Check your spam folder if you don&apos;t see the email
+                </FieldDescription>
+              </Field>
+            </FieldGroup>
+          </div>
+          <div className="relative hidden bg-muted md:block">
+            <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
+              <div className="space-y-4">
+                <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-primary/10">
+                  <Shield className="size-8 text-primary" aria-hidden="true" />
+                </div>
+                <p className="text-muted-foreground text-balance">
+                  Secure your account with one-time verification for bookings and account changes.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

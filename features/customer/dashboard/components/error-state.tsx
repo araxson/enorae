@@ -14,10 +14,10 @@ export function DashboardErrorState() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
       <Empty>
-        <EmptyMedia variant="icon">
-          <AlertCircle className="h-6 w-6" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <AlertCircle className="size-6" aria-hidden="true" />
+          </EmptyMedia>
           <EmptyTitle>Error loading dashboard</EmptyTitle>
           <EmptyDescription>
             We couldn't load your dashboard data. Please try again.

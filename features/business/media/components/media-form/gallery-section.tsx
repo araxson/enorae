@@ -4,8 +4,13 @@ import Image from 'next/image'
 import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { InputGroup, InputGroupButton, InputGroupInput } from '@/components/ui/input-group'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/components/ui/input-group'
 import {
   Field,
   FieldContent,
@@ -19,12 +24,6 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 type GallerySectionProps = {
   galleryUrls: string[]
   newGalleryUrl: string
@@ -45,13 +44,7 @@ export function GallerySection({
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>Photo Gallery</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Photo Gallery</CardTitle>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-6">
@@ -66,14 +59,18 @@ export function GallerySection({
                   placeholder="https://example.com/photo.jpg"
                   type="url"
                   aria-label="Gallery image URL"
+                  autoComplete="off"
                 />
-                <InputGroupButton
-                  type="button"
-                  onClick={onAddImage}
-                  disabled={isAddingImage || !newGalleryUrl.trim()}
-                >
-                  Add
-                </InputGroupButton>
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    type="button"
+                    onClick={onAddImage}
+                    disabled={isAddingImage || !newGalleryUrl.trim()}
+                    aria-label="Add gallery image"
+                  >
+                    Add
+                  </InputGroupButton>
+                </InputGroupAddon>
               </InputGroup>
             </FieldContent>
           </Field>
@@ -92,7 +89,7 @@ export function GallerySection({
                       onClick={() => onRemoveImage(url)}
                       aria-label={`Remove image ${index + 1}`}
                     >
-                      <X className="h-4 w-4" />
+                      <X className="size-4" />
                     </Button>
                   </div>
                 </AspectRatio>

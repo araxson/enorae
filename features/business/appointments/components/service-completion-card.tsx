@@ -1,14 +1,7 @@
 'use client'
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 type ServiceStats = {
   total: number
@@ -28,13 +21,7 @@ export function ServiceCompletionCard({ stats }: ServiceCompletionCardProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>Service Completion</ItemTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Service Completion</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -54,16 +41,8 @@ export function ServiceCompletionCard({ stats }: ServiceCompletionCardProps) {
           ].map((item) => (
             <Card key={item.label}>
               <CardHeader>
-                <ItemGroup>
-                  <Item className="flex-col items-center gap-1">
-                    <ItemContent>
-                      <ItemTitle>{item.value}</ItemTitle>
-                    </ItemContent>
-                    <ItemContent>
-                      <ItemDescription>{item.label}</ItemDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
+                <CardTitle>{item.value}</CardTitle>
+                <CardDescription>{item.label}</CardDescription>
               </CardHeader>
             </Card>
           ))}

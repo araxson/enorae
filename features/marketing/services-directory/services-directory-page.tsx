@@ -33,7 +33,7 @@ export async function ServicesDirectoryPage() {
       containerClassName="max-w-6xl"
       groupClassName="gap-8"
     >
-      <Item className="flex-col" variant="muted">
+      <Item variant="muted">
         <ItemContent>
           <ItemDescription>Browse every service Enorae salons offer and jump into details quickly.</ItemDescription>
         </ItemContent>
@@ -47,7 +47,7 @@ export async function ServicesDirectoryPage() {
         </>
       ) : null}
       <div className="flex flex-col gap-4">
-        <Item className="flex-col" variant="muted">
+        <Item variant="muted">
           <ItemHeader>
             <ItemTitle>All Services</ItemTitle>
           </ItemHeader>

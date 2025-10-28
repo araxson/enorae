@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { CouponFormFields } from './coupon-form-fields'
@@ -10,13 +10,6 @@ import {
   type CouponFormProps,
   type CouponFormState,
 } from './coupon-form.types'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 const mapCouponToState = (coupon?: CouponFormProps['coupon']): CouponFormState => {
   if (!coupon) {
@@ -94,16 +87,8 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item className="flex-col items-start gap-1">
-            <ItemContent>
-              <ItemTitle>{isEditing ? 'Edit Coupon' : 'Create Coupon'}</ItemTitle>
-            </ItemContent>
-            <ItemContent>
-              <ItemDescription>Generate and manage customer-facing coupon settings.</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>{isEditing ? 'Edit Coupon' : 'Create Coupon'}</CardTitle>
+        <CardDescription>Generate and manage customer-facing coupon settings.</CardDescription>
       </CardHeader>
       <CardContent>
         <CouponFormFields

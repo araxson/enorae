@@ -67,8 +67,8 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
           <ItemContent>
             <ItemDescription>Your activity</ItemDescription>
           </ItemContent>
-          <ItemActions className="flex-none items-center gap-2">
-            <TrendingUp className="h-3 w-3" />
+          <ItemActions>
+            <TrendingUp className="size-3" />
             <Badge variant={activityVariant}>{activityLevel} user</Badge>
           </ItemActions>
         </Item>
@@ -85,7 +85,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
               <ItemGroup>
                 <Item>
                   <ItemMedia variant="icon">
-                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <Icon className="size-4" aria-hidden="true" />
                   </ItemMedia>
                   <ItemContent>
                     <span className="text-2xl font-semibold text-foreground">{value}</span>
@@ -97,12 +97,12 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
                 <ItemGroup className="pt-3">
                   <Item variant="muted" size="sm">
                     <ItemMedia variant="icon">
-                      <Heart className="h-4 w-4" aria-hidden="true" />
+                      <Heart className="size-4" aria-hidden="true" />
                     </ItemMedia>
                     <ItemContent>
                       <div className="flex flex-wrap items-center gap-1">
                         {Array.from({ length: Math.min(showHearts, 5) }).map((_, index) => (
-                          <Heart key={index} className="h-3.5 w-3.5" aria-hidden="true" />
+                          <Heart key={index} className="size-3.5" aria-hidden="true" />
                         ))}
                         {showHearts > 5 ? (
                           <ItemDescription>+{showHearts - 5}</ItemDescription>
@@ -123,12 +123,12 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
 
       {!hasActivity ? (
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <Empty>
-              <EmptyMedia variant="icon">
-                <Calendar className="h-6 w-6" aria-hidden="true" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Calendar className="size-6" aria-hidden="true" />
+                </EmptyMedia>
                 <EmptyTitle>No activity yet</EmptyTitle>
                 <EmptyDescription>
                   Start booking appointments and saving favorites to build your history.

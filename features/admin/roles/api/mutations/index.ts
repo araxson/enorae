@@ -1,4 +1,3 @@
-'use server'
 
 import { assignRole as assignRoleAction } from './assign-role'
 import { bulkAssignRoles as bulkAssignRolesAction } from './bulk-assign-roles'

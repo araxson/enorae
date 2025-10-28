@@ -24,7 +24,7 @@ export function PopularServicesCard({ services }: { services: ServicePerformance
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader className="items-start gap-2">
         <div className="flex items-center gap-2">
-          <TrendingUp className="h-5 w-5" />
+          <TrendingUp className="size-5" />
           <ItemTitle>Most Popular Services</ItemTitle>
         </div>
         <ItemDescription>

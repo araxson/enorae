@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { Users, Calendar, DollarSign } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import { ClientCard } from './client-card'
 import { ClientStats } from './client-stats'
@@ -17,11 +16,6 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 type ClientsClientProps = {
   clients: ClientWithHistory[]
@@ -99,35 +93,6 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
     { id: 'time-off', label: 'Schedule follow-up', href: '/staff/schedule', icon: Users },
   ]
 
-  if (clients.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Clients</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
-        </CardHeader>
-        <CardContent>
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Users className="h-8 w-8" aria-hidden="true" />
-              </EmptyMedia>
-              <EmptyTitle>No clients yet</EmptyTitle>
-              <EmptyDescription>
-                Your client list will appear once you complete appointments.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </CardContent>
-      </Card>
-    )
-  }
-
   return (
     <StaffPageShell
       title="Clients"
@@ -155,15 +120,29 @@ export function ClientsClient({ clients, staffId }: ClientsClientProps) {
           showSearch={false}
         />
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredAndSortedClients.map((client) => (
-            <ClientCard
-              key={client.customer_id}
-              client={client}
-              onSelect={() => setSelectedClient(client)}
-            />
-          ))}
-        </div>
+        {filteredAndSortedClients.length === 0 ? (
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Users className="size-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No clients yet</EmptyTitle>
+              <EmptyDescription>
+                Your client list will appear once you complete appointments.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {filteredAndSortedClients.map((client) => (
+              <ClientCard
+                key={client.customer_id}
+                client={client}
+                onSelect={() => setSelectedClient(client)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <ClientDetailDialog
