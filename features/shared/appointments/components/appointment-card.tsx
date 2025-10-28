@@ -1,4 +1,3 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -15,6 +14,14 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Calendar, Clock, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export interface AppointmentCardProps {
   title: string
@@ -61,47 +68,49 @@ export function AppointmentCard({
   const config = statusConfig[status]
 
   return (
-    <Card className={cn('w-full', className)}>
-      <CardHeader>
+    <Item variant="outline" className={cn('w-full', className)}>
+      <ItemHeader>
         <div className="flex items-center gap-3">
           <div className="flex-1">
-            <CardTitle>{title}</CardTitle>
+            <ItemTitle>{title}</ItemTitle>
           </div>
-          <Badge variant={config.variant}>{config.label}</Badge>
+          <ItemActions>
+            <Badge variant={config.variant}>{config.label}</Badge>
+          </ItemActions>
         </div>
-      </CardHeader>
+      </ItemHeader>
 
-      <CardContent>
+      <ItemContent>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <User className="h-4 w-4 text-muted-foreground" />
+            <User className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm font-medium text-muted-foreground">{staffName}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <Calendar className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm font-medium text-muted-foreground">{date}</p>
           </div>
           <div className="flex items-center gap-3">
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-sm font-medium text-muted-foreground">{time}</p>
           </div>
         </div>
-      </CardContent>
+      </ItemContent>
 
       {(onReschedule || onViewDetails || onCancel) && (
-        <CardFooter>
+        <ItemFooter>
           <ButtonGroup className="w-full flex-wrap">
-            {onViewDetails && (
+            {onViewDetails ? (
               <Button variant="outline" size="sm" onClick={onViewDetails}>
                 View Details
               </Button>
-            )}
-            {onReschedule && status !== 'cancelled' && status !== 'completed' && (
+            ) : null}
+            {onReschedule && status !== 'cancelled' && status !== 'completed' ? (
               <Button variant="outline" size="sm" onClick={onReschedule}>
                 Reschedule
               </Button>
-            )}
-            {onCancel && status !== 'cancelled' && status !== 'completed' && (
+            ) : null}
+            {onCancel && status !== 'cancelled' && status !== 'completed' ? (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button variant="destructive" size="sm">
@@ -125,10 +134,10 @@ export function AppointmentCard({
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-            )}
+            ) : null}
           </ButtonGroup>
-        </CardFooter>
+        </ItemFooter>
       )}
-    </Card>
+    </Item>
   )
 }

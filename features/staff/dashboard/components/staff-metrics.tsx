@@ -6,7 +6,6 @@ import {
   Item,
   ItemContent,
   ItemMedia,
-  ItemGroup,
 } from '@/components/ui/item'
 
 interface StaffMetricsProps {
@@ -35,16 +34,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemMedia variant="icon">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                </ItemMedia>
-                <ItemContent>
-                  <CardTitle>Today</CardTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>Today</CardTitle>
+              </ItemContent>
+            </Item>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.todayAppointments}</div>
@@ -60,16 +57,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
 
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemMedia variant="icon">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                </ItemMedia>
-                <ItemContent>
-                  <CardTitle>This Week</CardTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>This Week</CardTitle>
+              </ItemContent>
+            </Item>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.weekAppointments}</div>
@@ -87,16 +82,14 @@ export function StaffMetrics({ metrics }: StaffMetricsProps) {
 
         <Card>
           <CardHeader>
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemMedia variant="icon">
-                  <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                </ItemMedia>
-                <ItemContent>
-                  <CardTitle>This Month</CardTitle>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemMedia variant="icon">
+                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              </ItemMedia>
+              <ItemContent>
+                <CardTitle>This Month</CardTitle>
+              </ItemContent>
+            </Item>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-semibold">{metrics.monthCompleted}</div>

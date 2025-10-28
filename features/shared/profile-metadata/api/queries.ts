@@ -2,6 +2,11 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
+// DATABASE PATTERN NOTE: Currently reading from identity.profiles_metadata table
+// TODO: Create view view_profile_metadata in identity schema for proper read pattern
+// View should include: metadata fields + profile context + computed fields
+// Once view is created, update all queries to use: .from('view_profile_metadata')
+
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row']
 
 export async function getProfileMetadata(profileId: string): Promise<ProfileMetadata | null> {

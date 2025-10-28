@@ -1,19 +1,17 @@
 import 'server-only'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { OperatingHours } from '@/features/staff/operating-hours/types'
 
 export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
     .from('staff_profiles_view')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single<{ salon_id: string }>()
 
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
@@ -29,16 +27,15 @@ export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
 }
 
 export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
     .from('staff_profiles_view')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single<{ salon_id: string }>()
 
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')

@@ -1,7 +1,14 @@
 'use client'
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import { FunnelChart, Funnel, LabelList, ResponsiveContainer } from 'recharts'
 
 interface AppointmentConversionChartProps {
@@ -33,10 +40,18 @@ export function AppointmentConversionChart({ data }: AppointmentConversionChartP
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Appointment Conversion Funnel</CardTitle>
-        <CardDescription>
-          {conversionRate}% completion rate • {data.cancelled} cancelled • {data.noShow} no-shows
-        </CardDescription>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>Appointment Conversion Funnel</ItemTitle>
+            </ItemContent>
+            <ItemContent>
+              <ItemDescription>
+                {conversionRate}% completion rate • {data.cancelled} cancelled • {data.noShow} no-shows
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-72 w-full">

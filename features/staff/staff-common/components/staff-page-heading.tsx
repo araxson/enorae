@@ -1,55 +1,21 @@
-import { format } from 'date-fns'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Switch } from '@/components/ui/switch'
-import { CalendarDays, Command as CommandIcon, Filter, Sparkles } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
-import { cn } from '@/lib/utils'
 import type {
   StaffBreadcrumb,
   StaffFilter,
   StaffToggle,
 } from './types'
-import { Kbd } from '@/components/ui/kbd'
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyTitle,
-} from '@/components/ui/empty'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
-import { ButtonGroup } from '@/components/ui/button-group'
+import { StaffPageBreadcrumbs } from './staff-page-breadcrumbs'
+import { StaffPageToolbar } from './staff-page-toolbar'
 
 interface StaffPageHeadingProps {
   title: string
@@ -78,156 +44,45 @@ export function StaffPageHeading({
   onOpenCommand,
   toolbarEnd,
 }: StaffPageHeadingProps) {
-  const dateLabel = dateRange?.from
-    ? dateRange.to
-      ? `${format(dateRange.from, 'MMM d, yyyy')} – ${format(dateRange.to, 'MMM d, yyyy')}`
-      : format(dateRange.from, 'MMM d, yyyy')
-    : 'All time'
-
   return (
-    <TooltipProvider delayDuration={150}>
-      <div className="space-y-4">
-        {breadcrumbs && breadcrumbs.length > 0 ? (
-          <Breadcrumb>
-            <BreadcrumbList>
-              {breadcrumbs.map((crumb, index) => {
-                const isLast = index === breadcrumbs.length - 1
-                return (
-                  <BreadcrumbItem key={`${crumb.label}-${index}`}>
-                    {crumb.href && !isLast ? (
-                      <>
-                        <BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
-                        <BreadcrumbSeparator />
-                      </>
-                    ) : (
-                      <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                    )}
-                  </BreadcrumbItem>
-                )
-              })}
-            </BreadcrumbList>
-          </Breadcrumb>
-        ) : null}
+    <div className="space-y-4">
+      {breadcrumbs && breadcrumbs.length > 0 ? (
+        <StaffPageBreadcrumbs breadcrumbs={breadcrumbs} />
+      ) : null}
 
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-semibold">{title}</h1>
-              <div className="hidden items-center gap-2 sm:flex">
-                <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-                <Badge variant="secondary">Staff Portal</Badge>
-              </div>
-            </div>
-            {description ? <p className="max-w-2xl text-sm text-muted-foreground">{description}</p> : null}
-          </div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <ItemGroup className="gap-2">
+          <Item className="items-center gap-2">
+            <ItemContent>
+              <ItemTitle>{title}</ItemTitle>
+            </ItemContent>
+            <ItemActions className="hidden items-center gap-2 sm:flex">
+              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+              <Badge variant="secondary">Staff Portal</Badge>
+            </ItemActions>
+          </Item>
+          {description ? (
+            <Item>
+              <ItemContent>
+                <ItemDescription className="max-w-2xl">
+                  {description}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          ) : null}
+        </ItemGroup>
 
-          <div className="flex items-center gap-2">
-            <ButtonGroup className="items-center gap-2">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="outline" size="icon" onClick={onOpenCommand} aria-label="Quick navigator">
-                    <CommandIcon className="h-4 w-4" aria-hidden="true" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="flex items-center gap-2">
-                  <span>Quick navigator</span>
-                  <Kbd>⌘K</Kbd>
-                </TooltipContent>
-              </Tooltip>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="gap-2" aria-label="Select date range">
-                    <CalendarDays className="h-4 w-4" aria-hidden="true" />
-                    <span className="hidden sm:inline-flex">{dateLabel}</span>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="end">
-                  <Calendar
-                    mode="range"
-                    defaultMonth={dateRange?.from}
-                    selected={dateRange ?? undefined}
-                    onSelect={(range) => onDateRangeChange(range ?? null)}
-                    numberOfMonths={2}
-                  />
-                </PopoverContent>
-              </Popover>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" aria-label="Display options">
-                    <Filter className="h-4 w-4" aria-hidden="true" />
-                    <span className="sr-only">Display options</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64" align="end">
-                  <DropdownMenuLabel>Display options</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {filters && filters.length > 0 ? (
-                    <div className="space-y-2 px-2 py-1.5">
-                      {filters.map((filter) => {
-                        const labelId = `${filter.id}-label`
-                        return (
-                          <Item key={filter.id} className="items-start gap-3">
-                            <ItemActions className="flex-none pt-1">
-                              <Checkbox
-                                id={filter.id}
-                                defaultChecked={filter.defaultChecked}
-                                aria-labelledby={labelId}
-                              />
-                            </ItemActions>
-                            <ItemContent>
-                              <ItemTitle id={labelId}>{filter.label}</ItemTitle>
-                              {filter.description ? (
-                                <ItemDescription>{filter.description}</ItemDescription>
-                              ) : null}
-                            </ItemContent>
-                          </Item>
-                        )
-                      })}
-                    </div>
-                  ) : (
-                    <Empty>
-                      <EmptyHeader>
-                        <EmptyTitle>No quick filters available</EmptyTitle>
-                        <EmptyDescription>Adjust settings to add frequently used filters.</EmptyDescription>
-                      </EmptyHeader>
-                    </Empty>
-                  )}
-
-                  {toggles && toggles.length > 0 ? (
-                    <>
-                      <DropdownMenuSeparator />
-                      <div className="space-y-3 px-2 py-1.5">
-                        {toggles.map((toggle) => (
-                          <div key={toggle.id} className="flex items-start justify-between gap-3">
-                            <div className="space-y-1">
-                              <span className="text-sm font-medium">{toggle.label}</span>
-                              {toggle.helper ? (
-                                <span className="text-xs text-muted-foreground">{toggle.helper}</span>
-                              ) : null}
-                            </div>
-                            <Switch defaultChecked={toggle.defaultOn} />
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  ) : null}
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {toolbarEnd}
-            </ButtonGroup>
-
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={avatarUrl ?? undefined} />
-              <AvatarFallback>
-                {cn(avatarFallback?.slice(0, 2).toUpperCase() || 'ST')}
-              </AvatarFallback>
-            </Avatar>
-          </div>
-        </div>
+        <StaffPageToolbar
+          filters={filters}
+          toggles={toggles}
+          avatarUrl={avatarUrl}
+          avatarFallback={avatarFallback}
+          dateRange={dateRange}
+          onDateRangeChange={onDateRangeChange}
+          onOpenCommand={onOpenCommand}
+          toolbarEnd={toolbarEnd}
+        />
       </div>
-    </TooltipProvider>
+    </div>
   )
 }

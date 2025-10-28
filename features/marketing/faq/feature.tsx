@@ -17,3 +17,5 @@ export function FAQFeature() {
     </>
   )
 }
+
+export default FAQFeature

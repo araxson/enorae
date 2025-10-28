@@ -22,3 +22,5 @@ export async function SalonProfilePage({ params }: SalonProfilePageProps) {
 }
 
 export type { SalonProfilePageProps }
+
+export default SalonProfilePage

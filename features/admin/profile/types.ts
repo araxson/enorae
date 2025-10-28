@@ -16,4 +16,4 @@ export type {
   ProfileRoleSummary,
   ProfileActivityEntry,
   ProfileDetail,
-} from './api/types'
+} from './api/queries/types'

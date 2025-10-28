@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Field,
@@ -9,6 +8,13 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type SeoSectionProps = {
   metaTitle: string | null
@@ -17,12 +23,16 @@ type SeoSectionProps = {
 
 export function SeoSection({ metaTitle, metaDescription }: SeoSectionProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>SEO metadata</CardTitle>
-        <CardDescription>Help search engines and social previews describe your business.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>SEO metadata</ItemTitle>
+          <ItemDescription>
+            Help search engines and social previews describe your business.
+          </ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
         <FieldSet className="flex flex-col gap-6">
           <Field>
             <FieldLabel htmlFor="meta_title">Meta title</FieldLabel>
@@ -49,7 +59,7 @@ export function SeoSection({ metaTitle, metaDescription }: SeoSectionProps) {
             </FieldContent>
           </Field>
         </FieldSet>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

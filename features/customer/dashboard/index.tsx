@@ -1,2 +1,2 @@
-export { CustomerDashboardPage as CustomerDashboard } from './components/customer-dashboard'
+export { CustomerDashboardPage as CustomerDashboard } from './components'
 export * from './api/queries'

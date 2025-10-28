@@ -23,7 +23,7 @@ NEVER USE OR CREATE BULK FIX SCRIPT. THIS WILL BREAK THE PROJECT
 | **Forms & validation** | `docs/ruls/forms-patterns.md` |
 | **Type safety** | `docs/ruls/typescript-patterns.md` |
 | **React components** | `docs/ruls/react-patterns.md` |
-| **File organization** | `docs/ruls/file-organization-patterns.md` |
+| **File organization** | `docs/ruls/architecture-patterns.md` |
 
 **💡 Tip:** Each pattern file is self-contained with complete examples, detection commands, and best practices. No cross-references needed.
 

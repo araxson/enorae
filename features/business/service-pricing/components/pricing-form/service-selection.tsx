@@ -4,7 +4,6 @@ import { DollarSign } from 'lucide-react'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Field,
   FieldContent,
@@ -12,6 +11,13 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { PricingFormState } from './use-pricing-form'
 
 type ServiceSelectionProps = {
@@ -52,12 +58,16 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
         </Field>
       )}
 
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-2">
-          <DollarSign className="h-4 w-4 text-primary" />
-          <CardTitle>Base Pricing</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex items-center gap-2">
+            <ItemMedia variant="icon">
+              <DollarSign className="h-4 w-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemTitle>Base Pricing</ItemTitle>
+          </div>
+        </ItemHeader>
+        <ItemContent>
           <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Field>
               <FieldLabel htmlFor="basePrice">
@@ -94,8 +104,8 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
               <FieldDescription>Discounted price (optional).</FieldDescription>
             </Field>
           </FieldGroup>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     </div>
   )
 }

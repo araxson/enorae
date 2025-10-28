@@ -2,16 +2,16 @@
 
 import { useState, useTransition } from 'react'
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '@/components/ui/input-group'
-import { Mail, CheckCircle, X } from 'lucide-react'
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { toast } from 'sonner'
 import { subscribeToNewsletter } from '@/features/marketing/newsletter/api/mutations'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Spinner } from '@/components/ui/spinner'
+import { NewsletterInput } from './newsletter-input'
+import { NewsletterSuccess } from './newsletter-success'
 
 interface NewsletterFormProps {
   title?: string
@@ -56,91 +56,38 @@ export function NewsletterForm({
   }
 
   if (subscribed) {
-    return (
-      <div className="flex items-center gap-2 text-primary">
-        <CheckCircle className="h-5 w-5" />
-        <p className="font-medium text-sm">Thanks for subscribing!</p>
-      </div>
-    )
+    return <NewsletterSuccess />
   }
 
   if (inline) {
     return (
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
-        <InputGroup>
-          <InputGroupAddon>
-            <Mail className="size-4" aria-hidden="true" />
-          </InputGroupAddon>
-          <InputGroupInput
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            disabled={isPending}
-          />
-          {email ? (
-            <InputGroupAddon>
-              <InputGroupButton
-                size="icon-sm"
-                variant="ghost"
-                type="button"
-                onClick={() => setEmail('')}
-                aria-label="Clear email"
-              >
-                <X className="size-4" aria-hidden="true" />
-              </InputGroupButton>
-            </InputGroupAddon>
-          ) : null}
-          <InputGroupAddon align="inline-end">
-            <InputGroupButton type="submit" size="sm" disabled={isPending}>
-              {isPending ? <Spinner className="size-3" /> : buttonText}
-            </InputGroupButton>
-          </InputGroupAddon>
-        </InputGroup>
-      </form>
+      <NewsletterInput
+        email={email}
+        onEmailChange={setEmail}
+        onSubmit={handleSubmit}
+        isPending={isPending}
+        buttonText={buttonText}
+      />
     )
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-2">
-          <InputGroup>
-            <InputGroupAddon>
-              <Mail className="size-4" aria-hidden="true" />
-            </InputGroupAddon>
-            <InputGroupInput
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              disabled={isPending}
-            />
-            {email ? (
-              <InputGroupAddon>
-                <InputGroupButton
-                  size="icon-sm"
-                  variant="ghost"
-                  type="button"
-                  onClick={() => setEmail('')}
-                  aria-label="Clear email"
-                >
-                  <X className="size-4" aria-hidden="true" />
-                </InputGroupButton>
-              </InputGroupAddon>
-            ) : null}
-            <InputGroupAddon align="inline-end">
-              <InputGroupButton type="submit" size="sm" disabled={isPending}>
-                {isPending ? <Spinner className="size-3" /> : buttonText}
-              </InputGroupButton>
-            </InputGroupAddon>
-          </InputGroup>
-        </form>
-      </CardContent>
-    </Card>
+    <Item variant="outline" className="w-full max-w-md flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>{title}</ItemTitle>
+          <ItemDescription>{description}</ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
+        <NewsletterInput
+          email={email}
+          onEmailChange={setEmail}
+          onSubmit={handleSubmit}
+          isPending={isPending}
+          buttonText={buttonText}
+        />
+      </ItemContent>
+    </Item>
   )
 }

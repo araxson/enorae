@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -11,6 +10,12 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Props = {
   address: LocationAddress | null
@@ -18,11 +23,11 @@ type Props = {
 
 export function StreetAddressSection({ address }: Props) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Street Address</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Street Address</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <FieldGroup className="flex flex-col gap-6">
           <Separator />
 
@@ -114,7 +119,7 @@ export function StreetAddressSection({ address }: Props) {
             <FieldDescription>2-letter country code (e.g., US, CA, UK).</FieldDescription>
           </Field>
         </FieldGroup>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

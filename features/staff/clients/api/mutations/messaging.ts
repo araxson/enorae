@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
-import type { ActionResponse } from './types'
+import type { ActionResponse } from '../types'
 
 const messageClientSchema = z.object({
   customerId: z.string().uuid(),

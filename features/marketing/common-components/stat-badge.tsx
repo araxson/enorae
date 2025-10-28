@@ -20,11 +20,11 @@ export function StatBadge({ icon: Icon, value, label }: StatBadgeProps) {
     <Item className="flex-col items-center text-center" variant="outline">
       <ItemHeader className="flex flex-col items-center gap-3">
         <ItemMedia variant="icon">
-          <Icon className="size-5 text-primary" aria-hidden="true" />
+          <Icon className="size-5" aria-hidden="true" />
         </ItemMedia>
         <ItemTitle>{value}</ItemTitle>
       </ItemHeader>
-      <ItemContent className="max-w-[16rem]">
+      <ItemContent>
         <ItemDescription>{label}</ItemDescription>
       </ItemContent>
     </Item>

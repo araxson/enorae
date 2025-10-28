@@ -12,6 +12,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 type SegmentationData = {
@@ -102,7 +103,7 @@ export function SegmentationOverview({ data }: SegmentationOverviewProps) {
             <Field>
               <FieldLabel>Average LTV</FieldLabel>
               <FieldContent>
-                <div className="text-2xl font-semibold">${data.averageLTV.toFixed(2)}</div>
+                <CardTitle>${data.averageLTV.toFixed(2)}</CardTitle>
               </FieldContent>
             </Field>
             <Field>

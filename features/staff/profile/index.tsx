@@ -1,14 +1,7 @@
-import { Card, CardContent } from '@/components/ui/card'
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyTitle,
-} from '@/components/ui/empty'
 import { getMyStaffProfileDetails } from './api/queries'
-import { ProfileClient } from './components/profile-client'
+import { ProfileClient } from './components'
+import { ProfileUnavailableError, ProfileNotFoundError } from './components/profile-error-state'
 
-// Export types
 export type * from './types'
 
 export async function StaffProfile() {
@@ -17,43 +10,13 @@ export async function StaffProfile() {
   try {
     details = await getMyStaffProfileDetails()
   } catch (error) {
-    return (
-      <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Card>
-          <CardContent>
-            <Empty>
-              <EmptyHeader>
-                <EmptyTitle>Profile unavailable</EmptyTitle>
-                <EmptyDescription>
-                  {error instanceof Error
-                    ? error.message
-                    : 'Please log in to view your profile'}
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CardContent>
-        </Card>
-      </section>
-    )
+    return <ProfileUnavailableError error={error} />
   }
 
   const { profile, metadata, username } = details
 
   if (!profile) {
-    return (
-      <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Card>
-          <CardContent>
-            <Empty>
-              <EmptyHeader>
-                <EmptyTitle>Profile not found</EmptyTitle>
-                <EmptyDescription>Staff profile not found</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CardContent>
-        </Card>
-      </section>
-    )
+    return <ProfileNotFoundError />
   }
 
   return (

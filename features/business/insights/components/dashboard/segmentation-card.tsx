@@ -1,69 +1,101 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Crown, Heart, Users, AlertTriangle, UserPlus, UserX } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { InsightsSummary } from './types'
+import { AlertTriangle, Crown, Heart, TrendingUp, UserPlus, UserX, Users } from 'lucide-react'
 
 interface SegmentationCardProps {
   summary: InsightsSummary
 }
 
 export function SegmentationCard({ summary }: SegmentationCardProps) {
+  const segments = [
+    {
+      label: 'VIP',
+      count: summary.segmentation.vip,
+      icon: Crown,
+      variant: 'bg-accent/10',
+      iconColor: 'text-accent',
+    },
+    {
+      label: 'Loyal',
+      count: summary.segmentation.loyal,
+      icon: Heart,
+      variant: 'bg-destructive/10',
+      iconColor: 'text-destructive',
+    },
+    {
+      label: 'Regular',
+      count: summary.segmentation.regular,
+      icon: Users,
+      variant: 'bg-secondary/10',
+      iconColor: 'text-secondary',
+    },
+    {
+      label: 'At Risk',
+      count: summary.segmentation.at_risk,
+      icon: AlertTriangle,
+      variant: 'bg-accent/10',
+      iconColor: 'text-accent',
+    },
+    {
+      label: 'New',
+      count: summary.segmentation.new,
+      icon: UserPlus,
+      variant: 'bg-primary/10',
+      iconColor: 'text-primary',
+    },
+    {
+      label: 'Churned',
+      count: summary.segmentation.churned,
+      icon: UserX,
+      variant: 'bg-muted',
+      iconColor: 'text-muted-foreground',
+    },
+  ] as const
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Customer Segmentation</CardTitle>
-        <CardDescription>
-          Customer distribution across different segments
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
-          <Card className="bg-accent/10">
-            <CardContent className="flex flex-col items-center gap-2 py-4">
-              <Crown className="h-6 w-6 text-accent" />
-              <div className="text-2xl font-bold">{summary.segmentation.vip}</div>
-              <div className="text-xs text-muted-foreground">VIP</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-destructive/10">
-            <CardContent className="flex flex-col items-center gap-2 py-4">
-              <Heart className="h-6 w-6 text-destructive" />
-              <div className="text-2xl font-bold">{summary.segmentation.loyal}</div>
-              <div className="text-xs text-muted-foreground">Loyal</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-secondary/10">
-            <CardContent className="flex flex-col items-center gap-2 py-4">
-              <Users className="h-6 w-6 text-secondary" />
-              <div className="text-2xl font-bold">{summary.segmentation.regular}</div>
-              <div className="text-xs text-muted-foreground">Regular</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-accent/10">
-            <CardContent className="flex flex-col items-center gap-2 py-4">
-              <AlertTriangle className="h-6 w-6 text-accent" />
-              <div className="text-2xl font-bold">{summary.segmentation.at_risk}</div>
-              <div className="text-xs text-muted-foreground">At Risk</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-primary/10">
-            <CardContent className="flex flex-col items-center gap-2 py-4">
-              <UserPlus className="h-6 w-6 text-primary" />
-              <div className="text-2xl font-bold">{summary.segmentation.new}</div>
-              <div className="text-xs text-muted-foreground">New</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-muted">
-            <CardContent className="flex flex-col items-center gap-2 py-4">
-              <UserX className="h-6 w-6 text-muted-foreground" />
-              <div className="text-2xl font-bold">{summary.segmentation.churned}</div>
-              <div className="text-xs text-muted-foreground">Churned</div>
-            </CardContent>
-          </Card>
-        </div>
-      </CardContent>
-      <CardFooter>
-        Tailor campaigns for at-risk and churned segments to rebalance your funnel.
-      </CardFooter>
-    </Card>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemMedia variant="icon">
+          <TrendingUp className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>Customer Segmentation</ItemTitle>
+          <ItemDescription>
+            Customer distribution across different segments
+          </ItemDescription>
+        </ItemContent>
+      </ItemHeader>
+      <ItemContent>
+        <ItemGroup className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+          {segments.map(({ label, count, icon: Icon, variant, iconColor }) => (
+            <Item key={label} className={`flex-col items-center gap-2 py-4 ${variant}`}>
+              <ItemMedia variant="icon">
+                <Icon className={`h-6 w-6 ${iconColor}`} aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent className="flex flex-col items-center gap-1">
+                <CardTitle>{count}</CardTitle>
+                <ItemDescription>{label}</ItemDescription>
+              </ItemContent>
+            </Item>
+          ))}
+        </ItemGroup>
+      </ItemContent>
+      <Alert>
+        <TrendingUp className="h-4 w-4" />
+        <AlertDescription>
+          Tailor campaigns for at-risk and churned segments to rebalance your funnel.
+        </AlertDescription>
+      </Alert>
+    </Item>
   )
 }

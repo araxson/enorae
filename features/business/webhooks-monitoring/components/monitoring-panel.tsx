@@ -1,3 +1,10 @@
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { WebhookStats } from '@/features/business/webhooks/api/queries'
 import { WebhookMonitoringDashboard } from '@/features/business/webhooks/components/webhook-monitoring-dashboard'
 import type { Database } from '@/lib/types/database.types'
@@ -30,12 +37,16 @@ export function MonitoringPanel({
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-4xl font-bold">Webhook Monitoring</h1>
-        <p className="leading-7 text-muted-foreground">
-          Monitor webhook deliveries and track performance metrics
-        </p>
-      </div>
+      <ItemGroup className="gap-2">
+        <Item variant="muted" className="flex-col items-start gap-2">
+          <ItemContent>
+            <ItemTitle>Webhook Monitoring</ItemTitle>
+            <ItemDescription>
+              Monitor webhook deliveries and track performance metrics
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <WebhookMonitoringDashboard
         stats={stats}

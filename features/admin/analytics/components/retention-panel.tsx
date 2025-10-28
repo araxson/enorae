@@ -1,5 +1,5 @@
 import { ShieldCheck, AlertTriangle } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
@@ -17,6 +17,7 @@ import {
   ItemDescription,
   ItemGroup,
   ItemMedia,
+  ItemTitle,
 } from '@/components/ui/item'
 
 interface RetentionPanelProps {
@@ -37,7 +38,7 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
               <ShieldCheck className="h-4 w-4" />
             </ItemMedia>
             <ItemContent>
-              <CardTitle>Retention &amp; Churn</CardTitle>
+              <ItemTitle>Retention &amp; Churn</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>
@@ -59,7 +60,7 @@ export function RetentionPanel({ retention }: RetentionPanelProps) {
             <ItemContent>
               <span className="flex items-center gap-1">
                 <AlertTriangle className="h-3 w-3" />
-                <CardDescription>Churn rate</CardDescription>
+                <ItemDescription>Churn rate</ItemDescription>
               </span>
               <span className="text-2xl font-semibold">
                 {formatPercent(retention.churnRate)}

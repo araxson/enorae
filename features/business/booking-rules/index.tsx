@@ -1,6 +1,13 @@
-import { getBookingRules, getBookingRuleServices } from './api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import { upsertBookingRule } from './api/mutations'
-import { BookingRulesClient } from './components/booking-rules-client'
+import { getBookingRuleServices, getBookingRules } from './api/queries'
+import { BookingRulesClient } from './components'
 
 export async function BookingRules() {
   const [rules, services] = await Promise.all([
@@ -11,10 +18,14 @@ export async function BookingRules() {
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
-        <div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Booking Rules</h1>
-          <p className="text-muted-foreground">Configure booking constraints for your services</p>
-        </div>
+        <ItemGroup className="gap-2">
+          <Item variant="muted" className="flex-col items-start gap-2">
+            <ItemContent>
+              <ItemTitle>Booking Rules</ItemTitle>
+              <ItemDescription>Configure booking constraints for your services</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
 
         <BookingRulesClient rules={rules} services={services} onSubmit={upsertBookingRule} />
       </div>

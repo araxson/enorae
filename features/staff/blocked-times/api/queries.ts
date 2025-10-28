@@ -1,18 +1,16 @@
 import 'server-only'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
 
 export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
     .select('*')
-    .eq('staff_id', session.user.id)
+    .eq('staff_id', user.id)
     .eq('is_active', true)
     .order('start_time', { ascending: true })
 
@@ -21,16 +19,15 @@ export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
 }
 
 export async function getBlockedTimeById(id: string): Promise<BlockedTime | null> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
     .select('*')
     .eq('id', id)
-    .eq('staff_id', session.user.id)
+    .eq('staff_id', user.id)
     .single()
 
   if (error) {
@@ -41,15 +38,14 @@ export async function getBlockedTimeById(id: string): Promise<BlockedTime | null
 }
 
 export async function getUpcomingBlockedTimes(): Promise<BlockedTime[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
     .select('*')
-    .eq('staff_id', session.user.id)
+    .eq('staff_id', user.id)
     .eq('is_active', true)
     .gte('start_time', new Date().toISOString())
     .order('start_time', { ascending: true })

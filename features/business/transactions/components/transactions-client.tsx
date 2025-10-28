@@ -1,14 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, Download, FileText } from 'lucide-react'
+import { Download, FileText, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { TransactionsList } from './transactions-list'
-import { CreateTransactionDialog } from './create-transaction-dialog'
-import { TransactionsReportDialog } from './transactions-report-dialog'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { ManualTransactionWithDetails } from '@/features/business/transactions/api/queries'
 import { format } from 'date-fns'
+import { CreateTransactionDialog } from './create-transaction-dialog'
+import { TransactionsList } from './transactions-list'
+import { TransactionsReportDialog } from './transactions-report-dialog'
 
 interface TransactionsClientProps {
   transactions: ManualTransactionWithDetails[]
@@ -56,28 +64,32 @@ export function TransactionsClient({
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex gap-4 items-start justify-between">
-        <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold">Manual Transactions</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Track manual financial transactions and adjustments
-          </p>
-        </div>
-        <ButtonGroup className="flex-wrap justify-end">
-          <Button variant="outline" onClick={() => setIsReportDialogOpen(true)}>
-            <FileText className="h-4 w-4 mr-2" />
-            Generate Report
-          </Button>
-          <Button variant="outline" onClick={handleExportCSV} disabled={transactions.length === 0}>
-            <Download className="h-4 w-4 mr-2" />
-            Export CSV
-          </Button>
-          <Button onClick={() => setIsCreateDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Record Transaction
-          </Button>
-        </ButtonGroup>
-      </div>
+      <ItemGroup className="items-start justify-between gap-4">
+        <Item variant="muted" className="flex-col items-start gap-2">
+          <ItemContent>
+            <ItemTitle>Manual Transactions</ItemTitle>
+            <ItemDescription>
+              Track manual financial transactions and adjustments
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+        <ItemActions className="flex-none">
+          <ButtonGroup className="flex-wrap justify-end">
+            <Button variant="outline" onClick={() => setIsReportDialogOpen(true)}>
+              <FileText className="mr-2 h-4 w-4" />
+              Generate Report
+            </Button>
+            <Button variant="outline" onClick={handleExportCSV} disabled={transactions.length === 0}>
+              <Download className="mr-2 h-4 w-4" />
+              Export CSV
+            </Button>
+            <Button onClick={() => setIsCreateDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Record Transaction
+            </Button>
+          </ButtonGroup>
+        </ItemActions>
+      </ItemGroup>
 
       <TransactionsList transactions={transactions} />
 

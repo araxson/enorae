@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getAppointmentSnapshot } from './api/queries'
-import { AppointmentsDashboard } from './components/appointments-dashboard'
+import { AppointmentsDashboard } from './components'
 
 export async function AdminAppointments() {
   try {

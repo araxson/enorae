@@ -1,5 +1,4 @@
-import { OperatingHoursCard } from './components/operating-hours-card'
-import { TodayHoursBanner } from './components/today-hours-banner'
+import { OperatingHoursCard, TodayHoursBanner } from './components'
 import type { OperatingHours } from './types'
 
 interface OperatingHoursFeatureProps {

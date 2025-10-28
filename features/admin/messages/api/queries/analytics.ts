@@ -1,15 +1,15 @@
-import { LOOKBACK_DAYS } from './constants'
+import { LOOKBACK_DAYS } from '../constants'
 import { parseThreadMetadata } from './moderation'
 import {
   ensureActivityEntry,
   type ActivityEntry,
   type ModerationArtifacts,
-} from './message-dashboard-artifacts'
+} from './artifacts'
 import {
   computeFirstResponse,
   normalisePriority,
   normaliseStatus,
-} from './thread-utils'
+} from './utils'
 import type {
   AdminMessageRow,
   Json,
@@ -18,7 +18,7 @@ import type {
   MessageRow,
   MessageStats,
   MessageThreadWithInsights,
-} from './types'
+} from '../types'
 
 interface ThreadInsightResult {
   threadsWithInsights: MessageThreadWithInsights[]

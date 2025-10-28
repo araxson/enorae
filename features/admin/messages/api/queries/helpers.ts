@@ -1,5 +1,5 @@
-import type { AdminMessageRow, MessageRow } from './types'
-import { toTimestamp } from './thread-utils'
+import type { AdminMessageRow, MessageRow } from '../types'
+import { toTimestamp } from './utils'
 
 export const buildThreadMap = (threads: AdminMessageRow[]): Map<string, AdminMessageRow> => {
   const map = new Map<string, AdminMessageRow>()

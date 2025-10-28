@@ -144,6 +144,7 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
                         <Button
                           variant="ghost"
                           size="icon"
+                          aria-label={`Open rate limit actions for ${record.identifier}`}
                           disabled={isLoading}
                         >
                           {isLoading ? <Spinner className="h-4 w-4" /> : <MoreHorizontal className="h-4 w-4" />}
@@ -174,8 +175,13 @@ export function RateLimitTable({ records }: RateLimitTableProps) {
       <ScrollBar orientation="horizontal" />
       </ScrollArea>
       {isLoading ? (
-        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center"
+        >
           <Spinner className="size-6" />
+          <span className="sr-only">Refreshing rate limit data</span>
         </div>
       ) : null}
     </div>

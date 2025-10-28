@@ -75,17 +75,23 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <div className="space-y-1">
-          <CardTitle>Upcoming Appointments</CardTitle>
-          <CardDescription>{appointments.length} scheduled</CardDescription>
-        </div>
-        <Button variant="ghost" size="sm" asChild>
-          <Link href="/customer/appointments">
-            View All
-            <ChevronRight className="ml-1 h-4 w-4" />
-          </Link>
-        </Button>
+      <CardHeader className="pb-4">
+        <ItemGroup>
+          <Item className="items-center justify-between gap-3">
+            <ItemContent className="space-y-1">
+              <ItemTitle>Upcoming Appointments</ItemTitle>
+              <ItemDescription>{appointments.length} scheduled</ItemDescription>
+            </ItemContent>
+            <ItemActions className="flex-none">
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/customer/appointments">
+                  View All
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </Link>
+              </Button>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <Separator />
       <CardContent className="p-0">

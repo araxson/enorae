@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import {
 import type { AppointmentOverviewRow } from '@/features/admin/appointments/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
+import { Item, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 interface RecentAppointmentsTableProps {
   appointments: AppointmentOverviewRow[]
@@ -42,7 +42,7 @@ export function RecentAppointmentsTable({ appointments }: RecentAppointmentsTabl
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
-              <CardTitle>Most Recent Appointments</CardTitle>
+              <ItemTitle>Most Recent Appointments</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

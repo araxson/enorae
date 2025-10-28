@@ -13,7 +13,10 @@ export function Hero() {
           <ItemDescription>Find quick answers for both clients and salons before you get in touch.</ItemDescription>
         </ItemContent>
       </Item>
-      <ButtonGroup className="flex flex-wrap justify-center gap-2">
+      <ButtonGroup
+        aria-label="FAQ shortcuts"
+        className="flex flex-wrap justify-center gap-2"
+      >
         <Button asChild size="lg">
           <Link href="/contact">Ask a question</Link>
         </Button>

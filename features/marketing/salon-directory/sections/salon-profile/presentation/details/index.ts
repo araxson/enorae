@@ -1,0 +1,5 @@
+export { SalonDetails } from './salon-details'
+export { AboutCard } from './about-card'
+export { ServicesCard } from './services-card'
+export { AmenitiesCard } from './amenities-card'
+export { GalleryCard } from './gallery-card'

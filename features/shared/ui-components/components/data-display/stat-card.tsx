@@ -1,7 +1,13 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export interface StatCardProps {
   label: string
@@ -26,43 +32,48 @@ export function StatCard({
   const isNegative = trend === 'down' || (change !== undefined && change < 0)
 
   return (
-    <Card
+    <Item
+      variant="outline"
       className={cn('w-full', className)}
       role="article"
       aria-label={`${label}: ${value}`}
     >
-      <CardHeader className="flex flex-row items-start justify-between gap-4">
-        <div className="space-y-2">
-          <CardTitle id={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}>{label}</CardTitle>
-          {description && <CardDescription>{description}</CardDescription>}
+      <ItemHeader>
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-2">
+            <ItemTitle id={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}>{label}</ItemTitle>
+            {description ? <ItemDescription>{description}</ItemDescription> : null}
+          </div>
+          {icon ? <div aria-hidden="true" className="text-muted-foreground">{icon}</div> : null}
         </div>
-        {icon && <div aria-hidden="true" className="text-muted-foreground">{icon}</div>}
-      </CardHeader>
+      </ItemHeader>
 
-      <CardContent className="flex flex-col gap-4">
-        <span
-          className="text-3xl font-bold"
-          aria-describedby={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}
-        >
-          {value}
-        </span>
-
-        {change !== undefined && (
-          <Badge
-            variant={isNegative ? 'destructive' : 'secondary'}
-            className="flex items-center gap-2"
-            role="status"
-            aria-label={`${isPositive ? 'Increased' : 'Decreased'} by ${Math.abs(change)}%`}
+      <ItemContent>
+        <div className="flex flex-col gap-4">
+          <span
+            className="text-3xl font-bold"
+            aria-describedby={`stat-${label.toLowerCase().replace(/\s+/g, '-')}`}
           >
-            {isPositive && <TrendingUp className="h-3 w-3" aria-hidden="true" />}
-            {isNegative && <TrendingDown className="h-3 w-3" aria-hidden="true" />}
-            <span>
-              {change > 0 && '+'}
-              {change}%
-            </span>
-          </Badge>
-        )}
-      </CardContent>
-    </Card>
+            {value}
+          </span>
+
+          {change !== undefined && (
+            <Badge
+              variant={isNegative ? 'destructive' : 'secondary'}
+              className="flex items-center gap-2"
+              role="status"
+              aria-label={`${isPositive ? 'Increased' : 'Decreased'} by ${Math.abs(change)}%`}
+            >
+              {isPositive && <TrendingUp className="h-3 w-3" aria-hidden="true" />}
+              {isNegative && <TrendingDown className="h-3 w-3" aria-hidden="true" />}
+              <span>
+                {change > 0 && '+'}
+                {change}%
+              </span>
+            </Badge>
+          )}
+        </div>
+      </ItemContent>
+    </Item>
   )
 }

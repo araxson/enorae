@@ -32,13 +32,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
     return (
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Upcoming Appointments</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Upcoming Appointments</CardTitle>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -58,14 +52,8 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Upcoming Appointments</CardTitle>
-              <ItemDescription>Next 7 days</ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Upcoming Appointments</CardTitle>
+        <ItemDescription>Next 7 days</ItemDescription>
       </CardHeader>
       <CardContent>
         <ItemGroup>

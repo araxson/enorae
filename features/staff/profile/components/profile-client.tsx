@@ -1,29 +1,13 @@
 'use client'
 
-import { User, Briefcase, Edit } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
-import { StaffInfoForm } from './staff-info-form'
-import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
-import { UsernameForm } from '@/features/shared/profile/components/username-form'
-import { ProfilePhotoUpload } from './profile-photo-upload'
-import { CertificationsEditor } from './certifications-editor'
-import { SpecialtiesEditor } from './specialties-editor'
-import { PortfolioGallery } from './portfolio-gallery'
+import { ProfileSidebar } from './profile-sidebar'
+import { ProfileViewTab } from './profile-view-tab'
+import { ProfileEditTab } from './profile-edit-tab'
 import type { Database } from '@/lib/types/database.types'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
 
 type StaffProfile = Database['public']['Views']['staff_enriched_view']['Row']
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row'] | null
@@ -35,14 +19,6 @@ type ProfileClientProps = {
 }
 
 export function ProfileClient({ profile, metadata, username }: ProfileClientProps) {
-  const initials = profile.name
-    ? profile.name
-        .split(' ')
-        .map((part: string) => part[0])
-        .join('')
-        .toUpperCase()
-    : profile.email?.[0]?.toUpperCase() || '?'
-
   const summaries: StaffSummary[] = [
     {
       id: 'experience',
@@ -51,29 +27,6 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
       helper: 'Professional experience',
       tone: 'info',
     },
-    // Note: These properties are not in staff_enriched_view
-    // To enable, fetch separately or add to view
-    // {
-    //   id: 'services',
-    //   label: 'Services offered',
-    //   value: '—',
-    //   helper: 'Active services in catalog',
-    //   tone: 'default',
-    // },
-    // {
-    //   id: 'lead-time',
-    //   label: 'Booking lead time',
-    //   value: '—',
-    //   helper: 'Minimum notice before new bookings',
-    //   tone: 'info',
-    // },
-    // {
-    //   id: 'appointments',
-    //   label: 'Total appointments',
-    //   value: '—',
-    //   helper: 'Completed to date',
-    //   tone: 'success',
-    // },
   ]
 
   const quickActions: StaffQuickAction[] = [
@@ -85,7 +38,7 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
   return (
     <StaffPageShell
       title="Profile"
-      description={profile['title'] || 'Manage your personal information and preferences.'}
+      description={profile.title || 'Manage your personal information and preferences.'}
       breadcrumbs={[
         { label: 'Staff', href: '/staff' },
         { label: 'Profile' },
@@ -95,34 +48,7 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
     >
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:h-full">
-          <Card>
-            <CardContent>
-              <div className="flex flex-col items-center gap-6 py-6 text-center">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src={metadata?.avatar_url || profile.avatar || undefined} />
-                  <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
-                </Avatar>
-
-                <div className="space-y-1">
-                  <p className="text-xl font-semibold leading-tight">
-                    {profile.name || 'Staff member'}
-                  </p>
-                  {profile.title ? <CardDescription>{profile.title}</CardDescription> : null}
-                  {profile.email ? <CardDescription>{profile.email}</CardDescription> : null}
-                </div>
-
-                {profile.salon_name && (
-                  <>
-                    <Separator />
-                    <div className="space-y-1">
-                      <Badge variant="outline">Salon</Badge>
-                      <CardDescription>{profile.salon_name}</CardDescription>
-                    </div>
-                  </>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <ProfileSidebar profile={profile} metadata={metadata} />
         </div>
 
         <div className="lg:col-span-2">
@@ -138,106 +64,11 @@ export function ProfileClient({ profile, metadata, username }: ProfileClientProp
             </TabsList>
 
             <TabsContent value="view" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <ItemGroup>
-                    <Item variant="muted" size="sm">
-                      <ItemMedia variant="icon">
-                        <Briefcase className="h-5 w-5" aria-hidden="true" />
-                      </ItemMedia>
-                      <ItemContent>
-                        <CardTitle>Professional information</CardTitle>
-                      </ItemContent>
-                    </Item>
-                  </ItemGroup>
-                </CardHeader>
-                <CardContent>
-                  <ItemGroup className="grid gap-4 sm:grid-cols-2">
-                    {profile['title'] ? (
-                      <Item variant="outline" size="sm">
-                        <ItemContent>
-                          <ItemTitle>
-                            <Badge variant="outline">Title</Badge>
-                          </ItemTitle>
-                          <ItemDescription>{profile['title']}</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ) : null}
-                    {profile['experience_years'] !== null && profile['experience_years'] !== undefined ? (
-                      <Item variant="outline" size="sm">
-                        <ItemContent>
-                          <ItemTitle>
-                            <Badge variant="outline">Experience</Badge>
-                          </ItemTitle>
-                          <ItemDescription>{profile['experience_years']} years</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ) : null}
-                  </ItemGroup>
-                </CardContent>
-              </Card>
-
-              {profile['bio'] && (
-                <Card>
-                  <CardHeader>
-                    <ItemGroup>
-                      <Item variant="muted" size="sm">
-                        <ItemMedia variant="icon">
-                          <User className="h-5 w-5" aria-hidden="true" />
-                        </ItemMedia>
-                        <ItemContent>
-                          <CardTitle>About</CardTitle>
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="whitespace-pre-wrap">
-                      <CardDescription>{profile['bio']}</CardDescription>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {metadata?.['interests'] && Array.isArray(metadata['interests']) && metadata['interests'].length > 0 && (
-                <Card>
-                  <CardHeader>
-                    <ItemGroup>
-                      <Item variant="muted" size="sm">
-                        <ItemContent>
-                          <CardTitle>Interests</CardTitle>
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {metadata['interests'].map((interest, index) => (
-                        <Badge key={index} variant="secondary">
-                          {interest}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+              <ProfileViewTab profile={profile} metadata={metadata} />
             </TabsContent>
 
             <TabsContent value="edit" className="space-y-6">
-              <ProfilePhotoUpload
-                currentPhotoUrl={metadata?.['avatar_url'] || profile['avatar']}
-                userName={profile['name'] || undefined}
-              />
-              <UsernameForm currentUsername={username} />
-              <StaffInfoForm profile={profile} />
-              <SpecialtiesEditor
-                initialSpecialties={metadata?.['tags']?.filter((tag: string) => !tag.includes('certification:')) || []}
-              />
-              <CertificationsEditor
-                initialCertifications={metadata?.['tags']?.filter((tag: string) => tag.includes('certification:'))?.map((tag: string) => tag.replace('certification:', '')) || []}
-              />
-              <PortfolioGallery portfolioImages={[]} />
-              <MetadataForm metadata={metadata} />
+              <ProfileEditTab profile={profile} metadata={metadata} username={username} />
             </TabsContent>
           </Tabs>
         </div>

@@ -1,17 +1,15 @@
 import 'server-only'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { Session } from '@/features/staff/sessions/types'
 
 export async function getMySessions(): Promise<Session[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
   const { data, error } = await supabase
     .from('sessions_view')
     .select('*')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .order('last_active_at', { ascending: false })
 
   if (error) throw error
@@ -19,14 +17,14 @@ export async function getMySessions(): Promise<Session[]> {
 }
 
 export async function getCurrentSessionId(): Promise<string | null> {
-  const session = await verifySession()
-  if (!session) return null
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
   const { data, error } = await supabase
     .from('sessions_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .eq('is_current', true)
     .maybeSingle<{ id: string | null }>()
 

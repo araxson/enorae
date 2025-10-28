@@ -1,6 +1,12 @@
+import 'server-only'
+
 // Re-export all public queries and types for clean imports
 export * from './customers'
 export * from './segments'
 export * from './summary'
 export * from './customer-types'
 export * from './types'
+export * from './trends'
+export * from './recommendations'
+export * from './alerts'
+export * from './opportunities'

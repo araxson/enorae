@@ -1,4 +1,5 @@
 export { CreateTransactionDialog } from './create-transaction-dialog'
+export { TransactionFormFields } from './transaction-form-fields'
 export { TransactionsClient } from './transactions-client'
 export { TransactionsList } from './transactions-list'
 export { TransactionsReportDialog } from './transactions-report-dialog'

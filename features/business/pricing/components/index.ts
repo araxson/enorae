@@ -1,4 +1,6 @@
 export { BulkPricingAdjuster } from './bulk-pricing-adjuster'
+export { BulkPricingServiceSelector } from './bulk-pricing-service-selector'
+export { DynamicPricing } from './dynamic-pricing'
 export { DynamicPricingDashboard } from './dynamic-pricing-dashboard'
 export { PriceScenariosTab } from './price-scenarios-tab'
 export { PricingRulesForm } from './pricing-rules-form'

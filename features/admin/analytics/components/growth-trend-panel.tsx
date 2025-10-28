@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -8,9 +8,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
+import { Item, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 interface GrowthTrendPanelProps {
   series: PlatformAnalyticsSnapshot['growth']['series']
@@ -37,7 +37,7 @@ export function GrowthTrendPanel({ series }: GrowthTrendPanelProps) {
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
-              <CardTitle>Growth Trend (Last 14 snapshots)</CardTitle>
+              <ItemTitle>Growth Trend (Last 14 snapshots)</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

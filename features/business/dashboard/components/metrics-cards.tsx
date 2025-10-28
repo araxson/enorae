@@ -4,6 +4,7 @@ import { useMemo, type ReactNode } from 'react'
 import { Calendar, CheckCircle, Clock, Users, Scissors, DollarSign, TrendingUp, ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { BusinessDashboardMetrics } from '@/features/business/dashboard/types'
@@ -183,7 +184,7 @@ function AppointmentResource({ title, icon, value, description, accent }: Appoin
         <ItemActions className="flex-none">{icon}</ItemActions>
       </ItemHeader>
       <ItemContent className="space-y-2">
-        <div className="text-2xl font-bold">{value}</div>
+        <CardTitle>{value}</CardTitle>
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>
     </Item>

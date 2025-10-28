@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Clock, User } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -11,6 +10,14 @@ import { Separator } from '@/components/ui/separator'
 import { format } from 'date-fns'
 import type { Database } from '@/lib/types/database.types'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type TimeOffRequest = Database['public']['Views']['time_off_requests_view']['Row']
 
@@ -62,132 +69,131 @@ export function TimeOffRequestCard({ request, onApprove, onReject }: TimeOffRequ
       : 'secondary'
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex w-full items-start justify-between">
+          <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              <CardTitle>{request['staff_name'] || 'Unknown Staff'}</CardTitle>
+              <User className="h-4 w-4" aria-hidden="true" />
+              <ItemTitle>{request['staff_name'] || 'Unknown Staff'}</ItemTitle>
             </div>
-            {request['staff_title'] && (
-              <p className="text-muted-foreground">{request['staff_title']}</p>
-            )}
+            {request['staff_title'] ? <ItemDescription>{request['staff_title']}</ItemDescription> : null}
           </div>
-          <Badge variant={statusColor}>{request['status']}</Badge>
+          <ItemActions>
+            <Badge variant={statusColor}>{request['status']}</Badge>
+          </ItemActions>
         </div>
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-muted-foreground">Start Date</p>
-              <p>
+            <div className="flex flex-col gap-1">
+              <ItemDescription>Start Date</ItemDescription>
+              <span>
                 {request['start_at'] ? format(new Date(request['start_at']), 'MMM dd, yyyy') : 'N/A'}
-              </p>
+              </span>
             </div>
-            <div>
-              <p className="text-muted-foreground">End Date</p>
-              <p>
+            <div className="flex flex-col gap-1">
+              <ItemDescription>End Date</ItemDescription>
+              <span>
                 {request['end_at'] ? format(new Date(request['end_at']), 'MMM dd, yyyy') : 'N/A'}
-              </p>
+              </span>
             </div>
           </div>
 
-          {request['duration_days'] && (
+          {request['duration_days'] ? (
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-muted-foreground" />
+              <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
               <span>{request['duration_days']} day(s)</span>
             </div>
-          )}
+          ) : null}
 
-          {request['request_type'] && (
-            <div>
-              <p className="text-muted-foreground">Type</p>
-              <p className="capitalize">{request['request_type'].replace('_', ' ')}</p>
+          {request['request_type'] ? (
+            <div className="flex flex-col gap-1">
+              <ItemDescription>Type</ItemDescription>
+              <span className="capitalize">{request['request_type'].replace('_', ' ')}</span>
             </div>
-          )}
+          ) : null}
 
-          {request['reason'] && (
-            <div>
-              <p className="text-muted-foreground">Reason</p>
-              <p>{request['reason']}</p>
+          {request['reason'] ? (
+            <div className="flex flex-col gap-1">
+              <ItemDescription>Reason</ItemDescription>
+              <span>{request['reason']}</span>
             </div>
-          )}
+          ) : null}
 
-          {request['reviewed_at'] && request['reviewed_by_name'] && (
+          {request['reviewed_at'] && request['reviewed_by_name'] ? (
             <>
               <Separator />
-              <div>
-                <p className="text-muted-foreground">
-                  Reviewed by {request['reviewed_by_name']} on{' '}
+              <div className="flex flex-col gap-1">
+                <ItemDescription>
+                  Reviewed by
+                  {' '}
+                  {request['reviewed_by_name']}
+                  {' '}
+                  on
+                  {' '}
                   {format(new Date(request['reviewed_at']), 'MMM dd, yyyy')}
-                </p>
-                {request['review_notes'] && (
-                  <p className="mt-1">{request['review_notes']}</p>
-                )}
+                </ItemDescription>
+                {request['review_notes'] ? <span>{request['review_notes']}</span> : null}
               </div>
             </>
-          )}
+          ) : null}
 
-          {request['status'] === 'pending' && (
+          {request['status'] === 'pending' ? (
             <>
               <Separator />
               <div>
-              {!showRejectForm ? (
-                <ButtonGroup>
-                  <Button
-                    size="sm"
-                    onClick={handleApprove}
-                    disabled={isProcessing}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setShowRejectForm(true)}
-                    disabled={isProcessing}
-                  >
-                    Reject
-                  </Button>
-                </ButtonGroup>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  <Textarea
-                    placeholder="Reason for rejection..."
-                    value={rejectNotes}
-                    onChange={(e) => setRejectNotes(e.target.value)}
-                    rows={3}
-                  />
+                {!showRejectForm ? (
                   <ButtonGroup>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={handleReject}
-                      disabled={isProcessing || !rejectNotes.trim()}
-                    >
-                      Confirm Reject
+                    <Button size="sm" onClick={handleApprove} disabled={isProcessing}>
+                      Approve
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => {
-                        setShowRejectForm(false)
-                        setRejectNotes('')
-                      }}
+                      onClick={() => setShowRejectForm(true)}
                       disabled={isProcessing}
                     >
-                      Cancel
+                      Reject
                     </Button>
                   </ButtonGroup>
-                </div>
-              )}
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <Textarea
+                      placeholder="Reason for rejection..."
+                      value={rejectNotes}
+                      onChange={(event) => setRejectNotes(event.target.value)}
+                      rows={3}
+                    />
+                    <ButtonGroup>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={handleReject}
+                        disabled={isProcessing || !rejectNotes.trim()}
+                      >
+                        Confirm Reject
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setShowRejectForm(false)
+                          setRejectNotes('')
+                        }}
+                        disabled={isProcessing}
+                      >
+                        Cancel
+                      </Button>
+                    </ButtonGroup>
+                  </div>
+                )}
               </div>
             </>
-          )}
+          ) : null}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

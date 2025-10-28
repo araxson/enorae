@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Clock, DollarSign, Star, TrendingUp, MoreVertical, Power } from 'lucide-react'
+import { MoreVertical, Power } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,14 +15,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useToast } from '@/lib/hooks/use-toast'
 import { toggleServiceAvailability, updateServiceProficiency } from '@/features/staff/services/api/mutations'
+import { ServiceDetails } from './service-details'
 import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemGroup,
-  ItemMedia,
-  ItemTitle,
 } from '@/components/ui/item'
 
 type StaffService = {
@@ -157,51 +155,13 @@ export function ServiceCard({ service }: ServiceCardProps) {
         </ItemGroup>
       </CardHeader>
       <CardContent>
-        <ItemGroup className="gap-2">
-          {service.effective_duration && (
-            <Item size="sm" variant="muted">
-              <ItemMedia variant="icon">
-                <Clock className="h-4 w-4" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{service.effective_duration} minutes</ItemTitle>
-                <ItemDescription>Duration</ItemDescription>
-              </ItemContent>
-            </Item>
-          )}
-          {service.effective_price && (
-            <Item size="sm" variant="muted">
-              <ItemMedia variant="icon">
-                <DollarSign className="h-4 w-4" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>${service.effective_price}</ItemTitle>
-                <ItemDescription>Base price</ItemDescription>
-              </ItemContent>
-            </Item>
-          )}
-          {service.performed_count != null && service.performed_count > 0 && (
-            <Item size="sm" variant="muted">
-              <ItemMedia variant="icon">
-                <TrendingUp className="h-4 w-4" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>Performed {service.performed_count} times</ItemTitle>
-              </ItemContent>
-            </Item>
-          )}
-          {service.rating_average && service.rating_count && service.rating_count > 0 && (
-            <Item size="sm" variant="muted">
-              <ItemMedia variant="icon">
-                <Star className="h-4 w-4 fill-accent text-accent" aria-hidden="true" />
-              </ItemMedia>
-              <ItemContent>
-                <ItemTitle>{service.rating_average.toFixed(1)} rating</ItemTitle>
-                <ItemDescription>{service.rating_count} reviews</ItemDescription>
-              </ItemContent>
-            </Item>
-          )}
-        </ItemGroup>
+        <ServiceDetails
+          effectiveDuration={service.effective_duration}
+          effectivePrice={service.effective_price}
+          performedCount={service.performed_count}
+          ratingAverage={service.rating_average}
+          ratingCount={service.rating_count}
+        />
       </CardContent>
     </Card>
   )

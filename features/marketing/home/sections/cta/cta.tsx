@@ -13,12 +13,13 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
+import { MarketingSection } from '@/features/marketing/common-components'
 
 import { ctaContent } from './cta.data'
 
 export function CTA() {
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <MarketingSection spacing="compact" groupClassName="gap-0">
       <Empty>
         <EmptyHeader>
           <EmptyTitle>{ctaContent.title}</EmptyTitle>
@@ -30,7 +31,10 @@ export function CTA() {
               <ItemDescription>Choose the option that fits—get started now or talk with our team first.</ItemDescription>
             </ItemContent>
           </Item>
-          <ButtonGroup className="w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-center">
+          <ButtonGroup
+            aria-label="Marketing call to action options"
+            className="w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-center"
+          >
             <Button asChild size="lg">
               <Link href={ctaContent.primaryCta.href}>
                 {ctaContent.primaryCta.label}
@@ -45,6 +49,6 @@ export function CTA() {
           </ButtonGroup>
         </EmptyContent>
       </Empty>
-    </section>
+    </MarketingSection>
   )
 }

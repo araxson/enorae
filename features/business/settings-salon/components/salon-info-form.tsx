@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ActionButton } from '@/features/shared/ui-components'
 import { updateSalonInfo } from '@/features/business/settings-salon/api/mutations'
 import {
@@ -12,6 +11,13 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SalonInfoFormProps {
   salonId: string
@@ -42,14 +48,16 @@ export function SalonInfoForm({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Business Information</CardTitle>
-        <CardDescription>
-          Update your salon&apos;s business details and legal information
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>Business Information</ItemTitle>
+          <ItemDescription>
+            Update your salon&apos;s business details and legal information
+          </ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
         <form ref={setFormRef}>
           <FieldSet className="flex flex-col gap-6">
             <Field>
@@ -106,7 +114,7 @@ export function SalonInfoForm({
             </div>
           </FieldSet>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

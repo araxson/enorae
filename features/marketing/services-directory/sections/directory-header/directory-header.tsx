@@ -4,6 +4,7 @@ import {
   ItemDescription,
   ItemGroup,
   ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 
 import { servicesDirectoryHeader } from './directory-header.data'
@@ -13,7 +14,7 @@ export function DirectoryHeader() {
     <ItemGroup className="gap-4">
       <Item className="flex-col" variant="muted">
         <ItemHeader>
-          <h1 className="scroll-m-20">{servicesDirectoryHeader.title}</h1>
+          <ItemTitle>{servicesDirectoryHeader.title}</ItemTitle>
         </ItemHeader>
         <ItemContent>
           <ItemDescription>{servicesDirectoryHeader.description}</ItemDescription>

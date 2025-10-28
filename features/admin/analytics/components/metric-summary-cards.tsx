@@ -1,6 +1,6 @@
 import { ArrowUpRight, ArrowDownRight, Users, Store, CalendarDays, PieChart } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import type { PlatformAnalyticsSnapshot, GrowthDelta } from '@/features/admin/analytics/api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot, GrowthDelta } from '@/features/admin/analytics/api/types'
 import {
   Item,
   ItemActions,

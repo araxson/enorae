@@ -1,6 +1,14 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import {
   Table,
@@ -12,8 +20,9 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { QueryPerformanceSnapshot } from '@/features/admin/database-health/api/query-performance'
+import type { QueryPerformanceSnapshot } from '@/features/admin/database-health/api/queries/query-performance'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Timer } from 'lucide-react'
 
 interface QueryPerformancePanelProps {
   data: QueryPerformanceSnapshot
@@ -25,8 +34,19 @@ export function QueryPerformancePanel({ data }: QueryPerformancePanelProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Query Performance</CardTitle>
-        <CardDescription>Investigate slow queries, frequency trends, and index efficiency.</CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Timer className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Query Performance</ItemTitle>
+              <ItemDescription>
+                Investigate slow queries, frequency trends, and index efficiency.
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-6">
         <Tabs defaultValue="slow" className="w-full">

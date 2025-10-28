@@ -1,6 +1,14 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import {
   Table,
@@ -13,7 +21,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, ShieldAlert, Key } from 'lucide-react'
-import type { SchemaValidationSnapshot } from '@/features/admin/database-health/api/schema-validation'
+import type { SchemaValidationSnapshot } from '@/features/admin/database-health/api/queries/schema-validation'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface SchemaValidationPanelProps {
@@ -26,8 +34,17 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Schema Validation</CardTitle>
-        <CardDescription>Audit RLS coverage and primary key adoption</CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <ShieldAlert className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Schema Validation</ItemTitle>
+              <ItemDescription>Audit RLS coverage and primary key adoption</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-6">
         {summary.criticalSecurityIssues > 0 && (
@@ -41,24 +58,33 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
           </Alert>
         )}
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <ShieldAlert className="h-5 w-5" />
-                <CardTitle>RLS Policy Issues</CardTitle>
-              </div>
-              <CardDescription>
-                {summary.totalRLSIssues} table{summary.totalRLSIssues === 1 ? '' : 's'} without RLS
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Badge variant={summary.totalRLSIssues > 0 ? 'destructive' : 'default'}>
-                  {summary.totalRLSIssues} tables
-                </Badge>
-                <p className="text-muted-foreground">missing RLS coverage</p>
-              </div>
+        <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Item variant="outline" className="flex-col gap-4">
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <ShieldAlert className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>RLS Policy Issues</ItemTitle>
+                  <ItemDescription>
+                    {summary.totalRLSIssues} table{summary.totalRLSIssues === 1 ? '' : 's'} without RLS
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+
+            <ItemContent className="space-y-4">
+              <ItemGroup>
+                <Item variant="muted" className="items-center gap-2">
+                  <ItemContent className="flex items-center gap-2">
+                    <Badge variant={summary.totalRLSIssues > 0 ? 'destructive' : 'default'}>
+                      {summary.totalRLSIssues} tables
+                    </Badge>
+                    <span className="text-muted-foreground">missing RLS coverage</span>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
 
               {tablesWithoutRLS.length > 0 ? (
                 <Table>
@@ -95,27 +121,35 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
                   </EmptyHeader>
                 </Empty>
               )}
-            </CardContent>
-          </Card>
+            </ItemContent>
+          </Item>
 
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Key className="h-5 w-5" />
-                <CardTitle>Primary Key Issues</CardTitle>
-              </div>
-              <CardDescription>
-                {summary.totalPKIssues} table{summary.totalPKIssues === 1 ? '' : 's'} missing primary
-                keys
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Badge variant={summary.totalPKIssues > 0 ? 'secondary' : 'default'}>
-                  {summary.totalPKIssues} tables
-                </Badge>
-                <p className="text-muted-foreground">without primary keys</p>
-              </div>
+          <Item variant="outline" className="flex-col gap-4">
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <Key className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Primary Key Issues</ItemTitle>
+                  <ItemDescription>
+                    {summary.totalPKIssues} table{summary.totalPKIssues === 1 ? '' : 's'} missing primary keys
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+
+            <ItemContent className="space-y-4">
+              <ItemGroup>
+                <Item variant="muted" className="items-center gap-2">
+                  <ItemContent className="flex items-center gap-2">
+                    <Badge variant={summary.totalPKIssues > 0 ? 'secondary' : 'default'}>
+                      {summary.totalPKIssues} tables
+                    </Badge>
+                    <span className="text-muted-foreground">without primary keys</span>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
 
               {tablesWithoutPK.length > 0 ? (
                 <Table>
@@ -146,9 +180,9 @@ export function SchemaValidationPanel({ data }: SchemaValidationPanelProps) {
                   </EmptyHeader>
                 </Empty>
               )}
-            </CardContent>
-          </Card>
-        </div>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

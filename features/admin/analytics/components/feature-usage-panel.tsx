@@ -1,5 +1,5 @@
 import { Sparkles } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
   Item,
@@ -11,7 +11,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { Badge } from '@/components/ui/badge'
-import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/types'
 
 interface FeatureUsagePanelProps {
   featureUsage: PlatformAnalyticsSnapshot['featureUsage']
@@ -29,7 +29,7 @@ export function FeatureUsagePanel({ featureUsage }: FeatureUsagePanelProps) {
               <Sparkles className="h-4 w-4" />
             </ItemMedia>
             <ItemContent>
-              <CardTitle>Feature Usage Signals</CardTitle>
+              <ItemTitle>Feature Usage Signals</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

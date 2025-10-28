@@ -7,7 +7,6 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -57,17 +56,15 @@ export function AppointmentStats({ appointments }: AppointmentStatsProps) {
         return (
           <Card key={stat.label}>
             <CardHeader>
-              <ItemGroup>
-                <Item variant="muted" size="sm">
-                  <ItemMedia variant="icon">
-                    <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
-                  </ItemMedia>
-                  <ItemContent>
-                    <ItemTitle>{stat.value}</ItemTitle>
-                    <ItemDescription>{stat.label}</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
+              <Item variant="muted" size="sm">
+                <ItemMedia variant="icon">
+                  <Icon className={`h-4 w-4 ${stat.color}`} aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>{stat.value}</ItemTitle>
+                  <ItemDescription>{stat.label}</ItemDescription>
+                </ItemContent>
+              </Item>
             </CardHeader>
           </Card>
         )

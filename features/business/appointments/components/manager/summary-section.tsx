@@ -1,3 +1,4 @@
+import { CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { formatCurrency } from './utils'
 
@@ -18,7 +19,7 @@ export function SummarySection({ servicesCount, totalDuration, totalPrice }: Sum
         </div>
         <div className="text-right">
           <p className="text-sm text-muted-foreground">Total Price</p>
-          <p className="text-2xl font-bold">{formatCurrency(totalPrice)}</p>
+          <CardTitle>{formatCurrency(totalPrice)}</CardTitle>
         </div>
       </div>
     </>

@@ -7,11 +7,19 @@ import { deleteBlockedTime } from '@/features/shared/blocked-times/api/mutations
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ConfirmDialog } from '@/features/shared/ui-components'
 import { EmptyState } from '@/features/shared/ui-components'
 import { Calendar, Repeat } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface BlockedTime {
   id: string
@@ -71,60 +79,63 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <ItemGroup className="flex flex-col gap-4">
       {blockedTimes.map((blockedTime) => (
-        <Card key={blockedTime.id}>
-          <CardHeader className="space-y-3 p-5 pb-0">
+        <Item key={blockedTime.id} variant="outline" className="flex-col gap-3">
+          <ItemHeader>
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <CardTitle>
+                  <ItemTitle>
                     {format(new Date(blockedTime.start_time), 'PPP')}
-                  </CardTitle>
+                  </ItemTitle>
                   {blockedTime.is_recurring && (
                     <div className="flex items-center gap-2">
-                      <Repeat className="h-3 w-3" />
+                      <Repeat className="h-3 w-3" aria-hidden="true" />
                       <Badge variant="secondary">
                         {getRecurrenceLabel(blockedTime.recurrence_pattern)}
                       </Badge>
                     </div>
                   )}
                 </div>
-                <CardDescription>
-                  {format(new Date(blockedTime.start_time), 'p')} –{' '}
+                <ItemDescription>
+                  {format(new Date(blockedTime.start_time), 'p')}
+                  {' '}
+                  –
+                  {' '}
                   {format(new Date(blockedTime.end_time), 'p')}
-                </CardDescription>
+                </ItemDescription>
               </div>
-              <ConfirmDialog
-                title="Delete blocked time?"
-                description="Are you sure you want to delete this blocked time? This action cannot be undone."
-                confirmText="Delete"
-                onConfirm={() => handleDelete(blockedTime.id)}
-              >
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  disabled={deletingId === blockedTime.id}
+              <ItemActions>
+                <ConfirmDialog
+                  title="Delete blocked time?"
+                  description="Are you sure you want to delete this blocked time? This action cannot be undone."
+                  confirmText="Delete"
+                  onConfirm={() => handleDelete(blockedTime.id)}
                 >
-                  {deletingId === blockedTime.id ? (
-                    <>
-                      <Spinner className="size-3" />
-                      <span>Deleting...</span>
-                    </>
-                  ) : (
-                    <span>Delete</span>
-                  )}
-                </Button>
-              </ConfirmDialog>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    disabled={deletingId === blockedTime.id}
+                  >
+                    {deletingId === blockedTime.id ? (
+                      <>
+                        <Spinner className="size-3" />
+                        <span>Deleting...</span>
+                      </>
+                    ) : (
+                      <span>Delete</span>
+                    )}
+                  </Button>
+                </ConfirmDialog>
+              </ItemActions>
             </div>
-          </CardHeader>
-          <CardContent className="p-5 pt-0">
-            {blockedTime.reason && (
-              <CardDescription>{blockedTime.reason}</CardDescription>
-            )}
-          </CardContent>
-        </Card>
+          </ItemHeader>
+          <ItemContent>
+            {blockedTime.reason ? <ItemDescription>{blockedTime.reason}</ItemDescription> : null}
+          </ItemContent>
+        </Item>
       ))}
-    </div>
+    </ItemGroup>
   )
 }

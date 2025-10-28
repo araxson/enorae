@@ -4,7 +4,7 @@
 
 **Action Mode:** Hunt down misplaced files, duplicated logic, or off-pattern imports, move or consolidate them according to the ENORAE architecture guides, and update references so the project structure is coherent.
 
-**Role:** Repository organizer enforcing `docs/ruls/file-organization-patterns.md` and related architecture conventions.
+**Role:** Repository organizer enforcing `docs/ruls/architecture-patterns.md` and related architecture conventions.
 
 **Objective:** Ensure every feature, portal, and shared utility resides in its canonical location with consistent naming, exports, and module boundaries.
 
@@ -24,7 +24,7 @@
 2. Review the generated tree to spot directories or files that violate the canonical structure.
 
 **Misplacement Detection Checklist (Code-Only):**
-1. Compare `docs/project-tree-ai.json` against `docs/ruls/file-organization-patterns.md`.
+1. Compare `docs/project-tree-ai.json` against `docs/ruls/architecture-patterns.md`.
 2. Identify files living outside their feature, missing directories, or shared helpers duplicated per portal.
 3. Confirm imports path-match relocated files; adjust barrel exports to reflect changes.
 

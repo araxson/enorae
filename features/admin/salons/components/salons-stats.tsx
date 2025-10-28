@@ -1,7 +1,17 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Building2, CheckCircle, ShieldAlert, Gauge } from 'lucide-react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Building2, CheckCircle, Gauge, ShieldAlert } from 'lucide-react'
 
 interface SalonsStatsProps {
   stats: {
@@ -21,24 +31,28 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
     {
       label: 'Total salons',
       value: stats.total,
+      description: 'Current platform count',
       icon: Building2,
       tone: 'text-primary',
     },
     {
       label: 'Verified',
       value: stats.verified,
+      description: 'Fully verified salons',
       icon: CheckCircle,
       tone: 'text-primary',
     },
     {
       label: 'Expiring licenses',
       value: stats.expiringLicenses,
+      description: 'Require renewal soon',
       icon: ShieldAlert,
       tone: 'text-accent',
     },
     {
       label: 'High risk',
       value: stats.highRisk,
+      description: 'Compliance issues detected',
       icon: ShieldAlert,
       tone: 'text-destructive',
     },
@@ -46,60 +60,71 @@ export function SalonsStats({ stats }: SalonsStatsProps) {
 
   return (
     <div className="grid gap-4 lg:grid-cols-3">
-      {summaryCards.map(({ label, value, icon: Icon, tone }) => (
-        <Card key={label}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>{label}</CardTitle>
-              <Icon className={`h-4 w-4 ${tone}`} />
-            </div>
-            <CardDescription>Current platform count.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-semibold">{value.toLocaleString()}</p>
-          </CardContent>
-        </Card>
+      {summaryCards.map(({ label, value, description, icon: Icon, tone }) => (
+        <Alert key={label} className="flex items-start gap-3">
+          <ItemGroup className="flex-1 gap-2">
+            <Item className="items-start gap-3">
+              <ItemMedia variant="icon">
+                <Icon className={`h-5 w-5 ${tone}`} aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent className="flex flex-col gap-1">
+                <AlertTitle>{label}</AlertTitle>
+                <CardTitle>{value.toLocaleString()}</CardTitle>
+                <AlertDescription>{description}</AlertDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </Alert>
       ))}
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>Average compliance</CardTitle>
-            <Gauge className="h-4 w-4 text-secondary" />
-          </div>
-          <CardDescription>License and policy adherence across salons.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-semibold">{stats.averageCompliance}%</p>
-        </CardContent>
-      </Card>
+      <Alert className="flex items-start gap-3">
+        <ItemGroup className="flex-1 gap-2">
+          <Item className="items-start gap-3">
+            <ItemMedia variant="icon">
+              <Gauge className="h-5 w-5 text-secondary" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent className="flex flex-col gap-1">
+              <AlertTitle>Average compliance</AlertTitle>
+              <CardTitle>{stats.averageCompliance}%</CardTitle>
+              <AlertDescription>License and policy adherence across salons</AlertDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
+      </Alert>
 
-      <Card className="lg:col-span-3">
-        <CardHeader>
-          <CardTitle>Distribution</CardTitle>
-          <CardDescription>Breakdown by tier and operating model.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
+      <Item variant="outline" className="flex-col gap-3 lg:col-span-3">
+        <ItemHeader>
+          <ItemTitle>Distribution</ItemTitle>
+        </ItemHeader>
+        <ItemContent className="grid gap-4 md:grid-cols-2">
           <Distribution title="By tier" data={stats.byTier} />
           <Distribution title="By type" data={stats.byType} />
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     </div>
   )
 }
 
 function Distribution({ title, data }: { title: string; data: Record<string, number> }) {
   return (
-    <div>
-      <p className="text-muted-foreground mb-2">{title}</p>
-      <div className="space-y-1">
-        {Object.entries(data).map(([key, value]) => (
-          <div key={key} className="flex justify-between">
-            <span className="capitalize">{key}</span>
-            <span>{value}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+    <ItemGroup>
+      <Item className="flex-col items-start gap-2">
+        <ItemContent>
+          <ItemDescription>{title}</ItemDescription>
+        </ItemContent>
+        <ItemContent className="flex w-full flex-col gap-1">
+          {Object.entries(data).map(([key, value]) => (
+            <ItemGroup key={key}>
+              <Item className="flex w-full items-center justify-between">
+                <ItemContent>
+                  <span className="capitalize">{key}</span>
+                </ItemContent>
+                <ItemContent className="flex-none">{value}</ItemContent>
+              </Item>
+            </ItemGroup>
+          ))}
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

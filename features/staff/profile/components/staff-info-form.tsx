@@ -15,11 +15,6 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 type StaffInfoFormProps = {
   profile: {
@@ -72,14 +67,8 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
 
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Professional information</CardTitle>
-                <CardDescription>Share your role, experience, and story with clients.</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Professional information</CardTitle>
+          <CardDescription>Share your role, experience, and story with clients.</CardDescription>
         </CardHeader>
         <CardContent>
           <FieldSet className="space-y-6">

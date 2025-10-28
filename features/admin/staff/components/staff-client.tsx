@@ -3,15 +3,15 @@
 import { useMemo, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type {
+  BackgroundStatus,
   StaffDashboardData,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
 } from '@/features/admin/staff/api/queries'
-import { StaffStats } from './staff-stats'
 import { StaffFilters, type RiskFilter } from './staff-filters'
-import { StaffTable } from './staff-table'
 import { StaffRiskBadge } from './staff-risk-badge'
-import type { BackgroundStatus } from '@/features/admin/staff/api/dashboard/metrics'
+import { StaffStats } from './staff-stats'
+import { StaffTable } from './staff-table'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
   Item,

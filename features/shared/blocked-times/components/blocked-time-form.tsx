@@ -5,27 +5,28 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { createBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { AlertCircle, Repeat } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import {
+  Item,
+  ItemContent,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import { BlockTypeSelect } from './block-type-select'
+import { RecurrencePatternSelect } from './recurrence-pattern-select'
 
 interface BlockedTimeFormProps {
   salonId: string
@@ -84,12 +85,13 @@ export function BlockedTimeForm({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Block time slot</CardTitle>
-      </CardHeader>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Block time slot</ItemTitle>
+      </ItemHeader>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <CardContent className="space-y-4">
+        <ItemContent>
+          <div className="space-y-4">
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
@@ -98,27 +100,7 @@ export function BlockedTimeForm({
             </Alert>
           )}
 
-          <Field>
-            <FieldLabel htmlFor="block_type">Block type</FieldLabel>
-            <FieldContent>
-              <Select name="block_type" value={blockType} onValueChange={setBlockType}>
-                <SelectTrigger id="block_type">
-                  <SelectValue placeholder="Select block type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="other">Other</SelectItem>
-                  <SelectItem value="maintenance">Maintenance</SelectItem>
-                  <SelectItem value="holiday">Holiday</SelectItem>
-                  <SelectItem value="vacation">Vacation</SelectItem>
-                  <SelectItem value="personal">Personal</SelectItem>
-                  <SelectItem value="break">Break</SelectItem>
-                  <SelectItem value="lunch">Lunch</SelectItem>
-                  <SelectItem value="sick_leave">Sick leave</SelectItem>
-                  <SelectItem value="training">Training</SelectItem>
-                </SelectContent>
-              </Select>
-            </FieldContent>
-          </Field>
+          <BlockTypeSelect value={blockType} onChange={setBlockType} />
 
           <Field>
             <FieldLabel htmlFor="start_time">Start time</FieldLabel>
@@ -163,55 +145,31 @@ export function BlockedTimeForm({
             </Field>
 
             {isRecurring && (
-              <Field>
-                <FieldLabel htmlFor="recurrence_pattern">Recurrence pattern</FieldLabel>
-                <FieldContent>
-                  <Select value={recurrencePattern} onValueChange={setRecurrencePattern}>
-                    <SelectTrigger id="recurrence_pattern">
-                      <SelectValue placeholder="Select pattern" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="daily">Daily</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="biweekly">Bi-weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                      <SelectItem value="yearly">Yearly</SelectItem>
-                      <SelectItem value="weekdays">Weekdays only</SelectItem>
-                      <SelectItem value="weekends">Weekends only</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FieldDescription>
-                    {recurrencePattern === 'daily' && 'Repeats every day at the same time.'}
-                    {recurrencePattern === 'weekly' && 'Repeats every week on the same day.'}
-                    {recurrencePattern === 'biweekly' && 'Repeats every two weeks on the same day.'}
-                    {recurrencePattern === 'monthly' && 'Repeats every month on the same date.'}
-                    {recurrencePattern === 'yearly' && 'Repeats every year on the same date.'}
-                    {recurrencePattern === 'weekdays' && 'Repeats every weekday (Mon–Fri).'}
-                    {recurrencePattern === 'weekends' && 'Repeats every weekend (Sat–Sun).'}
-                  </FieldDescription>
-                </FieldContent>
-              </Field>
+              <RecurrencePatternSelect value={recurrencePattern} onChange={setRecurrencePattern} />
             )}
           </div>
-        </CardContent>
-        <CardFooter className="flex flex-wrap justify-end gap-2">
-          {onCancel && (
-            <Button type="button" variant="outline" onClick={onCancel}>
-              Cancel
+          </div>
+        </ItemContent>
+        <ItemFooter>
+          <ButtonGroup className="ml-auto flex flex-wrap gap-2">
+            {onCancel ? (
+              <Button type="button" variant="outline" onClick={onCancel}>
+                Cancel
+              </Button>
+            ) : null}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Creating...</span>
+                </>
+              ) : (
+                <span>Block time</span>
+              )}
             </Button>
-          )}
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Spinner className="size-4" />
-                <span>Creating...</span>
-              </>
-            ) : (
-              <span>Block time</span>
-            )}
-          </Button>
-        </CardFooter>
+          </ButtonGroup>
+        </ItemFooter>
       </form>
-    </Card>
+    </Item>
   )
 }

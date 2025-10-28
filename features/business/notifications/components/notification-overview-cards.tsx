@@ -1,10 +1,10 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
-import { Bell, Wifi, AlertTriangle, Inbox } from 'lucide-react'
+import { CardTitle } from '@/components/ui/card'
 import type { Database } from '@/lib/types/database.types'
-import { cn } from '@/lib/utils'
+import { AlertTriangle, Bell, Inbox, Wifi } from 'lucide-react'
 
 type NotificationStatus = Database['public']['Enums']['notification_status']
 type NotificationChannel = Database['public']['Enums']['notification_channel']
@@ -34,77 +34,68 @@ export function NotificationOverviewCards({ totals, failureRate, channels }: Not
 
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Notifications Processed</CardTitle>
-          <Bell className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent className="space-y-1">
-          <div className="text-2xl font-bold">{totalSent}</div>
-          <CardDescription>
-            Across all channels in the last 200 events
-          </CardDescription>
-        </CardContent>
-      </Card>
+      <Alert className="flex items-start gap-3">
+        <Bell className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        <div className="flex flex-col gap-1">
+          <AlertTitle>Notifications Processed</AlertTitle>
+          <CardTitle>{totalSent}</CardTitle>
+          <AlertDescription>Across all channels in the last 200 events</AlertDescription>
+        </div>
+      </Alert>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Failure Rate</CardTitle>
-          <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent className="space-y-1">
-          <div className={cn('text-2xl font-bold', failureRate > 5 && 'text-destructive')}>
-            {failureRate.toFixed(1)}%
-          </div>
-          <CardDescription>
+      <Alert variant={failureRate > 5 ? 'destructive' : 'default'} className="flex items-start gap-3">
+        <AlertTriangle className="h-5 w-5" aria-hidden="true" />
+        <div className="flex flex-col gap-1">
+          <AlertTitle>Failure Rate</AlertTitle>
+          <CardTitle>{failureRate.toFixed(1)}%</CardTitle>
+          <AlertDescription>
             {recentFailures} failures detected in recent queue
-          </CardDescription>
-        </CardContent>
-      </Card>
+          </AlertDescription>
+        </div>
+      </Alert>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Top Channel</CardTitle>
-          <Wifi className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent className="space-y-1">
+      <Alert className="flex items-start gap-3">
+        <Wifi className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        <div className="flex flex-col gap-1">
+          <AlertTitle>Top Channel</AlertTitle>
           {topChannel ? (
             <>
-              <div className="text-2xl font-bold capitalize">{topChannel[0].replace('_', ' ')}</div>
-              <CardDescription>
+              <CardTitle><span className="capitalize">{topChannel[0].replace('_', ' ')}</span></CardTitle>
+              <AlertDescription>
                 {topChannel[1]} notifications sent
-              </CardDescription>
+              </AlertDescription>
             </>
           ) : (
-            <CardDescription>No channel activity yet</CardDescription>
+            <AlertDescription>No channel activity yet</AlertDescription>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </Alert>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Status Breakdown</CardTitle>
-          <Inbox className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent className="flex flex-wrap gap-2">
-          {statusPriority.map((status) => {
-            const count = totals[status]?.count || 0
-            if (!count) return null
-            const tone =
-              status === 'failed' || status === 'bounced'
-                ? 'destructive'
-                : status === 'delivered' || status === 'sent'
-                ? 'default'
-                : 'secondary'
+      <Alert className="flex items-start gap-3">
+        <Inbox className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        <div className="flex flex-col gap-1">
+          <AlertTitle>Status Breakdown</AlertTitle>
+          <AlertDescription>Current notification statuses</AlertDescription>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {statusPriority.map((status) => {
+              const count = totals[status]?.count || 0
+              if (!count) return null
+              const tone =
+                status === 'failed' || status === 'bounced'
+                  ? 'destructive'
+                  : status === 'delivered' || status === 'sent'
+                  ? 'default'
+                  : 'secondary'
 
-            return (
-              <Badge key={status} variant={tone}>
-                {status} · {count}
-              </Badge>
-            )
-          })}
-        </CardContent>
-      </Card>
+              return (
+                <Badge key={status} variant={tone}>
+                  {status} · {count}
+                </Badge>
+              )
+            })}
+          </div>
+        </div>
+      </Alert>
     </div>
   )
 }

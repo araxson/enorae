@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { verifySession } from '@/lib/auth'
 import { getCustomerReviews } from './api/queries'
-import { ReviewsList } from './components/reviews-list'
+import { ReviewsList } from './components'
 import { Separator } from '@/components/ui/separator'
 import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 

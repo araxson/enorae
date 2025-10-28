@@ -1,9 +1,9 @@
-import { redirect } from 'next/navigation'
-import { verifySession } from '@/lib/auth'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { Separator } from '@/components/ui/separator'
+import { verifySession } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 import { getMessageThreadsByUser } from './api/queries'
-import { ThreadList } from './components/thread-list'
-import { MessageThreadDetail } from './components/message-thread-detail'
+import { MessageThreadDetail, ThreadList } from './components'
 import type { ThreadRouteParams } from './metadata'
 
 export async function Messaging() {
@@ -17,12 +17,14 @@ export async function Messaging() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
-      <div className="space-y-2">
-        <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl">Messages</h1>
-        <p className="leading-7 text-muted-foreground">
-          Communicate with salons about your appointments.
-        </p>
-      </div>
+      <ItemGroup className="gap-2">
+        <Item variant="muted" className="flex-col items-start gap-2">
+          <ItemContent>
+            <ItemTitle>Messages</ItemTitle>
+            <ItemDescription>Communicate with salons about your appointments.</ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <Separator />
 

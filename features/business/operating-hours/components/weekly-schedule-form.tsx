@@ -6,27 +6,12 @@ import { toast } from 'sonner'
 import { bulkUpdateOperatingHours } from '@/features/business/operating-hours/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Input } from '@/components/ui/input'
-import { Switch } from '@/components/ui/switch'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Accordion } from '@/components/ui/accordion'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { AlertCircle } from 'lucide-react'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
-import {
-  Field,
-  FieldContent,
-  FieldLabel,
-  FieldGroup,
-} from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { ScheduleDayRow } from './schedule-day-row'
 
 interface OperatingHour {
   id: string
@@ -119,72 +104,13 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
               {DAYS.map((day, index) => {
                 const dayHours = hours.find((h) => h.day_of_week === index)!
                 return (
-                  <AccordionItem key={index} value={String(index)}>
-                    <AccordionTrigger>
-                      <ItemGroup className="w-full pr-4">
-                        <Item>
-                          <ItemContent>
-                            <ItemTitle>{day}</ItemTitle>
-                          </ItemContent>
-                          <ItemActions className="flex-none">
-                            <ItemDescription>
-                              {dayHours.is_closed ? 'Closed' : `${dayHours.open_time} - ${dayHours.close_time}`}
-                            </ItemDescription>
-                          </ItemActions>
-                        </Item>
-                      </ItemGroup>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <FieldGroup className="grid gap-4 grid-cols-1 items-end pt-4 md:grid-cols-4">
-                        <Field>
-                          <FieldLabel htmlFor={`open-${index}`}>Open Time</FieldLabel>
-                          <FieldContent>
-                            <Input
-                              id={`open-${index}`}
-                              type="time"
-                              value={dayHours.open_time}
-                              onChange={(e) => updateDay(index, 'open_time', e.target.value)}
-                              disabled={dayHours.is_closed}
-                            />
-                          </FieldContent>
-                        </Field>
-
-                        <Field>
-                          <FieldLabel htmlFor={`close-${index}`}>Close Time</FieldLabel>
-                          <FieldContent>
-                            <Input
-                              id={`close-${index}`}
-                              type="time"
-                              value={dayHours.close_time}
-                              onChange={(e) => updateDay(index, 'close_time', e.target.value)}
-                              disabled={dayHours.is_closed}
-                            />
-                          </FieldContent>
-                        </Field>
-
-                        <ItemGroup>
-                          <Item className="items-center">
-                            <ItemContent>
-                              <ItemTitle>
-                                <FieldLabel htmlFor={`closed-${index}`} className="text-sm font-medium">
-                                  Closed
-                                </FieldLabel>
-                              </ItemTitle>
-                            </ItemContent>
-                            <ItemActions className="flex-none">
-                              <Switch
-                                id={`closed-${index}`}
-                                checked={dayHours.is_closed}
-                                onCheckedChange={(checked) =>
-                                  updateDay(index, 'is_closed', checked)
-                                }
-                              />
-                            </ItemActions>
-                          </Item>
-                        </ItemGroup>
-                      </FieldGroup>
-                    </AccordionContent>
-                  </AccordionItem>
+                  <ScheduleDayRow
+                    key={index}
+                    day={day}
+                    dayIndex={index}
+                    dayHours={dayHours}
+                    onUpdate={updateDay}
+                  />
                 )
               })}
             </Accordion>

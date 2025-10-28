@@ -74,6 +74,6 @@ List findings as:
 
 Review:
 - `docs/ruls/typescript-patterns.md`
-- `docs/ruls/file-organization-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete code quality audit and report all naming issues.

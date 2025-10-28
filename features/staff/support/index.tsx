@@ -1,5 +1,5 @@
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { StaffSupportClient } from './components/support-client'
+import { StaffSupportClient } from './components'
 import { getStaffSupportOverview } from './api/queries'
 
 export const staffSupportMetadata = genMeta({

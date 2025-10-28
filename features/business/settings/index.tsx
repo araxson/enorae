@@ -1,18 +1,10 @@
 import { getUserSalonSettings } from './api/queries'
-import { SettingsForm } from './components/settings-form'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty'
-import { Store } from 'lucide-react'
+import { SalonSettingsContent } from './components/salon-settings-content'
+import { SalonSettingsNoSalonError } from './components/salon-settings-error'
 
 export async function SalonSettings() {
-  let salon: Awaited<ReturnType<typeof getUserSalon>> | null = null
-
+  let salon
   try {
     salon = await getUserSalon()
   } catch {
@@ -20,32 +12,10 @@ export async function SalonSettings() {
   }
 
   if (!salon?.id) {
-    return (
-      <section className="py-16 md:py-24 lg:py-32">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Store className="h-8 w-8" aria-hidden="true" />
-              </EmptyMedia>
-              <EmptyTitle>No salon found</EmptyTitle>
-              <EmptyDescription>Please create a salon first to manage settings.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </div>
-      </section>
-    )
+    return <SalonSettingsNoSalonError />
   }
 
   const settings = await getUserSalonSettings()
 
-  return (
-    <section className="py-16 md:py-24 lg:py-32">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-10">
-          <SettingsForm salonId={salon.id} settings={settings} />
-        </div>
-      </div>
-    </section>
-  )
+  return <SalonSettingsContent salonId={salon.id} settings={settings} />
 }

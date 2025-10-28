@@ -1,4 +1,5 @@
-export { RevenueChart } from './revenue-chart'
 export { ComparativeMetrics } from './comparative-metrics'
 export { MetricsOverview } from './metrics-overview'
+export { RevenueChart } from './revenue-chart'
 export { RevenueForecastCard } from './revenue-forecast-card'
+export { SalonMetrics } from './salon-metrics'

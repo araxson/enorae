@@ -5,17 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { verifyOTP, resendOTP } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Shield } from 'lucide-react'
-import { OTPInput, ResendOTP } from './otp-input'
+import { OTPInput } from './otp-input'
+import { ResendOTP } from './resend-otp'
 import {
   Field,
   FieldContent,
@@ -25,6 +18,14 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface VerifyOTPFormProps {
   email?: string
@@ -81,19 +82,19 @@ export function VerifyOTPForm({
 
   return (
     <div className="w-full max-w-md">
-      <Card>
-        <CardHeader className="space-y-4 items-center justify-center">
-          <div className="mb-4 flex items-center justify-center">
+      <Item variant="outline" className="flex flex-col gap-4">
+        <ItemHeader>
+          <div className="flex flex-col items-center gap-4 text-center">
             <Shield className="h-12 w-12 text-primary" aria-hidden="true" />
+            <ItemTitle>Verify your email</ItemTitle>
+            <ItemDescription>
+              Enter the 6-digit code sent to <strong>{email}</strong>
+            </ItemDescription>
           </div>
-          <CardTitle>Verify your email</CardTitle>
-          <CardDescription>
-            Enter the 6-digit code sent to <strong>{email}</strong>
-          </CardDescription>
-        </CardHeader>
+        </ItemHeader>
 
-      <CardContent>
-        <FieldSet className="gap-6">
+        <ItemContent>
+          <FieldSet className="gap-6">
           {error ? (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
@@ -129,10 +130,10 @@ export function VerifyOTPForm({
               <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
             </Alert>
           ) : null}
-        </FieldSet>
-      </CardContent>
+          </FieldSet>
+        </ItemContent>
 
-        <CardFooter>
+        <ItemFooter>
           <ButtonGroup className="w-full flex-col gap-4">
             <Button
               onClick={handleVerify}
@@ -145,7 +146,7 @@ export function VerifyOTPForm({
                   <span>Verifying...</span>
                 </>
               ) : (
-                <span>Verify code</span>
+              <span>Verify code</span>
               )}
             </Button>
 
@@ -153,8 +154,8 @@ export function VerifyOTPForm({
               Check your spam folder if you don&apos;t see the email
             </p>
           </ButtonGroup>
-        </CardFooter>
-      </Card>
+        </ItemFooter>
+      </Item>
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { Progress } from '@/components/ui/progress'
+import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -52,7 +53,7 @@ export function AppointmentMetricCard({
         <ItemActions className="flex-none">{icon}</ItemActions>
       </ItemHeader>
       <ItemContent className="space-y-2">
-        <div className="text-2xl font-bold">{value}</div>
+        <CardTitle>{value}</CardTitle>
         <Progress value={progress} className="mt-2" aria-label={`${progress}% progress`} />
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>
@@ -85,7 +86,7 @@ export function RevenueMetricCard({
         <ItemActions className="flex-none">{icon}</ItemActions>
       </ItemHeader>
       <ItemContent className="space-y-2">
-        <div className="text-3xl font-bold">{amountLabel}</div>
+        <CardTitle>{amountLabel}</CardTitle>
         {highlight}
         <ItemDescription>{description}</ItemDescription>
       </ItemContent>

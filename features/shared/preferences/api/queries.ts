@@ -3,6 +3,11 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
+// DATABASE PATTERN NOTE: Currently reading from identity.profiles_preferences table
+// TODO: Create view view_user_preferences in identity schema for proper read pattern
+// View should include: preference fields + profile context + default values
+// Once view is created, update all queries to use: .from('view_user_preferences')
+
 type ProfilePreference = Database['identity']['Tables']['profiles_preferences']['Row']
 
 /**

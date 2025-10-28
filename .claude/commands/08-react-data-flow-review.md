@@ -18,5 +18,3 @@
 2. Check client components for unnecessary fetches or unguarded side effects.
 3. Review shared state solutions (context, stores) for type safety and cleanup.
 4. Suggest refactors that improve streaming, suspense, or cache usage.
-
-**Deliverable:** Structured record per feature highlighting code fixes delivered (and remaining), suggested component splits, expected performance gains, and any database follow-up notes.

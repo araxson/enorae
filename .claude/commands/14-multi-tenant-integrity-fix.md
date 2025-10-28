@@ -24,4 +24,3 @@
 3. Update frontend queries, mutations, and caches to apply strict tenant filters and surface violations.
 4. Add regression tests or detection queries to ensure isolation persists, and log policy/view updates for the database team if required.
 
-**Deliverable:** Tenant integrity report summarizing frontend fixes applied, verification queries run, regression safeguards added, and database follow-up notes.

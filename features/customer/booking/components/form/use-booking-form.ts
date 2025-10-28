@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
+import { checkStaffAvailability } from '@/features/shared/appointments/api/queries/availability'
 import { createBooking } from '@/features/customer/booking/api/mutations'
 import type { BookingFormValues, Service } from '@/features/customer/booking/types'
 

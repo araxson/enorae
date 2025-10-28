@@ -2,10 +2,16 @@
 
 import { useEffect, useMemo, useState, useTransition } from 'react'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { calculateDynamicPrice } from '@/features/business/services/api/pricing-functions'
 
 type DynamicPricingPreviewProps = {
@@ -78,54 +84,60 @@ export function DynamicPricingPreview({ serviceId, currencyCode }: DynamicPricin
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Dynamic Pricing Preview</CardTitle>
-        <CardDescription>Calculate the real-time price for a specific booking time.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <Field orientation="responsive" className="items-end gap-4">
-          <FieldContent className="w-full space-y-2 md:max-w-xs">
-            <FieldLabel htmlFor="dynamic-pricing-time">Booking time</FieldLabel>
-            <Input
-              id="dynamic-pricing-time"
-              type="datetime-local"
-              value={dateTimeValue}
-              onChange={(event) => setDateTimeValue(event.target.value)}
-              disabled={isPending}
-            />
-          </FieldContent>
-          <FieldContent className="flex-none">
-            <Button type="button" onClick={handlePreview} disabled={!serviceId || isPending}>
-              {isPending ? 'Calculating…' : 'Preview Price'}
-            </Button>
-          </FieldContent>
-        </Field>
-
-        {formattedPrice && !error && (
-          <Field>
-            <FieldDescription>
-              Calculated price: <span className="font-semibold text-primary">{formattedPrice}</span>
-            </FieldDescription>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>Dynamic Pricing Preview</ItemTitle>
+          <ItemDescription>Calculate the real-time price for a specific booking time.</ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
+        <div className="flex flex-col gap-4">
+          <Field orientation="responsive" className="items-end gap-4">
+            <FieldContent className="w-full space-y-2 md:max-w-xs">
+              <FieldLabel htmlFor="dynamic-pricing-time">Booking time</FieldLabel>
+              <Input
+                id="dynamic-pricing-time"
+                type="datetime-local"
+                value={dateTimeValue}
+                onChange={(event) => setDateTimeValue(event.target.value)}
+                disabled={isPending}
+              />
+            </FieldContent>
+            <FieldContent className="flex-none">
+              <Button type="button" onClick={handlePreview} disabled={!serviceId || isPending}>
+                {isPending ? 'Calculating…' : 'Preview Price'}
+              </Button>
+            </FieldContent>
           </Field>
-        )}
 
-        {error && (
-          <Field>
-            <FieldDescription>
-              <span className="text-destructive">{error}</span>
-            </FieldDescription>
-          </Field>
-        )}
+          {formattedPrice && !error ? (
+            <Field>
+              <FieldDescription>
+                Calculated price:
+                {' '}
+                <span className="font-semibold text-primary">{formattedPrice}</span>
+              </FieldDescription>
+            </Field>
+          ) : null}
 
-        {!serviceId && (
-          <Field>
-            <FieldDescription>
-              Choose a service to enable dynamic pricing calculations.
-            </FieldDescription>
-          </Field>
-        )}
-      </CardContent>
-    </Card>
+          {error ? (
+            <Field>
+              <FieldDescription>
+                <span className="text-destructive">{error}</span>
+              </FieldDescription>
+            </Field>
+          ) : null}
+
+          {!serviceId ? (
+            <Field>
+              <FieldDescription>
+                Choose a service to enable dynamic pricing calculations.
+              </FieldDescription>
+            </Field>
+          ) : null}
+        </div>
+      </ItemContent>
+    </Item>
   )
 }

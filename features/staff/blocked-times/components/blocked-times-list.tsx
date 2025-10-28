@@ -1,6 +1,9 @@
 'use client'
+
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
 import { Pencil, Trash2, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -20,9 +23,19 @@ import {
   Item,
   ItemActions,
   ItemContent,
-  ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { Spinner } from '@/components/ui/spinner'
 
 interface BlockedTimesListProps {
   blockedTimes: BlockedTime[]
@@ -30,18 +43,23 @@ interface BlockedTimesListProps {
 }
 
 export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps) {
-  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const router = useRouter()
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blocked time?')) return
+  const handleDelete = async () => {
+    if (!pendingDeleteId) return
 
+    setIsDeleting(true)
     try {
-      setDeletingId(id)
-      await deleteBlockedTime(id)
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete blocked time')
+      await deleteBlockedTime(pendingDeleteId)
+      toast.success('Blocked time removed')
+      router.refresh()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to delete blocked time')
     } finally {
-      setDeletingId(null)
+      setIsDeleting(false)
+      setPendingDeleteId(null)
     }
   }
 
@@ -69,14 +87,8 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Blocked Times</CardTitle>
-              <CardDescription>Periods when you&apos;re unavailable for appointments</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Blocked Times</CardTitle>
+        <CardDescription>Periods when you&apos;re unavailable for appointments</CardDescription>
       </CardHeader>
       <CardContent>
         <Table>
@@ -135,8 +147,9 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => blockedTime['id'] && handleDelete(blockedTime['id'])}
-                      disabled={deletingId === blockedTime['id']}
+                      onClick={() => blockedTime['id'] && setPendingDeleteId(blockedTime['id'])}
+                      disabled={isDeleting && pendingDeleteId === blockedTime['id']}
+                      aria-label="Delete blocked time"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -147,6 +160,37 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
           </TableBody>
         </Table>
       </CardContent>
+      <AlertDialog
+        open={pendingDeleteId !== null}
+        onOpenChange={(open) => {
+          if (!open && !isDeleting) {
+            setPendingDeleteId(null)
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete blocked time?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will reopen the time slot for bookings. You can always create another blocked
+              period later if needed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? (
+                <span className="inline-flex items-center gap-2">
+                  <Spinner className="size-4" />
+                  Deleting…
+                </span>
+              ) : (
+                'Delete blocked time'
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   )
 }

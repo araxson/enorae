@@ -1,4 +1,4 @@
-import { AdminSettingsClient } from './components/admin-settings-client'
+import { AdminSettingsClient } from './components'
 
 export function AdminSettings() {
   return <AdminSettingsClient />

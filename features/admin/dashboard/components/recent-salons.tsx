@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
@@ -27,7 +27,9 @@ import {
   Item,
   ItemActions,
   ItemContent,
+  ItemDescription,
   ItemGroup,
+  ItemTitle,
 } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
 
@@ -77,10 +79,10 @@ export function RecentSalons({ salons }: RecentSalonsProps) {
           <ItemGroup>
             <Item>
               <ItemContent>
-                <CardTitle>Recent salons</CardTitle>
-                <CardDescription>
+                <ItemTitle>Recent salons</ItemTitle>
+                <ItemDescription>
                   Latest teams that completed onboarding in the last 30 days.
-                </CardDescription>
+                </ItemDescription>
               </ItemContent>
               <ItemActions>
                 <Badge variant="secondary">{salons.length} new</Badge>

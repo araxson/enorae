@@ -1,5 +1,5 @@
 import { CalendarOff } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
@@ -11,6 +11,7 @@ import {
   ItemDescription,
   ItemGroup,
   ItemMedia,
+  ItemTitle,
 } from '@/components/ui/item'
 
 interface NoShowPanelProps {
@@ -29,7 +30,7 @@ export function NoShowPanel({ noShows }: NoShowPanelProps) {
               <CalendarOff className="h-4 w-4" />
             </ItemMedia>
             <ItemContent>
-              <CardTitle>No-show Tracking</CardTitle>
+              <ItemTitle>No-show Tracking</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

@@ -1,64 +1,34 @@
 import { Suspense } from 'react'
-
-import { AppointmentsList } from './components/appointments-list'
-import { ProfileHeader } from './components/profile-header'
-import { getProfile, getUserAppointments } from './api/queries'
-
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { generateMetadata as genMeta } from '@/lib/metadata'
-import { MetadataForm } from '@/features/shared/profile-metadata'
-import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
-import { ProfileEditForm } from '@/features/shared/profile/components/profile-edit-form'
-import { UsernameForm } from '@/features/shared/profile/components/username-form'
 import { Spinner } from '@/components/ui/spinner'
+import { generateMetadata as genMeta } from '@/lib/metadata'
+import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
+import { getProfile, getUserAppointments } from './api/queries'
+import { CustomerProfileContent } from './components/customer-profile-content'
+import { CustomerProfileAuthError } from './components/customer-profile-error'
 
 export const customerProfileMetadata = genMeta({
-
   title: 'My Profile',
   description: 'Manage your profile and view your appointment history.',
   noIndex: true,
 })
 
-export async function CustomerProfile() {
-  let profile
-  let appointments
-  let metadata
-
+async function CustomerProfile() {
   try {
-    profile = await getProfile()
-    appointments = await getUserAppointments()
-    metadata = await getCurrentUserMetadata()
-  } catch {
-    return (
-      <div className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Alert variant="destructive">
-          <AlertTitle>Authentication required</AlertTitle>
-          <AlertDescription>Please log in to view your profile.</AlertDescription>
-        </Alert>
-      </div>
-    )
-  }
+    const [profile, appointments, metadata] = await Promise.all([
+      getProfile(),
+      getUserAppointments(),
+      getCurrentUserMetadata(),
+    ])
 
-  return (
-    <div className="mx-auto max-w-5xl space-y-8 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
-      <ProfileHeader profile={profile} />
-      <UsernameForm currentUsername={profile['username']} />
-      <ProfileEditForm profile={profile} />
-      <MetadataForm metadata={metadata} />
-      <AppointmentsList appointments={appointments} />
-    </div>
-  )
+    return <CustomerProfileContent profile={profile} appointments={appointments} metadata={metadata} />
+  } catch {
+    return <CustomerProfileAuthError />
+  }
 }
 
 export function CustomerProfileFeature() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-12">
-          <Spinner />
-        </div>
-      }
-    >
+    <Suspense fallback={<div className="flex justify-center py-12"><Spinner /></div>}>
       <CustomerProfile />
     </Suspense>
   )

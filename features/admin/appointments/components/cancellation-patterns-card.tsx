@@ -1,5 +1,5 @@
 import { AlertTriangle } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { CancellationPattern } from '@/features/admin/appointments/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
@@ -29,7 +29,7 @@ export function CancellationPatternsCard({ patterns }: CancellationPatternsCardP
               <AlertTriangle className="h-4 w-4" />
             </ItemMedia>
             <ItemContent>
-              <CardTitle>Cancellation Patterns</CardTitle>
+              <ItemTitle>Cancellation Patterns</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

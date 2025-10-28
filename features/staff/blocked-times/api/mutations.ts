@@ -1,22 +1,20 @@
 'use server'
 import { revalidatePath } from 'next/cache'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import { blockedTimeSchema, type BlockedTimeFormData } from '@/features/staff/blocked-times/schema'
 
 export async function createBlockedTime(data: BlockedTimeFormData) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   const validated = blockedTimeSchema.parse(data)
-
-  const supabase = await createClient()
 
   // Get user's salon_id from staff view
   const { data: staffData, error: staffError } = await supabase
     .from('staff_profiles_view')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single<{ salon_id: string }>()
 
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
@@ -26,15 +24,15 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
     .from('blocked_times')
     .insert({
       salon_id: staffData.salon_id,
-      staff_id: session.user.id,
+      staff_id: user.id,
       start_time: validated.start_time,
       end_time: validated.end_time,
       block_type: validated.block_type,
       reason: validated.reason,
       is_recurring: validated.is_recurring,
       recurrence_pattern: validated.recurrence_pattern ?? null,
-      created_by_id: session.user.id,
-      updated_by_id: session.user.id,
+      created_by_id: user.id,
+      updated_by_id: user.id,
     })
 
   if (error) throw error
@@ -44,12 +42,11 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
 }
 
 export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   const validated = blockedTimeSchema.parse(data)
-
-  const supabase = await createClient()
 
   // Verify ownership
   const { data: existing } = await supabase
@@ -58,7 +55,7 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
     .eq('id', id)
     .single<{ staff_id: string | null }>()
 
-  if (!existing || existing.staff_id !== session.user.id) {
+  if (!existing || existing.staff_id !== user.id) {
     throw new Error('Unauthorized to update this blocked time')
   }
 
@@ -72,7 +69,7 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
       reason: validated.reason,
       is_recurring: validated.is_recurring,
       recurrence_pattern: validated.recurrence_pattern ?? null,
-      updated_by_id: session.user.id,
+      updated_by_id: user.id,
     })
     .eq('id', id)
 
@@ -83,10 +80,9 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
 }
 
 export async function deleteBlockedTime(id: string) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Verify ownership
   const { data: existing } = await supabase
@@ -95,7 +91,7 @@ export async function deleteBlockedTime(id: string) {
     .eq('id', id)
     .single<{ staff_id: string | null }>()
 
-  if (!existing || existing.staff_id !== session.user.id) {
+  if (!existing || existing.staff_id !== user.id) {
     throw new Error('Unauthorized to delete this blocked time')
   }
 
@@ -106,7 +102,7 @@ export async function deleteBlockedTime(id: string) {
     .update({
       is_active: false,
       deleted_at: new Date().toISOString(),
-      deleted_by_id: session.user.id,
+      deleted_by_id: user.id,
     })
     .eq('id', id)
 

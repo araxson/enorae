@@ -17,8 +17,7 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { Spinner } from '@/components/ui/spinner'
-import { AnalyticsTab } from './components/analytics-tab'
-import { DashboardView } from './components/dashboard-view'
+import { AnalyticsTab, DashboardView } from './components'
 
 const EMPTY_METRICS: BusinessDashboardMetrics = {
   totalAppointments: 0,

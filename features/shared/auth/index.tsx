@@ -1,7 +1,14 @@
-export { LoginForm } from './components/login-form'
-export { SignupForm } from './components/signup-form'
-export { LoginPage } from './components/login-page'
-export { SignupPage } from './components/signup-page'
+export {
+  LoginForm,
+  SignupForm,
+  LoginPage,
+  SignupPage,
+  ForgotPasswordForm,
+  ResetPasswordForm,
+  VerifyOTPForm,
+  PasswordInput,
+  OTPInput,
+} from './components'
 export { login, signup, logout } from './api/mutations'
 export {
   ForgotPasswordPage,

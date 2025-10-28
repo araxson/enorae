@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getOperationalMetrics, getOperationalSalon } from './api/queries'
-import { OperationalDashboard } from './components/operational-dashboard'
+import { OperationalDashboard } from './components'
 
 export async function OperationalMetrics() {
   let salon

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
@@ -29,7 +29,7 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
-              <CardTitle>Performance Benchmarks</CardTitle>
+              <ItemTitle>Performance Benchmarks</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

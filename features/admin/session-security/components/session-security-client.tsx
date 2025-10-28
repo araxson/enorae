@@ -1,11 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { SessionSecurityTable } from './session-security-table'
-import type { SessionSecuritySnapshot } from '@/features/admin/session-security/api/queries'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import type { SessionSecuritySnapshot } from '@/features/admin/session-security/api/queries'
+import { ActivitySquare, ShieldCheck, ShieldX, TriangleAlert } from 'lucide-react'
+import { SessionSecurityTable } from './session-security-table'
 
 interface SessionSecurityClientProps {
   snapshot: SessionSecuritySnapshot
@@ -24,42 +35,119 @@ export function SessionSecurityClient({ snapshot }: SessionSecurityClientProps) 
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Sessions</CardTitle>
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <ActivitySquare className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Total Sessions</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{snapshot.totalCount}</div>
-            <p className="text-xs text-muted-foreground">Active user sessions</p>
+            <ItemGroup>
+              <Item className="flex-col items-start gap-2">
+                <ItemContent>
+                  <CardTitle>{snapshot.totalCount}</CardTitle>
+                </ItemContent>
+                <ItemContent>
+                  <ItemDescription>Active user sessions</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Critical Risk</CardTitle>
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <ShieldX className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Critical Risk</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-destructive">{snapshot.criticalCount}</div>
-            <p className="text-xs text-muted-foreground">Require immediate action</p>
+            <ItemGroup>
+              <Item className="flex-col items-start gap-2">
+                <ItemContent>
+                  <CardTitle>{snapshot.criticalCount}</CardTitle>
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant="destructive">Critical</Badge>
+                </ItemActions>
+                <ItemContent>
+                  <ItemDescription>Require immediate action</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>High Risk</CardTitle>
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <TriangleAlert className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>High Risk</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{snapshot.highRiskCount}</div>
-            <p className="text-xs text-muted-foreground">Monitor closely</p>
+            <ItemGroup>
+              <Item className="flex-col items-start gap-2">
+                <ItemContent>
+                  <CardTitle>{snapshot.highRiskCount}</CardTitle>
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant="outline">High risk</Badge>
+                </ItemActions>
+                <ItemContent>
+                  <ItemDescription>Monitor closely</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>MFA Enabled</CardTitle>
+          <CardHeader>
+            <ItemGroup>
+              <Item>
+                <ItemMedia variant="icon">
+                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>MFA Enabled</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">{snapshot.mfaEnabledCount}</div>
-            <p className="text-xs text-muted-foreground">Protected sessions</p>
+            <ItemGroup>
+              <Item className="flex-col items-start gap-2">
+                <ItemContent>
+                  <CardTitle>{snapshot.mfaEnabledCount}</CardTitle>
+                </ItemContent>
+                <ItemActions>
+                  <Badge variant="secondary">MFA</Badge>
+                </ItemActions>
+                <ItemContent>
+                  <ItemDescription>Protected sessions</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardContent>
         </Card>
       </div>
@@ -67,10 +155,16 @@ export function SessionSecurityClient({ snapshot }: SessionSecurityClientProps) 
       {/* Data Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Session Security Monitoring</CardTitle>
-          <CardDescription>
-            Monitor session risk scores and manage MFA requirements
-          </CardDescription>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>Session Security Monitoring</ItemTitle>
+                <ItemDescription>
+                  Monitor session risk scores and manage MFA requirements
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <ButtonGroup className="mb-4">

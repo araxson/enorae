@@ -1,10 +1,10 @@
 'use server'
 
-import { assignRole as assignRoleAction } from './role-mutations/assign-role'
-import { bulkAssignRoles as bulkAssignRolesAction } from './role-mutations/bulk-assign-roles'
-import { updateRolePermissions as updateRolePermissionsAction } from './role-mutations/update-role-permissions'
-import { revokeRole as revokeRoleAction } from './role-mutations/revoke-role'
-import { deleteRole as deleteRoleAction } from './role-mutations/delete-role'
+import { assignRole as assignRoleAction } from './assign-role'
+import { bulkAssignRoles as bulkAssignRolesAction } from './bulk-assign-roles'
+import { updateRolePermissions as updateRolePermissionsAction } from './update-role-permissions'
+import { revokeRole as revokeRoleAction } from './revoke-role'
+import { deleteRole as deleteRoleAction } from './delete-role'
 
 type ServerAction<T extends (...args: never[]) => Promise<unknown>> = (
   ...args: Parameters<T>
@@ -22,4 +22,4 @@ export const updateRolePermissions = createServerActionProxy(updateRolePermissio
 export const revokeRole = createServerActionProxy(revokeRoleAction)
 export const deleteRole = createServerActionProxy(deleteRoleAction)
 
-export type { RoleActionResponse, RoleType } from './role-mutations/types'
+export type { RoleActionResponse, RoleType } from './types'

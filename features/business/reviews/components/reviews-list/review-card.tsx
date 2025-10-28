@@ -6,7 +6,15 @@ import { toast } from 'sonner'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { NormalizedReview } from './use-reviews-list'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -58,12 +66,12 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
   }, [onToggleFeatured, review.id, review.is_featured])
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex gap-4 items-start justify-between">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex w-full items-start justify-between gap-4">
           <div className="flex flex-col gap-3">
-            <div className="flex gap-3 items-center">
-              <div className="text-base font-semibold">{review.customer_name || 'Anonymous'}</div>
+            <div className="flex items-center gap-3">
+              <ItemTitle>{review.customer_name || 'Anonymous'}</ItemTitle>
               {review.is_verified && (
                 <div className="flex items-center gap-1 text-xs">
                   <CheckCircle2 className="h-3 w-3" aria-hidden="true" />
@@ -91,68 +99,72 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
             </Field>
           </div>
 
-          <ButtonGroup>
-            {!review.response ? (
-              <Button size="sm" variant="outline" onClick={handleRespond}>
-                <MessageSquare className="h-4 w-4 mr-2" aria-hidden="true" />
-                Respond
+          <ItemActions>
+            <ButtonGroup>
+              {!review.response ? (
+                <Button size="sm" variant="outline" onClick={handleRespond}>
+                  <MessageSquare className="mr-2 h-4 w-4" aria-hidden="true" />
+                  Respond
+                </Button>
+              ) : null}
+              {!review.is_flagged ? (
+                <Button size="sm" variant="ghost" onClick={handleFlag} aria-label="Flag review for moderation">
+                  <Flag className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              ) : null}
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={handleToggleFeatured}
+                aria-label={review.is_featured ? 'Unfeature review' : 'Feature review'}
+              >
+                <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} aria-hidden="true" />
               </Button>
-            ) : null}
-            {!review.is_flagged ? (
-              <Button size="sm" variant="ghost" onClick={handleFlag} aria-label="Flag review for moderation">
-                <Flag className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            ) : null}
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={handleToggleFeatured}
-              aria-label={review.is_featured ? 'Unfeature review' : 'Feature review'}
-            >
-              <TrendingUp className={`h-4 w-4 ${review.is_featured ? 'fill-current' : ''}`} aria-hidden="true" />
-            </Button>
-          </ButtonGroup>
+            </ButtonGroup>
+          </ItemActions>
         </div>
-      </CardHeader>
+      </ItemHeader>
 
-      <CardContent>
+      <ItemContent>
         <div className="flex flex-col gap-4">
-          {review.title && <p className="leading-7 font-medium">{review.title}</p>}
-          {review.comment && <p className="leading-7 text-sm">{review.comment}</p>}
+          {review.title ? <p className="font-medium leading-7">{review.title}</p> : null}
+          {review.comment ? <p className="text-sm leading-7">{review.comment}</p> : null}
 
-          {(review.service_quality_rating || review.cleanliness_rating || review.value_rating) && (
-            <div className="grid gap-3 grid-cols-1 md:grid-cols-3">
-              {review.service_quality_rating && (
+          {(review.service_quality_rating || review.cleanliness_rating || review.value_rating) ? (
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+              {review.service_quality_rating ? (
                 <RatingItem label="Service Quality" rating={review.service_quality_rating} />
-              )}
-              {review.cleanliness_rating && (
+              ) : null}
+              {review.cleanliness_rating ? (
                 <RatingItem label="Cleanliness" rating={review.cleanliness_rating} />
-              )}
-              {review.value_rating && <RatingItem label="Value" rating={review.value_rating} />}
+              ) : null}
+              {review.value_rating ? <RatingItem label="Value" rating={review.value_rating} /> : null}
             </div>
-          )}
+          ) : null}
 
-          {review.response && (
-            <Card>
-              <CardHeader>
-                <div className="flex gap-4 items-center justify-between">
-                  <div>
-                    <CardTitle>Response from salon</CardTitle>
-                    {review.responded_by_name ? (
-                      <CardDescription>By {review.responded_by_name}</CardDescription>
-                    ) : null}
+          {review.response ? (
+            <ItemGroup>
+              <Item variant="muted" className="flex-col gap-3">
+                <ItemHeader>
+                  <div className="flex w-full items-center justify-between gap-4">
+                    <div>
+                      <ItemTitle>Response from salon</ItemTitle>
+                      {review.responded_by_name ? (
+                        <ItemDescription>By {review.responded_by_name}</ItemDescription>
+                      ) : null}
+                    </div>
+                    <ItemDescription>{formatDate(review.response_date)}</ItemDescription>
                   </div>
-                  <CardDescription>{formatDate(review.response_date)}</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="leading-7 text-sm">{review.response}</p>
-              </CardContent>
-            </Card>
-          )}
+                </ItemHeader>
+                <ItemContent>
+                  <ItemDescription>{review.response}</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+          ) : null}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }
 

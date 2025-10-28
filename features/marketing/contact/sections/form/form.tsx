@@ -3,7 +3,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -24,6 +23,12 @@ import {
 import { Spinner } from '@/components/ui/spinner'
 import { contactSchema, type ContactSchema } from '@/features/marketing/contact/schema'
 import { submitContactMessage } from '@/features/marketing/contact/api/mutations'
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function ContactForm() {
   const form = useForm<ContactSchema>({
@@ -53,11 +58,11 @@ export function ContactForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Send us a message</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Send us a message</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FieldSet>
@@ -184,7 +189,7 @@ export function ContactForm() {
             </Button>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

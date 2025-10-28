@@ -1,13 +1,12 @@
 'use server'
 import { revalidatePath } from 'next/cache'
-import { verifySession } from '@/lib/auth/session'
+
 import { createClient } from '@/lib/supabase/server'
 
 export async function revokeSession(sessionId: string) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Verify the session belongs to the user
   const { data: sessionData } = await supabase
@@ -16,7 +15,7 @@ export async function revokeSession(sessionId: string) {
     .eq('id', sessionId)
     .single<{ user_id: string | null }>()
 
-  if (!sessionData || sessionData.user_id !== session.user.id) {
+  if (!sessionData || sessionData.user_id !== user.id) {
     throw new Error('Unauthorized to revoke this session')
   }
 
@@ -36,15 +35,14 @@ export async function revokeSession(sessionId: string) {
 }
 
 export async function revokeAllSessions() {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   const { data: currentSession, error: currentSessionError } = await supabase
     .from('sessions_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .eq('is_current', true)
     .maybeSingle<{ id: string | null }>()
 
@@ -57,7 +55,7 @@ export async function revokeAllSessions() {
       is_active: false,
       deleted_at: new Date().toISOString(),
     })
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
 
   if (currentSession?.id) {
     updateQuery = updateQuery.neq('id', currentSession.id)

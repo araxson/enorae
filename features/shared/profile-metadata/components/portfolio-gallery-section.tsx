@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent } from '@/components/ui/card'
 import {
   Field,
   FieldContent,
@@ -13,6 +12,10 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import {
+  Item,
+  ItemContent,
+} from '@/components/ui/item'
 
 type PortfolioImage = {
   url: string
@@ -120,8 +123,8 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
       </Button>
 
       {images.length > 0 && (
-        <Card>
-          <CardContent className="space-y-4">
+        <Item variant="outline" className="space-y-4">
+          <ItemContent>
             <div>
               <Badge variant="secondary">
                 {images.length} image{images.length !== 1 ? 's' : ''} in portfolio
@@ -161,8 +164,8 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
       )}
     </div>
   )

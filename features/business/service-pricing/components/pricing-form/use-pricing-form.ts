@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 
-import { upsertServicePricing } from '@/features/business/service-pricing/api/mutations'
+import { upsertServicePricing } from '@/features/business/service-pricing/api/mutations/upsert'
 import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 
 const DEFAULT_FORM_STATE = {

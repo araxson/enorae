@@ -1,103 +1,112 @@
 'use client'
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { PricingScenario } from '@/features/business/pricing/types'
-import { formatCurrency, formatTime, getDayName } from './pricing-utils'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+
+interface PricingScenario {
+  day: string
+  hour: number
+  base_price: number
+  adjusted_price: number
+  adjustment_type: string
+  adjustment_percentage: number
+}
 
 interface PriceScenariosTabProps {
   scenarios: PricingScenario[]
   selectedDay: string
   onDayChange: (day: string) => void
+  formatCurrency: (amount: number) => string
+  formatTime: (hour: number) => string
+  getDayName: (day: string) => string
 }
 
 export function PriceScenariosTab({
   scenarios,
   selectedDay,
   onDayChange,
+  formatCurrency,
+  formatTime,
+  getDayName,
 }: PriceScenariosTabProps) {
   const filteredScenarios = selectedDay === 'all'
     ? scenarios
     : scenarios.filter(s => s.day === selectedDay)
 
   return (
-    <Item variant="outline" className="flex-col gap-3">
-      <ItemHeader className="items-start justify-between gap-4">
-        <div>
-          <ItemTitle>Price Scenarios</ItemTitle>
-          <ItemDescription>See how pricing changes throughout the week</ItemDescription>
-        </div>
-        <Select value={selectedDay} onValueChange={onDayChange}>
-          <SelectTrigger className="w-44">
-            <SelectValue placeholder="Filter by day" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Days</SelectItem>
-            <SelectItem value="monday">Monday</SelectItem>
-            <SelectItem value="tuesday">Tuesday</SelectItem>
-            <SelectItem value="wednesday">Wednesday</SelectItem>
-            <SelectItem value="thursday">Thursday</SelectItem>
-            <SelectItem value="friday">Friday</SelectItem>
-            <SelectItem value="saturday">Saturday</SelectItem>
-            <SelectItem value="sunday">Sunday</SelectItem>
-          </SelectContent>
-        </Select>
-      </ItemHeader>
-      <ItemContent>
-        {filteredScenarios.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No price scenarios available</EmptyTitle>
-              <EmptyDescription>Select another day to view adjustments.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <div className="space-y-3">
-            {filteredScenarios.map((scenario, index) => (
-              <Item
-                key={`${scenario.day}-${scenario.hour}-${index}`}
-                variant="outline"
-                className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
-              >
-                <ItemContent className="flex items-center gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="w-24 font-medium">{getDayName(scenario.day)}</span>
-                    <span className="text-sm text-muted-foreground">
-                      {formatTime(scenario.hour)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm text-muted-foreground line-through">
-                      {formatCurrency(scenario.base_price)}
-                    </span>
-                    <span className="font-bold">
-                      {formatCurrency(scenario.adjusted_price)}
-                    </span>
-                    {scenario.adjustment_type !== 'none' && (
-                      <Badge
-                        variant={scenario.adjustment_type === 'surge' ? 'default' : 'secondary'}
-                        className="text-xs"
-                      >
-                        {scenario.adjustment_type === 'surge' ? '+' : '-'}
-                        {scenario.adjustment_percentage}%
-                      </Badge>
-                    )}
-                  </div>
-                </ItemContent>
-              </Item>
-            ))}
-          </div>
-        )}
-      </ItemContent>
-    </Item>
+    <Card>
+      <CardHeader>
+        <ItemGroup className="items-start justify-between gap-4">
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>Price Scenarios</ItemTitle>
+            </ItemContent>
+            <ItemContent>
+              <ItemDescription>
+                See how pricing changes throughout the week
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+          <ItemActions className="flex-none">
+            <Select value={selectedDay} onValueChange={onDayChange}>
+              <SelectTrigger className="w-44">
+                <SelectValue placeholder="Filter by day" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Days</SelectItem>
+                <SelectItem value="monday">Monday</SelectItem>
+                <SelectItem value="tuesday">Tuesday</SelectItem>
+                <SelectItem value="wednesday">Wednesday</SelectItem>
+                <SelectItem value="thursday">Thursday</SelectItem>
+                <SelectItem value="friday">Friday</SelectItem>
+                <SelectItem value="saturday">Saturday</SelectItem>
+                <SelectItem value="sunday">Sunday</SelectItem>
+              </SelectContent>
+            </Select>
+          </ItemActions>
+        </ItemGroup>
+      </CardHeader>
+      <CardContent>
+        <ItemGroup className="flex flex-col gap-3">
+          {filteredScenarios.map((scenario) => (
+            <Item
+              key={`${scenario.day}-${scenario.hour}`}
+              variant="outline"
+              className="items-center justify-between gap-3"
+            >
+              <ItemContent className="flex items-center gap-3">
+                <ItemTitle className="w-24 font-medium">
+                  {getDayName(scenario.day)}
+                </ItemTitle>
+                <ItemDescription>{formatTime(scenario.hour)}</ItemDescription>
+              </ItemContent>
+              <ItemActions className="flex items-center gap-4">
+                <span className="text-sm text-muted-foreground line-through">
+                  {formatCurrency(scenario.base_price)}
+                </span>
+                <span className="font-bold">
+                  {formatCurrency(scenario.adjusted_price)}
+                </span>
+                {scenario.adjustment_type !== 'none' ? (
+                  <Badge variant={scenario.adjustment_type === 'surge' ? 'default' : 'secondary'}>
+                    {scenario.adjustment_type === 'surge' ? '+' : '-'}
+                    {scenario.adjustment_percentage}%
+                  </Badge>
+                ) : null}
+              </ItemActions>
+            </Item>
+          ))}
+        </ItemGroup>
+      </CardContent>
+    </Card>
   )
 }

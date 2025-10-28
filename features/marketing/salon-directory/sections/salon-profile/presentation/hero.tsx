@@ -23,12 +23,12 @@ export function SalonHero({ salon }: SalonHeroProps) {
     <ItemGroup className="gap-4">
       <Item className="flex-col gap-4" variant="muted">
         <ItemHeader>
-          <h1 className="scroll-m-20">{salon['name'] || 'Unnamed Salon'}</h1>
+          <ItemTitle>{salon['name'] || 'Unnamed Salon'}</ItemTitle>
         </ItemHeader>
         {salon['rating_average'] !== null && (
           <Item variant="outline">
             <ItemMedia variant="icon">
-              <Star className="size-4 text-accent" fill="currentColor" aria-hidden="true" />
+              <Star className="size-4" fill="currentColor" aria-hidden="true" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{salon['rating_average'].toFixed(1)}</ItemTitle>
@@ -47,11 +47,14 @@ export function SalonHero({ salon }: SalonHeroProps) {
 
       <Item variant="outline">
         <ItemActions className="w-full justify-end gap-3">
-          <ButtonGroup className="flex flex-wrap gap-3">
+          <ButtonGroup
+            aria-label="Salon hero actions"
+            className="flex flex-wrap gap-3"
+          >
             <Button size="lg" asChild>
               <Link href="/signup">Book Appointment</Link>
             </Button>
-            <Button size="lg" variant="outline">
+            <Button size="lg" type="button" variant="outline">
               Share
             </Button>
           </ButtonGroup>

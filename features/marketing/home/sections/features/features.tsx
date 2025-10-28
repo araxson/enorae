@@ -15,10 +15,10 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import { MarketingSection } from '@/features/marketing/common-components'
 
 import {
   businessFeatures,
@@ -27,7 +27,7 @@ import {
 
 export function Features() {
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <MarketingSection spacing="compact" groupClassName="gap-0">
       <Card>
         <CardHeader className="items-center justify-center">
           <CardTitle>Everything you need</CardTitle>
@@ -53,7 +53,7 @@ export function Features() {
                     <Item key={title} className="flex-col" variant="outline">
                       <ItemContent>
                         <ItemMedia variant="icon">
-                          <Icon className="size-5 text-primary" />
+                          <Icon className="size-5" aria-hidden="true" />
                         </ItemMedia>
                         <ItemTitle>{title}</ItemTitle>
                         <ItemDescription>{description}</ItemDescription>
@@ -75,7 +75,7 @@ export function Features() {
                     <Item key={title} className="flex-col" variant="outline">
                       <ItemContent>
                         <ItemMedia variant="icon">
-                          <Icon className="size-5 text-primary" />
+                          <Icon className="size-5" aria-hidden="true" />
                         </ItemMedia>
                         <ItemTitle>{title}</ItemTitle>
                         <ItemDescription>{description}</ItemDescription>
@@ -88,6 +88,6 @@ export function Features() {
           </Tabs>
         </CardContent>
       </Card>
-    </section>
+    </MarketingSection>
   )
 }

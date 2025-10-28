@@ -1,5 +1,7 @@
 export { AppointmentDetailDialog } from './appointment-detail-dialog'
 export { AppointmentFilters } from './appointment-filters'
+export { AppointmentItem } from './appointment-item'
 export { AppointmentsClient } from './appointments-client'
 export { AppointmentsList } from './appointments-list'
 export { AppointmentStats } from './appointment-stats'
+export { AppointmentsFeature } from './appointments-feature'

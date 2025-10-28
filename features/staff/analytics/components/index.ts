@@ -1,1 +1,8 @@
 export { StaffAnalyticsDashboard } from './staff-analytics-dashboard'
+export { MetricsSummary } from './dashboard/metrics-summary'
+export { PerformanceTab } from './dashboard/performance-tab'
+export { RevenueBreakdownTab } from './dashboard/revenue-breakdown-tab'
+export { CustomerRelationshipsTab } from './dashboard/customer-relationships-tab'
+export { MetricsCards } from './dashboard/metrics-cards'
+export { RevenueTab } from './dashboard/revenue-tab'
+export { CustomersTab } from './dashboard/customers-tab'

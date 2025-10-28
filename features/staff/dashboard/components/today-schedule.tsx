@@ -35,14 +35,8 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
     return (
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Today&apos;s Schedule</CardTitle>
-                <CardDescription>Your appointments for today will appear here</CardDescription>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Today&apos;s Schedule</CardTitle>
+          <CardDescription>Your appointments for today will appear here</CardDescription>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -77,20 +71,18 @@ export function TodaySchedule({ appointments }: TodayScheduleProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Today&apos;s Schedule</CardTitle>
-              <CardDescription>{appointments.length} appointments</CardDescription>
-            </ItemContent>
-            <ItemActions className="flex items-center gap-2">
-              <CheckCircle className="h-3 w-3" />
-              <Badge variant="secondary">
-                {completedCount}/{appointments.length}
-              </Badge>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <Item variant="muted" size="sm">
+          <ItemContent>
+            <CardTitle>Today&apos;s Schedule</CardTitle>
+            <CardDescription>{appointments.length} appointments</CardDescription>
+          </ItemContent>
+          <ItemActions className="flex items-center gap-2">
+            <CheckCircle className="h-3 w-3" />
+            <Badge variant="secondary">
+              {completedCount}/{appointments.length}
+            </Badge>
+          </ItemActions>
+        </Item>
       </CardHeader>
       <Separator />
       <CardContent>

@@ -9,15 +9,14 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemGroup,
 } from '@/components/ui/item'
-import { StatBadge } from '@/features/marketing/common-components'
+import { MarketingSection, StatBadge } from '@/features/marketing/common-components'
 
 import { metrics } from './metrics.data'
 
 export function Metrics() {
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <MarketingSection spacing="compact" groupClassName="gap-0">
       <Card>
         <CardHeader className="items-center justify-center">
           <CardTitle>Trusted by beauty professionals</CardTitle>
@@ -38,6 +37,6 @@ export function Metrics() {
           </div>
         </CardContent>
       </Card>
-    </section>
+    </MarketingSection>
   )
 }

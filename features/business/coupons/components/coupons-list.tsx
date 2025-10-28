@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react'
 import { Scissors } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,

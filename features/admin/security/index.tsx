@@ -1,4 +1,4 @@
-import { AdminSecurityClient } from './components/admin-security-client'
+import { AdminSecurityClient } from './components'
 
 export async function SecurityAudit() {
   return <AdminSecurityClient />

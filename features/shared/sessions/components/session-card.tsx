@@ -1,7 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { SessionCardProps } from '@/features/shared/sessions/types'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps) {
   const formatDate = (date: string | null) => {
@@ -31,31 +38,37 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
   const sessionLabel = session['id']?.substring(0, 8) || 'Unknown'
 
   return (
-    <Card>
-      <CardHeader className="space-y-4">
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <CardTitle>Session {sessionLabel}</CardTitle>
-              {session.is_current && <Badge variant="default">Current session</Badge>}
-              {session['is_suspicious'] && <Badge variant="destructive">Suspicious</Badge>}
+              <ItemTitle>
+                Session
+                {' '}
+                {sessionLabel}
+              </ItemTitle>
+              {session.is_current ? <Badge variant="default">Current session</Badge> : null}
+              {session['is_suspicious'] ? <Badge variant="destructive">Suspicious</Badge> : null}
             </div>
-            <CardDescription>{getActivityStatus(session['updated_at'])}</CardDescription>
+            <ItemDescription>{getActivityStatus(session['updated_at'])}</ItemDescription>
           </div>
 
-          {!session.is_current && session['id'] && (
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => onRevoke(session['id']!)}
-              disabled={isRevoking}
-            >
-              {isRevoking ? 'Revoking...' : 'Revoke'}
-            </Button>
-          )}
+          {!session.is_current && session['id'] ? (
+            <ItemActions>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() => onRevoke(session['id']!)}
+                disabled={isRevoking}
+              >
+                {isRevoking ? 'Revoking...' : 'Revoke'}
+              </Button>
+            </ItemActions>
+          ) : null}
         </div>
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         <dl className="grid gap-2">
           <div className="flex flex-wrap gap-3">
             <dt className="text-muted-foreground">Created</dt>
@@ -70,7 +83,7 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
             <dd>{session['is_active'] ? 'Active' : 'Inactive'}</dd>
           </div>
         </dl>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -6,6 +6,12 @@ import { format } from 'date-fns'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '@/features/business/appointments/api/mutations'
 import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface AppointmentsTableProps {
   appointments: AppointmentWithDetails[]
@@ -49,7 +55,13 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Appointments</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>Appointments</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <Table>

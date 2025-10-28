@@ -81,6 +81,6 @@ List findings as:
 
 Review:
 - `docs/ruls/architecture-patterns.md`
-- `docs/ruls/file-organization-patterns.md`
+- `docs/ruls/architecture-patterns.md`
 
 Complete configuration audit and report all hardcoded values.

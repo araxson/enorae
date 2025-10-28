@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 
 import { getUserFavorites } from './api/queries'
-import { FavoritesList } from './components/favorites-list'
+import { FavoritesList } from './components'
 
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { Spinner } from '@/components/ui/spinner'

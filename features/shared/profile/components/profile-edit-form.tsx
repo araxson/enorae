@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -19,6 +18,13 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Profile = Database['public']['Views']['profiles_view']['Row']
 
@@ -86,12 +92,14 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Edit profile</CardTitle>
-        <CardDescription>Update your personal information and avatar</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>Edit profile</ItemTitle>
+          <ItemDescription>Update your personal information and avatar</ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Avatar Upload */}
           <div className="flex items-center gap-6">
@@ -180,7 +188,7 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
             </Button>
           </ButtonGroup>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

@@ -1,4 +1,6 @@
 export { AdvancedPreferencesForm } from './advanced-preferences-form'
 export { NotificationPreferencesForm } from './notification-preferences-form'
+export { NotificationSection } from './notification-section'
+export { NotificationToggleItem } from './notification-toggle-item'
 export { PreferencesList } from './preferences-list'
 export { UserPreferencesClient } from './user-preferences-client'

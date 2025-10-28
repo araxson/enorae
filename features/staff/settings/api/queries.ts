@@ -1,5 +1,4 @@
 import 'server-only'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { UserPreferences } from '@/features/staff/settings/types'
 
@@ -37,16 +36,15 @@ const DEFAULT_PREFERENCES: UserPreferences = {
 }
 
 export async function getUserPreferences(): Promise<UserPreferences> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Get profile metadata which stores preferences
   const { data: profile } = await supabase
     .from('profiles_view')
     .select('id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single<{ id: string }>()
 
   if (!profile?.id) return DEFAULT_PREFERENCES

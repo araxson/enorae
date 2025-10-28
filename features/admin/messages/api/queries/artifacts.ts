@@ -1,10 +1,10 @@
 import { parseModeration } from './moderation'
-import { toTimestamp } from './thread-utils'
+import { toTimestamp } from './utils'
 import type {
   AdminMessageRow,
   MessageRow,
   ModerationQueueItem,
-} from './types'
+} from '../types'
 
 export interface ActivityEntry {
   inbound: number

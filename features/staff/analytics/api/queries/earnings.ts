@@ -3,6 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getStaffPerformanceMetrics } from './performance'
 
+export interface StaffEarningsSummary {
+  total_revenue: number
+  estimated_commission: number
+  commission_rate: number
+  completed_appointments: number
+  avg_earning_per_appointment: number
+  period_start: string
+  period_end: string
+}
+
 export async function getStaffEarningsSummary(
   staffId?: string,
   startDate?: string,

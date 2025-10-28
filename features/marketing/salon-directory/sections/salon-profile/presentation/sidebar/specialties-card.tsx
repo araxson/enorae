@@ -6,7 +6,13 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { Salon } from '../types'
 
 interface SpecialtiesCardProps {
@@ -28,7 +34,10 @@ export function SpecialtiesCard({ salon }: SpecialtiesCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted">
+            <Item variant="muted" className="flex-col gap-1">
+              <ItemHeader>
+                <ItemTitle>Signature services</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   Check back as salons update their highlighted expertise.

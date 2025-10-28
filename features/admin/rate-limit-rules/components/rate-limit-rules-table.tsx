@@ -150,8 +150,13 @@ export function RateLimitRulesTable({ rules }: RateLimitRulesTableProps) {
       <ScrollBar orientation="horizontal" />
       </ScrollArea>
       {isLoading ? (
-        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center"
+        >
           <Spinner className="size-6" />
+          <span className="sr-only">Applying rate limit changes</span>
         </div>
       ) : null}
     </div>

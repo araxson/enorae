@@ -1,5 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { StaffClient } from './components/staff-client'
+import { StaffClient } from './components'
 import { getStaffDashboardData } from './api/queries'
 
 export async function AdminStaff() {

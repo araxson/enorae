@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import {
@@ -10,6 +9,13 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { PricingFormState } from './use-pricing-form'
 
 type TaxCommissionSectionProps = {
@@ -19,12 +25,14 @@ type TaxCommissionSectionProps = {
 
 export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Tax & Commission</CardTitle>
-        <CardDescription>Set taxation and staff commission details.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>Tax &amp; Commission</ItemTitle>
+          <ItemDescription>Set taxation and staff commission details.</ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
         <FieldGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Field>
             <FieldLabel htmlFor="taxRate">Tax Rate (%)</FieldLabel>
@@ -86,7 +94,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
           </FieldContent>
           <FieldDescription>ISO currency code (e.g., USD, EUR).</FieldDescription>
         </Field>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

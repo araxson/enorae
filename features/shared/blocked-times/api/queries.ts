@@ -3,6 +3,11 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 
+// DATABASE PATTERN NOTE: Currently reading from schema table scheduling.blocked_times
+// TODO: Create view view_blocked_times_with_relations in scheduling schema for proper read pattern
+// View should include: blocked_time fields + staff info + salon info
+// Once view is created, update all queries to use: .from('view_blocked_times_with_relations')
+
 type BlockedTime = Database['scheduling']['Tables']['blocked_times']['Row']
 
 export type BlockedTimeWithRelations = BlockedTime & {

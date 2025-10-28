@@ -7,7 +7,8 @@ import {
   getStaffCustomerRelationships,
   getStaffEarningsSummary,
 } from './api/queries'
-import { StaffAnalyticsDashboard } from './components/staff-analytics-dashboard'
+import { StaffAnalyticsDashboard } from './components'
+
 export const staffAnalyticsMetadata = genMeta({
   title: 'My Analytics',
   description: 'Track your performance, earnings, and customer relationships',

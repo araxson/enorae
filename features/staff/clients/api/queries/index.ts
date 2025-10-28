@@ -1,5 +1,17 @@
-// Barrel export for backward compatibility
-export * from './client-list'
-export * from './client-details'
-export * from './client-history'
-export * from './client-retention'
+import 'server-only'
+
+// Client list operations
+export { getStaffClients } from './client-list'
+export type { ClientWithHistory } from './client-list'
+
+// Client details operations
+export { getClientDetail } from './client-details'
+export type { ClientDetail } from './client-details'
+
+// Client history operations
+export { getClientAppointmentHistory, getClientServiceHistory } from './client-history'
+export type { ClientServiceHistory } from './client-history'
+
+// Client retention metrics
+export { getClientRetentionMetrics } from './client-retention'
+export type { ClientRetentionMetrics } from './client-retention'

@@ -1,8 +1,17 @@
 'use client'
 
-import { Star, MessageSquare, Flag, TrendingUp } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Flag, MessageSquare, Star, TrendingUp } from 'lucide-react'
 type ReviewsStatsProps = {
   stats: {
     totalReviews: number
@@ -14,78 +23,100 @@ type ReviewsStatsProps = {
 }
 
 export function ReviewsStats({ stats }: ReviewsStatsProps) {
-  const maxCount = Math.max(...stats.ratingDistribution.map(d => d.count), 1)
+  const maxCount = Math.max(...stats.ratingDistribution.map((distribution) => distribution.count), 1)
 
   return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Average Rating</CardTitle>
-          <Star className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-baseline gap-2">
-            <div className="text-2xl font-bold">{stats.averageRating.toFixed(1)}</div>
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`h-4 w-4 ${
-                    i < Math.floor(stats.averageRating)
-                      ? 'fill-accent text-accent'
-                      : 'text-muted-foreground/30'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-          <p className="leading-7 text-xs text-muted-foreground mt-2">{stats.totalReviews} total reviews</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Pending Responses</CardTitle>
-          <MessageSquare className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.pendingResponses}</div>
-          <p className="leading-7 text-xs text-muted-foreground mt-2">
-            {stats.totalReviews > 0
-              ? `${Math.round((stats.pendingResponses / stats.totalReviews) * 100)}% of reviews`
-              : 'No reviews yet'}
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Flagged Reviews</CardTitle>
-          <Flag className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{stats.flaggedCount}</div>
-          <p className="leading-7 text-xs text-muted-foreground mt-2">Require moderation</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle>Rating Distribution</CardTitle>
-          <TrendingUp className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
+    <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Average Rating</ItemTitle>
+          <ItemMedia variant="icon">
+            <Star className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent>
           <div className="flex flex-col gap-2">
-            {stats.ratingDistribution.map((dist) => (
-              <div key={dist.rating} className="flex gap-3 items-center">
-                <p className="text-xs text-muted-foreground w-8">{dist.rating} ★</p>
-                <Progress value={(dist.count / maxCount) * 100} className="flex-1 h-2" />
-                <p className="text-xs text-muted-foreground w-8 text-right">{dist.count}</p>
+            <div className="flex items-baseline gap-2">
+              <CardTitle>{stats.averageRating.toFixed(1)}</CardTitle>
+              <span className="flex gap-1" aria-hidden="true">
+                {[...Array(5)].map((_, index) => (
+                  <Star
+                    key={index}
+                    className={`h-4 w-4 ${
+                      index < Math.floor(stats.averageRating)
+                        ? 'fill-accent text-accent'
+                        : 'text-muted-foreground/30'
+                    }`}
+                  />
+                ))}
+              </span>
+            </div>
+            <ItemDescription aria-live="polite">
+              {stats.totalReviews}
+              {' '}
+              total reviews
+            </ItemDescription>
+          </div>
+        </ItemContent>
+      </Item>
+
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Pending Responses</ItemTitle>
+          <ItemMedia variant="icon">
+            <MessageSquare className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent>
+          <div className="flex flex-col gap-2">
+            <CardTitle>{stats.pendingResponses}</CardTitle>
+            <ItemDescription>
+              {stats.totalReviews > 0
+                ? `${Math.round((stats.pendingResponses / stats.totalReviews) * 100)}% of reviews`
+                : 'No reviews yet'}
+            </ItemDescription>
+          </div>
+        </ItemContent>
+      </Item>
+
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Flagged Reviews</ItemTitle>
+          <ItemMedia variant="icon">
+            <Flag className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent>
+          <div className="flex flex-col gap-2">
+            <CardTitle>{stats.flaggedCount}</CardTitle>
+            <ItemDescription>Require moderation</ItemDescription>
+          </div>
+        </ItemContent>
+      </Item>
+
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Rating Distribution</ItemTitle>
+          <ItemMedia variant="icon">
+            <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent>
+          <div className="flex flex-col gap-2">
+            {stats.ratingDistribution.map((distribution) => (
+              <div key={distribution.rating} className="flex items-center gap-3">
+                <span className="w-8 text-xs text-muted-foreground">
+                  {distribution.rating}
+                  {' '}
+                  ★
+                </span>
+                <Progress value={(distribution.count / maxCount) * 100} className="h-2 flex-1" />
+                <span className="w-8 text-right text-xs text-muted-foreground">{distribution.count}</span>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

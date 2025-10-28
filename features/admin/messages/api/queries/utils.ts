@@ -4,7 +4,7 @@ import type {
   MessageRow,
   ThreadPriority,
   ThreadStatus,
-} from './types'
+} from '../types'
 
 export const toTimestamp = (value: string | null | undefined): number | null => {
   if (!value) return null

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
@@ -26,10 +26,10 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
-                <CardTitle>Recent reviews</CardTitle>
-                <CardDescription>
+                <ItemTitle>Recent reviews</ItemTitle>
+                <ItemDescription>
                   Monitor sentiment and identify moderation needs quickly.
-                </CardDescription>
+                </ItemDescription>
               </ItemContent>
             </Item>
           </ItemGroup>
@@ -54,10 +54,10 @@ export function AdminOverviewReviewsTab({ reviews }: ReviewsTabProps) {
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
-              <CardTitle>Recent reviews</CardTitle>
-              <CardDescription>
+              <ItemTitle>Recent reviews</ItemTitle>
+              <ItemDescription>
                 Monitor sentiment and identify moderation needs quickly.
-              </CardDescription>
+              </ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>

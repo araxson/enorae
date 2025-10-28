@@ -1,7 +1,7 @@
 'use server'
 
 // Types
-export type { ActionResponse, ThreadMetadata } from './types'
+export type { ActionResponse, ThreadMetadata } from '../types'
 
 // Messaging operations
 export { messageClient } from './messaging'

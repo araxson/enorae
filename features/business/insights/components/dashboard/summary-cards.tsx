@@ -1,5 +1,13 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { DollarSign, TrendingDown, TrendingUp, Users } from 'lucide-react'
 import type { InsightsSummary } from './types'
 import { formatCurrency, formatPercentage } from './utils'
 
@@ -11,84 +19,126 @@ export function SummaryCards({ summary }: SummaryCardsProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
-        <CardHeader className="space-y-1 pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle>Total Customers</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+        <CardHeader>
+          <div className="space-y-1 pb-2">
+            <ItemGroup>
+              <Item className="items-center justify-between gap-2">
+                <ItemContent>
+                  <ItemTitle>Total Customers</ItemTitle>
+                </ItemContent>
+                <ItemMedia variant="icon">
+                  <Users className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                </ItemMedia>
+              </Item>
+              <Item>
+                <ItemContent>
+                  <ItemDescription>Reach of your active customer base.</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-          <CardDescription>Reach of your active customer base.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{summary.total_customers}</div>
+          <CardTitle>{summary.total_customers}</CardTitle>
           <p className="text-xs text-muted-foreground">
             {summary.active_customers} active
           </p>
         </CardContent>
         <CardFooter>
-          Grow by converting recent leads into first appointments.
+          <p className="text-xs text-muted-foreground">Grow by converting recent leads into first appointments.</p>
         </CardFooter>
       </Card>
 
       <Card>
-        <CardHeader className="space-y-1 pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle>Avg Lifetime Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-primary" />
+        <CardHeader>
+          <div className="space-y-1 pb-2">
+            <ItemGroup>
+              <Item className="items-center justify-between gap-2">
+                <ItemContent>
+                  <ItemTitle>Avg Lifetime Value</ItemTitle>
+                </ItemContent>
+                <ItemMedia variant="icon">
+                  <DollarSign className="h-4 w-4 text-primary" aria-hidden="true" />
+                </ItemMedia>
+              </Item>
+              <Item>
+                <ItemContent>
+                  <ItemDescription>Revenue generated per guest over their relationship.</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-          <CardDescription>Revenue generated per guest over their relationship.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {formatCurrency(summary.avg_lifetime_value)}
-          </div>
+          <CardTitle>{formatCurrency(summary.avg_lifetime_value)}</CardTitle>
           <p className="text-xs text-muted-foreground">
             {summary.avg_visits_per_customer.toFixed(1)} avg visits
           </p>
         </CardContent>
         <CardFooter>
-          Increase with membership bundles and targeted upsells.
+          <p className="text-xs text-muted-foreground">Increase with membership bundles and targeted upsells.</p>
         </CardFooter>
       </Card>
 
       <Card>
-        <CardHeader className="space-y-1 pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle>Retention Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-primary" />
+        <CardHeader>
+          <div className="space-y-1 pb-2">
+            <ItemGroup>
+              <Item className="items-center justify-between gap-2">
+                <ItemContent>
+                  <ItemTitle>Retention Rate</ItemTitle>
+                </ItemContent>
+                <ItemMedia variant="icon">
+                  <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+                </ItemMedia>
+              </Item>
+              <Item>
+                <ItemContent>
+                  <ItemDescription>Percent of customers returning for repeat visits.</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-          <CardDescription>Percent of customers returning for repeat visits.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {formatPercentage(summary.retention_rate)}
-          </div>
+          <CardTitle>{formatPercentage(summary.retention_rate)}</CardTitle>
           <p className="text-xs text-muted-foreground">
             Customer retention
           </p>
         </CardContent>
         <CardFooter>
-          Keep momentum with loyalty rewards and targeted outreach.
+          <p className="text-xs text-muted-foreground">Keep momentum with loyalty rewards and targeted outreach.</p>
         </CardFooter>
       </Card>
 
       <Card>
-        <CardHeader className="space-y-1 pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle>Churn Rate</CardTitle>
-            <TrendingDown className="h-4 w-4 text-destructive" />
+        <CardHeader>
+          <div className="space-y-1 pb-2">
+            <ItemGroup>
+              <Item className="items-center justify-between gap-2">
+                <ItemContent>
+                  <ItemTitle>Churn Rate</ItemTitle>
+                </ItemContent>
+                <ItemMedia variant="icon">
+                  <TrendingDown className="h-4 w-4 text-destructive" aria-hidden="true" />
+                </ItemMedia>
+              </Item>
+              <Item>
+                <ItemContent>
+                  <ItemDescription>Guests not returning within the expected window.</ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </div>
-          <CardDescription>Guests not returning within the expected window.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-destructive">
-            {formatPercentage(summary.churn_rate)}
-          </div>
+          <CardTitle>{formatPercentage(summary.churn_rate)}</CardTitle>
           <p className="text-xs text-muted-foreground">
             {summary.segmentation.churned} churned customers
           </p>
         </CardContent>
         <CardFooter>
-          Trigger win-back campaigns for churned guests to restore revenue.
+          <p className="text-xs text-muted-foreground">Trigger win-back campaigns for churned guests to restore revenue.</p>
         </CardFooter>
       </Card>
     </div>

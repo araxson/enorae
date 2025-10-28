@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Item, ItemContent, ItemFooter, ItemHeader } from '@/components/ui/item'
 
 import { ErrorBoundaryActions } from './actions'
 import { DevelopmentDetails } from './development-details'
@@ -42,17 +42,17 @@ export function ErrorBoundary({
   return (
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto flex min-h-[60vh] w-full max-w-6xl flex-col items-center gap-6 px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-lg border-destructive/50">
-          <CardHeader>
+        <Item variant="outline" className="w-full max-w-lg border-destructive/50">
+          <ItemHeader>
             <div className="flex gap-6">
               {getErrorIcon(errorType)}
               <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">
                 {title ?? ERROR_TITLES[errorType]}
               </h2>
             </div>
-          </CardHeader>
+          </ItemHeader>
 
-          <CardContent>
+          <ItemContent>
             <div className="flex flex-col gap-6">
               <p>
                 {description ?? ERROR_DESCRIPTIONS[errorType]}
@@ -62,12 +62,12 @@ export function ErrorBoundary({
 
               {showErrorDetails && <DevelopmentDetails message={error.message} />}
             </div>
-          </CardContent>
+          </ItemContent>
 
-          <CardFooter>
+          <ItemFooter>
             <ErrorBoundaryActions reset={reset} homeHref={homeHref} homeLabel={homeLabel} isLoading={false} />
-          </CardFooter>
-        </Card>
+          </ItemFooter>
+        </Item>
       </div>
     </section>
   )

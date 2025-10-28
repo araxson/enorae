@@ -9,7 +9,14 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 
@@ -41,6 +48,9 @@ export function SalonGrid({ salons }: SalonGridProps) {
   return (
     <ItemGroup className="gap-4">
       <Item variant="muted">
+        <ItemHeader>
+          <ItemTitle>Search results</ItemTitle>
+        </ItemHeader>
         <ItemContent>
           <ItemDescription>
             {salons.length} salon{salons.length !== 1 ? 's' : ''} found
@@ -48,6 +58,9 @@ export function SalonGrid({ salons }: SalonGridProps) {
         </ItemContent>
       </Item>
       <Item variant="muted">
+        <ItemHeader>
+          <ItemTitle>Next steps</ItemTitle>
+        </ItemHeader>
         <ItemContent>
           <ItemDescription>Select a listing to view services, book, or share details with friends.</ItemDescription>
         </ItemContent>

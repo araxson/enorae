@@ -5,22 +5,11 @@ import { Plus, CalendarCheck2, CalendarClock, PieChart, Users } from 'lucide-rea
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
 import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
-import { RequestCard } from './request-card'
 import { CreateRequestDialog } from './create-request-dialog'
+import { BalanceTab } from './balance-tab'
+import { TeamCalendarTab } from './team-calendar-tab'
+import { RequestsListTab } from './requests-list-tab'
 import type { TimeOffRequestWithStaff, TimeOffBalance, TeamTimeOffCalendar } from '@/features/staff/time-off/api/queries'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
 
 interface TimeOffRequestsClientProps {
   staffId: string
@@ -107,182 +96,17 @@ export function TimeOffRequestsClient({
           </Button>
         </div>
 
-        {activeTab === 'balance' && (
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item variant="muted" size="sm">
-                    <ItemContent>
-                      <CardTitle>Time Off Balance ({balance.year})</CardTitle>
-                      <CardDescription>Your annual time off allocation and usage</CardDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <ItemGroup className="grid grid-cols-3 gap-4 text-center">
-                    <Item variant="outline" size="sm">
-                      <ItemContent>
-                        <ItemTitle>{balance.total_days}</ItemTitle>
-                        <ItemDescription>Total</ItemDescription>
-                      </ItemContent>
-                    </Item>
-                    <Item variant="outline" size="sm">
-                      <ItemContent>
-                        <ItemTitle>
-                          <span className="text-secondary">{balance.used_days}</span>
-                        </ItemTitle>
-                        <ItemDescription>Used</ItemDescription>
-                      </ItemContent>
-                    </Item>
-                    <Item variant="outline" size="sm">
-                      <ItemContent>
-                        <ItemTitle>
-                          <span className="text-primary">{balance.remaining_days}</span>
-                        </ItemTitle>
-                        <ItemDescription>Remaining</ItemDescription>
-                      </ItemContent>
-                    </Item>
-                  </ItemGroup>
-                  <div className="space-y-2">
-                    <ItemGroup>
-                      <Item>
-                        <ItemContent>
-                          <ItemDescription>Used: {balance.used_days} days</ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                          <div className="text-muted-foreground text-sm font-medium">
-                            {usagePercent.toFixed(0)}%
-                          </div>
-                        </ItemActions>
-                      </Item>
-                    </ItemGroup>
-                    <Progress value={usagePercent} className="h-2" />
-                  </div>
-                  {balance.pending_days > 0 && (
-                    <div className="space-y-2">
-                      <ItemGroup>
-                        <Item>
-                          <ItemContent>
-                            <ItemDescription>Pending approval: {balance.pending_days} days</ItemDescription>
-                          </ItemContent>
-                          <ItemActions>
-                            <div className="text-muted-foreground text-sm font-medium">
-                              {pendingPercent.toFixed(0)}%
-                            </div>
-                          </ItemActions>
-                        </Item>
-                      </ItemGroup>
-                      <Progress value={pendingPercent} className="h-2" />
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+        {activeTab === 'balance' && <BalanceTab balance={balance} />}
 
-        {activeTab === 'team' && (
-          <div className="space-y-4">
-            <ItemGroup>
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <CardTitle>Team Time Off Calendar</CardTitle>
-                  <ItemDescription>See upcoming requests across the staff.</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-            {teamCalendar.length === 0 ? (
-              <Card>
-                <CardContent>
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyTitle>No upcoming time off</EmptyTitle>
-                      <EmptyDescription>No upcoming team time off</EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-4">
-                {teamCalendar.map((entry, idx) => (
-                  <Card key={`${entry['staff_id']}-${idx}`}>
-                    <CardHeader>
-                      <ItemGroup>
-                        <Item variant="muted" size="sm">
-                          <ItemContent>
-                            <ItemTitle>{entry['staff_name']}</ItemTitle>
-                            {entry.staff_title && (
-                              <ItemDescription>{entry.staff_title}</ItemDescription>
-                            )}
-                          </ItemContent>
-                          <ItemActions>
-                            <Badge variant={entry['status'] === 'approved' ? 'default' : 'secondary'}>
-                              {entry['status']}
-                            </Badge>
-                          </ItemActions>
-                        </Item>
-                      </ItemGroup>
-                    </CardHeader>
-                    <CardContent>
-                      <ItemGroup>
-                        <Item>
-                          <ItemContent>
-                            <ItemTitle>
-                              {new Date(entry.start_at).toLocaleDateString()} – {new Date(entry.end_at).toLocaleDateString()}
-                            </ItemTitle>
-                            <ItemDescription>
-                              <span className="capitalize">
-                                {entry.request_type.replace('_', ' ')}
-                              </span>
-                            </ItemDescription>
-                          </ItemContent>
-                        </Item>
-                      </ItemGroup>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        {activeTab === 'team' && <TeamCalendarTab teamCalendar={teamCalendar} />}
 
         {(activeTab === 'all' || activeTab === 'pending') && (
-          <>
-            {pendingRequests.length > 0 && activeTab === 'all' && (
-              <Alert>
-                <AlertTitle>{pendingRequests.length} pending request(s)</AlertTitle>
-                <AlertDescription>Awaiting review</AlertDescription>
-              </Alert>
-            )}
-
-            {displayedRequests.length === 0 ? (
-              <Card>
-                <CardContent>
-                  <Empty>
-                    <EmptyHeader>
-                      <EmptyTitle>No time-off requests yet</EmptyTitle>
-                      <EmptyDescription>Click the New request button to submit a time-off request.</EmptyDescription>
-                    </EmptyHeader>
-                    <EmptyContent>
-                      <Button onClick={() => setIsCreateDialogOpen(true)}>
-                        <Plus className="mr-2 h-4 w-4" />
-                        New request
-                      </Button>
-                    </EmptyContent>
-                  </Empty>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {displayedRequests.map((request) => (
-                  <RequestCard key={request['id']} request={request} isStaffView />
-                ))}
-              </div>
-            )}
-          </>
+          <RequestsListTab
+            displayedRequests={displayedRequests}
+            pendingRequests={pendingRequests}
+            showPendingAlert={activeTab === 'all'}
+            onCreateClick={() => setIsCreateDialogOpen(true)}
+          />
         )}
       </div>
 

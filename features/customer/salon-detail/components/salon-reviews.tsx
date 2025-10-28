@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
-import { markReviewAsHelpful } from '@/features/customer/reviews/api/helpful-mutations'
+import { markReviewAsHelpful } from '@/features/customer/reviews/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 import { Spinner } from '@/components/ui/spinner'
 import {

@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, Activity } from 'lucide-react'
 import type { AuditLog } from '@/features/admin/security/api/queries'
@@ -21,7 +21,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -35,8 +41,8 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
           <ItemGroup>
             <Item variant="muted">
               <ItemContent>
-                <CardTitle>Audit Logs</CardTitle>
-                <CardDescription>No audit entries available.</CardDescription>
+                <ItemTitle>Audit Logs</ItemTitle>
+                <ItemDescription>No audit entries available.</ItemDescription>
               </ItemContent>
             </Item>
           </ItemGroup>
@@ -73,8 +79,8 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
         <ItemGroup>
           <Item variant="muted">
             <ItemContent>
-              <CardTitle>Audit logs</CardTitle>
-              <CardDescription>Latest recorded admin and system activity</CardDescription>
+              <ItemTitle>Audit logs</ItemTitle>
+              <ItemDescription>Latest recorded admin and system activity</ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>

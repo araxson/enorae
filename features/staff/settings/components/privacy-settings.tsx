@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
 import type { PrivacySettings } from '@/features/staff/settings/types'
 import {
@@ -142,7 +143,14 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
         <div className="flex w-full justify-end">
           <ButtonGroup>
             <Button onClick={handleSave} disabled={isSaving}>
-              {isSaving ? 'Saving...' : 'Save Changes'}
+              {isSaving ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving…</span>
+                </>
+              ) : (
+                <span>Save Changes</span>
+              )}
             </Button>
           </ButtonGroup>
         </div>

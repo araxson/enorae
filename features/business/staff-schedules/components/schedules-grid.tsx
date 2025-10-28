@@ -1,47 +1,23 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { Trash2, Power, PowerOff } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import { toast } from 'sonner'
 import { deleteStaffSchedule, toggleScheduleActive } from '@/features/business/staff-schedules/api/mutations'
 import type { StaffScheduleWithDetails } from '@/features/business/staff-schedules/api/queries'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+  ItemContent,
+} from '@/components/ui/item'
+import { StaffScheduleTable } from './staff-schedule-table'
 
 type SchedulesGridProps = {
   schedules: StaffScheduleWithDetails[]
   onUpdate?: () => void
-}
-
-const DAY_NAMES: Record<string, string> = {
-  monday: 'Monday',
-  tuesday: 'Tuesday',
-  wednesday: 'Wednesday',
-  thursday: 'Thursday',
-  friday: 'Friday',
-  saturday: 'Saturday',
-  sunday: 'Sunday',
-}
-
-const DAY_ORDER: Record<string, number> = {
-  monday: 1,
-  tuesday: 2,
-  wednesday: 3,
-  thursday: 4,
-  friday: 5,
-  saturday: 6,
-  sunday: 0,
 }
 
 export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
@@ -106,103 +82,37 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
     }
   }, [onUpdate])
 
-  const formatTime = useCallback((time: string | null) => {
-    if (!time) return ''
-    // Remove seconds if present
-    return time.substring(0, 5)
-  }, [])
-
   if (Object.keys(staffGroups).length === 0) {
     return (
-      <Card>
-        <CardContent>
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No schedules configured</EmptyTitle>
-              <EmptyDescription>Add a schedule above to get started.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </CardContent>
-      </Card>
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>No schedules configured</EmptyTitle>
+          <EmptyDescription>Add a schedule above to get started.</EmptyDescription>
+        </EmptyHeader>
+      </Empty>
     )
   }
 
   return (
-    <div className="grid gap-4 grid-cols-1">
+    <ItemGroup className="grid grid-cols-1 gap-4">
       {Object.values(staffGroups).map((group) => (
-        <Card key={group.staffId || 'unknown'}>
-          <CardHeader>
+        <Item key={group.staffId || 'unknown'} variant="outline" className="flex-col gap-4">
+          <ItemHeader>
             <div className="flex items-center gap-2">
-              <CardTitle>{group.staffName}</CardTitle>
-              {group.staffTitle && <Badge variant="outline">{group.staffTitle}</Badge>}
+              <ItemTitle>{group.staffName}</ItemTitle>
+              {group.staffTitle ? <Badge variant="outline">{group.staffTitle}</Badge> : null}
             </div>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Day</TableHead>
-                  <TableHead>Start Time</TableHead>
-                  <TableHead>End Time</TableHead>
-                  <TableHead>Break</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {group.schedules
-                  .sort((a: StaffScheduleWithDetails, b: StaffScheduleWithDetails) => (DAY_ORDER[a['day_of_week'] || 'monday'] || 0) - (DAY_ORDER[b['day_of_week'] || 'monday'] || 0))
-                  .map((schedule: StaffScheduleWithDetails) => (
-                    <TableRow key={schedule['id']}>
-                      <TableCell className="font-medium">
-                        {DAY_NAMES[schedule['day_of_week'] || 'monday'] || schedule['day_of_week']}
-                      </TableCell>
-                      <TableCell>{formatTime(schedule['start_time'])}</TableCell>
-                      <TableCell>{formatTime(schedule['end_time'])}</TableCell>
-                      <TableCell>
-                        {schedule['break_start'] && schedule['break_end'] ? (
-                          <CardDescription>
-                            {formatTime(schedule['break_start'])} - {formatTime(schedule['break_end'])}
-                          </CardDescription>
-                        ) : (
-                          <CardDescription>No break</CardDescription>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={schedule['is_active'] ? 'default' : 'secondary'}>
-                          {schedule['is_active'] ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <ButtonGroup className="ml-auto justify-end">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => schedule['id'] && handleToggleActive(schedule['id'], schedule['is_active'])}
-                          >
-                            {schedule['is_active'] ? (
-                              <PowerOff className="h-4 w-4" />
-                            ) : (
-                              <Power className="h-4 w-4" />
-                            )}
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => schedule['id'] && handleDelete(schedule['id'])}
-                            disabled={deletingId === schedule['id']}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </ButtonGroup>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+          </ItemHeader>
+          <ItemContent>
+            <StaffScheduleTable
+              schedules={group.schedules}
+              deletingId={deletingId}
+              onDelete={handleDelete}
+              onToggleActive={handleToggleActive}
+            />
+          </ItemContent>
+        </Item>
       ))}
-    </div>
+    </ItemGroup>
   )
 }

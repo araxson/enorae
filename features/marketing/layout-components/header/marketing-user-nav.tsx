@@ -50,7 +50,7 @@ export function MarketingUserNav({ user, role }: MarketingUserNavProps) {
   }
 
   const trigger = (
-    <Button variant="ghost" size="icon" className="relative rounded-full" aria-label="User menu">
+    <Button variant="ghost" size="icon" aria-label="User menu">
       <Avatar className="h-9 w-9">
         <AvatarImage src={userData.avatar || undefined} alt={user['email'] || 'User'} />
         <AvatarFallback>{getInitials(user)}</AvatarFallback>

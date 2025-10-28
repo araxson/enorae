@@ -1,25 +1,56 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function AdminAnalyticsLoading() {
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div className="space-y-2">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-4 w-96" />
-      </div>
+      <ItemGroup className="gap-4">
+        <Item className="flex-col items-start gap-3" variant="muted">
+          <ItemContent className="flex items-center gap-2">
+            <Spinner className="text-muted-foreground" />
+            <ItemTitle>Loading analytics dashboard</ItemTitle>
+          </ItemContent>
+          <ItemContent className="flex flex-col gap-2">
+            <ItemDescription>Preparing platform-wide metrics.</ItemDescription>
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-96" />
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {[...Array(4)].map((_, i) => (
           <Card key={i}>
             <CardHeader>
-              <div className="sr-only">
-                <CardTitle>Loading analytics summary</CardTitle>
-              </div>
-              <Skeleton className="h-4 w-24" />
+              <ItemGroup>
+                <Item className="flex-col items-start gap-2">
+                  <ItemContent>
+                    <ItemTitle>
+                      <span className="sr-only">Loading analytics summary</span>
+                    </ItemTitle>
+                  </ItemContent>
+                  <ItemContent>
+                    <Skeleton className="h-4 w-24" />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
             <CardContent>
-              <Skeleton className="h-8 w-32" />
+              <ItemGroup>
+                <Item className="flex-col items-start gap-2">
+                  <ItemContent>
+                    <Skeleton className="h-8 w-32" />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardContent>
           </Card>
         ))}
@@ -29,13 +60,27 @@ export default function AdminAnalyticsLoading() {
         {[...Array(2)].map((_, i) => (
           <Card key={i}>
             <CardHeader>
-              <div className="sr-only">
-                <CardTitle>Loading analytics details</CardTitle>
-              </div>
-              <Skeleton className="h-6 w-48" />
+              <ItemGroup>
+                <Item className="flex-col items-start gap-3">
+                  <ItemContent>
+                    <ItemTitle>
+                      <span className="sr-only">Loading analytics details</span>
+                    </ItemTitle>
+                  </ItemContent>
+                  <ItemContent>
+                    <Skeleton className="h-6 w-48" />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
             <CardContent>
-              <Skeleton className="h-64 w-full" />
+              <ItemGroup>
+                <Item className="flex-col items-start gap-2">
+                  <ItemContent>
+                    <Skeleton className="h-64 w-full" />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardContent>
           </Card>
         ))}

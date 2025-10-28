@@ -1,16 +1,27 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
+import { CardTitle } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
 import {
   Activity,
-  Clock,
-  Users,
-  TrendingUp,
   Calendar,
-  Target
+  Clock,
+  Gauge,
+  Target,
+  TrendingUp,
+  Users,
 } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface OperationalMetricsDashboardProps {
   metrics: {
@@ -31,114 +42,115 @@ export function OperationalMetricsDashboard({ metrics }: OperationalMetricsDashb
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Operational Metrics</CardTitle>
-        <CardDescription>Real-time operational performance indicators</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader>
+        <ItemMedia variant="icon">
+          <Gauge className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>Operational Metrics</ItemTitle>
+          <ItemDescription>Real-time operational performance indicators</ItemDescription>
+        </ItemContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-6">
           {/* Utilization Metrics */}
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex gap-3 items-center">
-                  <Activity className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle>Capacity Utilization</CardTitle>
-                </div>
-                <CardDescription>Overall capacity usage</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 pt-0">
-                <div className={`text-3xl font-bold ${getUtilizationColor(metrics.capacityUtilization)}`}>
-                  {metrics.capacityUtilization}%
-                </div>
+          <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <Alert className="flex flex-col gap-3">
+              <Activity className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <div className="flex flex-col gap-2">
+                <AlertTitle>Capacity Utilization</AlertTitle>
+                <CardTitle>
+                  <span className={getUtilizationColor(metrics.capacityUtilization)}>
+                    {metrics.capacityUtilization}%
+                  </span>
+                </CardTitle>
                 <Progress value={metrics.capacityUtilization} className="h-2" />
-              </CardContent>
-            </Card>
+                <AlertDescription>Overall capacity usage</AlertDescription>
+              </div>
+            </Alert>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex gap-3 items-center">
-                  <Users className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle>Staff Utilization</CardTitle>
-                </div>
-                <CardDescription>Staff productivity</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 pt-0">
-                <div className={`text-3xl font-bold ${getUtilizationColor(metrics.staffUtilization)}`}>
-                  {metrics.staffUtilization}%
-                </div>
+            <Alert className="flex flex-col gap-3">
+              <Users className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <div className="flex flex-col gap-2">
+                <AlertTitle>Staff Utilization</AlertTitle>
+                <CardTitle>
+                  <span className={getUtilizationColor(metrics.staffUtilization)}>
+                    {metrics.staffUtilization}%
+                  </span>
+                </CardTitle>
                 <Progress value={metrics.staffUtilization} className="h-2" />
-              </CardContent>
-            </Card>
+                <AlertDescription>Staff productivity</AlertDescription>
+              </div>
+            </Alert>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex gap-3 items-center">
-                  <Target className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle>Booking Fill Rate</CardTitle>
-                </div>
-                <CardDescription>Schedule efficiency</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 pt-0">
-                <div className={`text-3xl font-bold ${getUtilizationColor(metrics.bookingFillRate)}`}>
-                  {metrics.bookingFillRate}%
-                </div>
+            <Alert className="flex flex-col gap-3">
+              <Target className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <div className="flex flex-col gap-2">
+                <AlertTitle>Booking Fill Rate</AlertTitle>
+                <CardTitle>
+                  <span className={getUtilizationColor(metrics.bookingFillRate)}>
+                    {metrics.bookingFillRate}%
+                  </span>
+                </CardTitle>
                 <Progress value={metrics.bookingFillRate} className="h-2" />
-              </CardContent>
-            </Card>
-          </div>
+                <AlertDescription>Schedule efficiency</AlertDescription>
+              </div>
+            </Alert>
+          </ItemGroup>
 
           {/* Performance Indicators */}
-          <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-            <Card className="bg-muted/50">
-              <CardHeader className="pb-2">
-                <div className="flex gap-3 items-center">
-                  <Clock className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle>Average Wait Time</CardTitle>
-                </div>
-                <CardDescription>Per customer</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-2xl font-bold">{metrics.averageWaitTime} min</p>
-              </CardContent>
-            </Card>
+          <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <Item variant="outline" className="flex-col gap-3">
+              <ItemHeader>
+                <ItemMedia variant="icon">
+                  <Clock className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Average Wait Time</ItemTitle>
+                  <ItemDescription>Per customer</ItemDescription>
+                </ItemContent>
+              </ItemHeader>
+              <ItemContent>
+                <CardTitle>{metrics.averageWaitTime} min</CardTitle>
+              </ItemContent>
+            </Item>
 
-            <Card className="bg-muted/50">
-              <CardHeader className="pb-2">
-                <div className="flex gap-3 items-center">
-                  <Calendar className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle>Appointments/Day</CardTitle>
-                </div>
-                <CardDescription>Average daily bookings</CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-2xl font-bold">{metrics.appointmentsPerDay}</p>
-              </CardContent>
-            </Card>
-          </div>
+            <Item variant="outline" className="flex-col gap-3">
+              <ItemHeader>
+                <ItemMedia variant="icon">
+                  <Calendar className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>Appointments/Day</ItemTitle>
+                  <ItemDescription>Average daily bookings</ItemDescription>
+                </ItemContent>
+              </ItemHeader>
+              <ItemContent>
+                <CardTitle>{metrics.appointmentsPerDay}</CardTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
 
           {/* Peak Hours */}
           {metrics.peakHours.length > 0 && (
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex gap-3 items-center">
-                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                  <CardTitle>Peak Hours</CardTitle>
+            <Alert>
+              <TrendingUp className="h-4 w-4" />
+              <div className="flex flex-col gap-2">
+                <AlertTitle>Peak Hours</AlertTitle>
+                <AlertDescription>Busiest times of day</AlertDescription>
+                <div className="flex flex-wrap gap-2">
+                  {metrics.peakHours.map((hour, index) => (
+                    <Badge key={index} variant="secondary">
+                      {hour}
+                    </Badge>
+                  ))}
                 </div>
-                <CardDescription>Busiest times of day</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-wrap gap-2 pt-0">
-                {metrics.peakHours.map((hour, index) => (
-                  <Badge key={index} variant="secondary">
-                    {hour}
-                  </Badge>
-                ))}
-              </CardContent>
-            </Card>
+              </div>
+            </Alert>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

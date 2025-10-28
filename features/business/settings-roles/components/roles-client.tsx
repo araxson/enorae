@@ -3,12 +3,20 @@
 import { useState, useTransition } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { RolesList } from './roles-list'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { deactivateUserRole } from '@/features/business/settings-roles/api/mutations'
+import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
+import { useToast } from '@/lib/hooks/use-toast'
 import { AssignRoleDialog } from './assign-role-dialog'
 import { EditRoleDialog } from './edit-role-dialog'
-import type { UserRoleWithDetails } from '@/features/business/settings-roles/api/queries'
-import { deactivateUserRole } from '@/features/business/settings-roles/api/mutations'
-import { useToast } from '@/lib/hooks/use-toast'
+import { RolesList } from './roles-list'
 
 interface RolesClientProps {
   roles: UserRoleWithDetails[]
@@ -51,18 +59,20 @@ export function RolesClient({ roles, availableStaff, salonId }: RolesClientProps
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex gap-4 items-start justify-between">
-        <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold">User Roles Management</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Assign and manage roles for your team members
-          </p>
-        </div>
-        <Button onClick={() => setIsAssignDialogOpen(true)} disabled={isPending}>
-          <Plus className="h-4 w-4 mr-2" />
-          Assign Role
-        </Button>
-      </div>
+      <ItemGroup className="items-start justify-between gap-4">
+        <Item variant="muted" className="flex-col items-start gap-2">
+          <ItemContent>
+            <ItemTitle>User Roles Management</ItemTitle>
+            <ItemDescription>Assign and manage roles for your team members</ItemDescription>
+          </ItemContent>
+        </Item>
+        <ItemActions className="flex-none">
+          <Button onClick={() => setIsAssignDialogOpen(true)} disabled={isPending}>
+            <Plus className="mr-2 h-4 w-4" />
+            Assign Role
+          </Button>
+        </ItemActions>
+      </ItemGroup>
 
       <RolesList roles={roles} onEdit={handleEdit} onDeactivate={handleDeactivate} />
 

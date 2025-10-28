@@ -2,6 +2,7 @@
 
 import { ExportButton } from '@/features/business/business-common/components'
 import { Building2, TrendingUp } from 'lucide-react'
+import { CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -106,7 +107,7 @@ function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
       <ItemDescription>{label}</ItemDescription>
-      <div className="text-2xl font-bold">{value}</div>
+      <CardTitle>{value}</CardTitle>
     </div>
   )
 }

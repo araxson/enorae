@@ -1,12 +1,5 @@
 import Link from 'next/link'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Mail, Star, Briefcase } from 'lucide-react'
@@ -30,21 +23,23 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
     <div className="flex flex-col gap-8">
       <Card>
         <CardHeader className="p-6 pb-4">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="max-w-xl space-y-2">
-              <CardTitle>{profile['title'] || 'Staff Member'}</CardTitle>
-              {profile['bio'] ? <CardDescription>{profile['bio']}</CardDescription> : null}
-            </div>
-            {profile.average_rating ? (
-              <div className="flex items-center gap-2">
-                <Star className="h-5 w-5" aria-hidden="true" />
-                <CardDescription>{profile.average_rating.toFixed(1)}</CardDescription>
-                <CardDescription>
-                  ({profile.review_count ?? 0} reviews)
-                </CardDescription>
-              </div>
-            ) : null}
-          </div>
+          <ItemGroup>
+            <Item className="flex-wrap items-start justify-between gap-4">
+              <ItemContent className="max-w-xl space-y-2">
+                <ItemTitle>{profile['title'] || 'Staff Member'}</ItemTitle>
+                {profile['bio'] ? <ItemDescription>{profile['bio']}</ItemDescription> : null}
+              </ItemContent>
+              {profile.average_rating ? (
+                <ItemActions className="flex items-center gap-2">
+                  <Star className="h-5 w-5" aria-hidden="true" />
+                  <ItemDescription>{profile.average_rating.toFixed(1)}</ItemDescription>
+                  <ItemDescription>
+                    ({profile.review_count ?? 0} reviews)
+                  </ItemDescription>
+                </ItemActions>
+              ) : null}
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="p-6 pt-0">
           <ItemGroup className="gap-4">
@@ -103,17 +98,23 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
             {profile.services.map((service) => (
               <Card key={service['id']}>
                 <CardHeader className="p-4 pb-2">
-                  <div className="flex items-start justify-between gap-3">
-                    <CardTitle>{service['name']}</CardTitle>
-                    {service['price'] ? (
-                      <CardDescription>${service['price']}</CardDescription>
+                  <ItemGroup className="gap-2">
+                    <Item className="items-start justify-between gap-3">
+                      <ItemContent>
+                        <ItemTitle>{service['name']}</ItemTitle>
+                      </ItemContent>
+                      {service['price'] ? (
+                        <ItemActions className="flex-none">
+                          <Badge variant="secondary">${service['price']}</Badge>
+                        </ItemActions>
+                      ) : null}
+                    </Item>
+                    {service['category_name'] ? (
+                      <ItemActions className="justify-end">
+                        <Badge variant="secondary">{service['category_name']}</Badge>
+                      </ItemActions>
                     ) : null}
-                  </div>
-                  {service['category_name'] ? (
-                    <div className="flex justify-end">
-                      <Badge variant="secondary">{service['category_name']}</Badge>
-                    </div>
-                  ) : null}
+                  </ItemGroup>
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
                   <ItemGroup className="gap-3">
@@ -143,10 +144,18 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
       {profile['salon_id'] ? (
         <Card>
           <CardHeader className="p-6 pb-2">
-            <CardTitle>Book an Appointment</CardTitle>
-            <CardDescription>
-              Schedule a session with {profile['title'] || 'this staff member'}
-            </CardDescription>
+            <ItemGroup>
+              <Item className="flex-col items-start gap-1">
+                <ItemContent>
+                  <ItemTitle>Book an Appointment</ItemTitle>
+                </ItemContent>
+                <ItemContent>
+                  <ItemDescription>
+                    Schedule a session with {profile['title'] || 'this staff member'}
+                  </ItemDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
           </CardHeader>
           <CardContent className="px-6">
             <CardDescription>

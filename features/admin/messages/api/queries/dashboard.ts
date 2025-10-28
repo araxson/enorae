@@ -2,22 +2,22 @@ import 'server-only'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { LOOKBACK_DAYS } from './constants'
-import { buildModerationArtifacts } from './message-dashboard-artifacts'
+import { LOOKBACK_DAYS } from '../constants'
+import { buildModerationArtifacts } from './artifacts'
 import {
   buildActivitySeries,
   buildMessageStats,
   buildReportSummary,
   calculateThreadInsights,
-} from './message-dashboard-analytics'
-import { buildThreadMap, groupMessagesByThread } from './message-dashboard-helpers'
+} from './analytics'
+import { buildThreadMap, groupMessagesByThread } from './helpers'
 import type {
   AdminMessageRow,
   Json,
   MessageRow,
   MessageThreadRow,
   MessagesDashboardData,
-} from './types'
+} from '../types'
 
 export async function getMessagesDashboard(): Promise<MessagesDashboardData> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)

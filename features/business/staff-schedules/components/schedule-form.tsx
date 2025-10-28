@@ -1,7 +1,13 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { toast } from 'sonner'
 import { upsertStaffSchedule, type UpsertPayload } from '@/features/business/staff-schedules/api/mutations'
 import { useScheduleFormState } from './form/use-schedule-form-state'
@@ -80,11 +86,11 @@ export function ScheduleForm({ staffMembers, onSuccess }: ScheduleFormProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Add/Update Schedule</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>Add/Update Schedule</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-4">
             <ScheduleFormFields
@@ -95,11 +101,18 @@ export function ScheduleForm({ staffMembers, onSuccess }: ScheduleFormProps) {
             />
 
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save Schedule'}
+              {isSubmitting ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving…</span>
+                </>
+              ) : (
+                <span>Save Schedule</span>
+              )}
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

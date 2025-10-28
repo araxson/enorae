@@ -2,11 +2,10 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
-import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/bulk-address.mutations'
+import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/mutations/bulk-address'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
   Field,
@@ -17,6 +16,12 @@ import {
 } from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Props = {
   salonId: string
@@ -78,11 +83,11 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Bulk Address Actions</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader>
+        <ItemTitle>Bulk Address Actions</ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <FieldSet className="flex flex-col gap-6">
           <Alert>
             <CheckCircle className="h-4 w-4" />
@@ -143,7 +148,7 @@ export function BulkAddressActions({ salonId, locationIds, selectedIds }: Props)
             </FieldContent>
           </Field>
         </FieldSet>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

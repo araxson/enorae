@@ -3,34 +3,11 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Heart, Tag, X } from 'lucide-react'
 import { updateProfileMetadata } from '@/features/customer/profile/api/mutations'
 import type { Database } from '@/lib/types/database.types'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '@/components/ui/input-group'
 import { Spinner } from '@/components/ui/spinner'
+import { InterestsSection } from './metadata/interests-section'
+import { TagsSection } from './metadata/tags-section'
 
 type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
 
@@ -39,12 +16,8 @@ interface ProfileMetadataEditorProps {
 }
 
 export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) {
-  const [interests, setInterests] = useState<string[]>(
-    (metadata?.['interests'] as string[]) || []
-  )
-  const [tags, setTags] = useState<string[]>(
-    (metadata?.['tags'] as string[]) || []
-  )
+  const [interests, setInterests] = useState<string[]>((metadata?.['interests'] as string[]) || [])
+  const [tags, setTags] = useState<string[]>((metadata?.['tags'] as string[]) || [])
   const [newInterest, setNewInterest] = useState('')
   const [newTag, setNewTag] = useState('')
   const [isSaving, setIsSaving] = useState(false)
@@ -57,7 +30,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
   }
 
   const removeInterest = (interest: string) => {
-    setInterests(interests.filter(i => i !== interest))
+    setInterests(interests.filter((i) => i !== interest))
   }
 
   const addTag = () => {
@@ -68,7 +41,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
   }
 
   const removeTag = (tag: string) => {
-    setTags(tags.filter(t => t !== tag))
+    setTags(tags.filter((t) => t !== tag))
   }
 
   const handleSave = async () => {
@@ -95,155 +68,24 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
-          {/* Interests */}
-          <div>
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item>
-                    <ItemMedia variant="icon">
-                      <Heart className="h-4 w-4" aria-hidden="true" />
-                    </ItemMedia>
-                    <ItemContent>
-                      <ItemTitle>Interests</ItemTitle>
-                      <ItemDescription>Personal topics you care about</ItemDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {interests.length === 0 ? (
-                  <Empty>
-                    <EmptyMedia variant="icon">
-                      <Heart className="h-4 w-4" />
-                    </EmptyMedia>
-                    <EmptyHeader>
-                      <EmptyTitle>No interests yet</EmptyTitle>
-                      <EmptyDescription>
-                        Add topics to personalize your recommendations.
-                      </EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                ) : (
-                  <ItemGroup className="gap-2">
-                    {interests.map((interest) => (
-                      <Item key={interest} variant="muted" size="sm">
-                        <ItemContent>
-                          <ItemTitle>{interest}</ItemTitle>
-                        </ItemContent>
-                        <ItemActions className="flex-none">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => removeInterest(interest)}
-                            aria-label={`Remove ${interest}`}
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </ItemActions>
-                      </Item>
-                    ))}
-                  </ItemGroup>
-                )}
-              </CardContent>
-            </Card>
-            <InputGroup>
-              <InputGroupAddon>
-                <Heart className="h-4 w-4" aria-hidden="true" />
-              </InputGroupAddon>
-              <InputGroupInput
-                placeholder="Add an interest (e.g., Hair Color, Nail Art)"
-                value={newInterest}
-                onChange={(e) => setNewInterest(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    addInterest()
-                  }
-                }}
-              />
-              <InputGroupButton type="button" variant="outline" onClick={addInterest}>
-                Add
-              </InputGroupButton>
-            </InputGroup>
-          </div>
+          <InterestsSection
+            interests={interests}
+            setInterests={setInterests}
+            newInterest={newInterest}
+            setNewInterest={setNewInterest}
+            addInterest={addInterest}
+            removeInterest={removeInterest}
+          />
 
-          {/* Tags */}
-          <div>
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item>
-                    <ItemMedia variant="icon">
-                      <Tag className="h-4 w-4" aria-hidden="true" />
-                    </ItemMedia>
-                    <ItemContent>
-                      <ItemTitle>Tags</ItemTitle>
-                      <ItemDescription>Quick labels for your profile</ItemDescription>
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {tags.length === 0 ? (
-                  <Empty>
-                    <EmptyMedia variant="icon">
-                      <Tag className="h-4 w-4" />
-                    </EmptyMedia>
-                    <EmptyHeader>
-                      <EmptyTitle>No tags yet</EmptyTitle>
-                      <EmptyDescription>
-                        Add quick labels to highlight your preferences.
-                      </EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                ) : (
-                  <ItemGroup className="gap-2">
-                    {tags.map((tag) => (
-                      <Item key={tag} variant="outline" size="sm">
-                        <ItemContent>
-                          <ItemTitle>{tag}</ItemTitle>
-                        </ItemContent>
-                        <ItemActions className="flex-none">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => removeTag(tag)}
-                            aria-label={`Remove ${tag}`}
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </ItemActions>
-                      </Item>
-                    ))}
-                  </ItemGroup>
-                )}
-              </CardContent>
-            </Card>
-            <InputGroup>
-              <InputGroupAddon>
-                <Tag className="h-4 w-4" aria-hidden="true" />
-              </InputGroupAddon>
-              <InputGroupInput
-                placeholder="Add a tag (e.g., vegan, eco-friendly)"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    addTag()
-                  }
-                }}
-              />
-              <InputGroupButton type="button" variant="outline" onClick={addTag}>
-                Add
-              </InputGroupButton>
-            </InputGroup>
-          </div>
+          <TagsSection
+            tags={tags}
+            setTags={setTags}
+            newTag={newTag}
+            setNewTag={setNewTag}
+            addTag={addTag}
+            removeTag={removeTag}
+          />
 
-          {/* Save Button */}
           <Button onClick={handleSave} disabled={isSaving} className="w-full">
             {isSaving ? (
               <>
@@ -255,7 +97,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
             )}
           </Button>
 
-          <p className="text-xs text-center text-muted-foreground">
+          <p className="text-center text-xs text-muted-foreground">
             Your preferences help us recommend services and salons that match your style
           </p>
         </div>

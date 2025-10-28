@@ -1,8 +1,8 @@
+export { ServicesDirectoryPage } from './services-directory-page'
 export {
-  ServicesDirectoryPage,
   ServicesCategoryPage,
   generateServicesCategoryMetadata,
-} from './services-directory-page'
+} from './services-category-page'
 export { marketingServicesDirectoryMetadata } from './services-directory.seo'
 export * from './sections'
 export * from './api/queries'

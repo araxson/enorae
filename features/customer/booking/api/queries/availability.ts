@@ -3,7 +3,7 @@ import 'server-only'
 import {
   checkAppointmentConflict as sharedCheckAppointmentConflict,
   checkStaffAvailability as sharedCheckStaffAvailability,
-} from '@/features/shared/appointments/api/availability'
+} from '@/features/shared/appointments/api/queries/availability'
 
 export async function checkStaffAvailability(
   staffId: string,

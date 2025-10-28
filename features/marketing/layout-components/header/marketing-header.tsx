@@ -31,12 +31,9 @@ export async function MarketingHeader() {
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 transition-opacity hover:opacity-80"
-          >
-            <Sparkles className="h-6 w-6 text-primary" />
-            <span className="text-primary font-bold">
+          <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
+            <Sparkles className="h-6 w-6" aria-hidden="true" />
+            <span className="font-bold text-primary">
               Enorae
             </span>
           </Link>
@@ -61,7 +58,7 @@ export async function MarketingHeader() {
             {session ? (
               <MarketingUserNav user={session.user} role={session.role} />
             ) : (
-              <ButtonGroup className="md:gap-2">
+              <ButtonGroup aria-label="Marketing auth actions" className="md:gap-2">
                 <Button variant="ghost" asChild>
                   <Link href="/login">Login</Link>
                 </Button>

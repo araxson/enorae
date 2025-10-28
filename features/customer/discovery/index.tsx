@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 
 import { getSalons } from './api/queries'
-import { SalonDiscoveryClient } from './components/salon-discovery-client'
+import { SalonDiscoveryClient } from './components'
 
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { Spinner } from '@/components/ui/spinner'

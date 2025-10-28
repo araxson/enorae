@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   Accordion,
@@ -77,7 +78,14 @@ export function DescriptionForm({ salonId, description }: DescriptionFormProps) 
 
         <div className="flex justify-end">
           <Button type="submit" disabled={state.isSubmitting}>
-            {state.isSubmitting ? 'Saving...' : 'Save Description'}
+            {state.isSubmitting ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Saving…</span>
+              </>
+            ) : (
+              <span>Save Description</span>
+            )}
           </Button>
         </div>
       </div>

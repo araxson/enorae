@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Field,
@@ -9,6 +9,12 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 type SocialLinks = {
   facebook: string
   instagram: string
@@ -33,7 +39,13 @@ export function SocialLinksSection({ socialLinks }: SocialLinksSectionProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Social Media Links</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>Social Media Links</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-6">

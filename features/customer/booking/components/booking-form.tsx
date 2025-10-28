@@ -1,53 +1,20 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
-import { createBooking } from '@/features/customer/booking/api/mutations'
+import { AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Progress } from '@/components/ui/progress'
-import { AlertCircle, Calendar, Clock } from 'lucide-react'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
-import { checkStaffAvailability } from '@/features/shared/appointments/api/availability'
-import { AvailabilityIndicator } from './form/availability-indicator'
-import type { BookingFormProps, Service, Staff } from '@/features/customer/booking/types'
-import {
-  Field,
-  FieldContent,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from '@/components/ui/field'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from '@/components/ui/input-group'
+import { FieldGroup, FieldLegend, FieldSet } from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
+import { createBooking } from '@/features/customer/booking/api/mutations'
+import type { BookingFormProps } from '@/features/customer/booking/types'
+import { useAvailabilityCheck } from '../hooks/use-availability-check'
+import { BookingHeader } from './form/booking-header'
+import { ServiceStaffFields } from './form/service-staff-fields'
+import { DateTimeFields } from './form/date-time-fields'
+import { AvailabilityIndicator } from './form/availability-indicator'
 
 export function BookingForm({ salonId, salonName, services, staff }: BookingFormProps) {
   const [error, setError] = useState<string | null>(null)
@@ -56,9 +23,6 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
   const [selectedStaff, setSelectedStaff] = useState<string>('')
   const [dateValue, setDateValue] = useState('')
   const [timeValue, setTimeValue] = useState('')
-  const [availabilityMessage, setAvailabilityMessage] = useState<string | null>(null)
-  const [availabilityStatus, setAvailabilityStatus] = useState<'idle' | 'checking' | 'available' | 'unavailable' | 'error'>('idle')
-  const [isCheckingAvailability, startAvailabilityCheck] = useTransition()
 
   const progress = (selectedService ? 25 : 0) + (selectedStaff ? 25 : 0) + (dateValue && timeValue ? 25 : 0) + 25
 
@@ -86,59 +50,11 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
     return end
   }, [startDate, selectedService, serviceDurations])
 
-  const latestCheckRef = useRef(0)
-
-  useEffect(() => {
-    if (!selectedStaff || !startDate || !endDate) {
-      setAvailabilityStatus('idle')
-      setAvailabilityMessage(null)
-      return
-    }
-
-    setAvailabilityStatus('checking')
-    setAvailabilityMessage(null)
-
-    const checkId = latestCheckRef.current + 1
-    latestCheckRef.current = checkId
-
-    startAvailabilityCheck(async () => {
-      try {
-        const result = await checkStaffAvailability({
-          staffId: selectedStaff,
-          startTime: startDate.toISOString(),
-          endTime: endDate.toISOString(),
-        })
-
-        if (checkId !== latestCheckRef.current) {
-          return
-        }
-
-        if (result.available) {
-          setAvailabilityStatus('available')
-          setAvailabilityMessage('Staff member is available for the selected time.')
-        } else {
-          setAvailabilityStatus('unavailable')
-          // Show specific reason if available
-          if (result['reason']) {
-            const blockTypeLabel = result.blockType ? `(${result.blockType})` : ''
-            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${result['reason']}`)
-          } else {
-            setAvailabilityMessage('Staff member has a conflict at the selected time.')
-          }
-        }
-      } catch (availabilityError) {
-        if (checkId !== latestCheckRef.current) {
-          return
-        }
-        setAvailabilityStatus('error')
-        setAvailabilityMessage(
-          availabilityError instanceof Error
-            ? availabilityError.message
-            : 'Unable to check availability. Please try again.',
-        )
-      }
-    })
-  }, [selectedStaff, startDate, endDate])
+  const { availabilityStatus, availabilityMessage, isCheckingAvailability } = useAvailabilityCheck(
+    selectedStaff,
+    startDate,
+    endDate
+  )
 
   async function handleSubmit(formData: FormData) {
     setLoading(true)
@@ -165,32 +81,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
 
   return (
     <Card>
-      <CardHeader className="space-y-4">
-        <ItemGroup>
-          <Item>
-            <ItemMedia variant="icon">
-              <Calendar className="h-5 w-5" aria-hidden="true" />
-            </ItemMedia>
-            <ItemContent>
-              <CardTitle>Book an appointment</CardTitle>
-              <CardDescription>{salonName}</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-        <div className="space-y-2">
-          <ItemGroup>
-            <Item>
-              <ItemContent>
-                <ItemTitle>Progress</ItemTitle>
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <ItemDescription>{progress}% complete</ItemDescription>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
-          <Progress value={progress} className="h-2" />
-        </div>
-      </CardHeader>
+      <BookingHeader salonName={salonName} progress={progress} />
 
       <form action={handleSubmit} className="space-y-0">
         <input type="hidden" name="salonId" value={salonId} />
@@ -207,91 +98,20 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
           <FieldSet>
             <FieldLegend>Appointment details</FieldLegend>
             <FieldGroup className="gap-6">
-              <Field>
-                <FieldLabel htmlFor="serviceId">Service</FieldLabel>
-                <FieldContent>
-                  <Select
-                    name="serviceId"
-                    value={selectedService}
-                    onValueChange={setSelectedService}
-                    required
-                  >
-                    <SelectTrigger id="serviceId">
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {services.map((service) => (
-                        <SelectItem key={service['id'] || ''} value={service['id'] || ''}>
-                          {service['name']}
-                          {service['category_name'] ? ` (${service['category_name']})` : ''}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="staffId">Staff member</FieldLabel>
-                <FieldContent>
-                  <Select
-                    name="staffId"
-                    value={selectedStaff}
-                    onValueChange={setSelectedStaff}
-                    required
-                  >
-                    <SelectTrigger id="staffId">
-                      <SelectValue placeholder="Select staff member" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {staff.map((member) => (
-                        <SelectItem key={member['id'] || ''} value={member['id'] || ''}>
-                          {member['title'] || 'Staff member'}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="date">Date</FieldLabel>
-                <FieldContent>
-                  <InputGroup>
-                    <InputGroupAddon>
-                      <Calendar className="h-4 w-4" aria-hidden="true" />
-                    </InputGroupAddon>
-                    <InputGroupInput
-                      id="date"
-                      name="date"
-                      type="date"
-                      required
-                      min={new Date().toISOString().split('T')[0]}
-                      value={dateValue}
-                      onChange={(event) => setDateValue(event.target.value)}
-                    />
-                  </InputGroup>
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="time">Time</FieldLabel>
-                <FieldContent>
-                  <InputGroup>
-                    <InputGroupAddon>
-                      <Clock className="h-4 w-4" aria-hidden="true" />
-                    </InputGroupAddon>
-                    <InputGroupInput
-                      id="time"
-                      name="time"
-                      type="time"
-                      required
-                      value={timeValue}
-                      onChange={(event) => setTimeValue(event.target.value)}
-                    />
-                  </InputGroup>
-                </FieldContent>
-              </Field>
+              <ServiceStaffFields
+                services={services}
+                staff={staff}
+                selectedService={selectedService}
+                selectedStaff={selectedStaff}
+                onServiceChange={setSelectedService}
+                onStaffChange={setSelectedStaff}
+              />
+              <DateTimeFields
+                dateValue={dateValue}
+                timeValue={timeValue}
+                onDateChange={setDateValue}
+                onTimeChange={setTimeValue}
+              />
             </FieldGroup>
           </FieldSet>
 

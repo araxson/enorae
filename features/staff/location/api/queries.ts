@@ -1,19 +1,17 @@
 import 'server-only'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import type { StaffLocationDetail } from '@/features/staff/location/types'
 
 export async function getMyLocation(): Promise<StaffLocationDetail | null> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
     .from('staff_profiles_view')
     .select('salon_id, location_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single<{ salon_id: string; location_id: string | null }>()
 
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
@@ -49,16 +47,15 @@ export async function getMyLocation(): Promise<StaffLocationDetail | null> {
 }
 
 export async function getAllSalonLocations(): Promise<StaffLocationDetail[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   // Get user's salon_id
   const { data: staffData, error: staffError } = await supabase
     .from('staff_profiles_view')
     .select('salon_id')
-    .eq('user_id', session.user.id)
+    .eq('user_id', user.id)
     .single<{ salon_id: string }>()
 
   if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')

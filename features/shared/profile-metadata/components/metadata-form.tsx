@@ -1,8 +1,15 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { Database } from '@/lib/types/database.types'
 
 import { InterestsTagsSection } from './interests-tags-section'
@@ -54,12 +61,14 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
           </Alert>
         )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Profile images</CardTitle>
-            <CardDescription>Update the images customers see on your profile.</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <Item variant="outline" className="flex flex-col gap-4">
+          <ItemHeader>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Profile images</ItemTitle>
+              <ItemDescription>Update the images customers see on your profile.</ItemDescription>
+            </div>
+          </ItemHeader>
+          <ItemContent>
             <ProfileImagesSection
               avatarUrl={avatarUrl}
               coverUrl={coverUrl}
@@ -68,25 +77,29 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
               onAvatarUpload={handleAvatarUpload}
               onCoverUpload={handleCoverUpload}
             />
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Social profiles</CardTitle>
-            <CardDescription>Share the places clients can follow your business.</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <Item variant="outline" className="flex flex-col gap-4">
+          <ItemHeader>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Social profiles</ItemTitle>
+              <ItemDescription>Share the places clients can follow your business.</ItemDescription>
+            </div>
+          </ItemHeader>
+          <ItemContent>
             <SocialProfilesSection defaults={socialProfiles} />
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Interests and tags</CardTitle>
-            <CardDescription>Highlight services and topics that describe your brand.</CardDescription>
-          </CardHeader>
-          <CardContent>
+        <Item variant="outline" className="flex flex-col gap-4">
+          <ItemHeader>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Interests and tags</ItemTitle>
+              <ItemDescription>Highlight services and topics that describe your brand.</ItemDescription>
+            </div>
+          </ItemHeader>
+          <ItemContent>
             <InterestsTagsSection
               interests={interests}
               tags={tags}
@@ -95,11 +108,18 @@ export function MetadataForm({ metadata }: MetadataFormProps) {
               onAddTag={handleAddTag}
               onRemoveTag={handleRemoveTag}
             />
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
 
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving...' : 'Save Profile'}
+          {isSubmitting ? (
+            <>
+              <Spinner className="size-4" />
+              <span>Saving…</span>
+            </>
+          ) : (
+            <span>Save Profile</span>
+          )}
         </Button>
       </div>
     </form>

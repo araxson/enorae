@@ -1,4 +1,6 @@
+export { AuditLogDetailsDialog } from './audit-log-details-dialog'
 export { AuditLogsClient } from './audit-logs-client'
+export { AuditLogsContent } from './audit-logs-content'
 export { AuditLogsFilters } from './audit-logs-filters'
 export { AuditLogsPage } from './audit-logs-page'
 export { AuditLogsStats } from './audit-logs-stats'

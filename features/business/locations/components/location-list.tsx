@@ -32,7 +32,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { deleteSalonLocation } from '@/features/business/locations/api/mutations'
+import { deleteSalonLocation } from '@/features/business/locations/api/mutations/location'
 import type { SalonLocation } from '@/features/business/locations'
 
 type LocationListProps = {

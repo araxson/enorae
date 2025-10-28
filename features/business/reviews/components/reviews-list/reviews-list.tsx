@@ -3,7 +3,13 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import {
   Empty,
   EmptyDescription,
@@ -24,16 +30,16 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-4">
-        {normalizedReviews.length === 0 ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyTitle>No reviews yet</EmptyTitle>
-              <EmptyDescription>Reviews will appear once customers share feedback.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          normalizedReviews.map((review) => (
+      {normalizedReviews.length === 0 ? (
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>No reviews yet</EmptyTitle>
+            <EmptyDescription>Reviews will appear once customers share feedback.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      ) : (
+        <ItemGroup className="gap-4">
+          {normalizedReviews.map((review) => (
             <ReviewCard
               key={review.id}
               review={review}
@@ -41,9 +47,9 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               onFlag={actions.openFlagDialog}
               onToggleFeatured={handlers.handleToggleFeatured}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </ItemGroup>
+      )}
 
       <Dialog open={!!state.selectedReview} onOpenChange={(open) => !open && actions.selectReview(null)}>
         <DialogContent>
@@ -52,16 +58,16 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           </DialogHeader>
           <div className="flex flex-col gap-4">
             {state.selectedReview && (
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle>{state.selectedReview.customer_name || 'Anonymous'}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
+              <ItemGroup>
+                <Item variant="muted" className="flex-col gap-2">
+                  <ItemTitle>{state.selectedReview.customer_name || 'Anonymous'}</ItemTitle>
                   {state.selectedReview.comment ? (
-                    <p className="leading-7 text-sm">{state.selectedReview.comment}</p>
+                    <ItemContent>
+                      <ItemDescription>{state.selectedReview.comment}</ItemDescription>
+                    </ItemContent>
                   ) : null}
-                </CardContent>
-              </Card>
+                </Item>
+              </ItemGroup>
             )}
             <Textarea
               placeholder="Type your response here..."

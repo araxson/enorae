@@ -1,6 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription } from '@/components/ui/card'
 import {
   Select,
   SelectContent,
@@ -19,6 +18,11 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+} from '@/components/ui/item'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>
 
@@ -106,12 +110,12 @@ export function ValidityFields({
             Lower numbers execute first when multiple rules apply (current target: {selectedServiceName}).
           </FieldDescription>
         </Field>
-        <Card>
-          <CardContent>
+        <Item variant="muted" className="flex-col gap-3">
+          <ItemContent>
             <Field orientation="horizontal">
               <FieldContent>
                 <FieldLabel htmlFor="is_active">Active Rule</FieldLabel>
-                <CardDescription>Deactivate to save rule for later use.</CardDescription>
+                <ItemDescription>Deactivate to save rule for later use.</ItemDescription>
               </FieldContent>
               <Switch
                 id="is_active"
@@ -121,8 +125,8 @@ export function ValidityFields({
                 }
               />
             </Field>
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
       </FieldGroup>
     </FieldSet>
   )

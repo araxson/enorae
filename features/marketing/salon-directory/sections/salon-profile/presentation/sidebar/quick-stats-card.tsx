@@ -24,6 +24,9 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
     return null
   }
 
+  const formatNumber = (value: number | null | undefined) =>
+    value == null ? null : new Intl.NumberFormat().format(value)
+
   return (
     <Card>
       <CardHeader>
@@ -40,7 +43,7 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
                 <ItemTitle>Service count</ItemTitle>
               </ItemHeader>
               <ItemContent>
-                <ItemDescription>{salon.services_count} Services</ItemDescription>
+                <ItemDescription>{formatNumber(salon.services_count)} services</ItemDescription>
               </ItemContent>
             </Item>
           )}
@@ -53,7 +56,7 @@ export function QuickStatsCard({ salon }: QuickStatsCardProps) {
                 <ItemTitle>Team size</ItemTitle>
               </ItemHeader>
               <ItemContent>
-                <ItemDescription>{salon.staff_count} Staff Members</ItemDescription>
+                <ItemDescription>{formatNumber(salon.staff_count)} staff members</ItemDescription>
               </ItemContent>
             </Item>
           )}

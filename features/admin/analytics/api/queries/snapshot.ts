@@ -8,7 +8,7 @@ import {
   getAppointmentMetrics,
   getReviewMetrics,
   getActiveUserMetrics,
-} from './rpc-functions'
+} from './platform'
 
 export {
   getPlatformMetrics,

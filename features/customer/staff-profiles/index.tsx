@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { getStaffProfile } from './api/queries'
-import { StaffProfileDetail } from './components/staff-profile-detail'
+import { StaffProfileDetail } from './components'
 import { Spinner } from '@/components/ui/spinner'
 
 export async function StaffProfilePage({ staffId }: { staffId: string }) {

@@ -1,6 +1,5 @@
 'use server'
 import { revalidatePath } from 'next/cache'
-import { verifySession } from '@/lib/auth/session'
 import { createClient } from '@/lib/supabase/server'
 import {
   messageSchema,
@@ -24,18 +23,17 @@ async function resolveStaffId(
 }
 
 export async function sendMessage(data: MessageFormData) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   const validated = messageSchema.parse(data)
-
-  const supabase = await createClient()
 
   const { error } = await supabase
     .schema('communication')
     .schema('communication').from('messages')
     .insert({
-      from_user_id: session.user.id,
+      from_user_id: user.id,
       to_user_id: validated.to_user_id,
       content: validated.content,
       context_type: validated.context_type,
@@ -51,13 +49,13 @@ export async function sendMessage(data: MessageFormData) {
 }
 
 export async function sendThreadMessage(threadId: string, data: ThreadMessageFormData) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   const validated = threadMessageSchema.parse(data)
 
-  const supabase = await createClient()
-  const staffId = await resolveStaffId(supabase, session.user.id)
+  const staffId = await resolveStaffId(supabase, user.id)
   if (!staffId) throw new Error('Unauthorized')
 
   // Get thread details to find recipient
@@ -79,7 +77,7 @@ export async function sendThreadMessage(threadId: string, data: ThreadMessageFor
     .schema('communication')
     .schema('communication').from('messages')
     .insert({
-      from_user_id: session.user.id,
+      from_user_id: user.id,
       to_user_id: thread.customer_id,
       content: validated.content,
       context_type: 'general',
@@ -95,11 +93,11 @@ export async function sendThreadMessage(threadId: string, data: ThreadMessageFor
 }
 
 export async function markThreadAsRead(threadId: string) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
-  const staffId = await resolveStaffId(supabase, session.user.id)
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const staffId = await resolveStaffId(supabase, user.id)
   if (!staffId) throw new Error('Unauthorized')
 
   // Verify thread access
@@ -121,7 +119,7 @@ export async function markThreadAsRead(threadId: string) {
       is_read: true,
       read_at: new Date().toISOString(),
     })
-    .eq('to_user_id', session.user.id)
+    .eq('to_user_id', user.id)
     .eq('is_read', false)
 
   if (error) throw error
@@ -131,11 +129,11 @@ export async function markThreadAsRead(threadId: string) {
 }
 
 export async function archiveThread(threadId: string) {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
-  const staffId = await resolveStaffId(supabase, session.user.id)
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const staffId = await resolveStaffId(supabase, user.id)
   if (!staffId) throw new Error('Unauthorized')
 
   // Verify thread access

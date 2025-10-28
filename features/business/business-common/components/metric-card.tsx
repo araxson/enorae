@@ -2,8 +2,9 @@
 
 import type { ReactNode, ComponentType } from 'react'
 import { Badge } from '@/components/ui/badge'
+import { CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { TrendingUp, TrendingDown } from 'lucide-react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
 import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
 import {
   Item,
@@ -150,7 +151,7 @@ export function MetricCard(props: MetricCardProps) {
       <ItemContent>
         {props.variant === 'progress' && (
           <div className="flex flex-col gap-2">
-            <div className="text-2xl font-bold">{value}</div>
+            <CardTitle>{value}</CardTitle>
             <Progress
               value={props.progress}
               className={`h-1 ${props.progressClass ?? ''}`}
@@ -163,7 +164,7 @@ export function MetricCard(props: MetricCardProps) {
         {props.variant === 'trend' && (
           <div className="flex flex-col gap-2">
             <div className="flex gap-4 items-end justify-between">
-              <div className="text-2xl font-bold">{value}</div>
+              <CardTitle>{value}</CardTitle>
               <Badge
                 variant={props.trend >= 0 ? 'default' : 'destructive'}
                 className="flex items-center gap-1"
@@ -182,7 +183,7 @@ export function MetricCard(props: MetricCardProps) {
 
         {props.variant === 'highlight' && (
           <div className="flex flex-col gap-2">
-            <div className="text-3xl font-bold">{value}</div>
+            <CardTitle>{value}</CardTitle>
             {props.highlight}
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
@@ -190,7 +191,7 @@ export function MetricCard(props: MetricCardProps) {
 
         {(!props.variant || props.variant === 'default') && (
           <div className="flex flex-col gap-2">
-            <div className="text-2xl font-bold">{value}</div>
+            <CardTitle>{value}</CardTitle>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
         )}

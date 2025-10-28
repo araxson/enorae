@@ -1,30 +1,21 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
-import { MapPin, Search, Check, AlertCircle } from 'lucide-react'
+import { MapPin, Check, AlertCircle } from 'lucide-react'
 import { EXTERNAL_APIS } from '@/lib/config/env'
-import {
-  GoogleMapsAutocompleteResponseSchema,
-  GoogleMapsGeocodeResponseSchema,
-} from '@/lib/config/google-maps-schema'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
 import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-} from '@/components/ui/field'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from '@/components/ui/input-group'
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { AddressSearchField } from './address-search-field'
+import { MapDisplay } from './map-display'
 
 type Props = {
   address: LocationAddress | null
@@ -32,140 +23,26 @@ type Props = {
 }
 
 export function MapIntegrationSection({ address, onAddressSelect }: Props) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [isSearching, setIsSearching] = useState(false)
-  const [suggestions, setSuggestions] = useState<Array<{
-    description: string
-    place_id: string
-  }>>([])
   const [selectedAddress, setSelectedAddress] = useState<Partial<LocationAddress> | null>(null)
 
-  // ASYNC FIX: Debounce address search with proper cleanup
-  useEffect(() => {
-    if (!searchQuery || searchQuery.length < 3) {
-      setSuggestions([])
-      return
-    }
-
-    if (!EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()) {
-      return
-    }
-
-    const controller = new AbortController()
-    const debounceTimer = setTimeout(async () => {
-      setIsSearching(true)
-      try {
-        const apiKey = EXTERNAL_APIS.GOOGLE_MAPS.getApiKey()
-        const url = `${EXTERNAL_APIS.GOOGLE_MAPS.AUTOCOMPLETE_URL}?input=${encodeURIComponent(searchQuery)}&key=${apiKey}`
-
-        const response = await fetch(url, { signal: controller.signal })
-
-        if (!response.ok) {
-          throw new Error(`Autocomplete request failed: ${response.status}`)
-        }
-
-        const rawData = await response.json()
-
-        // API_INTEGRATION_FIX: Validate Google Maps API response
-        const validationResult = GoogleMapsAutocompleteResponseSchema.safeParse(rawData)
-        if (!validationResult.success) {
-          console.error('[MapIntegration] Invalid autocomplete response:', validationResult.error)
-          throw new Error('Invalid autocomplete response format')
-        }
-
-        const data = validationResult.data
-        if (data.predictions) {
-          setSuggestions(data.predictions.slice(0, 5))
-        }
-      } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
-          return
-        }
-        console.error('[MapIntegration] Address search error:', error)
-        setSuggestions([])
-      } finally {
-        setIsSearching(false)
-      }
-    }, 300)
-
-    return () => {
-      clearTimeout(debounceTimer)
-      controller.abort()
-    }
-  }, [searchQuery])
-
-  // Geocode address to get coordinates
-  const geocodeAddress = useCallback(async (fullAddress: string) => {
-    if (!EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()) {
-      console.error('[MapIntegration] Google Maps API not configured')
-      return
-    }
-
-    setIsSearching(true)
-    try {
-      const apiKey = EXTERNAL_APIS.GOOGLE_MAPS.getApiKey()
-      const url = `${EXTERNAL_APIS.GOOGLE_MAPS.GEOCODE_URL}?address=${encodeURIComponent(fullAddress)}&key=${apiKey}`
-
-      const response = await fetch(url)
-
-      if (!response.ok) {
-        throw new Error(`Geocoding request failed: ${response.status}`)
-      }
-
-      const rawData = await response.json()
-
-      // API_INTEGRATION_FIX: Validate Google Maps API response
-      const validationResult = GoogleMapsGeocodeResponseSchema.safeParse(rawData)
-      if (!validationResult.success) {
-        console.error('[MapIntegration] Invalid geocode response:', validationResult.error)
-        throw new Error('Invalid geocode response format')
-      }
-
-      const data = validationResult.data
-      if (data.results && data.results.length > 0) {
-        const result = data.results[0]
-        if (!result) {
-          throw new Error('No geocode result found')
-        }
-        const location = result.geometry.location
-
-        const addressData: Partial<LocationAddress> = {
-          latitude: location.lat,
-          longitude: location.lng,
-          formatted_address: result['formatted_address'],
-          place_id: result.place_id,
-        }
-
-        setSelectedAddress(addressData)
-        onAddressSelect?.(addressData)
-      }
-    } catch (error) {
-      console.error('[MapIntegration] Geocoding error:', error)
-      setSelectedAddress(null)
-    } finally {
-      setIsSearching(false)
-    }
-  }, [onAddressSelect])
-
-
-  const handleSuggestionClick = async (placeId: string, description: string) => {
-    setSuggestions([])
-    setSearchQuery(description)
-    await geocodeAddress(description)
-  }
-
-  const handleManualGeocode = () => {
-    if (address) {
-      const fullAddress = `${address['street_address']}, ${address['city']}, ${address['state_province']} ${address['postal_code']}, ${address['country_code']}`
-      geocodeAddress(fullAddress)
-    }
+  const handleAddressSelect = (addressData: Partial<LocationAddress>) => {
+    setSelectedAddress(addressData)
+    onAddressSelect?.(addressData)
   }
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Map & Coordinates</CardTitle>
-        <MapPin className="h-5 w-5 text-muted-foreground" />
+      <CardHeader>
+        <ItemGroup className="flex items-center justify-between">
+          <Item>
+            <ItemContent>
+              <ItemTitle>Map &amp; Coordinates</ItemTitle>
+            </ItemContent>
+            <ItemMedia variant="icon">
+              <MapPin className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+            </ItemMedia>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-6">
@@ -181,60 +58,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
             </Alert>
           )}
 
-          <Field>
-            <FieldLabel htmlFor="address-search">Search Address</FieldLabel>
-            <FieldContent>
-              <div className="flex gap-3">
-                <div className="relative flex-1">
-                  <InputGroup>
-                    <InputGroupAddon>
-                      <Search className="h-4 w-4" aria-hidden="true" />
-                    </InputGroupAddon>
-                    <InputGroupInput
-                      id="address-search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Start typing to search for an address..."
-                    />
-                  </InputGroup>
-                  {suggestions.length > 0 && (
-                    <div className="absolute left-0 right-0 top-full z-10 mt-1">
-                      <Command aria-label="Address suggestions">
-                        <CommandList>
-                          <CommandGroup heading="Suggested addresses">
-                            {suggestions.map((suggestion) => (
-                              <CommandItem
-                                key={suggestion.place_id}
-                                value={suggestion.place_id}
-                                onSelect={() =>
-                                  handleSuggestionClick(
-                                    suggestion.place_id,
-                                    suggestion['description'],
-                                  )
-                                }
-                              >
-                                {suggestion['description']}
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </div>
-                  )}
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleManualGeocode}
-                  disabled={isSearching || !address?.['street_address'] || !EXTERNAL_APIS.GOOGLE_MAPS.isEnabled()}
-                >
-                  <Search className="mr-2 h-4 w-4" />
-                  Geocode
-                </Button>
-              </div>
-            </FieldContent>
-            <FieldDescription>Search for your address to automatically fill coordinates.</FieldDescription>
-          </Field>
+          <AddressSearchField address={address} onAddressSelect={handleAddressSelect} />
 
           {selectedAddress && (
             <Alert>
@@ -248,20 +72,7 @@ export function MapIntegrationSection({ address, onAddressSelect }: Props) {
             </Alert>
           )}
 
-          {address?.['latitude'] && address?.['longitude'] && EXTERNAL_APIS.GOOGLE_MAPS.isEnabled() && (
-            <Card>
-              <CardContent className="p-0">
-                <iframe
-                  width="100%"
-                  height="300"
-                  className="w-full border-0"
-                  loading="lazy"
-                  src={`${EXTERNAL_APIS.GOOGLE_MAPS.EMBED_URL}?q=${address['latitude']},${address['longitude']}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                  title="Location Map"
-                />
-              </CardContent>
-            </Card>
-          )}
+          <MapDisplay address={address} />
         </div>
       </CardContent>
     </Card>

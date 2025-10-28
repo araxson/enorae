@@ -9,6 +9,7 @@ import {
   ItemGroup,
 } from '@/components/ui/item'
 import { cn } from '@/lib/utils'
+import { MarketingSection } from './marketing-section'
 
 type MarketingHeroProps = {
   title: string
@@ -18,11 +19,6 @@ type MarketingHeroProps = {
   variant?: 'stacked' | 'simple'
   children?: ReactNode
 }
-
-const sectionSpacing = {
-  simple: 'py-12',
-  stacked: 'py-16 md:py-24 lg:py-28',
-} as const
 
 export function MarketingHero({
   title,
@@ -37,32 +33,26 @@ export function MarketingHero({
     align === 'center'
       ? 'items-center text-center'
       : 'items-start text-left'
+  const spacingVariant = variant === 'simple' ? 'compact' : 'relaxed'
 
   return (
-    <section className="w-full">
-      <div
-        className={cn(
-          'mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8',
-          sectionSpacing[variant],
-        )}
-      >
-        <Card>
-          <CardHeader className={cn('gap-4 md:gap-6', headerAlignment)}>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{subtitle}</CardDescription>
-          </CardHeader>
-          <CardContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
-            <ItemGroup>
-              <Item variant="muted">
-                <ItemHeader className="flex flex-col gap-1">
-                  <ItemDescription>{description}</ItemDescription>
-                </ItemHeader>
-              </Item>
-            </ItemGroup>
-            {children}
-          </CardContent>
-        </Card>
-      </div>
-    </section>
+    <MarketingSection spacing={spacingVariant} groupClassName="gap-0">
+      <Card>
+        <CardHeader className={cn('gap-4 md:gap-6', headerAlignment)}>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{subtitle}</CardDescription>
+        </CardHeader>
+        <CardContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemHeader className="flex flex-col gap-1">
+                <ItemDescription>{description}</ItemDescription>
+              </ItemHeader>
+            </Item>
+          </ItemGroup>
+          {children}
+        </CardContent>
+      </Card>
+    </MarketingSection>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -10,6 +10,12 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type Props = {
   address: LocationAddress | null
@@ -19,7 +25,13 @@ export function AdditionalInfoSection({ address }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Additional Information</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>Additional Information</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldGroup className="flex flex-col gap-6">

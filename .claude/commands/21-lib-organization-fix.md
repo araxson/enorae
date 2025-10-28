@@ -21,7 +21,7 @@
 **Error Remediation Checklist (Code-Only):**
 1. Locate circular dependencies, duplicate helpers, or outdated modules.
 2. Ensure utilities reference real schema fields/types (leveraging generated types without editing them).
-3. Align naming, folder structure, and export patterns with `docs/ruls/file-organization-patterns.md`.
+3. Align naming, folder structure, and export patterns with `docs/ruls/architecture-patterns.md`.
 
 **Execution Steps (Code Fixes Only):**
 1. Inventory current `lib/` modules and map their consumers.

@@ -25,7 +25,7 @@ export function Info() {
           <ItemGroup className="gap-4">
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <Mail className="size-4" />
+                <Mail className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>General inquiries</ItemTitle>
@@ -34,7 +34,7 @@ export function Info() {
             </Item>
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <Phone className="size-4" />
+                <Phone className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>Phone</ItemTitle>
@@ -43,7 +43,7 @@ export function Info() {
             </Item>
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <MapPin className="size-4" />
+                <MapPin className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>HQ address</ItemTitle>

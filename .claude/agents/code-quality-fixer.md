@@ -91,7 +91,7 @@ You are a Code Quality Expert specializing in identifying naming violations, cod
 
 Always reference:
 - `docs/ruls/typescript.md` for naming standards
-- `docs/ruls/file-organization.md` for structure
+- `docs/ruls/architecture.md` for structure
 - `docs/ruls/architecture.md` for function organization
 
 If code violates these patterns, cite the specific pattern and explain the violation.

@@ -1,7 +1,7 @@
 'use client'
 
 import { format } from 'date-fns'
-import { Users, Calendar, DollarSign, Star } from 'lucide-react'
+import { Calendar, DollarSign, Star, Users } from 'lucide-react'
 
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import {
@@ -13,6 +13,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { CardTitle } from '@/components/ui/card'
 
 import type { SalonMetricsData } from '@/features/business/metrics/api/queries'
 
@@ -45,14 +46,16 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-2xl font-semibold">Salon Metrics</h3>
-          <p className="text-sm text-muted-foreground">
-            Last updated: {format(new Date(metrics.updated_at!), 'MMMM dd, yyyy')}
-          </p>
-        </div>
-      </div>
+      <ItemGroup>
+        <Item variant="muted" className="flex-col items-start gap-2">
+          <ItemContent>
+            <ItemTitle>Salon Metrics</ItemTitle>
+            <ItemDescription>
+              Last updated: {format(new Date(metrics.updated_at!), 'MMMM dd, yyyy')}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <ItemGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Item variant="outline" className="flex-col gap-2">
@@ -63,7 +66,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <div className="text-2xl font-semibold">{metrics.total_bookings ?? 'N/A'}</div>
+            <CardTitle>{metrics.total_bookings ?? 'N/A'}</CardTitle>
             <ItemDescription>All time bookings</ItemDescription>
           </ItemContent>
         </Item>
@@ -76,7 +79,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <div className="text-2xl font-semibold">{formatCurrency(metrics.total_revenue)}</div>
+            <CardTitle>{formatCurrency(metrics.total_revenue)}</CardTitle>
             <ItemDescription>Lifetime earnings</ItemDescription>
           </ItemContent>
         </Item>
@@ -89,9 +92,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <div className="text-2xl font-semibold">
-              {metrics.rating_average?.toFixed(1) ?? 'N/A'}
-            </div>
+            <CardTitle>{metrics.rating_average?.toFixed(1) ?? 'N/A'}</CardTitle>
             <ItemDescription>{metrics.rating_count ?? 0} reviews</ItemDescription>
           </ItemContent>
         </Item>
@@ -104,7 +105,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
             </ItemActions>
           </ItemHeader>
           <ItemContent>
-            <div className="text-2xl font-semibold">{metrics.employee_count ?? 'N/A'}</div>
+            <CardTitle>{metrics.employee_count ?? 'N/A'}</CardTitle>
             <ItemDescription>Active staff members</ItemDescription>
           </ItemContent>
         </Item>

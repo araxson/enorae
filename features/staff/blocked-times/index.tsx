@@ -1,5 +1,5 @@
 import { getMyBlockedTimes } from './api/queries'
-import { BlockedTimesFeature } from './components/blocked-times-feature'
+import { BlockedTimesFeature } from './components'
 
 export async function StaffBlockedTimesPage() {
   const blockedTimes = await getMyBlockedTimes()
@@ -11,5 +11,4 @@ export async function StaffBlockedTimesPage() {
   )
 }
 
-export { BlockedTimesFeature } from './components/blocked-times-feature'
-export { BlockedTimesCalendar } from './components/blocked-times-calendar'
+export { BlockedTimesFeature, BlockedTimesCalendar } from './components'

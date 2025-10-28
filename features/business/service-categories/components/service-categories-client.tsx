@@ -3,9 +3,17 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { CategoryList } from './category-list'
-import { CategoryForm } from './category-form'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
+import { CategoryForm } from './category-form'
+import { CategoryList } from './category-list'
 
 type ServiceCategoriesClientProps = {
   initialCategories: ServiceCategoryWithCounts[]
@@ -27,18 +35,20 @@ export function ServiceCategoriesClient({ initialCategories }: ServiceCategories
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Service Categories</h2>
-          <p className="text-muted-foreground mt-1">
-            Organize your services with categories
-          </p>
-        </div>
-        <Button onClick={() => setIsFormOpen(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Category
-        </Button>
-      </div>
+      <ItemGroup className="items-start justify-between gap-4">
+        <Item variant="muted" className="flex-col items-start gap-2">
+          <ItemContent>
+            <ItemTitle>Service Categories</ItemTitle>
+            <ItemDescription>Organize your services with categories</ItemDescription>
+          </ItemContent>
+        </Item>
+        <ItemActions>
+          <Button onClick={() => setIsFormOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Category
+          </Button>
+        </ItemActions>
+      </ItemGroup>
 
       <CategoryList categories={initialCategories} onEdit={handleEdit} />
 

@@ -8,30 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { useToast } from '@/lib/hooks/use-toast'
 import { updateAppointmentService } from '@/features/business/appointments/api/mutations'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
 import { useServiceFormOptions } from './shared/use-service-form-data'
-import {
-  StaffSelector,
-  TimeRangeFields,
-  DurationField,
-} from './shared/service-form-fields'
-import {
-  Field,
-  FieldContent,
-  FieldLabel,
-} from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
+import { EditServiceFormFields } from './edit-service-dialog-form'
 
 interface EditServiceDialogProps {
   service: AppointmentServiceDetails
@@ -146,57 +129,13 @@ export function EditServiceDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Alert>
-            <AlertDescription>
-              Service ID: <span className="font-medium">{service['service_id']}</span>
-            </AlertDescription>
-          </Alert>
-
-          <StaffSelector
-            value={formData.staffId}
-            onChange={(value) => setFormData((prev) => ({ ...prev, staffId: value }))}
+          <EditServiceFormFields
+            serviceId={service['service_id'] || ''}
+            formData={formData}
+            onFormDataChange={(updates) => setFormData((prev) => ({ ...prev, ...updates }))}
             staff={options.staff}
-            isLoading={isLoadingStaff}
+            isLoadingStaff={isLoadingStaff}
           />
-
-          <TimeRangeFields
-            startTime={formData.startTime}
-            endTime={formData.endTime}
-            onStartChange={(value) =>
-              setFormData((prev) => ({ ...prev, startTime: value }))
-            }
-            onEndChange={(value) => setFormData((prev) => ({ ...prev, endTime: value }))}
-          />
-
-          <DurationField
-            value={formData.durationMinutes}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, durationMinutes: value }))
-            }
-          />
-
-          <Field>
-            <FieldLabel htmlFor="status">Status</FieldLabel>
-            <FieldContent>
-              <Select
-                value={formData['status']}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, status: value }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="confirmed">Confirmed</SelectItem>
-                  <SelectItem value="in_progress">In Progress</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-            </FieldContent>
-          </Field>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>

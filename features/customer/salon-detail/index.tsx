@@ -6,10 +6,7 @@ import {
   getSalonMedia,
   checkIsFavorited,
 } from './api/queries'
-import { SalonHeader } from './components/salon-header'
-import { ServiceList } from './components/service-list'
-import { StaffGrid } from './components/staff-grid'
-import { SalonReviews } from './components/salon-reviews'
+import { SalonHeader, ServiceList, StaffGrid, SalonReviews } from './components'
 import type { SalonDetailParams } from './metadata'
 
 interface SalonDetailProps {

@@ -1,6 +1,12 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import { ArrayInput } from './array-input'
 
@@ -11,20 +17,24 @@ type KeywordsSectionProps = {
 
 export function KeywordsSection({ keywords, onKeywordsChange }: KeywordsSectionProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>SEO keywords</CardTitle>
-        <CardDescription>List the terms clients use to find your services.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-6">
-        <ArrayInput
-          label="Meta keywords"
-          items={keywords}
-          onAdd={(value) => onKeywordsChange([...keywords, value])}
-          onRemove={(index) => onKeywordsChange(keywords.filter((_, idx) => idx !== index))}
-          placeholder="Salon, Spa, Beauty, ..."
-        />
-      </CardContent>
-    </Card>
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>SEO keywords</ItemTitle>
+          <ItemDescription>List the terms clients use to find your services.</ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
+        <div className="flex flex-col gap-6">
+          <ArrayInput
+            label="Meta keywords"
+            items={keywords}
+            onAdd={(value) => onKeywordsChange([...keywords, value])}
+            onRemove={(index) => onKeywordsChange(keywords.filter((_, idx) => idx !== index))}
+            placeholder="Salon, Spa, Beauty, ..."
+          />
+        </div>
+      </ItemContent>
+    </Item>
   )
 }

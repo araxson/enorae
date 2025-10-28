@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -11,12 +9,14 @@ import { AlertCircle, Bell, Mail, MessageSquare, Smartphone } from 'lucide-react
 import { updateNotificationPreferences } from '@/features/shared/preferences/api/mutations'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { NotificationSection } from './notification-section'
+import { NotificationToggleItem } from './notification-toggle-item'
 
 interface NotificationPreferences {
   email_appointments?: boolean
@@ -43,10 +43,6 @@ export function NotificationPreferencesForm({
     sms_reminders: initialPreferences.sms_reminders ?? true,
     push_enabled: initialPreferences.push_enabled ?? true,
   })
-  const emailAppointmentsLabelId = 'notification-email-appointments-label'
-  const emailPromotionsLabelId = 'notification-email-promotions-label'
-  const smsRemindersLabelId = 'notification-sms-reminders-label'
-  const pushEnabledLabelId = 'notification-push-enabled-label'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -59,7 +55,7 @@ export function NotificationPreferencesForm({
     if (result.success) {
       setSuccess(true)
       router.refresh()
-      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
+      const SUCCESS_MESSAGE_TIMEOUT = 3000
       setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error)
@@ -69,123 +65,81 @@ export function NotificationPreferencesForm({
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
         <div className="flex items-center gap-2">
           <Bell className="h-5 w-5" />
-          <CardTitle>Notification preferences</CardTitle>
+          <ItemTitle>Notification preferences</ItemTitle>
         </div>
-        <CardDescription>
+        <ItemDescription>
           Manage how you receive notifications and updates from Enorae
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Notifications */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-muted-foreground" />
-              <h3 className="text-sm font-medium">Email notifications</h3>
-            </div>
-
+          <NotificationSection
+            icon={<Mail className="h-4 w-4 text-muted-foreground" />}
+            title="Email notifications"
+          >
             <ItemGroup className="space-y-4 pl-6">
-              <Item>
-                <ItemContent>
-                  <ItemTitle id={emailAppointmentsLabelId}>Appointment updates</ItemTitle>
-                  <ItemDescription>
-                    Confirmations, reminders, and cancellations
-                  </ItemDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Switch
-                    id="email_appointments"
-                    aria-labelledby={emailAppointmentsLabelId}
-                    checked={preferences.email_appointments}
-                    onCheckedChange={(checked) =>
-                      setPreferences((prev) => ({ ...prev, email_appointments: checked }))
-                    }
-                  />
-                </ItemActions>
-              </Item>
-
-              <Item>
-                <ItemContent>
-                  <ItemTitle id={emailPromotionsLabelId}>Promotions and offers</ItemTitle>
-                  <ItemDescription>
-                    Special deals and salon updates
-                  </ItemDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Switch
-                    id="email_promotions"
-                    aria-labelledby={emailPromotionsLabelId}
-                    checked={preferences.email_promotions}
-                    onCheckedChange={(checked) =>
-                      setPreferences((prev) => ({ ...prev, email_promotions: checked }))
-                    }
-                  />
-                </ItemActions>
-              </Item>
+              <NotificationToggleItem
+                id="email_appointments"
+                labelId="notification-email-appointments-label"
+                title="Appointment updates"
+                description="Confirmations, reminders, and cancellations"
+                checked={preferences.email_appointments ?? true}
+                onCheckedChange={(checked) =>
+                  setPreferences((prev) => ({ ...prev, email_appointments: checked }))
+                }
+              />
+              <NotificationToggleItem
+                id="email_promotions"
+                labelId="notification-email-promotions-label"
+                title="Promotions and offers"
+                description="Special deals and salon updates"
+                checked={preferences.email_promotions ?? false}
+                onCheckedChange={(checked) =>
+                  setPreferences((prev) => ({ ...prev, email_promotions: checked }))
+                }
+              />
             </ItemGroup>
-          </div>
+          </NotificationSection>
 
-          {/* SMS Notifications */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4 text-muted-foreground" />
-              <h3 className="text-sm font-medium">SMS notifications</h3>
-            </div>
-
+          <NotificationSection
+            icon={<MessageSquare className="h-4 w-4 text-muted-foreground" />}
+            title="SMS notifications"
+          >
             <ItemGroup className="space-y-4 pl-6">
-              <Item>
-                <ItemContent>
-                  <ItemTitle id={smsRemindersLabelId}>Appointment reminders</ItemTitle>
-                  <ItemDescription>
-                    Get SMS reminders before your appointments
-                  </ItemDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Switch
-                    id="sms_reminders"
-                    aria-labelledby={smsRemindersLabelId}
-                    checked={preferences.sms_reminders}
-                    onCheckedChange={(checked) =>
-                      setPreferences((prev) => ({ ...prev, sms_reminders: checked }))
-                    }
-                  />
-                </ItemActions>
-              </Item>
+              <NotificationToggleItem
+                id="sms_reminders"
+                labelId="notification-sms-reminders-label"
+                title="Appointment reminders"
+                description="Get SMS reminders before your appointments"
+                checked={preferences.sms_reminders ?? true}
+                onCheckedChange={(checked) =>
+                  setPreferences((prev) => ({ ...prev, sms_reminders: checked }))
+                }
+              />
             </ItemGroup>
-          </div>
+          </NotificationSection>
 
-          {/* Push Notifications */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Smartphone className="h-4 w-4 text-muted-foreground" />
-              <h3 className="text-sm font-medium">Push notifications</h3>
-            </div>
-
+          <NotificationSection
+            icon={<Smartphone className="h-4 w-4 text-muted-foreground" />}
+            title="Push notifications"
+          >
             <ItemGroup className="space-y-4 pl-6">
-              <Item>
-                <ItemContent>
-                  <ItemTitle id={pushEnabledLabelId}>Enable push notifications</ItemTitle>
-                  <ItemDescription>
-                    Receive real-time updates on your device
-                  </ItemDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Switch
-                    id="push_enabled"
-                    aria-labelledby={pushEnabledLabelId}
-                    checked={preferences.push_enabled}
-                    onCheckedChange={(checked) =>
-                      setPreferences((prev) => ({ ...prev, push_enabled: checked }))
-                    }
-                  />
-                </ItemActions>
-              </Item>
+              <NotificationToggleItem
+                id="push_enabled"
+                labelId="notification-push-enabled-label"
+                title="Enable push notifications"
+                description="Receive real-time updates on your device"
+                checked={preferences.push_enabled ?? true}
+                onCheckedChange={(checked) =>
+                  setPreferences((prev) => ({ ...prev, push_enabled: checked }))
+                }
+              />
             </ItemGroup>
-          </div>
+          </NotificationSection>
 
           {error && (
             <Alert variant="destructive">
@@ -214,7 +168,7 @@ export function NotificationPreferencesForm({
             )}
           </Button>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

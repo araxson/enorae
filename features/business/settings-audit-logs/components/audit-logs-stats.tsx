@@ -1,6 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Activity, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface AuditLogsStatsProps {
   stats: {
@@ -14,91 +21,101 @@ interface AuditLogsStatsProps {
 
 export function AuditLogsStats({ stats }: AuditLogsStatsProps) {
   return (
-    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-secondary/10">
-              <Activity className="h-6 w-6 text-secondary" />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>Total Events (24h)</CardTitle>
-            <CardDescription>Audit log volume in the last day</CardDescription>
+    <ItemGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5">
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+              <AvatarFallback className="bg-secondary/10">
+                <Activity className="h-6 w-6 text-secondary" aria-hidden="true" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Total Events (24h)</ItemTitle>
+              <ItemDescription>Audit log volume in the last day</ItemDescription>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <h4 className="scroll-m-20 text-xl font-semibold">{stats.totalEvents}</h4>
-        </CardContent>
-      </Card>
+        </ItemHeader>
+        <ItemContent>
+          <span className="text-xl font-semibold">{stats.totalEvents}</span>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-primary/10">
-              <CheckCircle2 className="h-6 w-6 text-primary" />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>Success Rate</CardTitle>
-            <CardDescription>Percentage of successful actions</CardDescription>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+              <AvatarFallback className="bg-primary/10">
+                <CheckCircle2 className="h-6 w-6 text-primary" aria-hidden="true" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Success Rate</ItemTitle>
+              <ItemDescription>Percentage of successful actions</ItemDescription>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <h4 className="scroll-m-20 text-xl font-semibold">{stats.successRate.toFixed(1)}%</h4>
-        </CardContent>
-      </Card>
+        </ItemHeader>
+        <ItemContent>
+          <span className="text-xl font-semibold">{stats.successRate.toFixed(1)}%</span>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-destructive/10">
-              <XCircle className="h-6 w-6 text-destructive" />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>Failed Actions</CardTitle>
-            <CardDescription>Errors encountered in the last day</CardDescription>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+              <AvatarFallback className="bg-destructive/10">
+                <XCircle className="h-6 w-6 text-destructive" aria-hidden="true" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Failed Actions</ItemTitle>
+              <ItemDescription>Errors encountered in the last day</ItemDescription>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <h4 className="scroll-m-20 text-xl font-semibold">{stats.failedActions}</h4>
-        </CardContent>
-      </Card>
+        </ItemHeader>
+        <ItemContent>
+          <span className="text-xl font-semibold">{stats.failedActions}</span>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-accent/10">
-              <AlertTriangle className="h-6 w-6 text-accent" />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>Critical Events</CardTitle>
-            <CardDescription>High severity occurrences</CardDescription>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+              <AvatarFallback className="bg-accent/10">
+                <AlertTriangle className="h-6 w-6 text-accent" aria-hidden="true" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Critical Events</ItemTitle>
+              <ItemDescription>High severity occurrences</ItemDescription>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <h4 className="scroll-m-20 text-xl font-semibold">{stats.criticalEvents}</h4>
-        </CardContent>
-      </Card>
+        </ItemHeader>
+        <ItemContent>
+          <span className="text-xl font-semibold">{stats.criticalEvents}</span>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-          <Avatar className="h-12 w-12">
-            <AvatarFallback className="bg-accent/10">
-              <AlertTriangle className="h-6 w-6 text-accent" />
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <CardTitle>Warnings</CardTitle>
-            <CardDescription>Medium severity alerts</CardDescription>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12">
+              <AvatarFallback className="bg-accent/10">
+                <AlertTriangle className="h-6 w-6 text-accent" aria-hidden="true" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-1">
+              <ItemTitle>Warnings</ItemTitle>
+              <ItemDescription>Medium severity alerts</ItemDescription>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent>
-          <h4 className="scroll-m-20 text-xl font-semibold">{stats.warningEvents}</h4>
-        </CardContent>
-      </Card>
-    </div>
+        </ItemHeader>
+        <ItemContent>
+          <span className="text-xl font-semibold">{stats.warningEvents}</span>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

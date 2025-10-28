@@ -1,5 +1,5 @@
 import { Users, Globe2 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
   Empty,
@@ -16,7 +16,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/admin-analytics-types'
+import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/types'
 
 interface AcquisitionPanelProps {
   acquisition: PlatformAnalyticsSnapshot['acquisition']
@@ -35,7 +35,7 @@ export function AcquisitionPanel({ acquisition }: AcquisitionPanelProps) {
               <Users className="h-4 w-4" />
             </ItemMedia>
             <ItemContent>
-              <CardTitle>User Acquisition</CardTitle>
+              <ItemTitle>User Acquisition</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

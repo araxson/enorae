@@ -8,11 +8,17 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { formatDistanceToNow, format } from 'date-fns'
 
 import type { NotificationEntry } from '@/features/business/notifications/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type NotificationHistoryTableProps = {
   history: NotificationEntry[]
@@ -42,7 +48,13 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Notification history</CardTitle>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>Notification history</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -63,7 +75,13 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Notification history</CardTitle>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>Notification history</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="w-full">
@@ -151,7 +169,13 @@ export function NotificationHistoryTable({ history }: NotificationHistoryTablePr
               </div>
               <Card>
                 <CardHeader>
-                  <CardTitle>Payload</CardTitle>
+                  <ItemGroup>
+                    <Item>
+                      <ItemContent>
+                        <ItemTitle>Payload</ItemTitle>
+                      </ItemContent>
+                    </Item>
+                  </ItemGroup>
                 </CardHeader>
                 <CardContent>
                   <ScrollArea className="max-h-60">

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -9,6 +9,13 @@ import { Badge } from '@/components/ui/badge'
 import { sendTestNotification } from '@/features/business/notifications/api/mutations'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { useToast } from '@/lib/hooks/use-toast'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type NotificationPreviewPanelProps = {
   templates: NotificationTemplate[]
@@ -59,10 +66,18 @@ export function NotificationPreviewPanel({ templates }: NotificationPreviewPanel
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Test & Preview</CardTitle>
-        <CardDescription>
-          Send yourself a notification preview to confirm template quality and delivery
-        </CardDescription>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>Test &amp; Preview</ItemTitle>
+            </ItemContent>
+            <ItemContent>
+              <ItemDescription>
+                Send yourself a notification preview to confirm template quality and delivery
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>

@@ -23,7 +23,7 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import { Search, X } from 'lucide-react'
-import type { BackgroundStatus } from '@/features/admin/staff/api/dashboard/metrics'
+import type { BackgroundStatus } from '@/features/admin/staff/api/queries'
 import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
 

@@ -1,3 +1,5 @@
+export { ClientAppointmentHistory } from './client-appointment-history'
+export { ClientCard } from './client-card'
 export { ClientDetailDialog } from './client-detail-dialog'
 export { ClientFilters } from './client-filters'
 export { ClientsClient } from './clients-client'

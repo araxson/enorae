@@ -1,6 +1,15 @@
-import { Shield, Users, UserCheck, UserX } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Shield, UserCheck, UserX, Users } from 'lucide-react'
 
 type RoleStatsProps = {
   stats: Record<string, { total: number; active: number; inactive: number }>
@@ -13,57 +22,57 @@ export function RolesStats({ stats }: RoleStatsProps) {
   const uniqueRoles = Object.keys(stats).length
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <CardTitle>Total Assignments</CardTitle>
-            <Shield className="h-4 w-4 text-secondary" />
-          </div>
-          <CardDescription>All role assignments across the platform.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-semibold">{totalAssignments}</p>
-        </CardContent>
-      </Card>
+    <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Total Assignments</ItemTitle>
+          <ItemMedia variant="icon">
+            <Shield className="h-4 w-4 text-secondary" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent className="flex flex-col gap-2">
+          <CardTitle>{totalAssignments}</CardTitle>
+          <ItemDescription>All role assignments across the platform</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <CardTitle>Active Roles</CardTitle>
-            <UserCheck className="h-4 w-4 text-primary" />
-          </div>
-          <CardDescription>Role assignments currently active.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-semibold">{totalActive}</p>
-        </CardContent>
-      </Card>
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Active Roles</ItemTitle>
+          <ItemMedia variant="icon">
+            <UserCheck className="h-4 w-4 text-primary" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent className="flex flex-col gap-2">
+          <CardTitle>{totalActive}</CardTitle>
+          <ItemDescription>Role assignments currently active</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <CardTitle>Inactive Roles</CardTitle>
-            <UserX className="h-4 w-4 text-accent" />
-          </div>
-          <CardDescription>Assignments awaiting reactivation.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-semibold">{totalInactive}</p>
-        </CardContent>
-      </Card>
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Inactive Roles</ItemTitle>
+          <ItemMedia variant="icon">
+            <UserX className="h-4 w-4 text-accent" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent className="flex flex-col gap-2">
+          <CardTitle>{totalInactive}</CardTitle>
+          <ItemDescription>Assignments awaiting reactivation</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <CardTitle>Role Types</CardTitle>
-            <Users className="h-4 w-4 text-primary" />
-          </div>
-          <CardDescription>Total unique roles with recent assignments.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-semibold">{uniqueRoles}</p>
-          <div className="mt-2 flex flex-wrap gap-1 text-xs">
+      <Item variant="outline" className="flex-col gap-3">
+        <ItemHeader>
+          <ItemTitle>Role Types</ItemTitle>
+          <ItemMedia variant="icon">
+            <Users className="h-4 w-4 text-primary" aria-hidden="true" />
+          </ItemMedia>
+        </ItemHeader>
+        <ItemContent className="flex flex-col gap-2">
+          <CardTitle>{uniqueRoles}</CardTitle>
+          <ItemDescription>Total unique roles with recent assignments</ItemDescription>
+          <div className="mt-1 flex flex-wrap gap-1">
             {Object.entries(stats)
               .sort((a, b) => b[1].total - a[1].total)
               .slice(0, 3)
@@ -73,8 +82,8 @@ export function RolesStats({ stats }: RoleStatsProps) {
                 </Badge>
               ))}
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

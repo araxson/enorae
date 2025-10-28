@@ -1,5 +1,5 @@
 import { getMessagesDashboard } from './api/queries'
-import { MessagesClient } from './components/messages-client'
+import { MessagesClient } from './components'
 
 export async function AdminMessages() {
   const dashboard = await getMessagesDashboard()

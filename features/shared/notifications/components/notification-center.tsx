@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Badge } from '@/components/ui/badge'
@@ -18,6 +17,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -98,12 +98,12 @@ export function NotificationCenter({ notifications }: Props) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex w-full justify-between items-center">
           <div className="flex items-center gap-3">
             <Bell className="h-5 w-5" />
-            <CardTitle>Notification Center</CardTitle>
+            <ItemTitle>Notification Center</ItemTitle>
             {unreadCount > 0 && (
               <Badge variant="destructive">{unreadCount}</Badge>
             )}
@@ -115,8 +115,8 @@ export function NotificationCenter({ notifications }: Props) {
             </Button>
           )}
         </div>
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="all">All</TabsTrigger>
@@ -192,7 +192,7 @@ export function NotificationCenter({ notifications }: Props) {
             )}
           </TabsContent>
         </Tabs>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

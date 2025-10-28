@@ -26,6 +26,8 @@ export function TestimonialCard({ author, role, content, rating, avatar }: Testi
     .join('')
     .toUpperCase()
     .slice(0, 2)
+  const filledStars = Math.round(Math.min(Math.max(rating, 0), 5))
+  const starVisualization = `${'★'.repeat(filledStars)}${'☆'.repeat(5 - filledStars)}`
 
   return (
     <Card className="h-full">
@@ -44,21 +46,12 @@ export function TestimonialCard({ author, role, content, rating, avatar }: Testi
           <Item variant="muted" aria-label={`Rating ${rating} out of 5`}>
             <ItemHeader className="flex items-center gap-2">
               <ItemMedia variant="icon">
-                <Star className="size-4 text-primary" aria-hidden="true" />
+                <Star className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemTitle>{rating} out of 5</ItemTitle>
             </ItemHeader>
             <ItemContent>
-              <div className="flex items-center gap-1" aria-hidden="true">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Star
-                    key={index}
-                    className={`h-4 w-4 ${
-                      index < rating ? 'fill-primary text-primary' : 'fill-muted text-muted'
-                    }`}
-                  />
-                ))}
-              </div>
+              <ItemDescription aria-hidden="true">{starVisualization}</ItemDescription>
               <ItemDescription>
                 Verified customer satisfaction score based on recent appointments.
               </ItemDescription>

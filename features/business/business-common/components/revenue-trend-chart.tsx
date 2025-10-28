@@ -1,7 +1,16 @@
 'use client'
 
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import { DollarSign } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts'
 import { format } from 'date-fns'
 
@@ -54,10 +63,24 @@ export function RevenueTrendChart({
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>{title}</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
-        <CardContent className="flex h-72 items-center justify-center text-muted-foreground">
-          No revenue data available
+        <CardContent>
+          <Empty className="h-72">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <DollarSign className="h-8 w-8" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No revenue data available</EmptyTitle>
+              <EmptyDescription>Revenue trends will appear once transactions are recorded</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     )
@@ -68,10 +91,18 @@ export function RevenueTrendChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          Total: {formatCurrency(totalRevenue)} • Last {data.length} days
-        </CardDescription>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>{title}</ItemTitle>
+            </ItemContent>
+            <ItemContent>
+              <ItemDescription>
+                Total: {formatCurrency(totalRevenue)} • Last {data.length} days
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-72 w-full">

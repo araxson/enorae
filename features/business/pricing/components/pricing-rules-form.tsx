@@ -3,12 +3,19 @@
 import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
-import { createPricingRule } from '@/features/business/pricing/api/pricing-rules.mutations'
+import { createPricingRule } from '@/features/business/pricing/api/mutations/pricing-rules'
 import type { PricingRulesFormProps, PricingRuleFormState } from './pricing-rules-form/types'
 import { AdjustmentFields, RuleBasicsFields, ScheduleFields, ValidityFields } from './pricing-rules-form/sections'
 import { ruleLabels } from './pricing-rules-form/constants'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesFormProps) {
   const { toast } = useToast()
@@ -81,12 +88,16 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Create Pricing Rule</CardTitle>
-        <CardDescription>Adjust service pricing dynamically based on schedule or customer segments.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-6">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>Create Pricing Rule</ItemTitle>
+          <ItemDescription>
+            Adjust service pricing dynamically based on schedule or customer segments.
+          </ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <RuleBasicsFields formData={formData} setFormData={setFormData} services={services} />
 
@@ -104,17 +115,32 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
             selectedServiceName={selectedServiceName}
           />
 
-          <Card>
-            <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <Item variant="muted" className="flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <ItemContent>
               <div className="space-y-1 text-sm text-muted-foreground">
                 <p>
-                  {ruleLabels[formData.rule_type]} rule targeting {selectedServiceName.toLowerCase()}.
+                  {ruleLabels[formData.rule_type]}
+                  {' '}
+                  rule targeting
+                  {' '}
+                  {selectedServiceName.toLowerCase()}
+                  .
                 </p>
                 <p>
-                  Multiplier: <strong>{formData.multiplier.toFixed(2)}</strong> • Fixed adjustment:{' '}
-                  <strong>${formData.fixed_adjustment.toFixed(2)}</strong>
+                  Multiplier:
+                  {' '}
+                  <strong>{formData.multiplier.toFixed(2)}</strong>
+                  {' '}
+                  • Fixed adjustment:
+                  {' '}
+                  <strong>
+                    $
+                    {formData.fixed_adjustment.toFixed(2)}
+                  </strong>
                 </p>
               </div>
+            </ItemContent>
+            <ItemActions>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? (
                   <>
@@ -125,10 +151,10 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
                   <span>Create Pricing Rule</span>
                 )}
               </Button>
-            </CardContent>
-          </Card>
+            </ItemActions>
+          </Item>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

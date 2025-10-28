@@ -174,6 +174,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
                       <Button
                         variant="ghost"
                         size="icon"
+                        aria-label={`Open actions for ${record.user_email ?? 'security event'}`}
                         disabled={isLoading}
                       >
                         <MoreHorizontal className="h-4 w-4" />
@@ -209,8 +210,13 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
       <ScrollBar orientation="horizontal" />
       </ScrollArea>
       {isLoading ? (
-        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center"
+        >
           <Spinner className="size-6" />
+          <span className="sr-only">Loading security access events</span>
         </div>
       ) : null}
     </div>

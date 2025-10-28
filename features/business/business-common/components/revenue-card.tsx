@@ -1,12 +1,15 @@
 'use client'
 
-import { cn } from '@/lib/utils'
-
-import type { ReactNode, ComponentType } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight } from 'lucide-react'
-import { formatCurrency, formatPercentage, calculateGrowthRate } from '@/features/business/business-common/components/value-formatters'
+import { CardTitle } from '@/components/ui/card'
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  TrendingDown,
+  TrendingUp,
+} from 'lucide-react'
+import { calculateGrowthRate, formatCurrency, formatPercentage } from '@/features/business/business-common/components/value-formatters'
 import {
   Item,
   ItemActions,
@@ -16,6 +19,8 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { cn } from '@/lib/utils'
+import { RevenueCardBreakdown } from './revenue-card-breakdown'
 
 type RevenueCardProps = {
   /**
@@ -143,9 +148,11 @@ export function RevenueCard({
           <ItemGroup>
             <Item>
               <ItemContent className="flex gap-2">
-                <div className={cn('font-semibold', compact ? 'text-2xl' : 'text-3xl font-bold')}>
-                  {formattedAmount}
-                </div>
+                {compact ? (
+                  <ItemTitle>{formattedAmount}</ItemTitle>
+                ) : (
+                  <CardTitle>{formattedAmount}</CardTitle>
+                )}
                 {growthRate !== undefined && (
                   <Badge
                     variant={growthRate >= 0 ? 'default' : 'destructive'}
@@ -183,25 +190,7 @@ export function RevenueCard({
           )}
 
           {/* Breakdown */}
-          {breakdown && breakdown.length > 0 && (
-            <>
-              <Separator />
-              <ItemGroup className="flex flex-col gap-2">
-                {breakdown.map((item) => (
-                  <Item key={item.label}>
-                    <ItemContent>
-                      <ItemDescription>{item.label}</ItemDescription>
-                    </ItemContent>
-                    <ItemActions className="flex-none">
-                      <ItemDescription>
-                        {formatCurrency(item.amount, { currency })}
-                      </ItemDescription>
-                    </ItemActions>
-                  </Item>
-                ))}
-              </ItemGroup>
-            </>
-          )}
+          <RevenueCardBreakdown breakdown={breakdown ?? []} currency={currency} />
 
           {/* Subtitle */}
           {!subtitle ? null : <div className="text-xs text-muted-foreground">{subtitle}</div>}

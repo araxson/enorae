@@ -9,27 +9,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
 import { useServiceFormOptions } from './shared/use-service-form-data'
-import {
-  StaffSelector,
-  TimeRangeFields,
-  DurationField,
-} from './shared/service-form-fields'
-import {
-  Field,
-  FieldContent,
-  FieldLabel,
-} from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
+import { AddServiceFormFields } from './add-service-form-fields'
 
 interface AddServiceDialogProps {
   appointmentId: string
@@ -129,61 +113,12 @@ export function AddServiceDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Field>
-            <FieldLabel htmlFor="service">Service *</FieldLabel>
-            <FieldContent>
-              <Select
-                value={formData.serviceId}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, serviceId: value }))
-                }
-                disabled={isLoadingOptions}
-              >
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={
-                      isLoadingOptions ? 'Loading services...' : 'Select a service'
-                    }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {options.services.length > 0 ? (
-                    options.services.map((service) => (
-                      <SelectItem key={service.id} value={service.id}>
-                        {service.name}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem value="no-services" disabled>
-                      {isLoadingOptions ? 'Loading services...' : 'No services available'}
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-            </FieldContent>
-          </Field>
-
-          <StaffSelector
-            value={formData.staffId}
-            onChange={(value) => setFormData((prev) => ({ ...prev, staffId: value }))}
+          <AddServiceFormFields
+            formData={formData}
+            onFormDataChange={(updates) => setFormData((prev) => ({ ...prev, ...updates }))}
+            services={options.services}
             staff={options.staff}
             isLoading={isLoadingOptions}
-          />
-
-          <TimeRangeFields
-            startTime={formData.startTime}
-            endTime={formData.endTime}
-            onStartChange={(value) =>
-              setFormData((prev) => ({ ...prev, startTime: value }))
-            }
-            onEndChange={(value) => setFormData((prev) => ({ ...prev, endTime: value }))}
-          />
-
-          <DurationField
-            value={formData.durationMinutes}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, durationMinutes: value }))
-            }
           />
 
           <DialogFooter>

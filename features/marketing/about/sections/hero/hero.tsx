@@ -13,7 +13,10 @@ export function Hero() {
           <ItemDescription>Discover our mission, values, and the people behind Enorae.</ItemDescription>
         </ItemContent>
       </Item>
-      <ButtonGroup className="flex flex-wrap justify-center gap-2">
+      <ButtonGroup
+        aria-label="About hero actions"
+        className="flex flex-wrap justify-center gap-2"
+      >
         <Button asChild size="lg">
           <Link href="/about#team">Meet the team</Link>
         </Button>

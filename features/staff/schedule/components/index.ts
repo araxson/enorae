@@ -1,3 +1,5 @@
 export { ScheduleCalendar } from './schedule-calendar'
 export { ScheduleManagementClient } from './schedule-management-client'
+export { ScheduleFormDialog } from './schedule-form-dialog'
 export { StaffScheduleClient } from './schedule-client'
+export { ScheduleFeature } from './schedule-feature'

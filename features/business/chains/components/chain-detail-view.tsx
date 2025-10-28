@@ -1,8 +1,13 @@
-import { getChainSalons, getChainAnalytics } from '@/features/business/chains/api/queries'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Building2, DollarSign, Star, Users, Calendar, Briefcase } from 'lucide-react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { getChainAnalytics, getChainSalons } from '@/features/business/chains/api/queries'
 import { ChainLocationsList } from './chain-locations-list'
+import { ChainAnalyticsCards } from './chain-analytics-cards'
 
 type ChainDetailViewProps = {
   chainId: string
@@ -26,80 +31,17 @@ export async function ChainDetailView({ chainId, chainName }: ChainDetailViewPro
 
   return (
     <div className="space-y-6">
-      {/* Chain Analytics Summary */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Locations</CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analytics.totalLocations}</div>
-          </CardContent>
-        </Card>
+      <ChainAnalyticsCards analytics={analytics} />
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Revenue</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${analytics.totalRevenue.toLocaleString()}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Average Rating</CardTitle>
-            <Star className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {analytics.averageRating.toFixed(1)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {analytics.totalReviews} reviews
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Staff</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analytics.totalStaff}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Appointments</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analytics.totalAppointments}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle>Total Services</CardTitle>
-            <Briefcase className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analytics.totalServices}</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Location Performance Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Location Performance</CardTitle>
+          <ItemGroup>
+            <Item>
+              <ItemContent>
+                <ItemTitle>Location Performance</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="p-0">
           <ChainLocationsList locations={analytics.locationMetrics} salons={salons} />

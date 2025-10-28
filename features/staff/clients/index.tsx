@@ -1,4 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card'
 import {
   Empty,
   EmptyDescription,
@@ -7,7 +6,7 @@ import {
 } from '@/components/ui/empty'
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffClients } from './api/queries'
-import { ClientsClient } from './components/clients-client'
+import { ClientsClient } from './components'
 
 export async function StaffClients() {
   let staffProfile
@@ -16,18 +15,14 @@ export async function StaffClients() {
   } catch (error) {
     return (
       <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Card>
-          <CardContent>
-            <Empty>
-              <EmptyHeader>
-                <EmptyTitle>Clients unavailable</EmptyTitle>
-                <EmptyDescription>
-                  {error instanceof Error ? error.message : 'Please log in to view your clients'}
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CardContent>
-        </Card>
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>Clients unavailable</EmptyTitle>
+            <EmptyDescription>
+              {error instanceof Error ? error.message : 'Please log in to view your clients'}
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       </section>
     )
   }
@@ -35,16 +30,12 @@ export async function StaffClients() {
   if (!staffProfile) {
     return (
       <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-        <Card>
-          <CardContent>
-            <Empty>
-              <EmptyHeader>
-                <EmptyTitle>Profile not found</EmptyTitle>
-                <EmptyDescription>Staff profile not found</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </CardContent>
-        </Card>
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle>Profile not found</EmptyTitle>
+            <EmptyDescription>Staff profile not found</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       </section>
     )
   }

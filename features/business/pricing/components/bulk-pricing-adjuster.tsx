@@ -4,28 +4,24 @@ import { useState, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Badge } from '@/components/ui/badge'
-import { bulkAdjustPricing } from '@/features/business/pricing/api/pricing-rules.mutations'
+import { bulkAdjustPricing } from '@/features/business/pricing/api/mutations/pricing-rules'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
 import { Spinner } from '@/components/ui/spinner'
+import { BulkPricingServiceSelector } from './bulk-pricing-service-selector'
 
 type ServiceOption = { id: string; name: string; price?: number }
 
@@ -150,50 +146,11 @@ export function BulkPricingAdjuster({ salonId, services }: BulkPricingAdjusterPr
           </FieldGroup>
 
           {scope === 'selected' ? (
-            <Field>
-              <FieldLabel>Choose Services</FieldLabel>
-              <FieldContent>
-                <Item variant="outline" className="mt-2 flex-col p-0">
-                    <ScrollArea className="max-h-40">
-                      <ItemGroup className="space-y-1 p-2">
-                        {services.map((service) => {
-                          const isActive = selectedServices.includes(service.id)
-                          return (
-                            <Item
-                              key={service.id}
-                              asChild
-                              variant={isActive ? 'muted' : 'outline'}
-                            >
-                              <button
-                                type="button"
-                                className="w-full text-left"
-                                onClick={() => toggleService(service.id)}
-                                aria-pressed={isActive}
-                              >
-                                <ItemContent>
-                                  <ItemTitle>{service.name}</ItemTitle>
-                                </ItemContent>
-                                {service.price !== undefined ? (
-                                  <ItemActions>
-                                    <Badge variant="secondary">
-                                      ${service.price.toFixed(2)}
-                                    </Badge>
-                                  </ItemActions>
-                                ) : null}
-                              </button>
-                            </Item>
-                          )
-                        })}
-                      </ItemGroup>
-                    </ScrollArea>
-                </Item>
-              </FieldContent>
-              {selectedServices.length > 0 ? (
-                <FieldDescription>
-                  {selectedServices.length} services selected.
-                </FieldDescription>
-              ) : null}
-            </Field>
+            <BulkPricingServiceSelector
+              services={services}
+              selectedServices={selectedServices}
+              onToggleService={toggleService}
+            />
           ) : null}
 
           <Field>

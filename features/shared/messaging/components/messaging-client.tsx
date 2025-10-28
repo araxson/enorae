@@ -3,9 +3,10 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { Separator } from '@/components/ui/separator'
-import { ThreadList } from './thread-list'
 import { CreateThreadDialog } from './create-thread-dialog'
+import { ThreadList } from './thread-list'
 
 interface MessagingClientProps {
   threads: Array<{
@@ -25,12 +26,16 @@ export function MessagingClient({ threads, salonId }: MessagingClientProps) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-1">
-          <h1 className="scroll-m-20 text-4xl font-extrabold lg:text-5xl text-2xl font-semibold">Messages</h1>
-          <p className="leading-7 text-muted-foreground">
-            Communicate with salons about your appointments.
-          </p>
-        </div>
+        <ItemGroup className="gap-2">
+          <Item variant="muted" className="flex-col items-start gap-2">
+            <ItemContent>
+              <ItemTitle>Messages</ItemTitle>
+              <ItemDescription>
+                Communicate with salons about your appointments.
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
         {salonId && (
           <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2">
             <Plus className="h-4 w-4" />

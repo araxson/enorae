@@ -6,7 +6,13 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { Salon } from '../types'
 
 interface LanguagesCardProps {
@@ -28,7 +34,10 @@ export function LanguagesCard({ salon }: LanguagesCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted">
+            <Item variant="muted" className="flex-col gap-1">
+              <ItemHeader>
+                <ItemTitle>Language support</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   Reach out directly to confirm language preferences for your visit.

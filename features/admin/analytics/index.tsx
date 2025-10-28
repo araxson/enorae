@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getPlatformAnalyticsSnapshot } from './api/queries'
-import { PlatformAnalyticsDashboard } from './components/analytics-dashboard'
+import { PlatformAnalyticsDashboard } from './components'
 
 // Export types
 export type * from './types'

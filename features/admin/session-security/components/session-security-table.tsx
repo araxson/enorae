@@ -174,6 +174,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                       <Button
                         variant="ghost"
                         size="icon"
+                        aria-label={`Open session actions for ${record.user_email ?? 'user'}`}
                         disabled={isLoading}
                       >
                         <MoreHorizontal className="h-4 w-4" />
@@ -210,8 +211,13 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
       <ScrollBar orientation="horizontal" />
       </ScrollArea>
       {isLoading ? (
-        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center"
+        >
           <Spinner className="size-6" />
+          <span className="sr-only">Updating session security records</span>
         </div>
       ) : null}
     </div>

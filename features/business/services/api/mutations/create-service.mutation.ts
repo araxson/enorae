@@ -1,144 +1,35 @@
+'use server'
 import 'server-only'
 
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 
 import { canAccessSalon } from '@/lib/auth'
 import type { Session } from '@/lib/auth'
-import type { Database } from '@/lib/types/database.types'
 import {
   ensureBusinessUser,
   generateUniqueServiceSlug,
   getSupabaseClient,
   type SupabaseServerClient,
 } from './shared'
-import { deriveBookingDurations, derivePricingMetrics } from '@/lib/services/calculations'
-import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
+import { serviceSchema, pricingSchema, bookingRulesSchema } from './create-service-schemas'
+import {
+  extractFirstError,
+  buildServiceInsert,
+  buildPricingInsert,
+  buildBookingRulesInsert,
+  rollbackService,
+  type ServiceFormData,
+  type ServicePricingData,
+  type ServiceBookingRulesData,
+} from './create-service-helpers'
 
-export type ServiceFormData = {
-  name: string
-  description?: string
-  category_id?: string
-  is_active: boolean
-  is_bookable: boolean
-  is_featured: boolean
-}
-
-export type ServicePricingData = {
-  base_price: number
-  sale_price?: number | null
-  currency_code: string
-  is_taxable?: boolean
-  tax_rate?: number | null
-  commission_rate?: number | null
-  cost?: number | null
-}
-
-export type ServiceBookingRulesData = {
-  duration_minutes: number
-  buffer_minutes?: number | null
-  min_advance_booking_hours?: number | null
-  max_advance_booking_days?: number | null
-}
+export type { ServiceFormData, ServicePricingData, ServiceBookingRulesData }
 
 type CreateServiceOptions = {
   supabase?: SupabaseServerClient
   session?: Session
   now?: () => Date
   skipAccessCheck?: boolean
-}
-
-const serviceSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, 'Service name is required')
-    .max(BUSINESS_THRESHOLDS.SERVICE_NAME_MAX_LENGTH, `Service name must be ${BUSINESS_THRESHOLDS.SERVICE_NAME_MAX_LENGTH} characters or fewer`),
-  description: z
-    .string()
-    .trim()
-    .max(BUSINESS_THRESHOLDS.SERVICE_DESCRIPTION_MAX_LENGTH, `Description must be ${BUSINESS_THRESHOLDS.SERVICE_DESCRIPTION_MAX_LENGTH} characters or fewer`)
-    .optional(),
-  category_id: z.string().uuid('Invalid category').optional(),
-  is_active: z.boolean(),
-  is_bookable: z.boolean(),
-  is_featured: z.boolean(),
-})
-
-const pricingSchema = z
-  .object({
-    base_price: z.number().min(0, 'Base price must be positive'),
-    sale_price: z.number().min(0, 'Sale price cannot be negative').nullable().optional(),
-    currency_code: z
-      .string()
-      .trim()
-      .length(BUSINESS_THRESHOLDS.CURRENCY_CODE_LENGTH, `Currency code must be a ${BUSINESS_THRESHOLDS.CURRENCY_CODE_LENGTH}-letter ISO code`)
-      .transform((code) => code.toUpperCase()),
-    is_taxable: z.boolean().optional(),
-    tax_rate: z
-      .number()
-      .min(0, 'Tax rate cannot be negative')
-      .max(BUSINESS_THRESHOLDS.MAX_TAX_RATE_PERCENT, `Tax rate cannot exceed ${BUSINESS_THRESHOLDS.MAX_TAX_RATE_PERCENT}%`)
-      .nullable()
-      .optional(),
-    commission_rate: z
-      .number()
-      .min(0, 'Commission rate cannot be negative')
-      .max(BUSINESS_THRESHOLDS.MAX_COMMISSION_RATE_PERCENT, `Commission rate cannot exceed ${BUSINESS_THRESHOLDS.MAX_COMMISSION_RATE_PERCENT}%`)
-      .nullable()
-      .optional(),
-    cost: z.number().min(0, 'Cost cannot be negative').nullable().optional(),
-  })
-  .refine(
-    (data) => data.sale_price == null || data.sale_price <= data.base_price,
-    { message: 'Sale price cannot exceed the base price', path: ['sale_price'] },
-  )
-
-const bookingRulesSchema = z
-  .object({
-    duration_minutes: z
-      .number()
-      .int('Duration must be a whole number')
-      .min(1, 'Duration must be at least one minute'),
-    buffer_minutes: z
-      .number()
-      .int('Buffer must be a whole number')
-      .min(0, 'Buffer cannot be negative')
-      .nullable()
-      .optional(),
-    min_advance_booking_hours: z
-      .number()
-      .int('Minimum advance booking must be a whole number')
-      .min(0, 'Minimum advance booking cannot be negative')
-      .max(BUSINESS_THRESHOLDS.MAX_ADVANCE_BOOKING_HOURS, `Minimum advance booking cannot exceed ${BUSINESS_THRESHOLDS.MAX_ADVANCE_BOOKING_HOURS} hours`)
-      .nullable()
-      .optional(),
-    max_advance_booking_days: z
-      .number()
-      .int('Maximum advance booking must be a whole number')
-      .min(0, 'Maximum advance booking cannot be negative')
-      .max(BUSINESS_THRESHOLDS.MAX_ADVANCE_BOOKING_DAYS, `Maximum advance booking cannot exceed ${BUSINESS_THRESHOLDS.MAX_ADVANCE_BOOKING_DAYS} days`)
-      .nullable()
-      .optional(),
-  })
-  .refine(
-    (data) => {
-      if (data.min_advance_booking_hours == null || data.max_advance_booking_days == null) {
-        return true
-      }
-
-      const minHours = data.min_advance_booking_hours
-      const maxHours = data.max_advance_booking_days * BUSINESS_THRESHOLDS.HOURS_IN_DAY
-      return maxHours >= minHours
-    },
-    {
-      message: 'Maximum advance booking must be greater than the minimum advance booking',
-      path: ['max_advance_booking_days'],
-    },
-  )
-
-function extractFirstError(error: z.ZodError): string {
-  return error.issues[0]?.message ?? 'Invalid service data'
 }
 
 export async function createService(
@@ -219,20 +110,7 @@ export async function createService(
   const now = options.now?.() ?? new Date()
   const timestamp = now.toISOString()
 
-  const serviceInsert: Database['catalog']['Tables']['services']['Insert'] = {
-    salon_id: salonId,
-    name: validatedService.name,
-    slug,
-    description: validatedService.description ?? null,
-    category_id: validatedService.category_id,
-    is_active: validatedService.is_active,
-    is_bookable: validatedService.is_bookable,
-    is_featured: validatedService.is_featured,
-    created_by_id: session.user.id,
-    updated_by_id: session.user.id,
-    created_at: timestamp,
-    updated_at: timestamp,
-  }
+  const serviceInsert = buildServiceInsert(salonId, validatedService, slug, session, timestamp)
 
   const { data: service, error: serviceError } = await supabase
     .schema('catalog')
@@ -258,42 +136,22 @@ export async function createService(
     userId: session.user.id
   })
 
-  const basePrice = validatedPricing.base_price
-  const { currentPrice, salePrice, profitMargin } = derivePricingMetrics(
-    basePrice,
-    validatedPricing.sale_price,
-    validatedPricing.cost,
-  )
+  const pricingInsert = buildPricingInsert(service.id, validatedPricing, session, timestamp)
 
   const { error: pricingError } = await supabase
     .schema('catalog')
     .from('service_pricing')
-    .insert({
-      service_id: service.id,
-      base_price: basePrice,
-      sale_price: salePrice,
-      current_price: currentPrice,
-      cost: validatedPricing.cost ?? null,
-      profit_margin: profitMargin,
-      currency_code: validatedPricing.currency_code,
-      is_taxable: validatedPricing.is_taxable ?? true,
-      tax_rate: validatedPricing.tax_rate ?? null,
-      commission_rate: validatedPricing.commission_rate ?? null,
-      created_by_id: session.user.id,
-      updated_by_id: session.user.id,
-      created_at: timestamp,
-      updated_at: timestamp,
-    })
+    .insert(pricingInsert)
 
   if (pricingError) {
     console.error('createService pricing insert failed - rolling back service', {
       salonId,
       serviceId: service.id,
       userId: session.user.id,
-      basePrice,
+      basePrice: validatedPricing.base_price,
       error: pricingError.message
     })
-    await supabase.schema('catalog').from('services').delete().eq('id', service.id)
+    await rollbackService(supabase, service.id, false)
     console.log('createService rollback completed - service deleted', {
       serviceId: service.id,
       userId: session.user.id
@@ -301,41 +159,22 @@ export async function createService(
     throw pricingError
   }
 
-  const {
-    durationMinutes,
-    bufferMinutes,
-    totalDurationMinutes,
-  } = deriveBookingDurations(
-    validatedBooking.duration_minutes,
-    validatedBooking.buffer_minutes,
-  )
+  const bookingInsert = buildBookingRulesInsert(service.id, validatedBooking, session, timestamp)
 
   const { error: rulesError } = await supabase
     .schema('catalog')
     .from('service_booking_rules')
-    .insert({
-      service_id: service.id,
-      duration_minutes: durationMinutes,
-      buffer_minutes: bufferMinutes,
-      total_duration_minutes: totalDurationMinutes,
-      min_advance_booking_hours: validatedBooking.min_advance_booking_hours ?? BUSINESS_THRESHOLDS.DEFAULT_MIN_ADVANCE_BOOKING_HOURS,
-      max_advance_booking_days: validatedBooking.max_advance_booking_days ?? BUSINESS_THRESHOLDS.DEFAULT_MAX_ADVANCE_BOOKING_DAYS,
-      created_by_id: session.user.id,
-      updated_by_id: session.user.id,
-      created_at: timestamp,
-      updated_at: timestamp,
-    })
+    .insert(bookingInsert)
 
   if (rulesError) {
     console.error('createService booking rules insert failed - rolling back all', {
       salonId,
       serviceId: service.id,
       userId: session.user.id,
-      durationMinutes,
+      durationMinutes: bookingInsert.duration_minutes,
       error: rulesError.message
     })
-    await supabase.schema('catalog').from('service_pricing').delete().eq('service_id', service.id)
-    await supabase.schema('catalog').from('services').delete().eq('id', service.id)
+    await rollbackService(supabase, service.id, true)
     console.log('createService complete rollback - pricing and service deleted', {
       serviceId: service.id,
       userId: session.user.id
@@ -347,9 +186,9 @@ export async function createService(
     salonId,
     serviceId: service.id,
     serviceName: validatedService.name,
-    basePrice,
-    currentPrice,
-    durationMinutes,
+    basePrice: pricingInsert.base_price,
+    currentPrice: pricingInsert.current_price,
+    durationMinutes: bookingInsert.duration_minutes,
     userId: session.user.id
   })
 

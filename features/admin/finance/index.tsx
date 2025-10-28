@@ -1,5 +1,5 @@
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { FinancePageContent } from './components/finance-page-content'
+import { FinancePageContent } from './components'
 
 export const adminFinanceMetadata = genMeta({
   title: 'Finance & Revenue | Admin',
@@ -18,5 +18,4 @@ export async function FinancePageFeature({
   return <FinancePageContent startDate={resolved?.startDate} endDate={resolved?.endDate} />
 }
 
-export { FinanceDashboard, FinanceDashboardSkeleton } from './components/finance-dashboard'
-export { FinancePageContent } from './components/finance-page-content'
+export { FinanceDashboard, FinanceDashboardSkeleton, FinancePageContent } from './components'

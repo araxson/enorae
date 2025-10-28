@@ -37,7 +37,7 @@ export function TrustBadge({ type, text, variant = 'outline', className }: Trust
   return (
     <Badge variant={variant} className={className} aria-label={displayText}>
       <Icon className="mr-1 h-3 w-3" aria-hidden="true" />
-      <span className="font-medium">{displayText}</span>
+      {displayText}
     </Badge>
   )
 }

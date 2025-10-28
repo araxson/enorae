@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { verifySession } from '@/lib/auth'
 
 import { getCustomerAppointments } from './api/queries'
-import { AppointmentsList } from './components/appointments-list'
+import { AppointmentsList } from './components'
 import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 export async function CustomerAppointments() {

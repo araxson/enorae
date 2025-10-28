@@ -1,2 +1,2 @@
-export { StaffDashboardPage as StaffDashboard } from './components/staff-dashboard-page'
+export { StaffDashboardPage as StaffDashboard } from './components'
 export * from './api/queries'

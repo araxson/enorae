@@ -1,5 +1,5 @@
 import { Scale } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { DisputeCandidate } from '@/features/admin/appointments/types'
@@ -10,6 +10,7 @@ import {
   ItemContent,
   ItemGroup,
   ItemMedia,
+  ItemTitle,
 } from '@/components/ui/item'
 
 interface DisputesPanelProps {
@@ -31,7 +32,7 @@ export function DisputesPanel({ disputes }: DisputesPanelProps) {
               <Scale className="h-4 w-4" />
             </ItemMedia>
             <ItemContent>
-              <CardTitle>Dispute Queue</CardTitle>
+              <ItemTitle>Dispute Queue</ItemTitle>
             </ItemContent>
           </Item>
         </ItemGroup>

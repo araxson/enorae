@@ -1,3 +1,5 @@
+import 'server-only'
+
 // Barrel export for backward compatibility
 export * from './notification-counts'
 export * from './notification-list'

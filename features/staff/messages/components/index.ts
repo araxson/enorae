@@ -1,3 +1,5 @@
 export { MessageForm } from './message-form'
 export { MessageList } from './message-list'
 export { MessageThreadList } from './message-thread-list'
+export { MessagesFeature } from './messages-feature'
+export { MessageThreadPage } from './message-thread-page'

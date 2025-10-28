@@ -1,5 +1,5 @@
 import { getAllSalons } from './api/queries'
-import { SalonsClient } from './components/salons-client'
+import { SalonsClient } from './components'
 
 // Export types
 export type { AdminSalon } from './types'

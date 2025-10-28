@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState, useTransition } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { PlusCircle } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
@@ -16,6 +16,14 @@ import {
 } from '@/components/ui/empty'
 import { TemplateCard } from './template-card'
 import { TemplateFormDialog } from './template-form-dialog'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type NotificationTemplatesManagerProps = {
   templates: NotificationTemplate[]
@@ -141,17 +149,23 @@ export function NotificationTemplatesManager({ templates }: NotificationTemplate
   return (
     <>
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Notification Templates</CardTitle>
-            <CardDescription>
-              Manage reusable communication templates for campaigns and automations
-            </CardDescription>
-          </div>
-          <Button onClick={() => handleOpen()} disabled={isPending}>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            New Template
-          </Button>
+        <CardHeader>
+          <ItemGroup>
+            <Item className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <ItemContent className="flex flex-col gap-1">
+                <ItemTitle>Notification Templates</ItemTitle>
+                <ItemDescription>
+                  Manage reusable communication templates for campaigns and automations
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button onClick={() => handleOpen()} disabled={isPending}>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  New Template
+                </Button>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           {templates.length === 0 ? (

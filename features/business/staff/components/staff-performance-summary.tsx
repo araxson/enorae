@@ -1,10 +1,16 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Star, TrendingUp } from 'lucide-react'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface StaffPerformanceSummaryProps {
   staff: StaffWithServices[]
@@ -53,17 +59,17 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
   }
 
   return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
+    <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {/* Top Performer by Volume */}
       {topPerformer && topPerformer.totalPerformed > 0 && (
-        <Card>
-          <CardHeader>
+        <Item variant="outline" className="flex-col gap-3">
+          <ItemHeader>
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-primary" />
-              <CardTitle>Top Performer by Volume</CardTitle>
+              <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
+              <ItemTitle>Top Performer by Volume</ItemTitle>
             </div>
-          </CardHeader>
-          <CardContent>
+          </ItemHeader>
+          <ItemContent>
             <div className="flex gap-4 items-center">
               <Avatar className="h-12 w-12">
                 {topPerformer['avatar_url'] && (
@@ -80,27 +86,27 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default">
                     <span className="flex items-center gap-2 text-xs">
-                      <TrendingUp className="h-3 w-3" />
+                      <TrendingUp className="h-3 w-3" aria-hidden="true" />
                       {topPerformer.totalPerformed} services performed
                     </span>
                   </Badge>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
       )}
 
       {/* Top Rated */}
       {topRated && topRated.avgRating > 0 && (
-        <Card>
-          <CardHeader>
+        <Item variant="outline" className="flex-col gap-3">
+          <ItemHeader>
             <div className="flex items-center gap-2">
-              <Star className="h-4 w-4 text-accent" fill="currentColor" />
-              <CardTitle>Top Rated Staff Member</CardTitle>
+              <Star className="h-4 w-4 text-accent" fill="currentColor" aria-hidden="true" />
+              <ItemTitle>Top Rated Staff Member</ItemTitle>
             </div>
-          </CardHeader>
-          <CardContent>
+          </ItemHeader>
+          <ItemContent>
             <div className="flex gap-4 items-center">
               <Avatar className="h-12 w-12">
                 {topRated['avatar_url'] && (
@@ -117,7 +123,7 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 <div className="flex items-center gap-2 mt-1">
                   <Badge variant="default">
                     <span className="flex items-center gap-1 text-xs">
-                      <Star className="h-3 w-3 fill-white" />
+                      <Star className="h-3 w-3 fill-white" aria-hidden="true" />
                       {topRated.avgRating.toFixed(1)} average rating
                     </span>
                   </Badge>
@@ -125,9 +131,9 @@ export function StaffPerformanceSummary({ staff }: StaffPerformanceSummaryProps)
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </ItemContent>
+        </Item>
       )}
-    </div>
+    </ItemGroup>
   )
 }

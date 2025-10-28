@@ -4,6 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
+import { CardTitle } from '@/components/ui/card'
 import {
   ButtonGroup,
   ButtonGroupSeparator,
@@ -73,7 +74,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
               <FieldLabel>Average rating</FieldLabel>
               <FieldContent className="gap-2">
                 <div className="flex items-baseline gap-2">
-                  <div className="text-3xl font-bold">{stats.averageRating.toFixed(1)}</div>
+                  <CardTitle>{stats.averageRating.toFixed(1)}</CardTitle>
                   <div className="flex items-center gap-2">
                     {[...Array(5)].map((_, i) => {
                       const isFilled = i < Math.round(stats.averageRating)

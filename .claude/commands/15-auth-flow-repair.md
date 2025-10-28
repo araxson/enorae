@@ -25,4 +25,3 @@
 4. Update UI to provide clear feedback and re-auth paths.
 5. Retest across devices and portals.
 
-**Deliverable:** Auth repair summary with code references, updated helpers, multi-portal verification evidence, and documented database follow-up items.

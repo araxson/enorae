@@ -14,6 +14,21 @@ import type { AppointmentServiceDetails } from '@/features/business/appointments
 import { useToast } from '@/lib/hooks/use-toast'
 import { Separator } from '@/components/ui/separator'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface AppointmentServicesManagerProps {
   appointmentId: string
@@ -111,23 +126,40 @@ export function AppointmentServicesManager({
     <>
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between gap-3">
-            <CardTitle>Services</CardTitle>
-            <ButtonGroup>
-              <Button onClick={() => setShowAddDialog(true)} size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Service
-              </Button>
-            </ButtonGroup>
-          </div>
+          <ItemGroup>
+            <Item className="items-center justify-between gap-3">
+              <ItemContent>
+                <ItemTitle>Services</ItemTitle>
+              </ItemContent>
+              <ItemActions>
+                <ButtonGroup>
+                  <Button onClick={() => setShowAddDialog(true)} size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Service
+                  </Button>
+                </ButtonGroup>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="text-center py-8 text-muted-foreground">Loading services...</div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Spinner className="size-6" />
+                </EmptyMedia>
+                <EmptyTitle>Loading services</EmptyTitle>
+                <EmptyDescription>Fetching appointment service details…</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : services.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No services added to this appointment
-            </div>
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No services added</EmptyTitle>
+                <EmptyDescription>Add services to this appointment to track work.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <>
               <Table>
@@ -205,7 +237,7 @@ export function AppointmentServicesManager({
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-muted-foreground">Total Price</p>
-                  <p className="text-2xl font-bold">{formatCurrency(totalPrice)}</p>
+                  <CardTitle>{formatCurrency(totalPrice)}</CardTitle>
                 </div>
               </div>
             </>

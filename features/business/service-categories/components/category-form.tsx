@@ -4,15 +4,6 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Input } from '@/components/ui/input'
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import {
   Dialog,
   DialogContent,
@@ -23,15 +14,8 @@ import {
 } from '@/components/ui/dialog'
 import { createServiceCategory, updateServiceCategory } from '@/features/business/service-categories/api/mutations'
 import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { CategoryFormFields } from './category-form-fields'
 
 type CategoryFormProps = {
   category?: ServiceCategoryWithCounts | null
@@ -96,88 +80,12 @@ export function CategoryForm({ category, categories, open, onOpenChange }: Categ
             </DialogDescription>
           </DialogHeader>
 
-          <FieldSet>
-            <FieldGroup className="grid gap-4 py-4">
-              {category ? <input type="hidden" name="id" value={category['id'] || ''} /> : null}
-
-              <Field>
-                <FieldLabel htmlFor="name">Name *</FieldLabel>
-                <FieldContent>
-                  <Input
-                    id="name"
-                    name="name"
-                    defaultValue={category?.['name'] || ''}
-                    required
-                    maxLength={100}
-                  />
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="parentId">Parent Category</FieldLabel>
-                <FieldContent>
-                  <Select value={parentId || 'none'} onValueChange={(v) => setParentId(v === 'none' ? '' : v)}>
-                    <SelectTrigger id="parentId">
-                      <SelectValue placeholder="None (Top Level)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">None (Top Level)</SelectItem>
-                      {availableParents.map((cat) => (
-                        <SelectItem key={cat['id']} value={cat['id'] || ''}>
-                          {cat['parent_id'] ? `↳ ${cat['name']}` : cat['name']}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FieldDescription>
-                    Optional: Create a subcategory under an existing category
-                  </FieldDescription>
-                </FieldContent>
-              </Field>
-            </FieldGroup>
-          </FieldSet>
-
-            {/* TODO: Add description field to database schema */}
-            {/* <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                defaultValue={category?.['description'] || ''}
-                maxLength={500}
-                rows={3}
-              />
-            </div> */}
-
-            {/* TODO: Add icon_name field to database schema */}
-            {/* <div className="grid gap-2">
-              <Label htmlFor="iconName">Icon (emoji)</Label>
-              <Input
-                id="iconName"
-                name="iconName"
-                defaultValue={category?.icon_name || ''}
-                maxLength={50}
-                placeholder="✂️"
-              />
-              <p className="text-sm text-muted-foreground">
-                Optional emoji to display with the category
-              </p>
-            </div> */}
-
-            {/* TODO: Add display_order field to database schema */}
-            {/* <div className="grid gap-2">
-              <Label htmlFor="displayOrder">Display Order</Label>
-              <Input
-                id="displayOrder"
-                name="displayOrder"
-                type="number"
-                min="0"
-                defaultValue={category?.display_order || 0}
-              />
-              <p className="text-sm text-muted-foreground">
-                Lower numbers appear first in lists
-              </p>
-            </div> */}
+          <CategoryFormFields
+            category={category}
+            availableParents={availableParents}
+            parentId={parentId}
+            onParentIdChange={setParentId}
+          />
           </div>
 
           <DialogFooter>

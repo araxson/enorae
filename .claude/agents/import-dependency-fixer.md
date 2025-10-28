@@ -108,7 +108,7 @@ Before reporting results:
 
 ## Related Documentation
 
-- **File Organization:** `docs/ruls/file-organization.md` - Import boundaries and barrel export rules
+- **File Organization:** `docs/ruls/architecture.md` - Import boundaries and barrel export rules
 - **Architecture:** `docs/ruls/architecture.md` - Feature structure and layer organization
 - **TypeScript:** `docs/ruls/typescript.md` - Type imports and strict patterns
 

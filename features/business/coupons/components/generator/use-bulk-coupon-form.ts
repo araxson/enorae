@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
-import { bulkGenerateCoupons } from '@/features/business/coupons/api/coupons.mutations'
+import { bulkGenerateCoupons } from '@/features/business/coupons/api/mutations/coupons'
 import type { BulkCouponFormState } from './types'
 
 const INITIAL_FORM_STATE: BulkCouponFormState = {

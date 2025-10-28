@@ -141,9 +141,11 @@ export const CouponCard = memo(function CouponCard({
         </div>
 
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Performance</CardTitle>
-            <CardDescription>Usage and discount impact</CardDescription>
+          <CardHeader>
+            <div className="pb-2">
+              <CardTitle>Performance</CardTitle>
+              <CardDescription>Usage and discount impact</CardDescription>
+            </div>
           </CardHeader>
           <CardContent className="grid grid-cols-1 gap-4 pt-0 md:grid-cols-3">
             <ItemGroup className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -180,9 +182,11 @@ export const CouponCard = memo(function CouponCard({
 
         {serviceNames.length ? (
           <Field>
-            <FieldLabel className="flex items-center gap-1">
-              <BarChart3 className="h-3 w-3" />
-              Limited to services
+            <FieldLabel>
+              <div className="flex items-center gap-1">
+                <BarChart3 className="h-3 w-3" />
+                Limited to services
+              </div>
             </FieldLabel>
             <FieldContent className="flex flex-wrap items-center gap-2 pt-1">
               {serviceNames.map((service) => (

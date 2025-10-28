@@ -1,3 +1,4 @@
+'use server'
 import 'server-only'
 
 import type { Json } from '@/lib/types/database.types'

@@ -136,8 +136,16 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent activity</CardTitle>
-          <CardDescription>Latest customer appointments</CardDescription>
+          <ItemGroup>
+            <Item className="flex-col items-start gap-1">
+              <ItemContent>
+                <ItemTitle>Recent activity</ItemTitle>
+              </ItemContent>
+              <ItemContent>
+                <ItemDescription>Latest customer appointments</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent>
           {metrics.recentActivity.length === 0 ? (

@@ -1,23 +1,31 @@
-import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
 import { Hero } from '@/features/marketing/contact/sections/hero'
 import { Form } from '@/features/marketing/contact/sections/form'
 import { Info } from '@/features/marketing/contact/sections/info'
+import { MarketingSection } from '@/features/marketing/common-components'
 
 export function ContactPage() {
   return (
-    <ItemGroup className="gap-12">
-      <Item className="flex-col items-center text-center" variant="muted">
-        <ItemContent>
-          <ItemDescription>Reach our team directly or share details with the contact form below.</ItemDescription>
-        </ItemContent>
-      </Item>
+    <main className="flex flex-col gap-16">
+      <MarketingSection spacing="compact">
+        <Item className="flex-col items-center text-center" variant="muted">
+          <ItemContent>
+            <ItemDescription>Reach our team directly or share details with the contact form below.</ItemDescription>
+          </ItemContent>
+        </Item>
+      </MarketingSection>
       <Hero />
-      <section className="bg-background">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:grid-cols-2 sm:px-6 lg:px-8">
+      <MarketingSection
+        className="bg-background"
+        spacing="normal"
+        containerClassName="max-w-6xl"
+        groupClassName="gap-12"
+      >
+        <div className="grid gap-12 sm:grid-cols-2">
           <Form />
           <Info />
         </div>
-      </section>
-    </ItemGroup>
+      </MarketingSection>
+    </main>
   )
 }

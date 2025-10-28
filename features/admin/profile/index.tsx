@@ -1,6 +1,13 @@
-import { ProfileManagementClient } from './components/profile-management-client'
-import { searchProfiles, getProfileDetail } from './api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { searchProfiles, getProfileDetail } from './api/queries'
+import { ProfileManagementClient } from './components'
 
 export async function AdminProfile() {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
@@ -13,12 +20,16 @@ export async function AdminProfile() {
     <section className="py-16 md:py-24 lg:py-32">
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-10">
-          <div>
-            <h1 className="scroll-m-20 text-4xl font-extrabold">Profile Management</h1>
-            <p className="text-muted-foreground">
-              Search, review, and manage user identities, metadata, and privacy controls.
-            </p>
-          </div>
+          <ItemGroup className="gap-2">
+            <Item variant="muted" className="flex-col items-start gap-2">
+              <ItemContent>
+                <ItemTitle>Profile Management</ItemTitle>
+                <ItemDescription>
+                  Search, review, and manage user identities, metadata, and privacy controls.
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
 
           <ProfileManagementClient
             initialProfiles={initialProfiles}

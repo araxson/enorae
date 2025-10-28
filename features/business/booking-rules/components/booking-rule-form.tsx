@@ -12,24 +12,18 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Spinner } from '@/components/ui/spinner'
 import type { BookingRuleWithService } from '@/features/business/booking-rules/api/queries'
 import {
-  Field,
-  FieldContent,
-  FieldDescription,
   FieldGroup,
-  FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  ServiceSelectorField,
+  TimingFields,
+  AdvanceBookingFields,
+} from './booking-rule-form-fields'
 
 interface BookingRuleFormProps {
   open: boolean
@@ -82,102 +76,14 @@ export function BookingRuleForm({
 
           <FieldSet>
             <FieldGroup className="my-4 gap-4">
-              <Field>
-                <FieldLabel htmlFor="serviceId">Service</FieldLabel>
-                <FieldContent>
-                  <Select
-                    value={selectedServiceId}
-                    onValueChange={setSelectedServiceId}
-                    disabled={!!rule}
-                  >
-                    <SelectTrigger id="serviceId">
-                      <SelectValue placeholder="Select a service" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {services.map((service) => (
-                        <SelectItem key={service.id} value={service.id}>
-                          {service.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {rule ? (
-                    <FieldDescription>
-                      Service cannot be changed. Create a new rule for different services.
-                    </FieldDescription>
-                  ) : null}
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="durationMinutes">Service Duration (minutes)</FieldLabel>
-                <FieldContent>
-                  <Input
-                    type="number"
-                    id="durationMinutes"
-                    name="durationMinutes"
-                    min={0}
-                    step={5}
-                    defaultValue={rule?.duration_minutes || ''}
-                    placeholder="e.g., 60"
-                  />
-                  <FieldDescription>How long the service takes</FieldDescription>
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="bufferMinutes">Buffer Time (minutes)</FieldLabel>
-                <FieldContent>
-                  <Input
-                    type="number"
-                    id="bufferMinutes"
-                    name="bufferMinutes"
-                    min={0}
-                    step={5}
-                    defaultValue={rule?.buffer_minutes || ''}
-                    placeholder="e.g., 15"
-                  />
-                  <FieldDescription>
-                    Time between appointments for cleanup/preparation
-                  </FieldDescription>
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="minAdvanceBookingHours">Minimum Advance Booking (hours)</FieldLabel>
-                <FieldContent>
-                  <Input
-                    type="number"
-                    id="minAdvanceBookingHours"
-                    name="minAdvanceBookingHours"
-                    min={0}
-                    step={1}
-                    defaultValue={rule?.min_advance_booking_hours || ''}
-                    placeholder="e.g., 2"
-                  />
-                  <FieldDescription>
-                    How far in advance customers must book (minimum)
-                  </FieldDescription>
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="maxAdvanceBookingDays">Maximum Advance Booking (days)</FieldLabel>
-                <FieldContent>
-                  <Input
-                    type="number"
-                    id="maxAdvanceBookingDays"
-                    name="maxAdvanceBookingDays"
-                    min={0}
-                    step={1}
-                    defaultValue={rule?.max_advance_booking_days || ''}
-                    placeholder="e.g., 90"
-                  />
-                  <FieldDescription>
-                    How far in advance customers can book (maximum)
-                  </FieldDescription>
-                </FieldContent>
-              </Field>
+              <ServiceSelectorField
+                selectedServiceId={selectedServiceId}
+                onServiceChange={setSelectedServiceId}
+                services={services}
+                rule={rule}
+              />
+              <TimingFields rule={rule} />
+              <AdvanceBookingFields rule={rule} />
             </FieldGroup>
           </FieldSet>
 
@@ -192,7 +98,14 @@ export function BookingRuleForm({
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Saving...' : rule ? 'Update' : 'Create'}
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Saving…</span>
+                  </>
+                ) : (
+                  <span>{rule ? 'Update' : 'Create'}</span>
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

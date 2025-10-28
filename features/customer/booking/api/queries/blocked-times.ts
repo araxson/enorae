@@ -1,6 +1,5 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
 
 type BlockedTime = Database['scheduling']['Tables']['blocked_times']['Row']
@@ -13,10 +12,9 @@ export async function getSalonBlockedTimes(
   salonId: string,
   startDate?: Date
 ): Promise<BlockedTime[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
   const now = startDate || new Date()
 
   const { data, error } = await supabase
@@ -41,10 +39,9 @@ export async function getStaffBlockedTimes(
   staffId: string,
   startDate?: Date
 ): Promise<BlockedTime[]> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
   const now = startDate || new Date()
 
   const { data, error } = await supabase
@@ -69,10 +66,9 @@ export async function checkTimeSlotBlocked(
   startTime: string,
   endTime: string
 ): Promise<{ blocked: boolean; reason?: string; blockType?: string }> {
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
-
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
 
   const { data, error } = await supabase
     .schema('scheduling')

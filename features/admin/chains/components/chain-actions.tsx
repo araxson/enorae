@@ -142,7 +142,7 @@ export function ChainActions({ chainId, chainName, isVerified, isActive, subscri
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" aria-label={`Open actions for ${chainName}`}>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>

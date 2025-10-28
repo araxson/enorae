@@ -10,13 +10,7 @@ import { RecentSalons } from './components/recent-salons'
 import { UserRoleStats } from './components/user-role-stats'
 import { AdminOverviewTabs } from './components/admin-overview-tabs'
 import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -48,6 +42,15 @@ import {
   Settings,
 } from 'lucide-react'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export async function AdminDashboardPage() {
   let platformMetrics
@@ -115,66 +118,70 @@ export async function AdminDashboardPage() {
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-12 pt-6 sm:px-6 lg:px-8">
       <Card>
-        <CardHeader className="space-y-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="space-y-3">
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-
-              <div className="space-y-1">
-                <CardTitle>
-                  Platform control center
-                </CardTitle>
-                <CardDescription>
+        <CardHeader>
+          <ItemGroup>
+            <Item className="w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between" variant="muted">
+              <ItemMedia variant="icon">
+                <Activity className="h-5 w-5" aria-hidden="true" />
+              </ItemMedia>
+              <ItemContent className="flex flex-col gap-3">
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+                <ItemTitle>Platform control center</ItemTitle>
+                <ItemDescription>
                   Monitor platform health, engagement, and operational signals in real time.
-                </CardDescription>
-              </div>
-            </div>
-
-            <Badge
-              variant="outline"
-              className="flex w-fit items-center gap-2 rounded-full border-foreground/20 px-3 py-1 text-xs font-semibold text-muted-foreground"
-            >
-              <Activity className="h-3.5 w-3.5" />
-              Live feed
-            </Badge>
-          </div>
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions className="flex-none">
+                <Badge
+                  variant="outline"
+                  className="rounded-full border-foreground/20 px-3 py-1 text-xs font-semibold text-muted-foreground"
+                >
+                  Live feed
+                </Badge>
+              </ItemActions>
+            </Item>
+          </ItemGroup>
         </CardHeader>
         <CardContent className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <LastUpdated />
-            <Separator orientation="vertical" className="hidden h-4 lg:flex" />
-            <span>
-              {`Synced across ${platformMetrics.totalSalons.toLocaleString()} ${platformMetrics.totalSalons === 1 ? 'salon' : 'salons'}`}
-            </span>
-            {platformMetrics.pendingVerifications > 0 && (
-              <>
+          <ItemGroup className="w-full">
+            <Item variant="muted" className="w-full">
+              <ItemContent className="flex w-full flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                <LastUpdated />
                 <Separator orientation="vertical" className="hidden h-4 lg:flex" />
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Link href="/admin/users">
-                      <Badge variant="secondary" className="gap-1.5 hover:bg-secondary/80">
-                        <ShieldAlert className="h-3 w-3" />
-                        {platformMetrics.pendingVerifications} {platformMetrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
-                      </Badge>
-                    </Link>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Click to view users with unverified email addresses
-                  </TooltipContent>
-                </Tooltip>
-              </>
-            )}
-          </div>
+                <span>
+                  {`Synced across ${platformMetrics.totalSalons.toLocaleString()} ${platformMetrics.totalSalons === 1 ? 'salon' : 'salons'}`}
+                </span>
+                {platformMetrics.pendingVerifications > 0 && (
+                  <>
+                    <Separator orientation="vertical" className="hidden h-4 lg:flex" />
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link href="/admin/users">
+                          <Badge variant="secondary" className="gap-1.5 hover:bg-secondary/80">
+                            <ShieldAlert className="h-3 w-3" />
+                            {platformMetrics.pendingVerifications} {platformMetrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
+                          </Badge>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Click to view users with unverified email addresses
+                      </TooltipContent>
+                    </Tooltip>
+                  </>
+                )}
+              </ItemContent>
+            </Item>
+          </ItemGroup>
 
           <ButtonGroup className="flex flex-wrap items-center gap-2">
             <Tooltip>

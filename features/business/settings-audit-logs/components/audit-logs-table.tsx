@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Empty, EmptyContent, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
 import {
   Table,
@@ -13,17 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { CheckCircle2, XCircle, Eye, Download } from 'lucide-react'
 import type { AuditLog } from '@/features/business/settings-audit-logs/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet } from '@/components/ui/field'
 import {
   Item,
   ItemContent,
@@ -31,6 +22,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { AuditLogDetailsDialog } from './audit-log-details-dialog'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
@@ -170,115 +162,11 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
         </ItemContent>
       </Item>
 
-      <Dialog open={!!selectedLog} onOpenChange={(open) => !open && setSelectedLog(null)}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Audit Log Details</DialogTitle>
-            <DialogDescription>
-              Complete information about this audit log entry
-            </DialogDescription>
-          </DialogHeader>
-
-          {selectedLog && (
-            <div className="space-y-4">
-              <FieldSet className="grid gap-4 md:grid-cols-2">
-                <Field>
-                  <FieldLabel>Timestamp</FieldLabel>
-                  <FieldContent>
-                    <FieldDescription>{formatDate(selectedLog.created_at)}</FieldDescription>
-                  </FieldContent>
-                </Field>
-                <Field>
-                  <FieldLabel>Action</FieldLabel>
-                  <FieldContent>
-                    <FieldDescription>{formatActionLabel(selectedLog.action)}</FieldDescription>
-                  </FieldContent>
-                </Field>
-                <Field>
-                  <FieldLabel>Entity type</FieldLabel>
-                  <FieldContent>
-                    <FieldDescription>
-                      <span className="capitalize">{selectedLog.entity_type}</span>
-                    </FieldDescription>
-                  </FieldContent>
-                </Field>
-                <Field>
-                  <FieldLabel>Entity ID</FieldLabel>
-                  <FieldContent>
-                    <FieldDescription>{selectedLog.entity_id || 'N/A'}</FieldDescription>
-                  </FieldContent>
-                </Field>
-                <Field>
-                  <FieldLabel>User ID</FieldLabel>
-                  <FieldContent>
-                    <FieldDescription>{selectedLog.user_id}</FieldDescription>
-                  </FieldContent>
-                </Field>
-                <Field>
-                  <FieldLabel>IP address</FieldLabel>
-                  <FieldContent>
-                    <FieldDescription>{selectedLog.ip_address || 'N/A'}</FieldDescription>
-                  </FieldContent>
-                </Field>
-              </FieldSet>
-
-              {selectedLog.user_agent && (
-                <Field>
-                  <FieldLabel>User agent</FieldLabel>
-                  <FieldContent>
-                    <ScrollArea className="rounded bg-muted">
-                      <pre className="p-3 text-xs text-muted-foreground">
-                        {selectedLog.user_agent}
-                      </pre>
-                      <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
-                  </FieldContent>
-                </Field>
-              )}
-
-              {selectedLog.old_values && Object.keys(selectedLog.old_values).length > 0 && (
-                <Field>
-                  <FieldLabel>Old values</FieldLabel>
-                  <FieldContent>
-                    <ScrollArea className="rounded bg-muted">
-                      <pre className="p-3 text-xs text-muted-foreground">
-                        {JSON.stringify(selectedLog.old_values, null, 2)}
-                      </pre>
-                      <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
-                  </FieldContent>
-                </Field>
-              )}
-
-              {selectedLog.new_values && Object.keys(selectedLog.new_values).length > 0 && (
-                <Field>
-                  <FieldLabel>New values</FieldLabel>
-                  <FieldContent>
-                    <ScrollArea className="rounded bg-muted">
-                      <pre className="p-3 text-xs text-muted-foreground">
-                        {JSON.stringify(selectedLog.new_values, null, 2)}
-                      </pre>
-                      <ScrollBar orientation="horizontal" />
-                    </ScrollArea>
-                  </FieldContent>
-                </Field>
-              )}
-
-              {selectedLog.error_message && (
-                <Field className="gap-2">
-                  <FieldLabel>Error message</FieldLabel>
-                  <FieldContent>
-                    <Alert variant="destructive">
-                      <AlertTitle>Operation failed</AlertTitle>
-                      <AlertDescription>{selectedLog.error_message}</AlertDescription>
-                    </Alert>
-                  </FieldContent>
-                </Field>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      <AuditLogDetailsDialog
+        log={selectedLog}
+        isOpen={!!selectedLog}
+        onClose={() => setSelectedLog(null)}
+      />
     </>
   )
 }

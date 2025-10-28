@@ -1,5 +1,8 @@
 export { AssignSalonsDialog } from './assign-salons-dialog'
 export { BulkSettingsDialog } from './bulk-settings-dialog'
+export { ChainAnalyticsCards } from './chain-analytics-cards'
+export { ChainDetail } from './chain-detail-page'
+export { ChainDetailView } from './chain-detail-view'
 export { ChainLocationsList } from './chain-locations-list'
 export { ChainSettingsButton } from './chain-settings-button'
 export { ChainsList } from './chains-list'

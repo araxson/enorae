@@ -4,14 +4,6 @@ import { useState } from 'react'
 import { resetPassword } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
@@ -22,6 +14,14 @@ import {
   FieldDescription,
   FieldLabel,
 } from '@/components/ui/field'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function ResetPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -60,15 +60,17 @@ export function ResetPasswordForm() {
 
   return (
     <div className="w-full max-w-md">
-      <Card>
-      <CardHeader>
-        <CardTitle>Reset your password</CardTitle>
-        <CardDescription>Enter your new password below</CardDescription>
-      </CardHeader>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex flex-col gap-1">
+            <ItemTitle>Reset your password</ItemTitle>
+            <ItemDescription>Enter your new password below</ItemDescription>
+          </div>
+        </ItemHeader>
 
-      <form action={handleSubmit}>
-        <CardContent>
-          <div className="flex flex-col gap-6">
+        <form action={handleSubmit}>
+          <ItemContent>
+            <div className="flex flex-col gap-6">
             {error && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
@@ -121,26 +123,26 @@ export function ResetPasswordForm() {
               </FieldContent>
             </Field>
           </div>
-        </CardContent>
+          </ItemContent>
 
-        <CardFooter>
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading || !isPasswordValid || password !== confirmPassword}
-          >
-            {loading ? (
-              <>
-                <Spinner className="size-4" />
-                <span>Resetting password...</span>
-              </>
-            ) : (
-              <span>Reset password</span>
-            )}
-          </Button>
-        </CardFooter>
-      </form>
-      </Card>
+          <ItemFooter>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading || !isPasswordValid || password !== confirmPassword}
+            >
+              {loading ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Resetting password...</span>
+                </>
+              ) : (
+                <span>Reset password</span>
+              )}
+            </Button>
+          </ItemFooter>
+        </form>
+      </Item>
     </div>
   )
 }

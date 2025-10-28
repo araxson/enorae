@@ -1,6 +1,14 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import {
   Table,
@@ -12,8 +20,9 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { DatabaseHealthSnapshot } from '@/features/admin/database-health/api/database-health'
+import type { DatabaseHealthSnapshot } from '@/features/admin/database-health/api/queries/database-health'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Database } from 'lucide-react'
 
 interface DatabaseHealthPanelProps {
   data: DatabaseHealthSnapshot
@@ -25,8 +34,17 @@ export function DatabaseHealthPanel({ data }: DatabaseHealthPanelProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Database Health</CardTitle>
-        <CardDescription>Monitor bloat, cache performance, HOT updates, and TOAST usage.</CardDescription>
+        <ItemGroup>
+          <Item>
+            <ItemMedia variant="icon">
+              <Database className="h-5 w-5" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemTitle>Database Health</ItemTitle>
+              <ItemDescription>Monitor bloat, cache performance, HOT updates, and TOAST usage.</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-6">
         <Tabs defaultValue="bloat" className="w-full">

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -13,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { createSalonLocation, updateSalonLocation } from '@/features/business/locations/api/mutations'
+import { createSalonLocation, updateSalonLocation } from '@/features/business/locations/api/mutations/location'
 import type { SalonLocation } from '@/features/business/locations'
 import {
   Field,
@@ -136,7 +137,14 @@ export function LocationForm({ location, open, onOpenChange }: LocationFormProps
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Saving...' : location ? 'Update' : 'Create'}
+                {isSubmitting ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Saving…</span>
+                  </>
+                ) : (
+                  <span>{location ? 'Update' : 'Create'}</span>
+                )}
               </Button>
             </ButtonGroup>
           </DialogFooter>

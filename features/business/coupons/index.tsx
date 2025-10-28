@@ -1,9 +1,6 @@
-import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
-import { CouponForm } from './components/coupon-form'
-import { CouponsList } from './components/coupons-list'
-import { CouponAnalyticsOverview } from './components/coupon-analytics-overview'
-import { BulkCouponGenerator } from './components/bulk-coupon-generator'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
+import { CouponManagementContent } from './components/coupon-management-content'
 
 export async function CouponManagement() {
   const salon = await getUserSalon()
@@ -14,29 +11,5 @@ export async function CouponManagement() {
   const analytics = await getCouponAnalytics(salon.id)
   const services = await getCouponServiceOptions(salon.id)
 
-  return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-4xl font-bold">Coupon & Promotion Management</h1>
-        <p className="leading-7 text-muted-foreground">
-          Create and manage discount coupons to attract and retain customers
-        </p>
-      </div>
-
-      <CouponAnalyticsOverview analytics={analytics} />
-
-      <CouponForm salonId={salon.id} services={services} />
-
-      <BulkCouponGenerator salonId={salon.id} />
-
-      <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Active Coupons</h2>
-        <CouponsList
-          coupons={analytics.coupons}
-          salonId={salon.id}
-          services={services}
-        />
-      </div>
-    </div>
-  )
+  return <CouponManagementContent salonId={salon.id} analytics={analytics} services={services} />
 }

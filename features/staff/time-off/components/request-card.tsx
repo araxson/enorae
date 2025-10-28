@@ -3,7 +3,6 @@
 import { useState, useTransition } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
   approveTimeOffRequest,
   rejectTimeOffRequest,
@@ -12,29 +11,6 @@ import {
 } from '@/features/staff/time-off/api/mutations'
 import type { TimeOffRequestWithStaff } from '@/features/staff/time-off/api/queries'
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import {
-  Field,
-  FieldContent,
-  FieldLabel,
-  FieldSet,
-} from '@/components/ui/field'
-import { ButtonGroup } from '@/components/ui/button-group'
-import {
   Item,
   ItemActions,
   ItemContent,
@@ -42,6 +18,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
+import { RequestActions } from './request-actions'
 
 interface RequestCardProps {
   request: TimeOffRequestWithStaff
@@ -74,14 +51,14 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
     })
   }
 
-  const handleUpdate = () => {
+  const handleUpdate = (data: { startAt: string; endAt: string; requestType: string; reason: string }) => {
     startTransition(async () => {
       const formData = new FormData()
       formData.append('id', request['id'] || '')
-      formData.append('startAt', editData.startAt)
-      formData.append('endAt', editData.endAt)
-      formData.append('requestType', editData.requestType)
-      formData.append('reason', editData['reason'])
+      formData.append('startAt', data.startAt)
+      formData.append('endAt', data.endAt)
+      formData.append('requestType', data.requestType)
+      formData.append('reason', data.reason)
       await updateTimeOffRequest(formData)
       setIsEditOpen(false)
     })
@@ -161,104 +138,21 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
             ) : null}
           </ItemGroup>
 
-          {isStaffView ? (
-            // Staff view: can edit pending requests or cancel any request
-            <ButtonGroup className="justify-end">
-              {request['status'] === 'pending' && (
-                <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                  <DialogTrigger asChild>
-                    <Button size="sm" variant="outline" disabled={isPending}>
-                      Edit
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Edit Time-Off Request</DialogTitle>
-                    </DialogHeader>
-                    <FieldSet className="space-y-4">
-                      <Field>
-                        <FieldLabel htmlFor="startAt">Start date</FieldLabel>
-                        <FieldContent>
-                          <Input
-                            id="startAt"
-                            type="date"
-                            value={editData.startAt}
-                            onChange={(e) => setEditData({ ...editData, startAt: e.target.value })}
-                          />
-                        </FieldContent>
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="endAt">End date</FieldLabel>
-                        <FieldContent>
-                          <Input
-                            id="endAt"
-                            type="date"
-                            value={editData.endAt}
-                            onChange={(e) => setEditData({ ...editData, endAt: e.target.value })}
-                          />
-                        </FieldContent>
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="requestType">Type</FieldLabel>
-                        <FieldContent>
-                          <Select
-                            value={editData.requestType}
-                            onValueChange={(value) => setEditData({ ...editData, requestType: value })}
-                          >
-                            <SelectTrigger id="requestType">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="vacation">Vacation</SelectItem>
-                              <SelectItem value="sick_leave">Sick Leave</SelectItem>
-                              <SelectItem value="personal">Personal</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </FieldContent>
-                      </Field>
-                      <Field>
-                        <FieldLabel htmlFor="reason">Reason</FieldLabel>
-                        <FieldContent>
-                          <Textarea
-                            id="reason"
-                            value={editData['reason']}
-                            onChange={(e) => setEditData({ ...editData, reason: e.target.value })}
-                            rows={3}
-                          />
-                        </FieldContent>
-                      </Field>
-                      <ButtonGroup className="justify-end">
-                        <Button variant="outline" onClick={() => setIsEditOpen(false)} disabled={isPending}>
-                          Cancel
-                        </Button>
-                        <Button onClick={handleUpdate} disabled={isPending}>
-                          Save Changes
-                        </Button>
-                      </ButtonGroup>
-                    </FieldSet>
-                  </DialogContent>
-                </Dialog>
-              )}
-              {(request['status'] === 'pending' || request['status'] === 'approved') && (
-                <Button size="sm" variant="destructive" onClick={handleCancel} disabled={isPending}>
-                  Cancel Request
-                </Button>
-              )}
-            </ButtonGroup>
-          ) : (
-            // Manager view: can approve/reject
-            request['status'] === 'pending' && (
-              <ButtonGroup className="justify-end">
-                <Button size="sm" variant="outline" onClick={handleReject} disabled={isPending}>
-                  Reject
-                </Button>
-                <Button size="sm" onClick={handleApprove} disabled={isPending}>
-                  Approve
-                </Button>
-              </ButtonGroup>
-            )
-          )}
+          <RequestActions
+            status={request['status'] || ''}
+            isStaffView={isStaffView}
+            isPending={isPending}
+            editDialogOpen={isEditOpen}
+            onEditDialogChange={setIsEditOpen}
+            startAt={editData.startAt}
+            endAt={editData.endAt}
+            requestType={editData.requestType}
+            reason={editData.reason}
+            onUpdate={handleUpdate}
+            onCancel={handleCancel}
+            onApprove={handleApprove}
+            onReject={handleReject}
+          />
         </div>
       </CardContent>
     </Card>

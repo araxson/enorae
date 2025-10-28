@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
   DropdownMenu,
@@ -22,6 +22,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import type { UserRole } from '@/lib/types'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 const formatRoleLabel = (role: string | null | undefined) =>
   role ? role.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()) : 'N/A'
@@ -38,8 +45,16 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Role assignments</CardTitle>
-        <CardDescription>Manage user roles, permissions, and status per salon.</CardDescription>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>Role assignments</ItemTitle>
+            </ItemContent>
+            <ItemContent>
+              <ItemDescription>Manage user roles, permissions, and status per salon.</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
@@ -106,7 +121,7 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
+                          <Button variant="ghost" size="sm" aria-label={`Open role actions for ${role['role'] ?? 'role'}`}>
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>

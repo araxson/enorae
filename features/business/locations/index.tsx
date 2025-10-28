@@ -1,5 +1,5 @@
 import { getSalonLocations } from './api/queries'
-import { SalonLocationsClient } from './components/salon-locations-client'
+import { SalonLocationsClient } from './components'
 
 // Export types
 export type * from './types'

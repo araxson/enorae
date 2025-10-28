@@ -1,5 +1,8 @@
 export { StaffCommandDialog } from './staff-command-dialog'
 export { StaffPageHeading } from './staff-page-heading'
+export { StaffPageBreadcrumbs } from './staff-page-breadcrumbs'
+export { StaffPageToolbar } from './staff-page-toolbar'
+export { StaffFiltersDropdown } from './staff-filters-dropdown'
 export { StaffPageNavigation } from './staff-page-navigation'
 export { StaffPageShell } from './staff-page-shell'
 export { StaffSummaryGrid } from './staff-summary-grid'

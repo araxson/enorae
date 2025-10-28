@@ -93,20 +93,20 @@ export function UserDropdown({
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link href={profileRoute}>
-              <User className="mr-2 h-4 w-4" />
+              <User className="mr-2 h-4 w-4" aria-hidden="true" />
               Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={settingsRoute}>
-              <Settings className="mr-2 h-4 w-4" />
+              <Settings className="mr-2 h-4 w-4" aria-hidden="true" />
               Settings
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" />
+          <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
           Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>

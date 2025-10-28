@@ -1,4 +1,5 @@
 export { ServiceCard } from './service-card'
+export { ServiceDetails } from './service-details'
 export { ServicesClient } from './services-client'
 export { ServicesFilters } from './services-filters'
 export { ServicesStats } from './services-stats'

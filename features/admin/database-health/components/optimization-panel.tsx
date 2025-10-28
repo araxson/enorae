@@ -1,6 +1,14 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 import {
   Table,
@@ -13,7 +21,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AlertCircle, Clock, Database } from 'lucide-react'
-import type { OptimizationSnapshot } from '@/features/admin/database-health/api/optimization'
+import type { OptimizationSnapshot } from '@/features/admin/database-health/api/queries/optimization'
 import {
   Empty,
   EmptyDescription,
@@ -32,24 +40,26 @@ export function OptimizationPanel({ data }: OptimizationPanelProps) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-1.5">
-            <CardTitle>Optimization Recommendations</CardTitle>
-            <CardDescription>
-              Review unused indexes and stale statistics to improve performance.
-            </CardDescription>
-          </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Badge variant="secondary" className="justify-start gap-1">
-              <Database className="h-3 w-3" />
-              {summary.unusedIndexCount} unused indexes
-            </Badge>
-            <Badge variant="secondary" className="justify-start gap-1">
-              <Clock className="h-3 w-3" />
-              {summary.staleStatistics} stale stats
-            </Badge>
-          </div>
-        </div>
+        <ItemGroup>
+          <Item className="w-full flex-col gap-3 sm:flex-row sm:items-start sm:justify-between" variant="muted">
+            <ItemContent className="space-y-1.5">
+              <ItemTitle>Optimization Recommendations</ItemTitle>
+              <ItemDescription>
+                Review unused indexes and stale statistics to improve performance.
+              </ItemDescription>
+            </ItemContent>
+            <ItemActions className="flex shrink-0 flex-col gap-2 sm:flex-row">
+              <Badge variant="secondary" className="justify-start gap-1">
+                <Database className="h-3 w-3" />
+                {summary.unusedIndexCount} unused indexes
+              </Badge>
+              <Badge variant="secondary" className="justify-start gap-1">
+                <Clock className="h-3 w-3" />
+                {summary.staleStatistics} stale stats
+              </Badge>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-6">
         <Tabs defaultValue="recommendations" className="w-full">

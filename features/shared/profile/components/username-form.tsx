@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { updateUsername } from '@/features/shared/profile/api/mutations'
 import { toast } from 'sonner'
 import {
@@ -13,6 +12,13 @@ import {
   FieldLabel,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface UsernameFormProps {
   currentUsername: string | null
@@ -44,14 +50,16 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Username</CardTitle>
-        <CardDescription>
-          Your unique username is used to identify you across the platform
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex flex-col gap-1">
+          <ItemTitle>Username</ItemTitle>
+          <ItemDescription>
+            Your unique username is used to identify you across the platform
+          </ItemDescription>
+        </div>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <Field>
@@ -89,7 +97,7 @@ export function UsernameForm({ currentUsername }: UsernameFormProps) {
             </div>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

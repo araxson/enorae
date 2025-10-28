@@ -1,11 +1,5 @@
 import Link from 'next/link'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -40,6 +34,7 @@ import {
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemTitle,
 } from '@/components/ui/item'
 
 type PlatformMetrics = Awaited<ReturnType<typeof import('@/features/admin/dashboard/api/queries').getPlatformMetrics>>
@@ -67,10 +62,10 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
                 </Breadcrumb>
 
                 <div className="flex flex-col gap-1">
-                  <CardTitle>Platform control center</CardTitle>
-                  <CardDescription>
+                  <ItemTitle>Platform control center</ItemTitle>
+                  <ItemDescription>
                     Monitor platform health, engagement, and operational signals in real time.
-                  </CardDescription>
+                  </ItemDescription>
                 </div>
               </ItemContent>
             </Item>
@@ -93,11 +88,11 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
               <ItemContent>
                 <div className="flex flex-wrap items-center gap-3">
                   <DataRefreshControls generatedAt={generatedAt} tooltip="Refresh dashboard data" />
-                  <CardDescription>
+                  <ItemDescription>
                     {`Synced across ${metrics.totalSalons.toLocaleString()} ${
                       metrics.totalSalons === 1 ? 'salon' : 'salons'
                     }`}
-                  </CardDescription>
+                  </ItemDescription>
                   {metrics.pendingVerifications > 0 ? (
                     <Tooltip>
                       <TooltipTrigger asChild>

@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -23,6 +23,14 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SalonsTableProps {
   salons: AdminSalon[]
@@ -161,21 +169,27 @@ export function SalonsTable({ salons }: SalonsTableProps) {
         {salons.map((salon) => (
           <Card key={salon['id']}>
             <CardHeader className="pb-2">
-              <div className="flex items-center justify-between">
-                <CardTitle>{salon['name']}</CardTitle>
-                <Badge
-                  variant={
-                    COMPLIANCE_BADGE_VARIANT[
-                      salon.complianceLevel as keyof typeof COMPLIANCE_BADGE_VARIANT
-                    ]
-                  }
-                >
-                  {salon.complianceScore}
-                </Badge>
-              </div>
-              <CardDescription>
-                {salon['created_at'] ? format(new Date(salon['created_at']), 'MMM dd, yyyy') : 'Created date unavailable'}
-              </CardDescription>
+              <ItemGroup>
+                <Item className="items-start justify-between gap-2">
+                  <ItemContent className="flex flex-col gap-1">
+                    <ItemTitle>{salon['name']}</ItemTitle>
+                    <ItemDescription>
+                      {salon['created_at'] ? format(new Date(salon['created_at']), 'MMM dd, yyyy') : 'Created date unavailable'}
+                    </ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Badge
+                      variant={
+                        COMPLIANCE_BADGE_VARIANT[
+                          salon.complianceLevel as keyof typeof COMPLIANCE_BADGE_VARIANT
+                        ]
+                      }
+                    >
+                      {salon.complianceScore}
+                    </Badge>
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
             </CardHeader>
             <CardContent className="space-y-3 pt-0">
               <div className="grid grid-cols-2 gap-3">

@@ -3,9 +3,18 @@
 import { useEffect, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { ServerCrash, RefreshCw, Home } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
+import { ButtonGroup } from '@/components/ui/button-group'
 
 /**
  * Global Error Boundary
@@ -32,16 +41,31 @@ export default function GlobalError({
       <body>
         <div className="flex min-h-screen items-center justify-center bg-background p-4">
           <Card className="w-full max-w-lg border-destructive/50">
-            <CardHeader className="flex items-center gap-4">
-              <ServerCrash className="h-6 w-6 text-destructive" aria-hidden="true" />
-              <CardTitle>Critical Application Error</CardTitle>
+            <CardHeader>
+              <ItemGroup>
+                <Item>
+                  <ItemMedia variant="icon">
+                    <ServerCrash className="h-6 w-6 text-destructive" aria-hidden="true" />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>Critical Application Error</ItemTitle>
+                    <ItemDescription>Something went wrong while loading the app.</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
 
             <CardContent className="space-y-6">
-              <CardDescription>
-                A critical error occurred that prevented the application from loading. Please try refreshing the page.
-                If the problem persists, contact support.
-              </CardDescription>
+              <ItemGroup>
+                <Item className="flex-col items-start gap-2">
+                  <ItemContent>
+                    <ItemDescription>
+                      A critical error occurred that prevented the application from loading. Please try refreshing the page.
+                      If the problem persists, contact support.
+                    </ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
 
               {error.digest && (
                 <Alert>
@@ -67,7 +91,7 @@ export default function GlobalError({
             </CardContent>
 
             <CardFooter>
-              <div className="flex w-full gap-6">
+              <ButtonGroup className="w-full gap-4">
                 <Button
                   onClick={() => {
                     startNavigation(async () => {
@@ -97,7 +121,7 @@ export default function GlobalError({
                   <Home className="h-4 w-4" />
                   Home
                 </Button>
-              </div>
+              </ButtonGroup>
             </CardFooter>
           </Card>
         </div>

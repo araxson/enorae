@@ -2,19 +2,19 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Globe, DollarSign, Clock, AlertCircle } from 'lucide-react'
+import { Globe, AlertCircle } from 'lucide-react'
 import { updateAdvancedPreferences } from '@/features/shared/preferences/api/mutations'
 import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-} from '@/components/ui/field'
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
+import { TimezoneField, LocaleField, CurrencyField } from './preference-field-sections'
 
 interface AdvancedPreferences {
   timezone?: string | null
@@ -25,47 +25,6 @@ interface AdvancedPreferences {
 interface AdvancedPreferencesFormProps {
   initialPreferences?: AdvancedPreferences
 }
-
-const TIMEZONES = [
-  { value: 'America/New_York', label: 'Eastern Time (ET)' },
-  { value: 'America/Chicago', label: 'Central Time (CT)' },
-  { value: 'America/Denver', label: 'Mountain Time (MT)' },
-  { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
-  { value: 'America/Anchorage', label: 'Alaska Time (AKT)' },
-  { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' },
-  { value: 'Europe/London', label: 'London (GMT)' },
-  { value: 'Europe/Paris', label: 'Paris (CET)' },
-  { value: 'Asia/Tokyo', label: 'Tokyo (JST)' },
-  { value: 'Australia/Sydney', label: 'Sydney (AEDT)' },
-  { value: 'UTC', label: 'UTC' },
-]
-
-const LOCALES = [
-  { value: 'en-US', label: 'English (US)' },
-  { value: 'en-GB', label: 'English (UK)' },
-  { value: 'es-ES', label: 'Spanish (Spain)' },
-  { value: 'es-MX', label: 'Spanish (Mexico)' },
-  { value: 'fr-FR', label: 'French' },
-  { value: 'de-DE', label: 'German' },
-  { value: 'it-IT', label: 'Italian' },
-  { value: 'pt-BR', label: 'Portuguese (Brazil)' },
-  { value: 'ja-JP', label: 'Japanese' },
-  { value: 'ko-KR', label: 'Korean' },
-  { value: 'zh-CN', label: 'Chinese (Simplified)' },
-]
-
-const CURRENCIES = [
-  { value: 'USD', label: 'US Dollar ($)' },
-  { value: 'EUR', label: 'Euro (€)' },
-  { value: 'GBP', label: 'British Pound (£)' },
-  { value: 'CAD', label: 'Canadian Dollar ($)' },
-  { value: 'AUD', label: 'Australian Dollar ($)' },
-  { value: 'JPY', label: 'Japanese Yen (¥)' },
-  { value: 'CNY', label: 'Chinese Yuan (¥)' },
-  { value: 'INR', label: 'Indian Rupee (₹)' },
-  { value: 'MXN', label: 'Mexican Peso ($)' },
-  { value: 'BRL', label: 'Brazilian Real (R$)' },
-]
 
 export function AdvancedPreferencesForm({
   initialPreferences = {},
@@ -102,105 +61,22 @@ export function AdvancedPreferencesForm({
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
         <div className="flex items-center gap-2">
-          <Globe className="h-5 w-5" />
-          <CardTitle>Regional & Display Preferences</CardTitle>
+          <Globe className="h-5 w-5" aria-hidden="true" />
+          <ItemTitle>Regional &amp; Display Preferences</ItemTitle>
         </div>
-        <CardDescription>
+        <ItemDescription>
           Customize your regional settings, language, and currency preferences
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
-            <Field>
-              <FieldLabel htmlFor="timezone" className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                Timezone
-              </FieldLabel>
-              <FieldContent>
-                <Select
-                  value={preferences.timezone || undefined}
-                  onValueChange={(value) =>
-                    setPreferences((prev) => ({ ...prev, timezone: value }))
-                  }
-                >
-                  <SelectTrigger id="timezone">
-                    <SelectValue placeholder="Select timezone" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TIMEZONES.map((tz) => (
-                      <SelectItem key={tz.value} value={tz.value}>
-                        {tz.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldDescription>
-                  Appointments and times will be displayed in your selected timezone
-                </FieldDescription>
-              </FieldContent>
-            </Field>
-
-            <Field>
-              <FieldLabel htmlFor="locale" className="flex items-center gap-2">
-                <Globe className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                Language &amp; Region
-              </FieldLabel>
-              <FieldContent>
-                <Select
-                  value={preferences.locale || undefined}
-                  onValueChange={(value) =>
-                    setPreferences((prev) => ({ ...prev, locale: value }))
-                  }
-                >
-                  <SelectTrigger id="locale">
-                    <SelectValue placeholder="Select language" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {LOCALES.map((locale) => (
-                      <SelectItem key={locale.value} value={locale.value}>
-                        {locale.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldDescription>
-                  Affects date formats, number formats, and interface language
-                </FieldDescription>
-              </FieldContent>
-            </Field>
-
-            <Field>
-              <FieldLabel htmlFor="currency" className="flex items-center gap-2">
-                <DollarSign className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                Currency
-              </FieldLabel>
-              <FieldContent>
-                <Select
-                  value={preferences.currency_code || undefined}
-                  onValueChange={(value) =>
-                    setPreferences((prev) => ({ ...prev, currency_code: value }))
-                  }
-                >
-                  <SelectTrigger id="currency">
-                    <SelectValue placeholder="Select currency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CURRENCIES.map((currency) => (
-                      <SelectItem key={currency.value} value={currency.value}>
-                        {currency.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FieldDescription>
-                  Prices and amounts will be displayed in your selected currency
-                </FieldDescription>
-              </FieldContent>
-            </Field>
+            <TimezoneField preferences={preferences} setPreferences={setPreferences} />
+            <LocaleField preferences={preferences} setPreferences={setPreferences} />
+            <CurrencyField preferences={preferences} setPreferences={setPreferences} />
 
             {error && (
               <Alert variant="destructive">
@@ -230,7 +106,7 @@ export function AdvancedPreferencesForm({
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

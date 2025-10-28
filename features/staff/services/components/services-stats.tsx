@@ -68,14 +68,11 @@ export function ServicesStats({ services }: ServicesStatsProps) {
                 <Icon className={`h-4 w-4 ${accent}`} aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>
-                  <CardTitle>{value}</CardTitle>
-                </ItemTitle>
+                <ItemTitle>{value}</ItemTitle>
                 <ItemDescription>{label}</ItemDescription>
               </ItemContent>
             </Item>
           </CardHeader>
-          <CardContent />
         </Card>
       ))}
     </div>

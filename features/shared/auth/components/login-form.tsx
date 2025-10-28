@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import { login } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { PasswordInput } from './password-input'
@@ -20,6 +19,14 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function LoginForm() {
   const router = useRouter()
@@ -53,84 +60,86 @@ export function LoginForm() {
 
   return (
     <div className="w-full max-w-md">
-      <Card>
-      <CardHeader>
-        <CardTitle>Login</CardTitle>
-        <CardDescription>
-          Enter your credentials to access your account
-        </CardDescription>
-      </CardHeader>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex flex-col gap-1">
+            <ItemTitle>Login</ItemTitle>
+            <ItemDescription>
+              Enter your credentials to access your account
+            </ItemDescription>
+          </div>
+        </ItemHeader>
 
-      <form action={handleSubmit}>
-        <CardContent>
-          <FieldSet className="gap-6">
-            {error ? (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Login failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            ) : null}
+        <form action={handleSubmit}>
+          <ItemContent>
+            <FieldSet className="gap-6">
+              {error ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Login failed</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              ) : null}
 
-            <FieldGroup className="gap-6">
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <FieldContent>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </FieldContent>
-              </Field>
+              <FieldGroup className="gap-6">
+                <Field>
+                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldContent>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      required
+                    />
+                  </FieldContent>
+                </Field>
 
-              <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <FieldContent>
-                  <PasswordInput
-                    id="password"
-                    name="password"
-                    required
-                    placeholder="Enter your password"
-                  />
-                  <FieldDescription className="flex justify-end">
-                    <Link
-                      href="/auth/forgot-password"
-                      className="text-sm text-primary hover:underline"
-                    >
-                      Forgot password?
-                    </Link>
-                  </FieldDescription>
-                </FieldContent>
-              </Field>
-            </FieldGroup>
-          </FieldSet>
-        </CardContent>
+                <Field>
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldContent>
+                    <PasswordInput
+                      id="password"
+                      name="password"
+                      required
+                      placeholder="Enter your password"
+                    />
+                    <FieldDescription className="flex justify-end">
+                      <Link
+                        href="/auth/forgot-password"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        Forgot password?
+                      </Link>
+                    </FieldDescription>
+                  </FieldContent>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+          </ItemContent>
 
-        <CardFooter>
-          <ButtonGroup className="w-full flex-col gap-4">
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? (
-                <>
-                  <Spinner className="size-4" />
-                  <span>Signing in...</span>
-                </>
-              ) : (
-                <span>Sign In</span>
-              )}
-            </Button>
-            <p className="text-sm font-medium text-center text-muted-foreground">
-              Don&apos;t have an account?{' '}
-              <Link href="/signup" className="underline hover:text-foreground">
-                Sign up
-              </Link>
-            </p>
-          </ButtonGroup>
-        </CardFooter>
-      </form>
-      </Card>
+          <ItemFooter>
+            <ButtonGroup className="w-full flex-col gap-4">
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Signing in...</span>
+                  </>
+                ) : (
+                  <span>Sign In</span>
+                )}
+              </Button>
+              <p className="text-sm font-medium text-center text-muted-foreground">
+                Don&apos;t have an account?{' '}
+                <Link href="/signup" className="underline hover:text-foreground">
+                  Sign up
+                </Link>
+              </p>
+            </ButtonGroup>
+          </ItemFooter>
+        </form>
+      </Item>
     </div>
   )
 }

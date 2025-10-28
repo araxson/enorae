@@ -4,15 +4,11 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
 
 interface NotificationPreferencesProps {
   initialPreferences: NotificationPreferences
@@ -60,14 +56,8 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Notification Preferences</CardTitle>
-              <CardDescription>Choose how you want to be notified.</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Notification Preferences</CardTitle>
+        <CardDescription>Choose how you want to be notified.</CardDescription>
       </CardHeader>
       <div className="px-6">
         <ScrollArea className="w-full">
@@ -104,7 +94,14 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
       <CardFooter className="flex w-full justify-end">
         <ButtonGroup>
           <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving ? 'Saving...' : 'Save Changes'}
+            {isSaving ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Saving…</span>
+              </>
+            ) : (
+              <span>Save Changes</span>
+            )}
           </Button>
         </ButtonGroup>
       </CardFooter>

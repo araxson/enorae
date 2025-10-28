@@ -1,4 +1,4 @@
-'use server'
+import 'server-only'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'

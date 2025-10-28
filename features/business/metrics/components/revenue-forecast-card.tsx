@@ -12,6 +12,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils/index'
 import type { RevenueForecast } from '@/lib/utils/metrics'
 
@@ -110,9 +111,7 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
             <Item variant="muted" className="flex-col">
               <ItemContent className="gap-2">
                 <ItemTitle>Avg daily revenue</ItemTitle>
-                <div className="text-2xl font-semibold">
-                  ${forecast.averageRevenue.toFixed(0)}
-                </div>
+                <CardTitle>${forecast.averageRevenue.toFixed(0)}</CardTitle>
               </ItemContent>
             </Item>
 

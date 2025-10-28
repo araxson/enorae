@@ -1,0 +1,1 @@
+export { getAppointmentSnapshot } from './snapshot'

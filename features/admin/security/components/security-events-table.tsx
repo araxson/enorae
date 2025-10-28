@@ -12,7 +12,7 @@ import {
 import { formatDistanceToNow } from 'date-fns'
 import { Shield, AlertTriangle, AlertCircle } from 'lucide-react'
 import type { SecurityEvent } from '@/features/admin/security/api/queries'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
   Empty,
@@ -22,7 +22,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemGroup, ItemMedia } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from '@/components/ui/item'
 
 interface SecurityEventsTableProps {
   events: SecurityEvent[]
@@ -72,8 +72,16 @@ export function SecurityEventsTable({ events }: SecurityEventsTableProps) {
   return (
     <Card>
       <CardHeader className="sr-only">
-        <CardTitle>Security events</CardTitle>
-        <CardDescription>Recent platform security activity</CardDescription>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>Security events</ItemTitle>
+            </ItemContent>
+            <ItemContent>
+              <ItemDescription>Recent platform security activity</ItemDescription>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="w-full">

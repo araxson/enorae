@@ -1,4 +1,4 @@
-import type { AdminUserRow, MetadataRow, ProfileSummary } from '@/features/admin/profile/api/types'
+import type { AdminUserRow, MetadataRow, ProfileSummary } from '@/features/admin/profile/api/queries/types'
 
 export const sanitizeSearchTerm = (term: string) =>
   term.replace(/[%]/g, '\\%').replace(/_/g, '\\_')

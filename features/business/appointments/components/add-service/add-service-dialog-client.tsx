@@ -1,32 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
 import type { ServiceOption, StaffOption } from '@/features/business/appointments/api/queries/service-options'
-import {
-  Field,
-  FieldContent,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
 import { Spinner } from '@/components/ui/spinner'
+import { ServiceSelectField } from './service-select-field'
+import { StaffSelectField } from './staff-select-field'
+import { TimeFields } from './time-fields'
+import { DurationField } from './duration-field'
 
 interface AddServiceDialogClientProps {
   appointmentId: string
@@ -86,8 +70,7 @@ export function AddServiceDialogClient({
       if (formData.staffId) data.append('staffId', formData.staffId)
       if (formData.startTime) data.append('startTime', formData.startTime)
       if (formData.endTime) data.append('endTime', formData.endTime)
-      if (formData.durationMinutes)
-        data.append('durationMinutes', formData.durationMinutes)
+      if (formData.durationMinutes) data.append('durationMinutes', formData.durationMinutes)
 
       await addServiceToAppointment(data)
 
@@ -118,113 +101,29 @@ export function AddServiceDialogClient({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Field>
-            <FieldLabel htmlFor="service">Service *</FieldLabel>
-            <FieldContent>
-              <Select
-                value={formData.serviceId}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, serviceId: value }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  {services.length > 0 ? (
-                    services.map((service) => (
-                      <SelectItem key={service.id} value={service.id}>
-                        {service.name}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem value="no-services" disabled>
-                      No services available
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-            </FieldContent>
-          </Field>
+          <ServiceSelectField
+            value={formData.serviceId}
+            onChange={(value) => setFormData((prev) => ({ ...prev, serviceId: value }))}
+            services={services}
+          />
 
-          <Field>
-            <FieldLabel htmlFor="staff">Staff (Optional)</FieldLabel>
-            <FieldContent>
-              <Select
-                value={formData.staffId}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({ ...prev, staffId: value }))
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select staff member" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Any available</SelectItem>
-                  {staff.length > 0 ? (
-                    staff.map((member) => (
-                      <SelectItem key={member.id} value={member.id}>
-                        {member.name}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <SelectItem value="no-staff" disabled>
-                      No staff available
-                    </SelectItem>
-                  )}
-                </SelectContent>
-              </Select>
-            </FieldContent>
-          </Field>
+          <StaffSelectField
+            value={formData.staffId}
+            onChange={(value) => setFormData((prev) => ({ ...prev, staffId: value }))}
+            staff={staff}
+          />
 
-          <FieldGroup className="grid grid-cols-2 gap-4">
-            <Field>
-              <FieldLabel htmlFor="startTime">Start Time</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="startTime"
-                  type="time"
-                  value={formData.startTime}
-                  onChange={(event) =>
-                    setFormData((prev) => ({ ...prev, startTime: event.target.value }))
-                  }
-                />
-              </FieldContent>
-            </Field>
+          <TimeFields
+            startTime={formData.startTime}
+            endTime={formData.endTime}
+            onStartTimeChange={(value) => setFormData((prev) => ({ ...prev, startTime: value }))}
+            onEndTimeChange={(value) => setFormData((prev) => ({ ...prev, endTime: value }))}
+          />
 
-            <Field>
-              <FieldLabel htmlFor="endTime">End Time</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="endTime"
-                  type="time"
-                  value={formData.endTime}
-                  onChange={(event) =>
-                    setFormData((prev) => ({ ...prev, endTime: event.target.value }))
-                  }
-                />
-              </FieldContent>
-            </Field>
-          </FieldGroup>
-
-          <Field>
-            <FieldLabel htmlFor="duration">Duration (minutes)</FieldLabel>
-            <FieldContent>
-              <Input
-                id="duration"
-                type="number"
-                min="1"
-                value={formData.durationMinutes}
-                onChange={(event) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    durationMinutes: event.target.value,
-                  }))
-                }
-                placeholder="e.g., 60"
-              />
-            </FieldContent>
-          </Field>
+          <DurationField
+            value={formData.durationMinutes}
+            onChange={(value) => setFormData((prev) => ({ ...prev, durationMinutes: value }))}
+          />
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>

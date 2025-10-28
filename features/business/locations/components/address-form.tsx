@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AdditionalInfoSection, CoordinatesSection, LocationDetailsSection, MapIntegrationSection, StreetAddressSection } from './address-form/sections'
 import { AddressValidation } from './address-validation'
 import type { LocationAddress } from './address-form/types'
-import { updateLocationAddress, type AddressInput } from '@/features/business/locations/api/address.mutations'
+import { updateLocationAddress, type AddressInput } from '@/features/business/locations/api/mutations/address'
 import { ButtonGroup } from '@/components/ui/button-group'
 
 type Props = {
@@ -86,7 +87,14 @@ export function AddressForm({ locationId, address, onSuccess }: Props) {
 
         <ButtonGroup className="justify-end">
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : 'Save Address'}
+            {isSubmitting ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Saving…</span>
+              </>
+            ) : (
+              <span>Save Address</span>
+            )}
           </Button>
         </ButtonGroup>
       </div>

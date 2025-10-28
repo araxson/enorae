@@ -1,8 +1,8 @@
 'use server'
 
-import { createBlockedTime as createBlockedTimeAction } from './mutations/create-blocked-time.mutation'
-import { updateBlockedTime as updateBlockedTimeAction } from './mutations/update-blocked-time.mutation'
-import { deleteBlockedTime as deleteBlockedTimeAction } from './mutations/delete-blocked-time.mutation'
+import { createBlockedTime as createBlockedTimeAction } from './mutations/create'
+import { updateBlockedTime as updateBlockedTimeAction } from './mutations/update'
+import { deleteBlockedTime as deleteBlockedTimeAction } from './mutations/delete'
 
 type ServerAction<TArgs extends unknown[], TResult> = (
   ...args: TArgs

@@ -22,6 +22,10 @@ export function ContactCard({ salon, location }: ContactCardProps) {
     return null
   }
 
+  const mapsHref = location
+    ? `https://www.google.com/maps/search/${encodeURIComponent(location)}`
+    : null
+
   return (
     <Card>
       <CardHeader>
@@ -38,7 +42,15 @@ export function ContactCard({ salon, location }: ContactCardProps) {
                 <ItemTitle>Location</ItemTitle>
               </ItemHeader>
               <ItemContent>
-                <ItemDescription>{location}</ItemDescription>
+                <ItemDescription>
+                  {mapsHref ? (
+                    <Link href={mapsHref} target="_blank" rel="noopener noreferrer">
+                      {location}
+                    </Link>
+                  ) : (
+                    location
+                  )}
+                </ItemDescription>
               </ItemContent>
             </Item>
           )}

@@ -1,0 +1,6 @@
+export { SalonSidebar } from './salon-sidebar'
+export { ContactCard } from './contact-card'
+export { QuickStatsCard } from './quick-stats-card'
+export { SpecialtiesCard } from './specialties-card'
+export { LanguagesCard } from './languages-card'
+export { PaymentMethodsCard } from './payment-methods-card'

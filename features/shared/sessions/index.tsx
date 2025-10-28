@@ -1,5 +1,5 @@
 import { getUserSessions } from './api/queries'
-import { SessionList } from './components/session-list'
+import { SessionList } from './components'
 
 export async function SessionManagement() {
   const sessions = await getUserSessions()

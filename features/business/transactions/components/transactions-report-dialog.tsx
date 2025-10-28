@@ -9,10 +9,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import type { ManualTransactionWithDetails } from '@/features/business/transactions/api/queries'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface TransactionsReportDialogProps {
   open: boolean
@@ -100,27 +106,34 @@ export function TransactionsReportDialog({
 
         <div className="flex flex-col gap-6">
           {report.dateRange && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Report Period</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-3">
-                <p>
-                  {format(report.dateRange.earliest, 'MMM dd, yyyy')} -{' '}
-                  {format(report.dateRange.latest, 'MMM dd, yyyy')}
-                </p>
-                <p className="text-muted-foreground">
-                  Total Transactions: {report.total}
-                </p>
-              </CardContent>
-            </Card>
+            <Item variant="outline" className="flex-col gap-3">
+              <ItemHeader>
+                <ItemTitle>Report Period</ItemTitle>
+              </ItemHeader>
+              <ItemContent>
+                <div className="flex flex-col gap-2">
+                  <p>
+                    {format(report.dateRange.earliest, 'MMM dd, yyyy')}
+                    {' '}
+                    -
+                    {' '}
+                    {format(report.dateRange.latest, 'MMM dd, yyyy')}
+                  </p>
+                  <ItemDescription>
+                    Total Transactions:
+                    {' '}
+                    {report.total}
+                  </ItemDescription>
+                </div>
+              </ItemContent>
+            </Item>
           )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle>By Transaction Type</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+          <Item variant="outline" className="flex-col gap-4">
+            <ItemHeader>
+              <ItemTitle>By Transaction Type</ItemTitle>
+            </ItemHeader>
+            <ItemContent>
               <Separator />
               <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byType).map(([type, count]) => (
@@ -130,14 +143,14 @@ export function TransactionsReportDialog({
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </ItemContent>
+          </Item>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>By Payment Method</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+          <Item variant="outline" className="flex-col gap-4">
+            <ItemHeader>
+              <ItemTitle>By Payment Method</ItemTitle>
+            </ItemHeader>
+            <ItemContent>
               <Separator />
               <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
                 {Object.entries(report.byPaymentMethod).map(([method, count]) => (
@@ -147,14 +160,14 @@ export function TransactionsReportDialog({
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </ItemContent>
+          </Item>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>By Staff Member</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+          <Item variant="outline" className="flex-col gap-4">
+            <ItemHeader>
+              <ItemTitle>By Staff Member</ItemTitle>
+            </ItemHeader>
+            <ItemContent>
               <Separator />
               <div className="flex flex-col gap-3">
                 {Object.entries(report.byStaff)
@@ -167,8 +180,8 @@ export function TransactionsReportDialog({
                     </div>
                   ))}
               </div>
-            </CardContent>
-          </Card>
+            </ItemContent>
+          </Item>
         </div>
       </DialogContent>
     </Dialog>

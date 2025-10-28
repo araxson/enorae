@@ -1,1 +1,2 @@
-export { CategoryNavigation, PopularServicesWidget } from './category-navigation'
+export { CategoryNavigation } from './category-navigation'
+export { PopularServicesWidget } from './popular-services-widget'

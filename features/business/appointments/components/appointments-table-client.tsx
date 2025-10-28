@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import {
   Empty,
@@ -16,6 +16,13 @@ import { confirmAppointment, cancelAppointment, completeAppointment } from '@/fe
 import { useAppointmentsFilter } from './appointments-table/use-appointments-filter'
 import { AppointmentsFilterControls } from './appointments-table/filter-controls'
 import { AppointmentsTableRow } from './appointments-table/table-row'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface AppointmentsTableClientProps {
   appointments: AppointmentWithDetails[]
@@ -52,13 +59,21 @@ export function AppointmentsTableClient({ appointments }: AppointmentsTableClien
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Appointments</CardTitle>
-        <AppointmentsFilterControls
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          statusFilter={statusFilter}
-          onStatusChange={setStatusFilter}
-        />
+        <ItemGroup>
+          <Item className="items-start justify-between gap-4">
+            <ItemContent>
+              <ItemTitle>Appointments</ItemTitle>
+            </ItemContent>
+            <ItemActions className="flex flex-col gap-3 md:flex-row md:items-center">
+              <AppointmentsFilterControls
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                statusFilter={statusFilter}
+                onStatusChange={setStatusFilter}
+              />
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         {filteredAppointments.length === 0 ? (

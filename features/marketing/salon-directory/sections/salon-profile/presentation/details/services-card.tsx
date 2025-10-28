@@ -29,8 +29,8 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
               <Item key={category} className="flex-col gap-4" variant="outline">
-                <ItemHeader>
-                  <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">{category}</h3>
+                <ItemHeader className="flex-col gap-2">
+                  <ItemTitle>{category}</ItemTitle>
                 </ItemHeader>
                 <ItemGroup className="gap-2">
                   {categoryServices.map((service) => (

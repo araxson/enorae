@@ -1,29 +1,61 @@
 import { Star, Flag, MessageSquare } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import type { ReactNode } from 'react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function InfoBlock({ label, value, helper }: { label: string; value: string; helper?: string | null }) {
   return (
-    <div className="space-y-1">
-      <CardDescription>{label}</CardDescription>
-      <p className="font-medium">{value}</p>
-      {helper ? <CardDescription>{helper}</CardDescription> : null}
-    </div>
+    <ItemGroup>
+      <Item className="flex-col items-start gap-1">
+        <ItemContent>
+          <ItemDescription>{label}</ItemDescription>
+        </ItemContent>
+        <ItemContent>
+          <span className="font-medium">{value}</span>
+        </ItemContent>
+        {helper ? (
+          <ItemContent>
+            <ItemDescription>{helper}</ItemDescription>
+          </ItemContent>
+        ) : null}
+      </Item>
+    </ItemGroup>
   )
 }
 
 export function DetailCard({ title, badge, description }: { title: string; badge: ReactNode; description?: string }) {
   return (
     <Card>
-      <CardHeader className="space-y-1">
-        <CardTitle>{title}</CardTitle>
-        {description ? <CardDescription>{description}</CardDescription> : null}
+      <CardHeader>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-1">
+            <ItemContent>
+              <ItemTitle>{title}</ItemTitle>
+            </ItemContent>
+            {description ? (
+              <ItemContent>
+                <ItemDescription>{description}</ItemDescription>
+              </ItemContent>
+            ) : null}
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
-        <div className="flex items-center gap-2 text-sm">{badge}</div>
+        <ItemGroup>
+          <Item className="items-center gap-2 text-sm">
+            <ItemActions className="flex items-center gap-2 text-sm">{badge}</ItemActions>
+          </Item>
+        </ItemGroup>
       </CardContent>
     </Card>
   )
@@ -63,10 +95,14 @@ export function StatusBadges({ review }: { review: ModerationReview }) {
   }
 
   return (
-    <div className="space-y-1">
-      <CardDescription>Rating & status</CardDescription>
-      <div className="flex flex-wrap items-center gap-2">{badges}</div>
-    </div>
+    <ItemGroup>
+      <Item className="flex-col items-start gap-2">
+        <ItemContent>
+          <ItemDescription>Rating &amp; status</ItemDescription>
+        </ItemContent>
+        <ItemActions className="flex flex-wrap items-center gap-2">{badges}</ItemActions>
+      </Item>
+    </ItemGroup>
   )
 }
 
@@ -83,10 +119,22 @@ export function Panel({ title, children, tone }: { title: string; children: Reac
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>{title}</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
-        <div className="text-sm">{children}</div>
+        <ItemGroup>
+          <Item className="flex-col items-start gap-2">
+            <ItemContent>
+              <span className="text-sm">{children}</span>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardContent>
     </Card>
   )

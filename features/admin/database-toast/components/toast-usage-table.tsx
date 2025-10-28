@@ -118,6 +118,7 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
                         size="sm"
                         disabled={isLoading}
                         className="h-8 w-8 p-0"
+                        aria-label={`Open TOAST actions for ${table.table_name}`}
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
@@ -142,9 +143,13 @@ export function ToastUsageTable({ tables }: ToastUsageTableProps) {
       <ScrollBar orientation="horizontal" />
       </ScrollArea>
       {isLoading ? (
-        <div className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center">
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-background/70 absolute inset-0 z-10 flex items-center justify-center"
+        >
           <Spinner className="size-6" />
-          <span className="sr-only">Processing</span>
+          <span className="sr-only">Updating TOAST usage metrics</span>
         </div>
       ) : null}
     </div>

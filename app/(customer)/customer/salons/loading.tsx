@@ -1,36 +1,77 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { Spinner } from '@/components/ui/spinner'
 
 export default function SalonsLoading() {
   return (
     <div className="container mx-auto py-6 space-y-6">
-      <div className="space-y-2">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-4 w-96" />
-      </div>
+      <ItemGroup className="gap-4">
+        <Item className="flex-col items-start gap-3" variant="muted">
+          <ItemContent className="flex items-center gap-2">
+            <Spinner className="text-muted-foreground" />
+            <ItemTitle>Loading salon directory</ItemTitle>
+          </ItemContent>
+          <ItemContent className="flex flex-col gap-2">
+            <ItemDescription>Fetching salons that match your preferences.</ItemDescription>
+            <Skeleton className="h-8 w-64" />
+            <Skeleton className="h-4 w-96" />
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
-      <div className="flex items-center gap-4">
-        <Skeleton className="h-10 flex-1" />
-        <Skeleton className="h-10 w-32" />
-      </div>
+      <ItemGroup>
+        <Item className="w-full items-center gap-4" variant="muted">
+          <ItemContent className="flex-1">
+            <Skeleton className="h-10 w-full" />
+          </ItemContent>
+          <ItemContent className="w-32">
+            <Skeleton className="h-10 w-full" />
+          </ItemContent>
+        </Item>
+      </ItemGroup>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(9)].map((_, i) => (
           <Card key={i}>
             <CardHeader>
-              <div className="sr-only">
-                <CardTitle>Loading salon preview</CardTitle>
-              </div>
-              <Skeleton className="h-48 w-full rounded-md" />
+              <ItemGroup>
+                <Item className="flex-col items-start gap-2">
+                  <ItemContent>
+                    <ItemTitle>
+                      <span className="sr-only">Loading salon preview</span>
+                    </ItemTitle>
+                  </ItemContent>
+                  <ItemContent>
+                    <Skeleton className="h-48 w-full rounded-md" />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-2/3" />
-              <div className="flex items-center justify-between mt-4">
-                <Skeleton className="h-4 w-20" />
-                <Skeleton className="h-8 w-24" />
-              </div>
+            <CardContent>
+              <ItemGroup className="gap-3">
+                <Item className="flex-col items-start gap-3">
+                  <ItemContent>
+                    <Skeleton className="h-6 w-3/4" />
+                  </ItemContent>
+                  <ItemContent>
+                    <Skeleton className="h-4 w-full" />
+                  </ItemContent>
+                  <ItemContent>
+                    <Skeleton className="h-4 w-2/3" />
+                  </ItemContent>
+                  <ItemContent className="mt-4 flex w-full items-center justify-between">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-8 w-24" />
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             </CardContent>
           </Card>
         ))}

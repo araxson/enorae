@@ -6,7 +6,13 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import type { Salon } from '../types'
 
 interface AmenitiesCardProps {
@@ -28,7 +34,10 @@ export function AmenitiesCard({ salon }: AmenitiesCardProps) {
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Item variant="muted">
+            <Item variant="muted" className="flex-col gap-1">
+              <ItemHeader>
+                <ItemTitle>Amenity updates</ItemTitle>
+              </ItemHeader>
               <ItemContent>
                 <ItemDescription>
                   Check back later for updated in-salon experiences.

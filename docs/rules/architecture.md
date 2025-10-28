@@ -1,814 +1,452 @@
-# Architecture Patterns - ENORAE
-
-**Essential architectural rules for feature-based organization in Next.js 15.**
+# Architecture
 
 ---
 
-## Quick Reference
+## File Naming Rules
 
-| What you need | Where to look |
-|---------------|---------------|
-| **Feature structure** | [Feature Folder Structure](#feature-folder-structure) |
-| **Server/client rules** | [Critical Rules](#critical-rules) |
-| **Auth patterns** | [Auth & Security](#auth--security) |
-| **Caching** | [Cache Strategies](#cache-strategies) |
-| **Detection commands** | [Detection Commands](#detection-commands) |
+### API Files (In Organized Directories)
+- ✅ `appointments.ts` (NOT `appointments-queries.ts`)
+- ✅ `create.ts` (NOT `create-mutations.ts` or `create.mutations.ts`)
+- ✅ `helpers.ts` (NOT `query-helpers.ts`)
+- ❌ **NEVER use suffixes in organized directories** - the directory provides context
 
----
+### API Files (Flat Structure - Small Features Only)
+- ✅ `queries.ts` (plural, at api root)
+- ✅ `mutations.ts` (plural, at api root)
+- ❌ `query.ts` (wrong - use plural)
 
-## Stack
+### Kebab-case vs Dot Notation
+**Use kebab-case (-)** for multi-word files:
+- ✅ `metric-card.tsx`
+- ✅ `revenue-analytics.ts`
+- ✅ `user-preferences.ts`
 
-- **Next.js:** 15.5.4 (App Router)
-- **React:** 19.1.0 (Server/Client Components)
-- **TypeScript:** 5.9.3 (Strict mode)
-- **Supabase:** 2.47.15 (`@supabase/ssr`)
+**Use dots (.) ONLY for special files:**
+- ✅ `user.test.ts` (tests)
+- ✅ `user.spec.ts` (tests)
+- ✅ `database.types.ts` (auto-generated type definitions)
+- ✅ `next.config.ts` (config files)
+- ❌ `create.mutations.ts` (WRONG - use organized directories instead)
+- ❌ `user.queries.ts` (WRONG - use organized directories instead)
 
----
+### Components
+- ✅ `metric-card.tsx` (kebab-case)
+- ✅ Component name matches filename: `MetricCard` in `metric-card.tsx`
 
-## 🚨 Critical Rules - MUST FOLLOW
-
-### 1. Pages Are Thin Shells (5-12 Lines)
-
-```tsx
-// ✅ CORRECT - Thin shell
-import { Suspense } from 'react'
-import { AppointmentsFeature } from '@/features/business/appointments'
-
-export default async function Page(props: { params: Promise<{ id: string }> }) {
-  return (
-    <Suspense fallback={<Skeleton />}>
-      <AppointmentsFeature {...props} />
-    </Suspense>
-  )
-}
-
-// ❌ FORBIDDEN - Business logic in page
-export default async function Page() {
-  const supabase = await createClient()  // ❌ NO
-  const data = await supabase.from...    // ❌ NO
-  return <div>{data}</div>               // ❌ NO
-}
-```
-
-### 2. Always Use getUser() for Auth (NEVER getSession())
-
-```tsx
-// ✅ CORRECT
-const { data: { user } } = await supabase.auth.getUser()
-if (!user) throw new Error('Unauthorized')
-
-// ❌ FORBIDDEN - getSession() can be spoofed
-const { data: { session } } = await supabase.auth.getSession()  // ❌ INSECURE
-```
-
-### 3. Middleware ONLY Refreshes Sessions
-
-```ts
-// ✅ CORRECT - Only session refresh
-export async function middleware(request: NextRequest) {
-  return updateSession(request)  // Just refreshes tokens
-}
-
-// ❌ FORBIDDEN - Auth checks in middleware
-export async function middleware(request: NextRequest) {
-  const { data: { user } } = await supabase.auth.getUser()  // ❌ NO
-  if (!user) return redirect('/login')                      // ❌ NO
-}
-```
-
-**Do auth checks in Server Components/Route Handlers instead.**
-
-### 4. Server Directives Required
-
-```ts
-// queries.ts - MUST have server-only
-import 'server-only'  // ✅ REQUIRED
-
-// mutations.ts - MUST start with 'use server'
-'use server'  // ✅ REQUIRED (first line)
-
-// Client components - MUST have 'use client'
-'use client'  // ✅ REQUIRED (for hooks/events)
-```
-
-### 5. Params in Next.js 15 Are Promises
-
-```tsx
-// ✅ CORRECT - Await params
-export default async function Page(props: { params: Promise<{ id: string }> }) {
-  const { id } = await props.params  // ✅ Await the promise
-  return <Feature id={id} />
-}
-
-// ❌ FORBIDDEN - Direct access
-export default async function Page({ params }: { params: { id: string } }) {
-  return <Feature id={params.id} />  // ❌ Runtime error
-}
-```
+### Directories
+- ✅ `kebab-case` for all folders
+- ✅ Descriptive names: `revenue-analytics` not `rev-analysis`
 
 ---
 
-## Feature Folder Structure
+## Feature Structure Patterns
+
+### Pattern 1: Portal Features (admin, business, staff, customer)
 
 ```
-features/
-└── {portal}/                     # customer | staff | business | admin
-    └── {feature}/
-        ├── api/
-        │   ├── queries.ts        # ✅ Must: import 'server-only'
-        │   └── mutations.ts      # ✅ Must: 'use server'
-        ├── components/           # UI components (server/client)
-        ├── schema.ts             # Zod validation schemas
-        ├── types.ts              # TypeScript type aliases
-        └── index.tsx             # Feature entry (Server Component)
-```
-
-**Rules:**
-- `api/queries.ts` → Server-only reads from **public views**
-- `api/mutations.ts` → Server actions writing to **schema tables**
-- `components/` → Mix of server/client as needed
-- `index.tsx` → Server Component shell, exports main feature
-
----
-
-## File Patterns
-
-### queries.ts - Server-Only Reads
-
-```ts
-import 'server-only'  // ✅ REQUIRED
-import { cache } from 'react'
-import { createClient } from '@/lib/supabase/server'
-
-const getSupabase = cache(async () => createClient())
-
-export async function getAppointments(businessId: string) {
-  const supabase = await getSupabase()
-
-  // ✅ ALWAYS use getUser() to validate
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const { data, error } = await supabase
-    .from('appointments_view')  // ✅ Query PUBLIC VIEWS
-    .select('*')
-    .eq('business_id', businessId)
-    .eq('user_id', user.id)  // ✅ Filter by user
-
-  if (error) throw error
-  return data
-}
-```
-
-**Rules:**
-- ✅ Import `'server-only'` first line
-- ✅ Use `getUser()` for auth (never `getSession()`)
-- ✅ Query from **public views** only
-- ✅ Filter by `user.id` for multi-tenancy
-- ✅ Wrap `createClient()` with `cache()`
-
-### mutations.ts - Server Actions
-
-```ts
-'use server'  // ✅ REQUIRED (first line)
-
-import { createClient } from '@/lib/supabase/server'
-import { revalidatePath, revalidateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { createAppointmentSchema } from '../schema'
-
-export async function createAppointment(input: unknown) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // ✅ Validate with Zod
-  const payload = createAppointmentSchema.parse(input)
-
-  // ✅ Write to SCHEMA TABLES
-  const { data, error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
-    .insert({ ...payload, business_id: user.id })
-    .select()
-    .single()
-
-  if (error) throw error
-
-  // ✅ Cache invalidation
-  revalidateTag('appointments')
-  revalidatePath('/business/appointments')
-
-  // ✅ redirect() throws, so must be last
-  redirect(`/business/appointments/${data.id}`)
-}
-```
-
-**Rules:**
-- ✅ First line: `'use server'`
-- ✅ Parse input with Zod
-- ✅ Use `getUser()` for auth
-- ✅ Write to **schema tables** via `.schema('name')`
-- ✅ Call `revalidateTag()` or `revalidatePath()`
-- ✅ `redirect()` must be last (it throws)
-
-### types.ts - Type Aliases
-
-```ts
-import type { Database } from '@/lib/types/database.types'
-
-export type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
-export type AppointmentInsert = Database['scheduling']['Tables']['appointments']['Insert']
-```
-
-**Rules:**
-- ✅ Use generated Supabase types
-- ❌ Never hand-write database types
-
-### schema.ts - Zod Validation
-
-```ts
-import { z } from 'zod'
-
-export const createAppointmentSchema = z.object({
-  customerId: z.string().uuid(),
-  serviceId: z.string().uuid(),
-  scheduledAt: z.string().datetime(),
-  notes: z.string().max(500).optional(),
-})
-```
-
-**Rules:**
-- ✅ Validate all network boundaries
-- ✅ Use `.transform()` for type coercion
-
-### index.tsx - Feature Entry
-
-```tsx
-import { Suspense } from 'react'
-import { getAppointments } from './api/queries'
-import { AppointmentList } from './components/appointment-list'
-
-export async function AppointmentsFeature(props: { params: Promise<{ businessId: string }> }) {
-  const { businessId } = await props.params  // ✅ Await params
-  const appointments = await getAppointments(businessId)
-
-  return (
-    <Suspense fallback={<Skeleton />}>
-      <AppointmentList appointments={appointments} />
-    </Suspense>
-  )
-}
-```
-
-**Rules:**
-- ✅ Server Component (async)
-- ✅ Await `params` promise
-- ✅ Wrap in `Suspense`
-
----
-
-## Auth & Security
-
-### ✅ CORRECT: Auth in Server Components
-
-```tsx
-// app/(business)/dashboard/page.tsx
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
-
-export default async function Page() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) redirect('/login')
-
-  return <Dashboard userId={user.id} />
-}
-```
-
-### ✅ CORRECT: Auth in Route Handlers
-
-```ts
-// app/api/appointments/route.ts
-export async function GET() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
-  const { data } = await supabase
-    .from('appointments_view')
-    .select('*')
-    .eq('user_id', user.id)
-
-  return NextResponse.json(data)
-}
-```
-
-### ❌ FORBIDDEN: Auth in Middleware
-
-```ts
-// ❌ DO NOT DO THIS
-export async function middleware(request: NextRequest) {
-  const supabase = createServerClient(...)
-  const { data: { user } } = await supabase.auth.getUser()  // ❌ NO
-
-  if (!user) return redirect('/login')  // ❌ NO
-}
-```
-
-**Why middleware should only refresh sessions:**
-- 🔒 More secure (auth check per route)
-- ⚡ Better performance (no middleware latency)
-- 🎯 Explicit auth logic
-- 🛠️ Easier to debug
-
-### Middleware Pattern (Session Refresh Only)
-
-```ts
-// middleware.ts
-import type { NextRequest } from 'next/server'
-import { updateSession } from '@/lib/supabase/middleware'
-
-export async function middleware(request: NextRequest) {
-  return updateSession(request)  // Only refreshes tokens
-}
-
-export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
-}
-```
-
-```ts
-// lib/supabase/middleware.ts
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
-
-export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return request.cookies.getAll() },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options))
-        },
-      },
-    }
-  )
-
-  // ✅ Refreshes session (DO NOT add auth logic)
-  await supabase.auth.getUser()
-
-  return supabaseResponse
-}
-```
-
----
-
-## Cache Strategies
-
-| Strategy | Tool | Context |
-|----------|------|---------|
-| **Immediate read-your-writes** | `updateTag('tag')` | Server Actions only. Next request blocks until data is refetched. |
-| **On-demand revalidation** | `revalidateTag('tag')` | Route Handlers and Server Actions. Triggers next request to refresh lazily. |
-| **Background revalidation** | `revalidateTag('tag', 'max')` | Stale-while-revalidate pattern for soft refreshes. |
-| **Path invalidation** | `revalidatePath('/path')` | Invalidate all data for a page segment. |
-| **Client refresh** | `refresh()` | Re-fetch the current page from a Server Action. |
-| **Time-based TTL** | `export const revalidate = 60` | Automatically revalidate on interval. |
-| **Ahead-of-time tagging** | `'use cache'` + `cacheTag('tag')` | Tag cached functions for later invalidation. |
-| **Client router cache** | `experimental.staleTimes` | Opt segments into client router cache freshness windows. |
-
-> ⚠️ `updateTag` **only works inside Server Actions**. It throws in Route Handlers—use `revalidateTag(tag, 'max')` there (Next.js v15 docs). 
-
-### Examples
-
-```ts
-// Read-your-writes (Server Action only)
-const { data } = await supabase
-  .from('appointments')
-  .insert(...)
-  .select()
-  .single()
-updateTag('appointments')
-updateTag(`appointment-${data.id}`)
-redirect(`/appointments/${data.id}`)
-
-// Route handler / background invalidation
-await supabase.from('appointments').update(...)
-revalidateTag('appointments', 'max')  // Stale-while-revalidate
-
-// Path invalidation
-await bulkUpdate()
-revalidatePath('/dashboard')
-```
-
-```ts
-// Tag cached functions for granular invalidation
-import { cacheTag } from 'next/cache'
-
-export async function getDashboard() {
-  'use cache'
-  cacheTag('dashboard')
-  return queryDashboard()
-}
-```
-
-```js
-// Opt segments into the client router cache (next.config.js)
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    staleTimes: {
-      dynamic: 30,
-      static: 180,
-    },
-  },
-}
-
-module.exports = nextConfig
-```
-
-**Tag naming conventions:**
-- Collections: `'appointments'`, `'users'`
-- Single resources: `'appointment-{id}'`, `'user-{id}'`
-
----
-
-## Detection Commands
-
-Run these before committing:
-
-```bash
-# 1. queries.ts missing 'server-only'
-rg --files -g 'queries.ts' features | xargs -I{} sh -c "grep -L \"import 'server-only'\" {}"
-
-# 2. mutations.ts missing 'use server'
-rg --files -g 'mutations.ts' features | xargs -I{} sh -c "grep -L \"'use server'\" {}"
-
-# 3. Client components missing 'use client'
-rg "(useState|useEffect|useReducer)" features --type tsx | xargs -I{} sh -c "grep -L \"'use client'\" {}"
-
-# 4. Params accessed without await
-rg "params\." app --type tsx | grep -v "await params" | grep -v "use(params)"
-
-# 5. Route handlers > 120 lines
-find app/api -name 'route.ts' -exec sh -c 'lines=$(wc -l < "$1"); [ $lines -gt 120 ] && echo "$1: $lines lines"' _ {} \;
-
-# 6. Pages > 12 lines
-find app -name 'page.tsx' -exec sh -c 'lines=$(wc -l < "$1"); [ $lines -gt 12 ] && echo "$1: $lines lines"' _ {} \;
-```
-
-**Zero violations required before commit.**
-
----
-
-## Pre-Commit Checklist
-
-**Architecture:**
-- [ ] Pages are 5-12 lines (thin shells only)
-- [ ] `params` are awaited: `const { id } = await props.params`
-- [ ] Features use generated types from `Database[...]`
-- [ ] Client components declare `'use client'` and are minimal
-
-**Server/Client Directives:**
-- [ ] `queries.ts` has `import 'server-only'` first line
-- [ ] `mutations.ts` starts with `'use server'` first line
-- [ ] Client components with hooks have `'use client'`
-
-**Auth & Security:**
-- [ ] **CRITICAL:** All auth uses `getUser()`, never `getSession()`
-- [ ] All queries filter by `user.id` for multi-tenancy
-- [ ] **CRITICAL:** Middleware ONLY refreshes sessions, NO auth checks
-- [ ] Auth checks are in Server Components/Route Handlers
-
-**Database:**
-- [ ] Queries read from **public views**
-- [ ] Mutations write to **schema tables** via `.schema('name')`
-- [ ] All inputs validated with Zod before database access
-
-**Caching:**
-- [ ] Mutations call `revalidateTag()` or `revalidatePath()`
-- [ ] `redirect()` is last line (it throws)
-- [ ] Cache tags are documented
-
-**Quality:**
-- [ ] All detection commands pass (zero matches)
-- [ ] No business logic in pages or middleware
-- [ ] Supabase clients created via shared helpers
-
----
-
-## Complete Example
-
-### Feature Structure
-
-```
-features/business/appointments/
+features/{portal}/[feature]/
 ├── api/
-│   ├── queries.ts         # Server-only reads (public views)
-│   └── mutations.ts       # Server actions (schema tables)
+│   ├── queries/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   ├── [domain].ts                 # Query functions (< 300 lines)
+│   │   └── helpers.ts                  # Query helpers (< 200 lines)
+│   ├── mutations/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   ├── [action].ts                 # Mutation functions (< 300 lines)
+│   │   └── helpers.ts                  # Mutation helpers (< 200 lines)
+│   ├── types.ts                        # API types (< 200 lines)
+│   ├── schema.ts                       # Zod schemas (< 250 lines)
+│   └── constants.ts                    # Constants (< 100 lines)
 ├── components/
-│   ├── appointment-list.tsx
-│   ├── appointment-form.tsx
-│   └── appointment-skeleton.tsx
-├── schema.ts              # Zod validation
-├── types.ts               # Type aliases
-└── index.tsx              # Feature entry
+│   ├── index.ts                         # Re-exports ALL components (< 50 lines)
+│   ├── [feature]-[component].tsx       # Components (< 200 lines)
+│   └── [component-name].tsx            # Components (< 200 lines)
+├── hooks/
+│   └── use-[hook-name].ts              # Hooks (< 150 lines)
+├── utils/
+│   └── [utility-name].ts               # Utils (< 150 lines)
+└── index.tsx                           # Feature export (< 50 lines)
 ```
 
-### Complete Implementation
-
-**1. Types (`types.ts`):**
-```ts
-import type { Database } from '@/lib/types/database.types'
-
-export type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
-export type AppointmentInsert = Database['scheduling']['Tables']['appointments']['Insert']
-export type AppointmentUpdate = Database['scheduling']['Tables']['appointments']['Update']
-```
-
-**2. Schemas (`schema.ts`):**
-```ts
-import { z } from 'zod'
-
-export const createAppointmentSchema = z.object({
-  customerId: z.string().uuid(),
-  serviceId: z.string().uuid(),
-  staffId: z.string().uuid(),
-  scheduledAt: z.string().datetime(),
-  durationMinutes: z.coerce.number().min(15).max(480),
-  notes: z.string().max(500).optional(),
-})
-
-export const updateAppointmentSchema = z.object({
-  id: z.string().uuid(),
-  status: z.enum(['pending', 'confirmed', 'completed', 'cancelled']),
-  notes: z.string().max(500).optional(),
-})
-```
-
-**3. Queries (`api/queries.ts`):**
-```ts
-import 'server-only'
-import { cache } from 'react'
-import { createClient } from '@/lib/supabase/server'
-import type { AppointmentRow } from '../types'
-
-const getSupabase = cache(async () => createClient())
-
-export async function getAppointments(businessId: string): Promise<AppointmentRow[]> {
-  const supabase = await getSupabase()
-
-  // ✅ Always verify auth
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // ✅ Query from public view
-  const { data, error } = await supabase
-    .from('appointments_view')
-    .select('*')
-    .eq('business_id', businessId)
-    .eq('user_id', user.id)  // ✅ Filter by tenant
-    .order('scheduled_at', { ascending: true })
-
-  if (error) throw error
-  return data
-}
-
-export async function getAppointmentById(id: string): Promise<AppointmentRow> {
-  const supabase = await getSupabase()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const { data, error } = await supabase
-    .from('appointments_view')
-    .select('*')
-    .eq('id', id)
-    .eq('user_id', user.id)
-    .single()
-
-  if (error) throw error
-  return data
-}
-```
-
-**4. Mutations (`api/mutations.ts`):**
-```ts
-'use server'  // ✅ REQUIRED first line
-
-import { createClient } from '@/lib/supabase/server'
-import { revalidatePath, updateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { createAppointmentSchema, updateAppointmentSchema } from '../schema'
-
-export async function createAppointment(input: unknown) {
-  const supabase = await createClient()
-
-  // ✅ 1. Verify auth
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  // ✅ 2. Validate input with Zod
-  const payload = createAppointmentSchema.parse(input)
-
-  // ✅ 3. Write to schema table
-  const { data, error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
-    .insert({
-      ...payload,
-      business_id: user.id,  // ✅ Add tenant scope
-    })
-    .select()
-    .single()
-
-  if (error) throw error
-
-  // ✅ 4. Cache invalidation (immediate consistency)
-  updateTag(`appointment:${data.id}`)
-  updateTag('appointments')
-  updateTag(`appointments:${user.id}`)
-
-  // ✅ 5. Revalidate path
-  revalidatePath('/business/appointments')
-
-  // ✅ 6. Redirect (must be last - it throws)
-  redirect(`/business/appointments/${data.id}`)
-}
-
-export async function updateAppointmentStatus(input: unknown) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const payload = updateAppointmentSchema.parse(input)
-
-  const { error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
-    .update({
-      status: payload.status,
-      notes: payload.notes,
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', payload.id)
-    .eq('business_id', user.id)  // ✅ Tenant scoped
-
-  if (error) throw error
-
-  // ✅ Update only affected caches
-  updateTag(`appointment:${payload.id}`)
-  updateTag(`appointments:${user.id}`)
-
-  revalidatePath(`/business/appointments/${payload.id}`)
-}
-
-export async function deleteAppointment(id: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
-
-  const { error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
-    .delete()
-    .eq('id', id)
-    .eq('business_id', user.id)
-
-  if (error) throw error
-
-  // ✅ Clear all related caches
-  updateTag(`appointment:${id}`)
-  updateTag('appointments')
-  updateTag(`appointments:${user.id}`)
-
-  revalidatePath('/business/appointments')
-  redirect('/business/appointments')
-}
-```
-
-**5. Components (`components/appointment-form.tsx`):**
-```tsx
-'use client'
-
-import { useActionState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { createAppointmentSchema } from '../schema'
-import { createAppointment } from '../api/mutations'
-
-export function AppointmentForm() {
-  const form = useForm({
-    resolver: zodResolver(createAppointmentSchema),
-    defaultValues: {
-      customerId: '',
-      serviceId: '',
-      staffId: '',
-      scheduledAt: '',
-      durationMinutes: 60,
-      notes: '',
-    },
-  })
-
-  return (
-    <Form {...form}>
-      <form action={createAppointment} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="scheduledAt"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date & Time</FormLabel>
-              <FormControl>
-                <Input type="datetime-local" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Additional fields... */}
-
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Creating...' : 'Create Appointment'}
-        </Button>
-      </form>
-    </Form>
-  )
-}
-```
-
-**6. Feature Entry (`index.tsx`):**
-```tsx
-import { Suspense } from 'react'
-import { getAppointments } from './api/queries'
-import { AppointmentList } from './components/appointment-list'
-import { AppointmentSkeleton } from './components/appointment-skeleton'
-
-export async function AppointmentsFeature(props: { params: Promise<{ businessId: string }> }) {
-  const { businessId } = await props.params  // ✅ Await params
-  const appointments = await getAppointments(businessId)
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Appointments</h1>
-        {/* Add create button */}
-      </div>
-
-      <Suspense fallback={<AppointmentSkeleton />}>
-        <AppointmentList appointments={appointments} />
-      </Suspense>
-    </div>
-  )
-}
-```
-
-**7. Page Shell (`app/(business)/appointments/page.tsx`):**
-```tsx
-import { Suspense } from 'react'
-import { AppointmentsFeature } from '@/features/business/appointments'
-import { AppointmentSkeleton } from '@/features/business/appointments/components/appointment-skeleton'
-
-export default async function Page(props: { params: Promise<{ businessId: string }> }) {
-  return (
-    <Suspense fallback={<AppointmentSkeleton />}>
-      <AppointmentsFeature {...props} />
-    </Suspense>
-  )
-}
-```
-
-### Complete Flow
-
-1. **User navigates** → Page renders (5-12 lines)
-2. **Page** → Suspense wraps feature component
-3. **Feature** → Calls `getAppointments()` query
-4. **Query** → Verifies auth, queries view, returns data
-5. **Feature** → Passes data to List component
-6. **List** → Renders appointments
-7. **User submits form** → Calls `createAppointment()` mutation
-8. **Mutation** → Verifies auth, validates, writes to schema table
-9. **Mutation** → Updates cache tags, revalidates path
-10. **Mutation** → Redirects to detail page
-11. **Detail page** → Fetches fresh data (cache invalidated)
-12. **User sees** → New appointment immediately
+**File Limits:**
+- Index files: < 50 lines
+- Components: < 200 lines
+- Query/Mutation files: < 300 lines
+- Helpers: < 200 lines
+- Hooks/Utils: < 150 lines
+- Types: < 200 lines
+- Schemas: < 250 lines
+- Constants: < 100 lines
 
 ---
 
-**Last Updated:** 2025-10-21 (Enhanced with complete end-to-end feature example)
-**Next.js Version:** 15.5.4 (params as promises, `updateTag` and `revalidateTag` improvements)
+### Pattern 2: Marketing Features
+
+```
+features/marketing/[page-name]/
+├── sections/
+│   └── [section-name]/
+│       ├── [section-name].tsx         # Section component (< 150 lines)
+│       ├── [section-name].data.ts     # Section data/content (< 200 lines)
+│       ├── [section-name].types.ts    # Section types (optional, < 100 lines)
+│       └── index.ts                   # Export component + data (< 20 lines)
+├── [page-name]-page.tsx               # Main page component (< 100 lines)
+├── [page-name].seo.ts                 # SEO metadata (< 50 lines)
+├── [page-name].types.ts               # Feature-wide types (optional, < 150 lines)
+└── index.ts                           # Export page + sections (< 30 lines)
+```
+
+**File Limits:**
+- Page files: < 100 lines
+- Section components: < 150 lines
+- Data files: < 200 lines
+- SEO files: < 50 lines
+- Index files: < 30 lines
+
+---
+
+### Pattern 3: Auth Features
+
+```
+features/shared/auth/
+├── api/
+│   ├── queries/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   └── [query].ts                  # Query functions (< 300 lines)
+│   ├── mutations/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   └── [action].ts                 # Mutation functions (< 300 lines)
+│   └── schema.ts                       # Auth schemas (< 250 lines)
+├── components/
+│   ├── login-form.tsx                  # Form component (< 200 lines)
+│   ├── signup-form.tsx                 # Form component (< 200 lines)
+│   └── [auth-component].tsx            # Auth component (< 200 lines)
+├── hooks/
+│   └── use-[auth-hook].ts              # Auth hooks (< 150 lines)
+└── index.tsx                           # Feature export (< 50 lines)
+```
+
+**File Limits:**
+- Index files: < 50 lines
+- Components: < 200 lines
+- Query/Mutation files: < 300 lines
+- Schema files: < 250 lines
+- Hooks: < 150 lines
+
+---
+
+### Pattern 4: Shared Features
+
+```
+features/shared/[feature]/
+├── api/
+│   ├── queries/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   └── [query].ts                  # Query functions (< 300 lines)
+│   ├── mutations/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   └── [action].ts                 # Mutation functions (< 300 lines)
+│   └── types.ts                        # Shared types (< 200 lines)
+├── components/
+│   └── [component].tsx                 # Shared component (< 200 lines)
+├── hooks/
+│   └── use-[hook].ts                   # Shared hooks (< 150 lines)
+└── index.tsx                           # Feature export (< 50 lines)
+```
+
+**File Limits:**
+- Index files: < 50 lines
+- Components: < 200 lines
+- Query/Mutation files: < 300 lines
+- Types: < 200 lines
+- Hooks: < 150 lines
+
+---
+
+## Naming Conventions
+
+### Queries (`api/queries/[name].ts`)
+- **Function names**: `get[Entity]`, `fetch[Data]`, `list[Items]`
+- **File names**: Entity or domain name (plural): `appointments.ts`, `revenue.ts`
+- **Examples**:
+  - `getSalonDashboard()`
+  - `fetchAppointmentsByDate()`
+  - `listActiveStaff()`
+
+### Mutations (`api/mutations/[name].ts`)
+- **Function names**: `create[Entity]`, `update[Entity]`, `delete[Entity]`
+- **File names**: Action name: `create.ts`, `update.ts`, `delete.ts`
+- **Examples**:
+  - `createAppointment()`
+  - `updateSalonSettings()`
+  - `deleteStaffMember()`
+
+### Components
+- **File naming**: `kebab-case.tsx`
+- **Export naming**: `PascalCase` matching file intent
+- **Feature components**: `[feature]-[component].tsx`
+- **Examples**:
+  - `metric-card.tsx` → exports `MetricCard`
+  - `appointment-form.tsx` → exports `AppointmentForm`
+  - `dashboard-stats.tsx` → exports `DashboardStats`
+
+### Hooks
+- **File naming**: `use-[hook-name].ts`
+- **Export naming**: `use[HookName]`
+- **Examples**:
+  - `use-appointments.ts` → exports `useAppointments`
+  - `use-salon-data.ts` → exports `useSalonData`
+
+### Types & Schemas
+- **Types**: `types.ts` (domain-specific types)
+- **Schemas**: `schema.ts` (Zod validation schemas)
+- **Constants**: `constants.ts` (configuration values)
+
+---
+
+## Directory Organization by Size
+
+### Small Features (< 5 files)
+
+```
+[feature]/
+├── api/
+│   ├── queries.ts                      # All queries (< 300 lines)
+│   └── mutations.ts                    # All mutations (< 300 lines)
+├── components/
+│   └── [component].tsx                 # Component (< 200 lines)
+└── index.tsx                           # Feature export (< 50 lines)
+```
+
+**File Limits:**
+- Single query/mutation files: < 300 lines (split if exceeding)
+- Components: < 200 lines
+- Index: < 50 lines
+
+**When to split**: If any file exceeds 300 lines, move to Medium structure.
+
+---
+
+### Medium Features (5-15 files)
+
+```
+[feature]/
+├── api/
+│   ├── queries/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   └── [domain].ts                 # Domain queries (< 300 lines)
+│   └── mutations/
+│       ├── index.ts                    # Re-exports (< 50 lines)
+│       └── [action].ts                 # Action mutations (< 300 lines)
+├── components/
+│   └── [component].tsx                 # Components (< 200 lines each)
+└── index.tsx                           # Feature export (< 50 lines)
+```
+
+**File Limits:**
+- Domain query files: < 300 lines
+- Action mutation files: < 300 lines
+- Components: < 200 lines
+- Index files: < 50 lines
+
+**When to split**: If any domain file exceeds 300 lines, move to Large structure.
+
+---
+
+### Large Features (> 15 files)
+
+```
+[feature]/
+├── api/
+│   ├── queries/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   ├── [domain-1]/
+│   │   │   ├── index.ts                # Domain re-exports (< 50 lines)
+│   │   │   └── [specific].ts           # Specific queries (< 250 lines)
+│   │   └── [domain-2]/
+│   │       └── (similar structure)
+│   └── mutations/
+│       └── (similar structure)
+├── components/
+│   ├── [section-1]/
+│   │   └── [component].tsx             # Components (< 200 lines each)
+│   └── [section-2]/
+└── index.tsx                           # Feature export (< 50 lines)
+```
+
+**File Limits:**
+- Specific query/mutation files: < 250 lines
+- Components: < 200 lines
+- Index files: < 50 lines
+- **Must split** into smaller files if exceeding limits
+
+---
+
+## Component Re-Export Pattern
+
+**CRITICAL RULE: Always use `components/index.ts` as the single source of truth**
+
+### ✅ CORRECT Pattern
+
+```
+components/
+├── index.ts                    # Re-exports ALL components
+├── dashboard.tsx
+├── metric-card.tsx
+└── chart.tsx
+```
+
+**components/index.ts** - Must export ALL components:
+```ts
+export { Dashboard } from './dashboard'
+export { MetricCard } from './metric-card'
+export { Chart } from './chart'
+```
+
+**Feature index.tsx** - Must import from `./components`:
+```ts
+// ✅ CORRECT - Use components/index
+import { Dashboard } from './components'
+export { Dashboard, MetricCard } from './components'
+
+// ❌ WRONG - Don't bypass the index
+import { Dashboard } from './components/dashboard'
+```
+
+### ❌ WRONG Patterns
+
+**Incomplete components/index.ts:**
+```ts
+// ❌ Missing exports - not all components listed
+export { Dashboard } from './dashboard'
+// Missing: MetricCard, Chart
+```
+
+**Bypassing components/index.ts:**
+```ts
+// ❌ Direct import bypasses the index
+export { Dashboard } from './components/dashboard'
+```
+
+**Why this matters:**
+- ✅ Single source of truth for public components
+- ✅ Easier to see what's exported
+- ✅ Better tree-shaking
+- ✅ Consistent import patterns
+- ✅ Easier refactoring
+
+---
+
+## Enforcement Rules
+
+1. **No suffixes in organized folders**: `appointments.ts` not `appointments-queries.ts`
+2. **Plural for collections**: `queries/`, `mutations/`, `components/`
+3. **Kebab-case everywhere**: Files and folders
+4. **PascalCase exports**: Component and type names
+5. **camelCase functions**: `getSalonDashboard`, `createAppointment`
+6. **Always index.ts**: Re-export from `api/queries/index.ts`, `api/mutations/index.ts`, and `components/index.ts`
+7. **Complete index files**: ALL components/queries/mutations must be in their respective index.ts
+8. **Never bypass index.ts**: Feature files must import from `./components`, not direct paths
+9. **Respect file limits**: Split files that exceed their designated line limits
+
+---
+
+## Quick Reference Table
+
+| File Type | Limit | Action if Exceeded |
+|-----------|-------|-------------------|
+| Index files | 50 | Split into separate domain index files |
+| Components | 200 | Extract sub-components or sections |
+| Queries/Mutations | 300 | Split by domain or action |
+| Query/Mutation (Large) | 250 | Split into more specific files |
+| Helpers | 200 | Group into separate helper files |
+| Hooks/Utils | 150 | Split by concern |
+| Types | 200 | Create domain-specific type files |
+| Schemas | 250 | Split into separate schema files |
+| Constants | 100 | Group by domain |
+| Page files | 100 | Extract sections |
+| SEO files | 50 | One per page |
+| Data files | 200 | Split by section |
+
+---
+
+## Common Mistakes to Avoid
+
+### ❌ Mistake 1: Using suffixes in organized directories
+```
+api/
+├── queries/
+│   └── appointments-queries.ts  ❌ WRONG - suffix is redundant
+```
+**Fix:** Rename to `appointments.ts`
+
+### ❌ Mistake 2: Using dots instead of kebab-case
+```
+api/mutations/create.appointment.ts  ❌ WRONG - dots reserved for special files
+```
+**Fix:** Use organized directory or rename to `create-appointment.ts` (if flat)
+
+### ❌ Mistake 3: Incomplete components/index.ts
+```ts
+// components/index.ts
+export { Dashboard } from './dashboard'
+// Missing: other components in the directory ❌
+```
+**Fix:** Export ALL components in the directory
+
+### ❌ Mistake 4: Bypassing index files
+```ts
+// feature/index.tsx
+import { Dashboard } from './components/dashboard'  ❌ WRONG
+```
+**Fix:** Import from `./components` (uses index.ts)
+
+### ❌ Mistake 5: Singular filenames at root
+```
+api/
+├── query.ts    ❌ WRONG - should be plural
+└── mutation.ts ❌ WRONG
+```
+**Fix:** Use `queries.ts` and `mutations.ts`
+
+---
+
+## Migration Path
+
+When refactoring existing code:
+
+1. **Assess current state**: Count lines in each file
+2. **Identify violations**: Note files exceeding limits
+3. **Plan split strategy**: Choose Small/Medium/Large pattern
+4. **Rename files**: Remove suffixes, apply kebab-case
+5. **Create/complete index.ts files**: Ensure all components/queries/mutations are re-exported
+6. **Update imports**: Fix all import paths to use index files
+7. **Verify**: Run type check and build
+
+---
+
+## Code Cleanup
+
+**Fix misplaced files, redundancies, and duplicates immediately:**
+
+- ❌ Files in wrong directories → Move to correct feature/pattern location
+- ❌ Duplicate code → Extract to shared utils/hooks
+- ❌ Redundant files → Merge or delete
+- ❌ Unused exports → Remove
+
+**Keep codebase clean:** One source of truth per concept.
+
+---
+
+## Quick Checklist for New Features
+
+- [ ] No `.mutations.ts` or `.queries.ts` suffixes in organized directories
+- [ ] All multi-word files use kebab-case (not dots)
+- [ ] `components/index.ts` exports ALL components
+- [ ] `api/queries/index.ts` exports ALL queries
+- [ ] `api/mutations/index.ts` exports ALL mutations
+- [ ] Feature index.tsx imports from `./components`, not direct paths
+- [ ] All files respect size limits
+- [ ] All functions use camelCase
+- [ ] All components export PascalCase names
+- [ ] Server directives present ('server-only' in queries, 'use server' in mutations)

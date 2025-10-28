@@ -1,7 +1,7 @@
 import { getSalonChains } from './api/queries'
-import { SalonChainsClient } from './components/salon-chains-client'
+import { ChainDetail, SalonChainsClient } from './components'
 
-export { ChainDetail } from './components/chain-detail-page'
+export { ChainDetail }
 
 export async function SalonChains() {
   const chains = await getSalonChains()

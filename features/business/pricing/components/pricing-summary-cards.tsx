@@ -1,8 +1,5 @@
 'use client'
 
-import { TrendingUp, DollarSign, Zap } from 'lucide-react'
-import type { PricingRule } from '@/features/business/pricing/types'
-import { formatCurrency } from './pricing-utils'
 import {
   Item,
   ItemActions,
@@ -12,6 +9,10 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { CardTitle } from '@/components/ui/card'
+import type { PricingRule } from '@/features/business/pricing/types'
+import { formatCurrency } from './pricing-utils'
+import { DollarSign, TrendingUp, Zap } from 'lucide-react'
 
 interface PricingSummaryCardsProps {
   rules: PricingRule[]
@@ -34,7 +35,7 @@ export function PricingSummaryCards({
           </ItemActions>
         </ItemHeader>
         <ItemContent>
-          <div className="text-2xl font-bold">{rules.length}</div>
+          <CardTitle>{rules.length}</CardTitle>
           <ItemDescription>
             {rules.filter(r => r.adjustment_type === 'surge').length} surges,{' '}
             {rules.filter(r => r.adjustment_type === 'discount').length} discounts
@@ -50,9 +51,7 @@ export function PricingSummaryCards({
           </ItemActions>
         </ItemHeader>
         <ItemContent>
-          <div className="text-2xl font-bold">
-            {formatCurrency(totalPotentialRevenue)}
-          </div>
+          <CardTitle>{formatCurrency(totalPotentialRevenue)}</CardTitle>
           <ItemDescription>Estimated monthly increase</ItemDescription>
         </ItemContent>
       </Item>
@@ -65,7 +64,7 @@ export function PricingSummaryCards({
           </ItemActions>
         </ItemHeader>
         <ItemContent>
-          <div className="text-2xl font-bold">{servicesCount}</div>
+          <CardTitle>{servicesCount}</CardTitle>
           <ItemDescription>Dynamic pricing enabled</ItemDescription>
         </ItemContent>
       </Item>

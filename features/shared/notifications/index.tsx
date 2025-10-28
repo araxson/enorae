@@ -1,5 +1,5 @@
 import { getNotifications } from './api/queries'
-import { NotificationCenter } from './components/notification-center'
+import { NotificationCenter } from './components'
 
 export async function Notifications() {
   const notifications = await getNotifications()
@@ -10,4 +10,4 @@ export async function Notifications() {
   )
 }
 
-export { NotificationCenter } from './components/notification-center'
+export { NotificationCenter } from './components'

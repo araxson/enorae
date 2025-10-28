@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 
 import { getUserSessions } from './api/queries'
-import { SessionList } from './components/session-list'
+import { SessionList } from './components'
 
 import { Spinner } from '@/components/ui/spinner'
 

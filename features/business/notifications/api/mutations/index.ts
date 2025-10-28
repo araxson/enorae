@@ -1,3 +1,5 @@
+'use server'
+
 export {
   sendNotification,
   markNotificationsRead,

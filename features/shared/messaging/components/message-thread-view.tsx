@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Empty,
@@ -13,6 +12,13 @@ import {
 import { MessageBubble } from './message-bubble'
 import { MessageComposer } from './message-composer'
 import { MessageSquare } from 'lucide-react'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface Message {
   id: string
@@ -44,18 +50,23 @@ export function MessageThreadView({
 
   return (
     <div className="flex h-full flex-col gap-6">
-      <Card className="flex min-h-96 flex-1 flex-col">
-        <CardHeader>
-          <CardTitle>Conversation</CardTitle>
-          {otherUserName && <CardDescription>Chatting with {otherUserName}</CardDescription>}
-        </CardHeader>
-        <CardContent className="flex flex-1 flex-col">
-          <ScrollArea className="flex-1">
-            {messages.length === 0 ? (
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <MessageSquare className="h-6 w-6" aria-hidden="true" />
+      <Item variant="outline" className="flex min-h-96 flex-1 flex-col">
+        <ItemHeader>
+          <div className="flex flex-col gap-1">
+            <ItemTitle>Conversation</ItemTitle>
+            {otherUserName ? (
+              <ItemDescription>Chatting with {otherUserName}</ItemDescription>
+            ) : null}
+          </div>
+        </ItemHeader>
+        <ItemContent>
+          <div className="flex flex-1 flex-col">
+            <ScrollArea className="flex-1">
+              {messages.length === 0 ? (
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <MessageSquare className="h-6 w-6" aria-hidden="true" />
                   </EmptyMedia>
                   <EmptyTitle>No messages yet</EmptyTitle>
                   <EmptyDescription>Start the conversation!</EmptyDescription>
@@ -79,9 +90,10 @@ export function MessageThreadView({
               </div>
             )}
             <div ref={messagesEndRef} />
-          </ScrollArea>
-        </CardContent>
-      </Card>
+            </ScrollArea>
+          </div>
+        </ItemContent>
+      </Item>
       <MessageComposer onSend={onSendMessage} />
     </div>
   )

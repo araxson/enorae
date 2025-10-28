@@ -26,7 +26,7 @@ Fix the entire ENORAE codebase to identify:
 2. **Track references** - For each export, search for all import statements and usages
 3. **Categorize findings** - Distinguish between truly dead code vs. intentional exports (e.g., public APIs)
 4. **Cross-reference** - Check package.json to identify unused dependencies
-5. **Verify patterns** - Ensure findings align with `docs/ruls/file-organization.md` and `docs/ruls/architecture.md`
+5. **Verify patterns** - Ensure findings align with `docs/ruls/architecture.md` and `docs/ruls/architecture.md`
 6. **Identify orphans** - Find files that exist but are never imported or used
 
 ## Search Strategy
@@ -131,7 +131,7 @@ Report findings in this exact format:
 ## Stack Pattern Alignment
 
 When reporting findings, reference relevant patterns:
-- **File Organization**: Ensure exports follow `docs/ruls/file-organization.md` structure
+- **File Organization**: Ensure exports follow `docs/ruls/architecture.md` structure
 - **Architecture**: Verify feature structure matches `docs/ruls/architecture.md`
 - **Module boundaries**: Check that exports respect `features/{portal}/{feature}/` organization
 - **Public APIs**: Distinguish between intentional exports (index.tsx) vs. accidental leakage

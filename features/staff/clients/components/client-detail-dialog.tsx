@@ -1,12 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { format } from 'date-fns'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
 import { Calendar, DollarSign, Mail, User } from 'lucide-react'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import type { Database } from '@/lib/types/database.types'
+import { ClientAppointmentHistory } from './client-appointment-history'
 import {
   Item,
   ItemContent,
@@ -15,14 +14,6 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import {
-  Empty,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from '@/components/ui/empty'
-import { Spinner } from '@/components/ui/spinner'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 
@@ -168,50 +159,7 @@ export function ClientDetailDialog({
                 </ItemContent>
               </Item>
             </ItemGroup>
-            {loading ? (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Spinner className="size-4" />
-                <span>Loading appointments…</span>
-              </div>
-            ) : appointments.length === 0 ? (
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <Calendar className="h-8 w-8" aria-hidden="true" />
-                  </EmptyMedia>
-                  <EmptyTitle>No appointments found</EmptyTitle>
-                  <EmptyDescription>This client has no appointment history yet.</EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            ) : (
-              <ItemGroup className="gap-2">
-                {appointments.map((apt) => {
-                  const serviceNames = 'Appointment'
-                  const startTime = apt['start_time']
-                    ? format(new Date(apt['start_time']), 'MMM dd, yyyy • h:mm a')
-                    : null
-
-                  return (
-                    <Item key={apt['id']} variant="outline" size="sm">
-                      <ItemContent>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <Badge variant={apt['status'] === 'completed' ? 'default' : 'outline'}>
-                            {apt['status']}
-                          </Badge>
-                          {startTime ? (
-                            <ItemDescription>{startTime}</ItemDescription>
-                          ) : null}
-                        </div>
-                        <ItemTitle>{serviceNames}</ItemTitle>
-                        {apt['duration_minutes'] ? (
-                          <ItemDescription>{apt['duration_minutes']} minutes</ItemDescription>
-                        ) : null}
-                      </ItemContent>
-                    </Item>
-                  )
-                })}
-              </ItemGroup>
-            )}
+            <ClientAppointmentHistory appointments={appointments} loading={loading} />
           </div>
         </div>
       </DialogContent>

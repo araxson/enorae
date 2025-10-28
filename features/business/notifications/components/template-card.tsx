@@ -1,12 +1,20 @@
 'use client'
 
 import { memo, useCallback } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { PenLine, Trash2 } from 'lucide-react'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface TemplateCardProps {
   template: NotificationTemplate
@@ -28,22 +36,24 @@ function TemplateCardComponent({ template, onEdit, onDelete, disabled }: Templat
   return (
     <Card className="border-muted">
       <CardHeader>
-        <div className="flex items-start justify-between">
-          <div>
-            <CardTitle>{template.name}</CardTitle>
-            <CardDescription>
-              {(template.description || template.event.replace('_', ' ')).toString()}
-            </CardDescription>
-          </div>
-          <div className="flex gap-2">
-            <Badge variant="outline">
-              <span className="capitalize">{template.channel}</span>
-            </Badge>
-            <Badge variant="secondary">
-              <span className="capitalize">{template.event.replace(/_/g, ' ')}</span>
-            </Badge>
-          </div>
-        </div>
+        <ItemGroup>
+          <Item className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <ItemContent className="flex flex-col gap-1">
+              <ItemTitle>{template.name}</ItemTitle>
+              <ItemDescription>
+                {(template.description || template.event.replace('_', ' ')).toString()}
+              </ItemDescription>
+            </ItemContent>
+            <ItemActions className="flex gap-2">
+              <Badge variant="outline">
+                <span className="capitalize">{template.channel}</span>
+              </Badge>
+              <Badge variant="secondary">
+                <span className="capitalize">{template.event.replace(/_/g, ' ')}</span>
+              </Badge>
+            </ItemActions>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent className="space-y-4">
         {template.subject ? (

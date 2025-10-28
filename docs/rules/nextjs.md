@@ -24,7 +24,7 @@
 7. [Server Actions & Forms](#server-actions--forms)
 8. [Data Fetching & Streaming](#data-fetching--streaming)
 9. [Caching & Revalidation](#caching--revalidation)
-10. [Next.js 16 Breaking Changes](#nextjs-16-breaking-changes)
+10. [Next.js 16 Breaking Changes](#nextjs-breaking-changes)
 11. [Detection Commands](#detection-commands)
 12. [Complete Examples](#complete-examples)
 

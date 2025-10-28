@@ -5,14 +5,6 @@ import Link from 'next/link'
 import { requestPasswordReset } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, CheckCircle2, Mail, ArrowLeft } from 'lucide-react'
 import {
@@ -25,6 +17,14 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function ForgotPasswordForm() {
   const [error, setError] = useState<string | null>(null)
@@ -51,18 +51,20 @@ export function ForgotPasswordForm() {
   if (success) {
     return (
       <div className="w-full max-w-md">
-        <Card>
-          <CardHeader className="items-center justify-center space-y-4">
-            <div className="mb-4 flex items-center justify-center">
-              <Mail className="h-12 w-12 text-primary" aria-hidden="true" />
+        <Item variant="outline" className="flex flex-col gap-4">
+          <ItemHeader>
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="flex items-center justify-center">
+                <Mail className="h-12 w-12 text-primary" aria-hidden="true" />
+              </div>
+              <ItemTitle>Check your email</ItemTitle>
+              <ItemDescription>
+                We&apos;ve sent a password reset link to <strong>{email}</strong>
+              </ItemDescription>
             </div>
-            <CardTitle>Check your email</CardTitle>
-            <CardDescription>
-              We&apos;ve sent a password reset link to <strong>{email}</strong>
-            </CardDescription>
-          </CardHeader>
+          </ItemHeader>
 
-          <CardContent>
+          <ItemContent>
             <FieldSet className="gap-6">
               <Alert>
                 <CheckCircle2 className="h-4 w-4 text-primary" />
@@ -73,7 +75,7 @@ export function ForgotPasswordForm() {
                 </AlertDescription>
               </Alert>
 
-              <p className="text-sm font-medium text-center text-muted-foreground">
+              <p className="text-center text-sm font-medium text-muted-foreground">
                 Didn&apos;t receive the email? Check your spam folder or{' '}
                 <Button
                   type="button"
@@ -84,9 +86,9 @@ export function ForgotPasswordForm() {
                 </Button>
               </p>
             </FieldSet>
-          </CardContent>
+          </ItemContent>
 
-          <CardFooter>
+          <ItemFooter>
             <ButtonGroup className="w-full">
               <Button variant="outline" asChild className="w-full">
                 <Link href="/login">
@@ -95,24 +97,26 @@ export function ForgotPasswordForm() {
                 </Link>
               </Button>
             </ButtonGroup>
-          </CardFooter>
-        </Card>
+          </ItemFooter>
+        </Item>
       </div>
     )
   }
 
   return (
     <div className="w-full max-w-md">
-      <Card>
-        <CardHeader>
-          <CardTitle>Forgot password?</CardTitle>
-          <CardDescription>
-            Enter your email address and we&apos;ll send you a link to reset your password
-          </CardDescription>
-        </CardHeader>
+      <Item variant="outline" className="flex flex-col gap-4">
+        <ItemHeader>
+          <div className="flex flex-col gap-1">
+            <ItemTitle>Forgot password?</ItemTitle>
+            <ItemDescription>
+              Enter your email address and we&apos;ll send you a link to reset your password
+            </ItemDescription>
+          </div>
+        </ItemHeader>
 
         <form action={handleSubmit}>
-          <CardContent>
+          <ItemContent>
             <FieldSet className="gap-6">
               {error ? (
                 <Alert variant="destructive">
@@ -132,7 +136,7 @@ export function ForgotPasswordForm() {
                       type="email"
                       placeholder="you@example.com"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(event) => setEmail(event.target.value)}
                       required
                       autoFocus
                     />
@@ -143,9 +147,9 @@ export function ForgotPasswordForm() {
                 </Field>
               </FieldGroup>
             </FieldSet>
-          </CardContent>
+          </ItemContent>
 
-          <CardFooter>
+          <ItemFooter>
             <ButtonGroup className="w-full flex-col gap-4">
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (
@@ -165,9 +169,9 @@ export function ForgotPasswordForm() {
                 </Link>
               </Button>
             </ButtonGroup>
-          </CardFooter>
+          </ItemFooter>
         </form>
-      </Card>
+      </Item>
     </div>
   )
 }

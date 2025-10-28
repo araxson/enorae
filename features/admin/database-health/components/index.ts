@@ -1,3 +1,4 @@
+export { DatabaseHealth, DatabaseHealthDashboard } from './database-health'
 export { DatabaseHealthPanel } from './database-health-panel'
 export { HealthOverview } from './health-overview'
 export { OptimizationPanel } from './optimization-panel'

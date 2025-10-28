@@ -6,21 +6,20 @@ import { useRouter } from 'next/navigation'
 import { signup } from '@/features/shared/auth/api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
-import { PasswordInput } from './password-input'
-import { PasswordStrengthIndicator, usePasswordStrength } from './password-strength-indicator'
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-  FieldGroup,
-  FieldSet,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { usePasswordStrength } from './password-strength-indicator'
+import { SignupFormFields } from './signup-form-fields'
+import { FieldSet } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 export function SignupForm() {
   const router = useRouter()
@@ -37,14 +36,12 @@ export function SignupForm() {
     setError(null)
     setSuccess(null)
 
-    // Validate password strength
     if (!isPasswordValid) {
       setError('Please meet all password requirements')
       setLoading(false)
       return
     }
 
-    // Validate passwords match
     if (password !== confirmPassword) {
       setError('Passwords do not match')
       setLoading(false)
@@ -71,130 +68,68 @@ export function SignupForm() {
 
   return (
     <div className="w-full max-w-md">
-      <Card>
-      <CardHeader>
-        <CardTitle>Create Account</CardTitle>
-        <CardDescription>
-          Sign up to start booking appointments
-        </CardDescription>
-      </CardHeader>
+      <Item variant="outline" className="flex-col gap-4">
+        <ItemHeader>
+          <div className="flex flex-col gap-1">
+            <ItemTitle>Create Account</ItemTitle>
+            <ItemDescription>
+              Sign up to start booking appointments
+            </ItemDescription>
+          </div>
+        </ItemHeader>
 
-      <form action={handleSubmit}>
-        <CardContent>
-          <FieldSet className="gap-6">
-            {error ? (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Sign up failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            ) : null}
-            {success ? (
-              <Alert>
-                <AlertTitle>Account created</AlertTitle>
-                <AlertDescription>{success}</AlertDescription>
-              </Alert>
-            ) : null}
+        <form action={handleSubmit}>
+          <ItemContent>
+            <FieldSet className="gap-6">
+              {error ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Sign up failed</AlertTitle>
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              ) : null}
+              {success ? (
+                <Alert>
+                  <AlertTitle>Account created</AlertTitle>
+                  <AlertDescription>{success}</AlertDescription>
+                </Alert>
+              ) : null}
 
-            <FieldGroup className="gap-6">
-              <Field>
-                <FieldLabel htmlFor="fullName">Full Name</FieldLabel>
-                <FieldContent>
-                  <Input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    placeholder="John Doe"
-                    required
-                  />
-                </FieldContent>
-              </Field>
+              <SignupFormFields
+                password={password}
+                onPasswordChange={setPassword}
+                confirmPassword={confirmPassword}
+                onConfirmPasswordChange={setConfirmPassword}
+              />
+            </FieldSet>
+          </ItemContent>
 
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <FieldContent>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    required
-                  />
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <FieldContent>
-                  <PasswordInput
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Create a strong password"
-                    required
-                  />
-                  {password ? (
-                    <FieldDescription>
-                      <PasswordStrengthIndicator password={password} showRequirements />
-                    </FieldDescription>
-                  ) : null}
-                </FieldContent>
-              </Field>
-
-              <Field>
-                <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
-                <FieldContent>
-                  <PasswordInput
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm your password"
-                    required
-                  />
-                  {confirmPassword && password !== confirmPassword ? (
-                    <FieldDescription className="text-destructive font-medium">
-                      Passwords do not match
-                    </FieldDescription>
-                  ) : null}
-                  {confirmPassword && password === confirmPassword ? (
-                    <FieldDescription className="text-primary font-medium">
-                      ✓ Passwords match
-                    </FieldDescription>
-                  ) : null}
-                </FieldContent>
-              </Field>
-            </FieldGroup>
-          </FieldSet>
-        </CardContent>
-
-        <CardFooter>
-          <ButtonGroup className="w-full flex-col gap-4">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading || !isPasswordValid || password !== confirmPassword}
-            >
-              {loading ? (
-                <>
-                  <Spinner className="size-4" />
-                  <span>Creating account...</span>
-                </>
-              ) : (
-                <span>Sign Up</span>
-              )}
-            </Button>
-            <p className="text-sm font-medium text-center text-muted-foreground">
-              Already have an account?{' '}
-              <Link href="/login" className="underline hover:text-foreground">
-                Sign in
-              </Link>
-            </p>
-          </ButtonGroup>
-        </CardFooter>
-      </form>
-      </Card>
+          <ItemFooter>
+            <ButtonGroup className="w-full flex-col gap-4">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={loading || !isPasswordValid || password !== confirmPassword}
+              >
+                {loading ? (
+                  <>
+                    <Spinner className="size-4" />
+                    <span>Creating account...</span>
+                  </>
+                ) : (
+                  <span>Sign Up</span>
+                )}
+              </Button>
+              <p className="text-sm font-medium text-center text-muted-foreground">
+                Already have an account?{' '}
+                <Link href="/login" className="underline hover:text-foreground">
+                  Sign in
+                </Link>
+              </p>
+            </ButtonGroup>
+          </ItemFooter>
+        </form>
+      </Item>
     </div>
   )
 }

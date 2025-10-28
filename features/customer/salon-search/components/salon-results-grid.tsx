@@ -93,10 +93,16 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* Featured Salons */}
       {showFeatured && (
         <div>
-          <div className="mb-4 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-accent" />
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Featured Salons</h2>
-          </div>
+          <ItemGroup className="mb-4 flex items-center gap-2">
+            <Item className="items-center gap-2">
+              <ItemMedia variant="icon">
+                <Sparkles className="h-5 w-5 text-accent" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Featured Salons</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
           <ItemGroup className="mb-4">
             <Item variant="muted" size="sm">
               <ItemContent>
@@ -118,10 +124,16 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* Search Results */}
       {showResults && (
         <div>
-          <div className="mb-4 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
-            <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight">Search Results ({results.length})</h2>
-          </div>
+          <ItemGroup className="mb-4 flex items-center gap-2">
+            <Item className="items-center gap-2">
+              <ItemMedia variant="icon">
+                <TrendingUp className="h-5 w-5" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>Search Results ({results.length})</ItemTitle>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
           <ItemGroup className="mb-4">
             <Item variant="muted" size="sm">
               <ItemContent>

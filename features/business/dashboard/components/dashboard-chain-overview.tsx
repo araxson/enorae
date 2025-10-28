@@ -1,22 +1,35 @@
 'use client'
 
-import { Building2, Users, CalendarDays, CheckCircle2, ClipboardList, Store } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Badge } from '@/components/ui/badge'
+import { CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import type { BusinessMultiLocationMetrics } from '@/features/business/dashboard/types'
+import { cn } from '@/lib/utils'
+import {
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  ClipboardList,
+  Store,
+  Users,
+} from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { getAccentStripeClass, type MetricAccent } from './metric-card'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
   ItemHeader,
   ItemTitle,
-  ItemActions,
 } from '@/components/ui/item'
 
 type DashboardChainOverviewProps = {
@@ -95,7 +108,7 @@ export function DashboardChainOverview({ metrics }: DashboardChainOverviewProps)
                       <ItemDescription>{item.label}</ItemDescription>
                     </ItemHeader>
                     <ItemContent className="flex items-center justify-between gap-4">
-                      <div className="text-2xl font-semibold">{item.value(metrics)}</div>
+                      <CardTitle>{item.value(metrics)}</CardTitle>
                       <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
                     </ItemContent>
                   </Item>

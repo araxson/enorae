@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -9,6 +8,13 @@ import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
 import type { LocationAddress } from './address-form/types'
 import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ValidationResult = {
   isValid: boolean
@@ -124,14 +130,14 @@ export function AddressValidation({ address }: Props) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex gap-4 items-center justify-between">
-          <CardTitle>Address Validation</CardTitle>
-          {getStatusBadge()}
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <div className="flex w-full items-center justify-between gap-4">
+          <ItemTitle>Address Validation</ItemTitle>
+          <ItemActions>{getStatusBadge()}</ItemActions>
         </div>
-      </CardHeader>
-      <CardContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-4">
           <ButtonGroup className="w-full">
             <Button
@@ -144,39 +150,39 @@ export function AddressValidation({ address }: Props) {
               {isValidating ? (
                 <Spinner className="mr-2" />
               ) : (
-                <RefreshCw className="h-4 w-4 mr-2" />
+                <RefreshCw className="mr-2 h-4 w-4" />
               )}
               {isValidating ? 'Validating...' : 'Validate Address'}
             </Button>
           </ButtonGroup>
 
-          {result && result.issues.length > 0 && (
+          {result && result.issues.length > 0 ? (
             <Alert variant="destructive">
               <AlertTitle>Issues found</AlertTitle>
               <AlertDescription>
-                <ul className="list-disc list-inside space-y-1">
-                  {result.issues.map((issue, i) => (
-                    <li key={i} className="text-sm">{issue}</li>
+                <ul className="list-inside list-disc space-y-1">
+                  {result.issues.map((issue, index) => (
+                    <li key={index} className="text-sm">{issue}</li>
                   ))}
                 </ul>
               </AlertDescription>
             </Alert>
-          )}
+          ) : null}
 
-          {result && result.suggestions.length > 0 && (
+          {result && result.suggestions.length > 0 ? (
             <Alert>
               <AlertTitle>Suggestions</AlertTitle>
               <AlertDescription>
-                <ul className="list-disc list-inside space-y-1">
-                  {result.suggestions.map((suggestion, i) => (
-                    <li key={i} className="text-sm">{suggestion}</li>
+                <ul className="list-inside list-disc space-y-1">
+                  {result.suggestions.map((suggestion, index) => (
+                    <li key={index} className="text-sm">{suggestion}</li>
                   ))}
                 </ul>
               </AlertDescription>
             </Alert>
-          )}
+          ) : null}
 
-          {result && result.isValid && (
+          {result && result.isValid ? (
             <Alert>
               <CheckCircle className="h-4 w-4" />
               <AlertTitle>Validation passed</AlertTitle>
@@ -184,9 +190,9 @@ export function AddressValidation({ address }: Props) {
                 Address validation passed! Your address is properly formatted and complete.
               </AlertDescription>
             </Alert>
-          )}
+          ) : null}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

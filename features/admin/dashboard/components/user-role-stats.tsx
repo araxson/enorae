@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -75,12 +75,12 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
           <CardHeader className="space-y-3">
             <ItemGroup>
               <Item variant="muted">
-                <ItemContent>
-                  <CardTitle>User distribution</CardTitle>
-                  <CardDescription>
-                    Role analytics will appear when users are assigned roles.
-                  </CardDescription>
-                </ItemContent>
+              <ItemContent>
+                <ItemTitle>User distribution</ItemTitle>
+                <ItemDescription>
+                  Role analytics will appear when users are assigned roles.
+                </ItemDescription>
+              </ItemContent>
               </Item>
             </ItemGroup>
           </CardHeader>
@@ -104,10 +104,10 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
           <ItemGroup>
             <Item>
               <ItemContent>
-                <CardTitle>User distribution</CardTitle>
-                <CardDescription>
+                <ItemTitle>User distribution</ItemTitle>
+                <ItemDescription>
                   Breakdown by platform role with relative share.
-                </CardDescription>
+                </ItemDescription>
               </ItemContent>
               <ItemActions>
                 <Badge variant="outline">
@@ -138,10 +138,10 @@ export function UserRoleStats({ stats }: UserRoleStatsProps) {
                       <ItemGroup>
                         <Item>
                           <ItemContent>
-                            <CardTitle>{label}</CardTitle>
-                            <CardDescription>
+                            <ItemTitle>{label}</ItemTitle>
+                            <ItemDescription>
                               {roleDescriptions[role] || 'No description available'}
-                            </CardDescription>
+                            </ItemDescription>
                           </ItemContent>
                           <ItemActions>
                             <Badge variant="outline">{count.toLocaleString()}</Badge>

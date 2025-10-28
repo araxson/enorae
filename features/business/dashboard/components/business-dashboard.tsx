@@ -130,10 +130,15 @@ export async function BusinessDashboardPage() {
       analyticsPanel={
         <Suspense
           fallback={
-            <div className="flex flex-col items-center justify-center gap-8 py-12">
-              <Spinner className="size-8" />
-              <p className="text-base text-muted-foreground">Loading analytics data...</p>
-            </div>
+            <Empty className="py-12">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Spinner className="size-8" />
+                </EmptyMedia>
+                <EmptyTitle>Loading analytics</EmptyTitle>
+                <EmptyDescription>Fetching the latest performance insights…</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           }
         >
           <AnalyticsTab salonId={salon.id} />

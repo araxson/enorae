@@ -1,12 +1,21 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Settings, Shield, Mail, Bell, Database, Info } from 'lucide-react'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface SettingSection {
   id: string
@@ -105,16 +114,26 @@ export function AdminSettingsClient() {
               return (
                 <Card key={section.id} className="relative">
                   <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Icon className="h-5 w-5 text-primary" />
-                        <CardTitle>{section.title}</CardTitle>
-                      </div>
-                      {!section.available && (
-                        <Badge variant="secondary">Coming Soon</Badge>
-                      )}
-                    </div>
-                    <CardDescription>{section.description}</CardDescription>
+                    <ItemGroup>
+                      <Item className="items-start justify-between gap-2">
+                        <ItemContent className="flex items-center gap-2">
+                          <ItemMedia variant="icon">
+                            <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                          </ItemMedia>
+                          <ItemTitle>{section.title}</ItemTitle>
+                        </ItemContent>
+                        {!section.available && (
+                          <ItemActions>
+                            <Badge variant="secondary">Coming Soon</Badge>
+                          </ItemActions>
+                        )}
+                      </Item>
+                      <Item className="flex-col items-start gap-1">
+                        <ItemContent>
+                          <ItemDescription>{section.description}</ItemDescription>
+                        </ItemContent>
+                      </Item>
+                    </ItemGroup>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <ul className="space-y-2">

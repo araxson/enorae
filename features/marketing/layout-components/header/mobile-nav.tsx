@@ -33,7 +33,7 @@ export function MobileNav({ navigationItems, user, role }: MobileNavProps) {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild className="md:hidden">
         <Button variant="ghost" size="icon">
-          <Menu className="h-5 w-5" />
+          <Menu className="h-5 w-5" aria-hidden="true" />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
@@ -50,9 +50,7 @@ export function MobileNav({ navigationItems, user, role }: MobileNavProps) {
               <Item key={item.href} asChild variant="muted">
                 <Link href={item.href} onClick={() => setOpen(false)} className="no-underline">
                   <ItemContent>
-                    <ItemTitle>
-                      <span className="text-lg font-medium">{item.label}</span>
-                    </ItemTitle>
+                    <ItemTitle>{item.label}</ItemTitle>
                   </ItemContent>
                 </Link>
               </Item>
@@ -65,7 +63,10 @@ export function MobileNav({ navigationItems, user, role }: MobileNavProps) {
             {user && role ? (
               <MarketingUserNav user={user} role={role} />
             ) : (
-              <ButtonGroup className="flex w-full flex-col gap-2">
+              <ButtonGroup
+                aria-label="Marketing mobile auth actions"
+                className="flex w-full flex-col gap-2"
+              >
                 <Button variant="outline" asChild>
                   <Link href="/login" onClick={() => setOpen(false)}>
                     Login

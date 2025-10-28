@@ -6,11 +6,6 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { TrendingUp } from 'lucide-react'
 import {
-  Item,
-  ItemContent,
-  ItemGroup,
-} from '@/components/ui/item'
-import {
   Empty,
   EmptyDescription,
   EmptyHeader,
@@ -27,13 +22,7 @@ export function EarningsChart({ data }: EarningsChartProps) {
     return (
       <Card>
         <CardHeader>
-          <ItemGroup>
-            <Item variant="muted" size="sm">
-              <ItemContent>
-                <CardTitle>Earnings Trend</CardTitle>
-              </ItemContent>
-            </Item>
-          </ItemGroup>
+          <CardTitle>Earnings Trend</CardTitle>
         </CardHeader>
         <CardContent>
           <Empty>
@@ -53,14 +42,8 @@ export function EarningsChart({ data }: EarningsChartProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item variant="muted" size="sm">
-            <ItemContent>
-              <CardTitle>Earnings Trend (Last 30 Days)</CardTitle>
-              <CardDescription>Daily revenue from completed appointments</CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Earnings Trend (Last 30 Days)</CardTitle>
+        <CardDescription>Daily revenue from completed appointments</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer

@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
@@ -26,6 +26,13 @@ import {
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Spinner } from '@/components/ui/spinner'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface BulkAssignDialogProps {
   open: boolean
@@ -145,8 +152,16 @@ export function BulkAssignDialog({ open, onOpenChange, salons }: BulkAssignDialo
           {rows.map((row, index) => (
             <Card key={index}>
               <CardHeader className="pb-2">
-                <CardTitle>Assignment {index + 1}</CardTitle>
-                <CardDescription>Configure user, role, and optional salon.</CardDescription>
+                <ItemGroup>
+                  <Item className="flex-col items-start gap-1">
+                    <ItemContent>
+                      <ItemTitle>Assignment {index + 1}</ItemTitle>
+                    </ItemContent>
+                    <ItemContent>
+                      <ItemDescription>Configure user, role, and optional salon.</ItemDescription>
+                    </ItemContent>
+                  </Item>
+                </ItemGroup>
               </CardHeader>
               <CardContent className="space-y-4 pt-0">
                 <div className="flex flex-col gap-6 md:flex-row md:items-center">

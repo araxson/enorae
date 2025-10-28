@@ -1,15 +1,10 @@
 import { Ban, Lock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-} from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 interface RateLimitPanelProps {
   violations: RateLimitViolation[]
@@ -66,37 +61,26 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
             ) : (
               <ItemGroup className="flex flex-col gap-2">
                 {violations.slice(0, 6).map((violation) => (
-                  <Card key={`${violation.identifier}-${violation.endpoint}`}>
-                    <CardHeader>
-                      <ItemGroup>
-                        <Item className="items-start justify-between gap-2">
-                          <ItemContent>
-                            <CardTitle>{violation.identifier}</CardTitle>
-                            <CardDescription>Endpoint {violation.endpoint}</CardDescription>
-                          </ItemContent>
-                          <ItemActions className="flex-none gap-1">
-                            <Badge variant="destructive">
-                              <Ban className="h-3 w-3" aria-hidden="true" />
-                              {' '}
-                              Blocked
-                            </Badge>
-                          </ItemActions>
-                        </Item>
-                      </ItemGroup>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-col gap-1">
-                        <CardDescription>
-                          Requests: {violation.requestCount} · Window start {new Date(violation.windowStartAt).toLocaleTimeString()}
-                        </CardDescription>
-                        {violation.blockedUntil ? (
-                          <CardDescription>
-                            Unblocks at {new Date(violation.blockedUntil).toLocaleTimeString()}
-                          </CardDescription>
-                        ) : null}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <Alert key={`${violation.identifier}-${violation.endpoint}`} variant="destructive">
+                    <AlertTitle>{violation.identifier}</AlertTitle>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="destructive">
+                        <Ban className="h-3 w-3" aria-hidden="true" />
+                        {' '}
+                        Blocked
+                      </Badge>
+                      <AlertDescription>Endpoint {violation.endpoint}</AlertDescription>
+                    </div>
+                    <AlertDescription>
+                      Requests: {violation.requestCount} · Window start{' '}
+                      {new Date(violation.windowStartAt).toLocaleTimeString()}
+                    </AlertDescription>
+                    {violation.blockedUntil ? (
+                      <AlertDescription>
+                        Unblocks at {new Date(violation.blockedUntil).toLocaleTimeString()}
+                      </AlertDescription>
+                    ) : null}
+                  </Alert>
                 ))}
               </ItemGroup>
             )}
@@ -114,28 +98,18 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
             ) : (
               <ItemGroup className="flex flex-col gap-2">
                 {rules.slice(0, 6).map((rule) => (
-                  <Card key={rule.id}>
-                    <CardHeader>
-                      <ItemGroup>
-                        <Item className="items-start justify-between gap-2">
-                          <ItemContent>
-                            <CardTitle>{rule.ruleName}</CardTitle>
-                            <CardDescription>Rate limit policy</CardDescription>
-                          </ItemContent>
-                          <ItemActions className="flex-none">
-                            <Badge variant={rule.isActive ? 'outline' : 'secondary'}>
-                              {rule.isActive ? 'Active' : 'Inactive'}
-                            </Badge>
-                          </ItemActions>
-                        </Item>
-                      </ItemGroup>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription>
-                        {rule.maxRequests} requests / {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+                  <Alert key={rule.id}>
+                    <AlertTitle>{rule.ruleName}</AlertTitle>
+                    <AlertDescription>Rate limit policy</AlertDescription>
+                    <AlertDescription>
+                      {rule.maxRequests} requests / {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
+                    </AlertDescription>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant={rule.isActive ? 'outline' : 'secondary'}>
+                        {rule.isActive ? 'Active' : 'Inactive'}
+                      </Badge>
+                    </div>
+                  </Alert>
                 ))}
               </ItemGroup>
             )}

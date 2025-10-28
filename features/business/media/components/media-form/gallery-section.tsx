@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { InputGroup, InputGroupButton, InputGroupInput } from '@/components/ui/input-group'
 import {
   Field,
@@ -19,6 +19,12 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
+import {
+  Item,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 type GallerySectionProps = {
   galleryUrls: string[]
   newGalleryUrl: string
@@ -39,7 +45,13 @@ export function GallerySection({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Photo Gallery</CardTitle>
+        <ItemGroup>
+          <Item>
+            <ItemContent>
+              <ItemTitle>Photo Gallery</ItemTitle>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
       </CardHeader>
       <CardContent>
         <FieldSet className="flex flex-col gap-6">

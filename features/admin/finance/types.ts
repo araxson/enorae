@@ -12,4 +12,4 @@ export type {
   ChainRevenueData,
   RevenueForecast,
   FinancialExportData,
-} from './api/types'
+} from './api/queries/types'

@@ -1,1 +1,1 @@
-export { DataRefreshControls } from './components/data-refresh-controls'
+export { DataRefreshControls } from './components'
