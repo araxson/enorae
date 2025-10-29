@@ -53,7 +53,7 @@ export function FavoriteButton({ salonId, initialFavorited = false, variant = 'd
               {loading ? (
                 <Spinner className="size-4" />
               ) : (
-                <Heart className={favorited ? 'fill-current' : ''} />
+                <Heart className={favorited ? 'size-4 fill-current' : 'size-4'} />
               )}
             </Button>
           </TooltipTrigger>
@@ -81,7 +81,7 @@ export function FavoriteButton({ salonId, initialFavorited = false, variant = 'd
               </>
             ) : (
               <>
-                <Heart className={favorited ? 'fill-current' : ''} />
+                <Heart className={favorited ? 'size-4 fill-current' : 'size-4'} />
                 <span>{favorited ? 'Favorited' : 'Add to Favorites'}</span>
               </>
             )}

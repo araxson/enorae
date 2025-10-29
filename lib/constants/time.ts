@@ -1,0 +1,33 @@
+/**
+ * Time conversion constants
+ * Use these instead of hardcoded magic numbers for time calculations
+ */
+
+export const MILLISECONDS_PER_SECOND = 1000
+export const SECONDS_PER_MINUTE = 60
+export const MINUTES_PER_HOUR = 60
+export const HOURS_PER_DAY = 24
+export const DAYS_PER_WEEK = 7
+
+// Compound conversions
+export const MILLISECONDS_PER_MINUTE = MILLISECONDS_PER_SECOND * SECONDS_PER_MINUTE
+export const MILLISECONDS_PER_HOUR = MILLISECONDS_PER_MINUTE * MINUTES_PER_HOUR
+export const MILLISECONDS_PER_DAY = MILLISECONDS_PER_HOUR * HOURS_PER_DAY
+
+// Business rules
+export const REVIEW_EDIT_WINDOW_DAYS = 7
+export const APPOINTMENT_CANCELLATION_HOURS = 24
+export const SESSION_ACTIVE_THRESHOLD_MINUTES = 5
+export const SESSION_RECENT_THRESHOLD_MINUTES = 60
+export const SESSION_RECENT_THRESHOLD_HOURS = 24
+
+// File size limits (in bytes)
+export const BYTES_PER_KILOBYTE = 1024
+export const KILOBYTES_PER_MEGABYTE = 1024
+export const MEGABYTES_PER_GIGABYTE = 1024
+
+export const MAX_AVATAR_SIZE_MB = 5
+export const MAX_AVATAR_SIZE_BYTES = MAX_AVATAR_SIZE_MB * KILOBYTES_PER_MEGABYTE * BYTES_PER_KILOBYTE
+
+export const MAX_PORTFOLIO_IMAGE_SIZE_MB = 10
+export const MAX_PORTFOLIO_IMAGE_SIZE_BYTES = MAX_PORTFOLIO_IMAGE_SIZE_MB * KILOBYTES_PER_MEGABYTE * BYTES_PER_KILOBYTE

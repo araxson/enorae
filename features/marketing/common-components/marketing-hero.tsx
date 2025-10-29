@@ -1,11 +1,12 @@
 import { type ReactNode } from 'react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
   ItemDescription,
   ItemGroup,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 import { cn } from '@/lib/utils'
 import { MarketingSection } from './marketing-section'
@@ -36,26 +37,26 @@ export function MarketingHero({
 
   return (
     <MarketingSection spacing={spacingVariant} groupClassName="gap-0">
-      <Card>
-        <CardHeader>
-          <div className={cn('flex flex-col gap-4 md:gap-6', headerAlignment)}>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{subtitle}</CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className={cn('flex w-full flex-col gap-6', contentAlignment)}>
-            <ItemGroup>
-              <Item variant="muted">
-                <ItemContent>
-                  <ItemDescription>{description}</ItemDescription>
-                </ItemContent>
-              </Item>
-            </ItemGroup>
-            {children}
-          </div>
-        </CardContent>
-      </Card>
+      <Item variant="outline" className="flex flex-col gap-6">
+        <ItemHeader className={cn('flex flex-col gap-4 md:gap-6', headerAlignment)}>
+          <ItemTitle className="text-balance">
+            <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              {title}
+            </h1>
+          </ItemTitle>
+          <p className="text-muted-foreground text-base md:text-lg">{subtitle}</p>
+        </ItemHeader>
+        <ItemContent className={cn('flex w-full flex-col gap-6', contentAlignment)}>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent>
+                <ItemDescription>{description}</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+          {children}
+        </ItemContent>
+      </Item>
     </MarketingSection>
   )
 }

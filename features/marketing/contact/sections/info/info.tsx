@@ -1,28 +1,31 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemMedia, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { infoData } from './info.data'
 
 export function Info() {
   return (
-    <div
-      className="group/item-group flex flex-col gap-6"
-      data-slot="item-group"
-      role="list"
-    >
-      <Card>
-        <CardHeader>
-          <CardTitle>{infoData.title}</CardTitle>
-          <CardDescription>
+    <ItemGroup className="gap-6">
+      <Item variant="outline" className="flex flex-col gap-4">
+        <ItemHeader className="flex flex-col gap-2">
+          <ItemTitle>
+            <h2 className="text-xl font-semibold tracking-tight">
+              {infoData.title}
+            </h2>
+          </ItemTitle>
+          <p className="text-muted-foreground">
             Contact our team directly using the details below.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div
-            className="group/item-group flex flex-col gap-4"
-            data-slot="item-group"
-            role="list"
-          >
+          </p>
+        </ItemHeader>
+        <ItemContent>
+          <ItemGroup className="gap-4">
             <Item variant="muted">
               <ItemMedia variant="icon">
                 <Mail className="size-4" aria-hidden="true" />
@@ -50,23 +53,21 @@ export function Info() {
                 <ItemDescription>{infoData.address}</ItemDescription>
               </ItemContent>
             </Item>
-          </div>
-        </CardContent>
-      </Card>
+          </ItemGroup>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Support hours</CardTitle>
-          <CardDescription>
+      <Item variant="outline" className="flex flex-col gap-4">
+        <ItemHeader className="flex flex-col gap-2">
+          <ItemTitle>
+            <h2 className="text-xl font-semibold tracking-tight">Support hours</h2>
+          </ItemTitle>
+          <p className="text-muted-foreground">
             Availability window for customer assistance.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div
-            className="group/item-group flex flex-col gap-2"
-            data-slot="item-group"
-            role="list"
-          >
+          </p>
+        </ItemHeader>
+        <ItemContent>
+          <ItemGroup className="gap-2">
             {infoData.supportHours.map(({ label, value }) => (
               <Item key={label} variant="muted">
                 <ItemHeader>
@@ -75,9 +76,9 @@ export function Info() {
                 </ItemHeader>
               </Item>
             ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </ItemGroup>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

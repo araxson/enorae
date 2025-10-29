@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemContent,
@@ -17,11 +16,13 @@ export function AboutCard({ salon }: AboutCardProps) {
   if (!description) return null
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>About</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>
+          <h3 className="text-lg font-semibold tracking-tight">About</h3>
+        </ItemTitle>
+      </ItemHeader>
+      <ItemContent>
         <Item variant="muted">
           <ItemHeader>
             <ItemTitle>What guests can expect</ItemTitle>
@@ -30,7 +31,7 @@ export function AboutCard({ salon }: AboutCardProps) {
             <ItemDescription>{description}</ItemDescription>
           </ItemContent>
         </Item>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

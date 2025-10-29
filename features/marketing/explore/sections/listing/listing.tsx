@@ -19,8 +19,8 @@ export function ExploreListing({ salons }: ExploreListingProps) {
   const [query, setQuery] = useState('')
 
   const filteredSalons = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return salons
+    const normalizedQuery = query.trim().toLowerCase()
+    if (!normalizedQuery) return salons
 
     return salons.filter((salon) => {
       const haystack = [
@@ -34,7 +34,7 @@ export function ExploreListing({ salons }: ExploreListingProps) {
         .join(' ')
         .toLowerCase()
 
-      return haystack.includes(q)
+      return haystack.includes(normalizedQuery)
     })
   }, [query, salons])
 

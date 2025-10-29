@@ -59,7 +59,7 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
         <ItemGroup>
           {appointments.map((appointment, index) => (
             <div key={appointment.id ?? index}>
-              <Item variant="outline" size="default">
+              <Item variant="outline">
                 <ItemMedia>
                   <Card>
                     <CardContent>

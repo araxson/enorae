@@ -2,8 +2,16 @@
 
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { TrendingUp } from 'lucide-react'
 
 interface PopularServicesProps {
@@ -20,23 +28,19 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
   if (services.length === 0) return null
 
   return (
-    <Card>
-      <CardHeader>
-        <Item variant="muted">
-          <ItemMedia variant="icon">
-            <TrendingUp className="size-4" aria-hidden="true" />
-          </ItemMedia>
-          <ItemContent>
-            <CardTitle>Popular Services</CardTitle>
-          </ItemContent>
-        </Item>
-      </CardHeader>
-      <CardContent>
-        <div
-          className="group/item-group flex flex-col gap-2"
-          data-slot="item-group"
-          role="list"
-        >
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
+        <ItemMedia variant="icon">
+          <TrendingUp className="size-4" aria-hidden="true" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>
+            <h3 className="text-lg font-semibold tracking-tight">Popular Services</h3>
+          </ItemTitle>
+        </ItemContent>
+      </ItemHeader>
+      <ItemContent>
+        <ItemGroup className="gap-2">
           {services.map((service, index) => (
             <Item key={`${service.name}-${service.category}`} asChild variant="muted">
               <Link href={`/services/${service.categorySlug}`} className="no-underline">
@@ -56,8 +60,8 @@ export function PopularServicesWidget({ services }: PopularServicesProps) {
               </Link>
             </Item>
           ))}
-        </div>
-      </CardContent>
-    </Card>
+        </ItemGroup>
+      </ItemContent>
+    </Item>
   )
 }

@@ -2,18 +2,12 @@
 
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemFooter,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -39,48 +33,45 @@ export function SalonCard({ salon, index, onBook }: SalonCardProps) {
   const description = salon['short_description'] || undefined
 
   return (
-    <Card
+    <Item
       key={salon['id'] ?? salon['slug'] ?? `salon-${index}`}
-      className="flex h-full flex-col"
+      variant="outline"
+      className="flex h-full flex-col gap-4"
     >
-      <CardHeader>
-        <CardTitle>{salon['name'] ?? 'Salon'}</CardTitle>
+      <ItemHeader className="flex flex-col gap-2">
+        <ItemTitle>{salon['name'] ?? 'Salon'}</ItemTitle>
         {description ? (
-          <div className="line-clamp-2">
-            <CardDescription>{description}</CardDescription>
-          </div>
+          <ItemDescription className="line-clamp-2">{description}</ItemDescription>
         ) : null}
-      </CardHeader>
-      <CardContent>
-        <div className="flex-1">
-          <ItemGroup>
+      </ItemHeader>
+      <ItemContent className="flex-1">
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemMedia variant="icon">
+              <MapPin className="size-4" aria-hidden="true" />
+            </ItemMedia>
+            <ItemContent>
+              <ItemDescription>{location}</ItemDescription>
+            </ItemContent>
+          </Item>
+          {salon['rating_average'] ? (
             <Item variant="muted">
               <ItemMedia variant="icon">
-                <MapPin className="size-4" aria-hidden="true" />
+                <Star className="size-4" aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
-                <ItemDescription>{location}</ItemDescription>
+                <ItemTitle>{Number(salon['rating_average']).toFixed(1)}</ItemTitle>
+                <ItemDescription>{salon['rating_count'] ?? 0} reviews</ItemDescription>
               </ItemContent>
             </Item>
-            {salon['rating_average'] ? (
-              <Item variant="muted">
-                <ItemMedia variant="icon">
-                  <Star className="size-4" aria-hidden="true" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{Number(salon['rating_average']).toFixed(1)}</ItemTitle>
-                  <ItemDescription>{salon['rating_count'] ?? 0} reviews</ItemDescription>
-                </ItemContent>
-              </Item>
-            ) : null}
-          </ItemGroup>
-        </div>
-      </CardContent>
-      <CardFooter>
+          ) : null}
+        </ItemGroup>
+      </ItemContent>
+      <ItemFooter>
         <Button className="w-full" onClick={() => onBook(salon['slug'])}>
           {listingCopy.ctaLabel}
         </Button>
-      </CardFooter>
-    </Card>
+      </ItemFooter>
+    </Item>
   )
 }

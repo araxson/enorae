@@ -80,8 +80,11 @@ export function QuickActions() {
             {primaryActions.map((action) => (
               <Tooltip key={action.href}>
                 <TooltipTrigger asChild>
-                  <Button asChild variant="outline" className="h-auto flex-1 flex-col gap-2 py-4">
-                    <Link href={action.href}>
+                  <Button asChild variant="outline" size="lg" className="flex-1">
+                    <Link
+                      href={action.href}
+                      className="flex flex-1 flex-col items-start gap-2 text-left"
+                    >
                       <action.icon className="size-5" />
                       <span className="text-xs font-medium">{action.label}</span>
                     </Link>
@@ -101,8 +104,11 @@ export function QuickActions() {
             {secondaryActions.map((action) => (
               <Tooltip key={action.href}>
                 <TooltipTrigger asChild>
-                  <Button asChild variant="outline" className="h-auto flex-1 flex-col gap-2 py-4">
-                    <Link href={action.href}>
+                  <Button asChild variant="outline" size="lg" className="flex-1">
+                    <Link
+                      href={action.href}
+                      className="flex flex-1 flex-col items-start gap-2 text-left"
+                    >
                       <action.icon className="size-5" />
                       <span className="text-xs font-medium">{action.label}</span>
                     </Link>
@@ -114,8 +120,11 @@ export function QuickActions() {
             <ButtonGroupSeparator className="hidden sm:block" />
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button asChild variant="outline" className="h-auto flex-1 flex-col gap-2 py-4">
-                  <Link href="/business/settings/salon">
+                <Button asChild variant="outline" size="lg" className="flex-1">
+                  <Link
+                    href="/business/settings/salon"
+                    className="flex flex-1 flex-col items-start gap-2 text-left"
+                  >
                     <Settings className="size-5" />
                     <span className="text-xs font-medium">Settings</span>
                   </Link>

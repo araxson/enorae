@@ -160,7 +160,6 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
           </div>
 
           {error && (
-          {error && (
             <Alert variant="destructive">
               <AlertCircle className="size-4" />
               <AlertTitle>Update failed</AlertTitle>

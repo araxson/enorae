@@ -49,7 +49,9 @@ export async function ServicesDirectoryPage() {
       <div className="flex flex-col gap-4">
         <Item variant="muted">
           <ItemHeader>
-            <ItemTitle>All Services</ItemTitle>
+            <ItemTitle>
+              <h2 className="text-xl font-semibold tracking-tight">All Services</h2>
+            </ItemTitle>
           </ItemHeader>
         </Item>
         <ServicesGrid services={services} />

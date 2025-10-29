@@ -24,10 +24,10 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
   }
 
   const getPaymentMethodBadgeVariant = (method: string | null | undefined) => {
-    const m = (method || '').toLowerCase()
-    if (m.includes('card') || m.includes('credit') || m.includes('debit')) return 'default'
-    if (m.includes('cash')) return 'secondary'
-    if (m.includes('online')) return 'outline'
+    const normalizedMethod = (method || '').toLowerCase()
+    if (normalizedMethod.includes('card') || normalizedMethod.includes('credit') || normalizedMethod.includes('debit')) return 'default'
+    if (normalizedMethod.includes('cash')) return 'secondary'
+    if (normalizedMethod.includes('online')) return 'outline'
     return 'outline'
   }
 

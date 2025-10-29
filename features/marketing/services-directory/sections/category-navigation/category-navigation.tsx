@@ -2,12 +2,12 @@
 
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -31,24 +31,24 @@ export function CategoryNavigation({ categories, currentCategory }: CategoryNavi
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <Item variant="muted">
-          <ItemMedia variant="icon">
-            <Tag className="size-4" aria-hidden="true" />
-          </ItemMedia>
-          <ItemContent>
-            <CardTitle>Service Categories</CardTitle>
-          </ItemContent>
-          <ItemActions>
-            <Badge variant="secondary" aria-label={`${categories.length} categories available`}>
-              {categories.length} categories
-            </Badge>
-          </ItemActions>
-        </Item>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
+        <ItemMedia variant="icon">
+          <Tag className="size-4" aria-hidden="true" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>
+            <h2 className="text-lg font-semibold tracking-tight">Service Categories</h2>
+          </ItemTitle>
+        </ItemContent>
+        <ItemActions>
+          <Badge variant="secondary" aria-label={`${categories.length} categories available`}>
+            {categories.length} categories
+          </Badge>
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           <Item
             asChild
             className="flex-col gap-1"
@@ -83,7 +83,7 @@ export function CategoryNavigation({ categories, currentCategory }: CategoryNavi
             )
           })}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

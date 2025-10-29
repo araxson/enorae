@@ -51,19 +51,19 @@ export async function ServicesCategoryPage({
       containerClassName="max-w-6xl"
       groupClassName="gap-8"
     >
-      <div className="flex flex-col gap-4">
-        <Item variant="muted">
-          <ItemHeader>
-            <ItemTitle>{category.name}</ItemTitle>
-          </ItemHeader>
-          <ItemContent>
-            <ItemDescription>
-              Browse {category.count} {category.name.toLowerCase()} services
-              offered by {salons.length} salon{salons.length === 1 ? '' : 's'}.
-            </ItemDescription>
-          </ItemContent>
-        </Item>
-      </div>
+      <Item variant="muted">
+        <ItemHeader>
+          <ItemTitle>
+            <h1 className="text-2xl font-semibold tracking-tight">{category.name}</h1>
+          </ItemTitle>
+        </ItemHeader>
+        <ItemContent>
+          <ItemDescription>
+            Browse {category.count} {category.name.toLowerCase()} services
+            offered by {salons.length} salon{salons.length === 1 ? '' : 's'}.
+          </ItemDescription>
+        </ItemContent>
+      </Item>
 
       <CategoryNavigation
         categories={categories}
@@ -73,7 +73,11 @@ export async function ServicesCategoryPage({
       <div className="flex flex-col gap-4">
         <Item variant="muted">
           <ItemHeader>
-            <ItemTitle>{category.name} Services</ItemTitle>
+            <ItemTitle>
+              <h2 className="text-xl font-semibold tracking-tight">
+                {category.name} Services
+              </h2>
+            </ItemTitle>
           </ItemHeader>
         </Item>
         <ServicesGrid services={services} categoryName={category.name} />
@@ -84,7 +88,11 @@ export async function ServicesCategoryPage({
       <div className="flex flex-col gap-4">
         <Item variant="muted">
           <ItemHeader>
-            <ItemTitle>Salons Offering {category.name}</ItemTitle>
+            <ItemTitle>
+              <h2 className="text-xl font-semibold tracking-tight">
+                Salons Offering {category.name}
+              </h2>
+            </ItemTitle>
           </ItemHeader>
         </Item>
         <CategorySalons salons={salons} categoryName={category.name} />

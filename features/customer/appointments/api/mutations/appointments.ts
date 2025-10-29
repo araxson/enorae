@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { rescheduleSchema } from '@/lib/validations/customer/appointments'
 import type { Database } from '@/lib/types/database.types'
+import { MILLISECONDS_PER_HOUR, APPOINTMENT_CANCELLATION_HOURS } from '@/lib/constants/time'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -12,7 +13,7 @@ export type ActionResponse<T = void> =
 
 /**
  * Cancel an appointment
- * Enforces 24-hour cancellation policy
+ * Enforces cancellation policy (minimum hours before appointment)
  */
 export async function cancelAppointment(appointmentId: string): Promise<ActionResponse> {
   try {
@@ -43,17 +44,17 @@ export async function cancelAppointment(appointmentId: string): Promise<ActionRe
       return { success: false, error: 'Appointment is already cancelled' }
     }
 
-    // Check 24-hour cancellation policy
+    // Check cancellation policy
     if (!appointment.start_time) {
       return { success: false, error: 'Invalid appointment start time' }
     }
     const hoursUntil =
-      (new Date(appointment.start_time).getTime() - Date.now()) / (1000 * 60 * 60)
+      (new Date(appointment.start_time).getTime() - Date.now()) / MILLISECONDS_PER_HOUR
 
-    if (hoursUntil < 24) {
+    if (hoursUntil < APPOINTMENT_CANCELLATION_HOURS) {
       return {
         success: false,
-        error: 'Cannot cancel within 24 hours of appointment. Please contact the salon directly.',
+        error: `Cannot cancel within ${APPOINTMENT_CANCELLATION_HOURS} hours of appointment. Please contact the salon directly.`,
       }
     }
 

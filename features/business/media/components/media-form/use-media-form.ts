@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
+import { DEFAULT_BRAND_COLORS } from '@/lib/constants/brand-defaults'
 
 import { addGalleryImage, removeGalleryImage, updateSalonMedia } from '@/features/business/media/api/mutations'
 import type { SalonMedia as SalonMediaRow } from '@/features/business/locations'
@@ -21,10 +22,10 @@ type UseMediaFormParams = {
   media: SalonMedia | null
 }
 
-const DEFAULT_BRAND_COLORS: BrandColors = {
-  primary: '#000000',
-  secondary: '#ffffff',
-  accent: '#ff0000',
+const DEFAULT_BRAND_COLORS_CONFIG: BrandColors = {
+  primary: DEFAULT_BRAND_COLORS.PRIMARY,
+  secondary: DEFAULT_BRAND_COLORS.SECONDARY,
+  accent: DEFAULT_BRAND_COLORS.ACCENT,
 }
 
 const DEFAULT_SOCIAL_LINKS: SocialLinks = {
@@ -44,7 +45,7 @@ export function useMediaForm({ media }: UseMediaFormParams) {
   const brandColors = useMemo<BrandColors>(() => {
     const parsed = media?.['brand_colors'] as BrandColors | null
     return {
-      ...DEFAULT_BRAND_COLORS,
+      ...DEFAULT_BRAND_COLORS_CONFIG,
       ...(parsed || {}),
     }
   }, [media?.['brand_colors']])

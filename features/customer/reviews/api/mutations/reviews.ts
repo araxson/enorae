@@ -6,6 +6,7 @@ import { requireAuth } from '@/lib/auth'
 import { ZodError } from 'zod'
 import { reviewSchema } from '@/lib/validations/customer/reviews'
 import type { Database } from '@/lib/types/database.types'
+import { MILLISECONDS_PER_DAY, REVIEW_EDIT_WINDOW_DAYS } from '@/lib/constants/time'
 
 type ActionResult = {
   success?: boolean
@@ -89,13 +90,13 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       return { error: 'Review not found or not authorized' }
     }
 
-    // Check 7-day edit window
+    // Check review edit window
     if (!review.created_at) {
       return { error: 'Review creation date missing' }
     }
-    const daysSince = (Date.now() - new Date(review.created_at).getTime()) / (1000 * 60 * 60 * 24)
-    if (daysSince > 7) {
-      return { error: 'Reviews can only be edited within 7 days of creation' }
+    const daysSince = (Date.now() - new Date(review.created_at).getTime()) / MILLISECONDS_PER_DAY
+    if (daysSince > REVIEW_EDIT_WINDOW_DAYS) {
+      return { error: `Reviews can only be edited within ${REVIEW_EDIT_WINDOW_DAYS} days of creation` }
     }
 
     const data = {

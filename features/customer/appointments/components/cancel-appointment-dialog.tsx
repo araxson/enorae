@@ -126,11 +126,19 @@ export function CancelAppointmentDialog({
 
         <DialogFooter>
           <ButtonGroup aria-label="Dialog actions">
-            <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+            <Button
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={isLoading}
+            >
               Keep appointment
             </Button>
             {canCancel ? (
-              <Button variant="destructive" onClick={handleCancel} disabled={isLoading}>
+              <Button
+                variant="destructive"
+                onClick={handleCancel}
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <Spinner className="size-4" />

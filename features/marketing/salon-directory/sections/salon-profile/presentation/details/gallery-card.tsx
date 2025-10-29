@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Empty,
   EmptyContent,
@@ -21,12 +20,14 @@ interface GalleryCardProps {
 
 export function GalleryCard({ salon }: GalleryCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Gallery</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Empty>
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>
+          <h3 className="text-lg font-semibold tracking-tight">Gallery</h3>
+        </ItemTitle>
+      </ItemHeader>
+      <ItemContent>
+        <Empty className="border border-border/50 bg-card/40">
           <EmptyHeader>
             <EmptyTitle>Images coming soon</EmptyTitle>
             <EmptyDescription>
@@ -46,7 +47,7 @@ export function GalleryCard({ salon }: GalleryCardProps) {
             </Item>
           </EmptyContent>
         </Empty>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

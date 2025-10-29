@@ -63,7 +63,7 @@ export function FavoriteNotesButton({ salonId, salonName, initialNotes }: Favori
           <TooltipTrigger asChild>
             <DialogTrigger asChild>
               <Button size="icon" variant={initialNotes ? 'default' : 'outline'}>
-                <StickyNote className={initialNotes ? 'size-4' : 'size-4'} />
+                <StickyNote className="size-4" />
                 <span className="sr-only">{initialNotes ? 'Edit notes' : 'Add notes'}</span>
               </Button>
             </DialogTrigger>
@@ -103,7 +103,11 @@ export function FavoriteNotesButton({ salonId, salonName, initialNotes }: Favori
 
         <DialogFooter>
           <ButtonGroup aria-label="Actions">
-            <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
+            <Button
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={loading}
+            >
               Cancel
             </Button>
             <Button onClick={handleSave} disabled={loading}>

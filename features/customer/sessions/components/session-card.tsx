@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { SessionWithDevice } from '@/features/customer/sessions/api/queries'
 import {
+  MILLISECONDS_PER_MINUTE,
+  SESSION_ACTIVE_THRESHOLD_MINUTES,
+  SESSION_RECENT_THRESHOLD_MINUTES,
+  SESSION_RECENT_THRESHOLD_HOURS
+} from '@/lib/constants/time'
+import {
   Item,
   ItemContent,
   ItemGroup,
@@ -41,12 +47,14 @@ export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps)
 
     const now = new Date()
     const activityDate = new Date(lastActivity)
-    const diffMinutes = Math.floor((now.getTime() - activityDate.getTime()) / (1000 * 60))
+    const diffMinutes = Math.floor((now.getTime() - activityDate.getTime()) / MILLISECONDS_PER_MINUTE)
 
-    if (diffMinutes < 5) return 'Active now'
-    if (diffMinutes < 60) return `Active ${diffMinutes} minutes ago`
-    if (diffMinutes < 1440) return `Active ${Math.floor(diffMinutes / 60)} hours ago`
-    return `Active ${Math.floor(diffMinutes / 1440)} days ago`
+    if (diffMinutes < SESSION_ACTIVE_THRESHOLD_MINUTES) return 'Active now'
+    if (diffMinutes < SESSION_RECENT_THRESHOLD_MINUTES) return `Active ${diffMinutes} minutes ago`
+    if (diffMinutes < SESSION_RECENT_THRESHOLD_HOURS * SESSION_RECENT_THRESHOLD_MINUTES) {
+      return `Active ${Math.floor(diffMinutes / SESSION_RECENT_THRESHOLD_MINUTES)} hours ago`
+    }
+    return `Active ${Math.floor(diffMinutes / (SESSION_RECENT_THRESHOLD_HOURS * SESSION_RECENT_THRESHOLD_MINUTES))} days ago`
   }
 
   return (

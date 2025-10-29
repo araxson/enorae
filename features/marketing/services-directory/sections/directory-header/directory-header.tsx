@@ -1,22 +1,22 @@
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemTitle } from '@/components/ui/item'
 
 import { servicesDirectoryHeader } from './directory-header.data'
 
 export function DirectoryHeader() {
   return (
-    <div
-      className="group/item-group flex flex-col gap-4"
-      data-slot="item-group"
-      role="list"
-    >
+    <ItemGroup className="gap-4">
       <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>{servicesDirectoryHeader.title}</ItemTitle>
+          <ItemTitle>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {servicesDirectoryHeader.title}
+            </h1>
+          </ItemTitle>
         </ItemHeader>
         <ItemContent>
           <ItemDescription>{servicesDirectoryHeader.description}</ItemDescription>
         </ItemContent>
       </Item>
-    </div>
+    </ItemGroup>
   )
 }

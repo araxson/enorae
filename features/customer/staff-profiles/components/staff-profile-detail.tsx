@@ -169,9 +169,14 @@ export function StaffProfileDetail({ profile }: StaffProfileDetailProps) {
             </CardDescription>
           </CardContent>
           <CardFooter className="p-6 pt-0 justify-end">
-            <Link href={`/customer/book/${profile['salon_id']}?staff=${profile['id']}`}>
-              <Button>Book Now</Button>
-            </Link>
+            <Button
+              asChild
+              className="min-w-32 justify-center"
+            >
+              <Link href={`/customer/book/${profile['salon_id']}?staff=${profile['id']}`}>
+                Book Now
+              </Link>
+            </Button>
           </CardFooter>
         </Card>
       ) : null}

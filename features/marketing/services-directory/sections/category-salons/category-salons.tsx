@@ -7,7 +7,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 
@@ -38,14 +38,12 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
   }
 
   return (
-    <div
-      className="group/item-group flex flex-col gap-4"
-      data-slot="item-group"
-      role="list"
-    >
+    <ItemGroup className="gap-4">
       <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>Salons by category</ItemTitle>
+          <ItemTitle>
+            <h2 className="text-lg font-semibold tracking-tight">Salons by category</h2>
+          </ItemTitle>
         </ItemHeader>
         <ItemContent>
           <ItemDescription>
@@ -55,7 +53,9 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
       </Item>
       <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>Visit planning</ItemTitle>
+          <ItemTitle>
+            <h3 className="text-base font-semibold">Visit planning</h3>
+          </ItemTitle>
         </ItemHeader>
         <ItemContent>
           <ItemDescription>Select a salon to review services in this category and start booking.</ItemDescription>
@@ -100,6 +100,6 @@ export function CategorySalons({ salons, categoryName }: CategorySalonsProps) {
           )
         })}
       </div>
-    </div>
+    </ItemGroup>
   )
 }

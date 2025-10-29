@@ -1,7 +1,15 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from '@/components/ui/item'
 import { Star } from 'lucide-react'
 import type { Salon } from './types'
 
@@ -11,15 +19,15 @@ interface SalonHeroProps {
 
 export function SalonHero({ salon }: SalonHeroProps) {
   return (
-    <div
-      className="group/item-group flex flex-col gap-4"
-      data-slot="item-group"
-      role="list"
-    >
+    <ItemGroup className="gap-4">
       <Item variant="muted">
         <ItemContent>
           <div className="flex flex-col gap-4">
-            <ItemTitle>{salon['name'] || 'Unnamed Salon'}</ItemTitle>
+            <ItemTitle>
+              <h1 className="text-2xl font-semibold tracking-tight">
+                {salon['name'] || 'Unnamed Salon'}
+              </h1>
+            </ItemTitle>
             {salon['rating_average'] !== null && (
               <Item variant="outline">
                 <ItemMedia variant="icon">
@@ -54,6 +62,6 @@ export function SalonHero({ salon }: SalonHeroProps) {
           </div>
         </ItemActions>
       </Item>
-    </div>
+    </ItemGroup>
   )
 }

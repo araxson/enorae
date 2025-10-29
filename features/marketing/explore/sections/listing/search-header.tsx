@@ -9,7 +9,7 @@ import {
   InputGroupInput,
 } from '@/components/ui/input-group'
 import { Kbd } from '@/components/ui/kbd'
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
+import { Item, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { Search, Sparkles, X } from 'lucide-react'
 import { listingCopy } from './listing.data'
 
@@ -22,11 +22,7 @@ interface SearchHeaderProps {
 export function SearchHeader({ query, onQueryChange, onSearch }: SearchHeaderProps) {
   return (
     <header className="flex flex-col gap-4">
-      <div
-        className="group/item-group flex flex-col gap-4"
-        data-slot="item-group"
-        role="list"
-      >
+      <ItemGroup className="gap-4">
         <Item variant="muted">
           <ItemHeader>
             <div className="flex w-full justify-center sm:justify-start">
@@ -43,7 +39,7 @@ export function SearchHeader({ query, onQueryChange, onSearch }: SearchHeaderPro
             </div>
           </ItemContent>
         </Item>
-      </div>
+      </ItemGroup>
       <div className="flex flex-col gap-3 sm:flex-row">
         <InputGroup className="flex-1">
           <InputGroupAddon>

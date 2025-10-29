@@ -1,14 +1,9 @@
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 import { MarketingSection, StatBadge } from '@/features/marketing/common-components'
 
@@ -17,16 +12,18 @@ import { metrics } from './metrics.data'
 export function Metrics() {
   return (
     <MarketingSection spacing="compact" groupClassName="gap-0">
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col items-center text-center">
-            <CardTitle>Trusted by beauty professionals</CardTitle>
-            <CardDescription>
-              Key platform metrics updated weekly
-            </CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent>
+      <Item variant="outline" className="flex flex-col gap-6">
+        <ItemHeader className="flex flex-col items-center text-center">
+          <ItemTitle>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              Trusted by beauty professionals
+            </h2>
+          </ItemTitle>
+          <p className="text-muted-foreground text-base md:text-lg">
+            Key platform metrics updated weekly
+          </p>
+        </ItemHeader>
+        <ItemContent>
           <div className="flex flex-col gap-4">
             <Item variant="muted">
               <ItemContent>
@@ -39,8 +36,8 @@ export function Metrics() {
               ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </ItemContent>
+      </Item>
     </MarketingSection>
   )
 }

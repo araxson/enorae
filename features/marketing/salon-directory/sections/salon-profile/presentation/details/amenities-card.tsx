@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Empty,
   EmptyContent,
@@ -21,12 +20,14 @@ interface AmenitiesCardProps {
 
 export function AmenitiesCard({ salon }: AmenitiesCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Amenities</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Empty>
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>
+          <h3 className="text-lg font-semibold tracking-tight">Amenities</h3>
+        </ItemTitle>
+      </ItemHeader>
+      <ItemContent>
+        <Empty className="border border-border/50 bg-card/40">
           <EmptyHeader>
             <EmptyTitle>Amenities coming soon</EmptyTitle>
             <EmptyDescription>
@@ -46,7 +47,7 @@ export function AmenitiesCard({ salon }: AmenitiesCardProps) {
             </Item>
           </EmptyContent>
         </Empty>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

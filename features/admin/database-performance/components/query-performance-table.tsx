@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import type { QueryPerformanceRecord } from '@/features/admin/database-performance/api/queries'
+import { BYTES_PER_KILOBYTE } from '@/lib/constants/time'
 
 interface QueryPerformanceTableProps {
   queries: QueryPerformanceRecord[]
@@ -27,10 +28,10 @@ export function QueryPerformanceTable({ queries }: QueryPerformanceTableProps) {
 
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return '0 B'
-    const k = 1024
     const sizes = ['B', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i]
+    const sizeIndex = Math.floor(Math.log(bytes) / Math.log(BYTES_PER_KILOBYTE))
+    const formattedValue = Math.round((bytes / Math.pow(BYTES_PER_KILOBYTE, sizeIndex)) * 100) / 100
+    return `${formattedValue} ${sizes[sizeIndex]}`
   }
 
   return (

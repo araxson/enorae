@@ -27,16 +27,11 @@ import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
 } from '@/components/ui/item'
 import { Search, X, MapPin, Filter } from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Kbd } from '@/components/ui/kbd'
 
 interface SalonFiltersProps {
@@ -76,14 +71,16 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
   const hasActiveFilters = searchTerm || selectedCity || selectedState || selectedCategory
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Filter salons</CardTitle>
-        <CardDescription>
+    <Item variant="outline" className="flex flex-col gap-6">
+      <ItemHeader className="flex flex-col gap-2">
+        <ItemTitle>
+          <h2 className="text-lg font-semibold tracking-tight">Filter salons</h2>
+        </ItemTitle>
+        <ItemDescription>
           Refine results by search term, location, and category.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+        </ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <FieldSet>
           <Field>
             <FieldLabel>Search salons</FieldLabel>
@@ -174,8 +171,8 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
             </ItemContent>
           </Item>
         </FieldSet>
-      </CardContent>
-      <CardFooter>
+      </ItemContent>
+      <ItemFooter>
         <div className="flex flex-wrap items-center justify-end gap-3">
           {hasActiveFilters && (
             <Button variant="outline" size="sm" onClick={handleClear}>
@@ -187,7 +184,7 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
             Search
           </Button>
         </div>
-      </CardFooter>
-    </Card>
+      </ItemFooter>
+    </Item>
   )
 }

@@ -22,10 +22,11 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
-    const supabase = (await createClient()).schema('communication')
+    const supabase = await createClient()
 
     // Get webhook to verify it exists and check status
     const { data: webhook } = await supabase
+      .schema('communication')
       .from('webhook_queue')
       .select('id, status')
       .eq('id', webhookId)
@@ -42,6 +43,7 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     // Reset status to pending for retry
     const { error } = await supabase
+      .schema('communication')
       .from('webhook_queue')
       .update({
         status: 'pending',
@@ -76,10 +78,11 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
-    const supabase = (await createClient()).schema('communication')
+    const supabase = await createClient()
 
     // Verify webhook exists
     const { data: webhook } = await supabase
+      .schema('communication')
       .from('webhook_queue')
       .select('id')
       .eq('id', webhookId)
@@ -91,6 +94,7 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     // Delete the webhook
     const { error } = await supabase
+      .schema('communication')
       .from('webhook_queue')
       .delete()
       .eq('id', webhookId)
@@ -117,10 +121,11 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
-    const supabase = (await createClient()).schema('communication')
+    const supabase = await createClient()
 
     // Reset all failed webhooks to pending
     const { error, count } = await supabase
+      .schema('communication')
       .from('webhook_queue')
       .update({
         status: 'pending',
@@ -154,13 +159,14 @@ export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: 
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
-    const supabase = (await createClient()).schema('communication')
+    const supabase = await createClient()
 
     // Delete completed webhooks older than 30 days
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
     const { error, count } = await supabase
+      .schema('communication')
       .from('webhook_queue')
       .delete({ count: 'exact' })
       .eq('status', 'completed')

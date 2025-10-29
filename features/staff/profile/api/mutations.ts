@@ -137,63 +137,24 @@ export async function updateStaffMetadata(
 
 /**
  * Upload portfolio image for staff
+ *
+ * DISABLED: Feature requires 'staff-portfolios' storage bucket which doesn't exist
+ *
+ * TODO: To enable this feature, choose one of:
+ * 1. Create 'staff-portfolios' bucket in Supabase dashboard with RLS policies
+ * 2. Create organization.staff_portfolio_images table for database storage
+ * 3. Extend organization.salon_media table to support staff portfolio images
+ *
+ * See: docs/gaps/01-business-portal-gaps.md (Issue #2) for implementation options
+ *
+ * @deprecated Disabled until storage infrastructure is created
  */
-export async function uploadPortfolioImage(formData: FormData): Promise<ActionResponse<string>> {
-  try {
-    const session = await requireAuth()
-    const supabase = await createClient()
-
-    const file = formData.get('image') as File
-    if (!file) {
-      return { success: false, error: 'No image provided' }
-    }
-
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-    if (!validTypes.includes(file.type)) {
-      return { success: false, error: 'Invalid file type. Use JPEG, PNG, or WebP' }
-    }
-
-    // Validate file size (5MB max)
-    if (file.size > 5 * 1024 * 1024) {
-      return { success: false, error: 'File too large. Maximum size is 5MB' }
-    }
-
-    // Get staff profile
-    const { data: staff } = await supabase
-      .from('staff_profiles_view')
-      .select('id, salon_id')
-      .eq('user_id', session.user.id)
-      .single<{ id: string; salon_id: string }>()
-
-    if (!staff?.id) {
-      return { success: false, error: 'Staff profile not found' }
-    }
-
-    // Upload to storage
-    const fileName = `${staff.id}/${Date.now()}-${file.name}`
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('staff-portfolios')
-      .upload(fileName, file)
-
-    if (uploadError) throw uploadError
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('staff-portfolios')
-      .getPublicUrl(fileName)
-
-    // Note: salon_media table only supports logo_url, cover_image_url, and gallery_urls
-    // Portfolio images are stored only in the storage bucket for now
-    // A future enhancement would require adding a separate portfolio_images table or extending salon_media
-
-    revalidatePath('/staff/profile', 'page')
-    return { success: true, data: publicUrl }
-  } catch (error) {
-    console.error('Error uploading portfolio image:', error)
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to upload image',
-    }
+export async function uploadPortfolioImage(
+  formData: FormData
+): Promise<ActionResponse<string>> {
+  return {
+    success: false,
+    error:
+      'Portfolio upload feature is currently disabled. Please contact support for portfolio image management.',
   }
 }

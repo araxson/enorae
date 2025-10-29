@@ -1,6 +1,13 @@
 import Link from 'next/link'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Item, ItemContent, ItemDescription, ItemTitle, ItemMedia } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+  ItemMedia,
+} from '@/components/ui/item'
 import { MapPin, Phone, Mail, Globe } from 'lucide-react'
 import type { Salon } from '../types'
 
@@ -19,16 +26,14 @@ export function ContactCard({ salon, location }: ContactCardProps) {
     : null
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Contact</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div
-          className="group/item-group flex flex-col gap-3"
-          data-slot="item-group"
-          role="list"
-        >
+    <Item variant="outline" className="flex flex-col gap-4">
+      <ItemHeader>
+        <ItemTitle>
+          <h3 className="text-lg font-semibold tracking-tight">Contact</h3>
+        </ItemTitle>
+      </ItemHeader>
+      <ItemContent>
+        <ItemGroup className="gap-3">
           {location && (
             <Item variant="muted">
               <ItemMedia variant="icon">
@@ -89,8 +94,8 @@ export function ContactCard({ salon, location }: ContactCardProps) {
               </ItemContent>
             </Item>
           )}
-        </div>
-      </CardContent>
-    </Card>
+        </ItemGroup>
+      </ItemContent>
+    </Item>
   )
 }

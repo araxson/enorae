@@ -1,19 +1,28 @@
 import { randomInt } from 'crypto'
+import {
+  CONFIRMATION_CODE_LETTERS,
+  CONFIRMATION_CODE_NUMBERS,
+  CONFIRMATION_CODE_LETTER_COUNT,
+  CONFIRMATION_CODE_NUMBER_COUNT,
+  CONFIRMATION_CODE_SEPARATOR
+} from '@/lib/constants/confirmation-code'
 
 /**
  * Generate a unique confirmation code in format ABC-1234
  */
 export function generateConfirmationCode(): string {
-  const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ' // Exclude I, O to avoid confusion with 1, 0
-  const numbers = '0123456789'
-
   let code = ''
-  for (let i = 0; i < 3; i++) {
-    code += letters[randomInt(0, letters.length)]
+
+  // Generate letter part
+  for (let letterIndex = 0; letterIndex < CONFIRMATION_CODE_LETTER_COUNT; letterIndex++) {
+    code += CONFIRMATION_CODE_LETTERS[randomInt(0, CONFIRMATION_CODE_LETTERS.length)]
   }
-  code += '-'
-  for (let i = 0; i < 4; i++) {
-    code += numbers[randomInt(0, numbers.length)]
+
+  code += CONFIRMATION_CODE_SEPARATOR
+
+  // Generate number part
+  for (let numberIndex = 0; numberIndex < CONFIRMATION_CODE_NUMBER_COUNT; numberIndex++) {
+    code += CONFIRMATION_CODE_NUMBERS[randomInt(0, CONFIRMATION_CODE_NUMBERS.length)]
   }
 
   return code

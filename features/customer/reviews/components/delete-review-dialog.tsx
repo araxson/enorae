@@ -86,10 +86,18 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
 
         <DialogFooter>
           <ButtonGroup aria-label="Actions">
-            <Button variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
+            <Button
+              variant="outline"
+              onClick={() => setOpen(false)}
+              disabled={isLoading}
+            >
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDelete} disabled={isLoading}>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <>
                   <Spinner className="size-4" />

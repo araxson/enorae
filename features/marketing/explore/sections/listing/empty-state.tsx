@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import {
   Empty,
   EmptyContent,
@@ -19,26 +18,20 @@ interface EmptyStateProps {
 
 export function EmptyState({ onReset }: EmptyStateProps) {
   return (
-    <Card>
-      <CardContent>
-        <div className="py-12">
-          <Empty>
-            <EmptyMedia variant="icon">
-              <Search className="size-6" aria-hidden="true" />
-            </EmptyMedia>
-            <EmptyHeader>
-              <EmptyTitle>{listingCopy.emptyTitle}</EmptyTitle>
-              <EmptyDescription>{listingCopy.emptyDescription}</EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button variant="outline" onClick={onReset}>
-                <Sparkles className="size-4" aria-hidden="true" />
-                {listingCopy.resetLabel}
-              </Button>
-            </EmptyContent>
-          </Empty>
-        </div>
-      </CardContent>
-    </Card>
+    <Empty className="border border-border/50 bg-card/40 py-12">
+      <EmptyMedia variant="icon">
+        <Search className="size-6" aria-hidden="true" />
+      </EmptyMedia>
+      <EmptyHeader>
+        <EmptyTitle>{listingCopy.emptyTitle}</EmptyTitle>
+        <EmptyDescription>{listingCopy.emptyDescription}</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" onClick={onReset}>
+          <Sparkles className="size-4" aria-hidden="true" />
+          {listingCopy.resetLabel}
+        </Button>
+      </EmptyContent>
+    </Empty>
   )
 }

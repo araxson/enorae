@@ -39,8 +39,8 @@ export async function getCustomerCohorts(
   const appointments = (data || []) as Appointment[]
 
   const toMonthIndex = (date: Date | string) => {
-    const d = typeof date === 'string' ? new Date(date) : date
-    return d.getUTCFullYear() * 12 + d.getUTCMonth()
+    const parsedDate = typeof date === 'string' ? new Date(date) : date
+    return parsedDate.getUTCFullYear() * 12 + parsedDate.getUTCMonth()
   }
   const toCohortLabel = (index: number) => {
     const year = Math.floor(index / 12)

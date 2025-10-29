@@ -1,5 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import type { ServicesByCategory, Service } from '../types'
 
 interface ServicesCardProps {
@@ -11,12 +10,14 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
   if (services.length === 0) return null
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Services</CardTitle>
-        <CardDescription>Browse offerings grouped by category.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex flex-col gap-6">
+      <ItemHeader className="flex flex-col gap-2">
+        <ItemTitle>
+          <h3 className="text-lg font-semibold tracking-tight">Services</h3>
+        </ItemTitle>
+        <ItemDescription>Browse offerings grouped by category.</ItemDescription>
+      </ItemHeader>
+      <ItemContent>
         <div className="flex flex-col gap-6">
           {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
             ([category, categoryServices]) => (
@@ -35,8 +36,8 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
             ),
           )}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }
 
