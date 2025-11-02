@@ -17,3 +17,7 @@ export interface ScheduleConflict {
     customer_name: string | null
   }[]
 }
+
+export type ActionResult<T = void> =
+  | { success: true; data: T }
+  | { error: string }

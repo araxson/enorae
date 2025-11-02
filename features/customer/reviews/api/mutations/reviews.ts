@@ -7,6 +7,7 @@ import { ZodError } from 'zod'
 import { reviewSchema } from '@/lib/validations/customer/reviews'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_DAY, REVIEW_EDIT_WINDOW_DAYS } from '@/lib/constants/time'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type ActionResult = {
   success?: boolean
@@ -15,6 +16,8 @@ type ActionResult = {
 }
 
 export async function createReview(formData: FormData): Promise<ActionResult> {
+  const logger = createOperationLogger('createReview', {})
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
@@ -30,10 +33,12 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
       valueRating: formData.get('valueRating') ? parseInt(formData.get('valueRating') as string) : undefined,
     }
 
+    logger.start({ salonId: data.salonId, userId: session.user.id, rating: data.rating })
+
     const validated = reviewSchema.parse(data)
 
     // Note: .schema() required for INSERT/UPDATE/DELETE on tables (not views)
-    const { error } = await supabase
+    const { data: review, error } = await supabase
       .schema('engagement')
       .from('salon_reviews')
       .insert({
@@ -47,25 +52,44 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
         cleanliness_rating: validated.cleanlinessRating,
         value_rating: validated.valueRating,
       })
+      .select('id')
+      .single()
 
-    if (error) throw error
+    if (error) {
+      logger.error(error, 'database', { salonId: validated.salonId, userId: session.user.id })
+      throw error
+    }
+
+    logMutation('create', 'review', review.id, {
+      salonId: validated.salonId,
+      userId: session.user.id,
+      operationName: 'createReview',
+      changes: { rating: validated.rating, appointmentId: validated.appointmentId },
+    })
 
     revalidatePath('/customer/reviews', 'page')
     revalidatePath(`/customer/salons/${validated.salonId}`, 'page')
 
+    logger.success({ salonId: validated.salonId, userId: session.user.id, reviewId: review.id })
     return { success: true }
   } catch (error) {
     if (error instanceof ZodError) {
+      logger.error(error.issues?.[0]?.message ?? 'Validation failed', 'validation')
       return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Failed to create review' }
   }
 }
 
 export async function updateReview(id: string, formData: FormData): Promise<ActionResult> {
+  const logger = createOperationLogger('updateReview', { reviewId: id })
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
+
+    logger.start({ reviewId: id, userId: session.user.id })
 
     const { data: review, error: fetchError } = await supabase
       .from('salon_reviews_view')
@@ -81,21 +105,26 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
 
     if (fetchError) {
       if (fetchError.code === 'PGRST116') {
+        logger.error('Review not found', 'not_found', { reviewId: id, userId: session.user.id })
         return { error: 'Review not found or not authorized' }
       }
+      logger.error(fetchError, 'database', { reviewId: id, userId: session.user.id })
       throw fetchError
     }
 
     if (!review) {
+      logger.error('Review not found or unauthorized', 'not_found', { reviewId: id, userId: session.user.id })
       return { error: 'Review not found or not authorized' }
     }
 
     // Check review edit window
     if (!review.created_at) {
+      logger.error('Review creation date missing', 'validation', { reviewId: id, userId: session.user.id })
       return { error: 'Review creation date missing' }
     }
     const daysSince = (Date.now() - new Date(review.created_at).getTime()) / MILLISECONDS_PER_DAY
     if (daysSince > REVIEW_EDIT_WINDOW_DAYS) {
+      logger.warn('Review edit window expired', { reviewId: id, userId: session.user.id, daysSince })
       return { error: `Reviews can only be edited within ${REVIEW_EDIT_WINDOW_DAYS} days of creation` }
     }
 
@@ -128,26 +157,43 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       .eq('id', id)
       .eq('customer_id', session.user.id)
 
-    if (error) throw error
+    if (error) {
+      logger.error(error, 'database', { reviewId: id, salonId: review.salon_id, userId: session.user.id })
+      throw error
+    }
+
+    logMutation('update', 'review', id, {
+      salonId: review.salon_id ?? undefined,
+      userId: session.user.id,
+      operationName: 'updateReview',
+      changes: { rating: validated.rating },
+    })
 
     revalidatePath('/customer/reviews', 'page')
     if (review.salon_id) {
       revalidatePath(`/customer/salons/${review.salon_id}`, 'page')
     }
 
+    logger.success({ reviewId: id, salonId: review.salon_id, userId: session.user.id })
     return { success: true }
   } catch (error) {
     if (error instanceof ZodError) {
+      logger.error(error.issues?.[0]?.message ?? 'Validation failed', 'validation', { reviewId: id })
       return { error: error.issues?.[0]?.message ?? 'Validation failed' }
     }
+    logger.error(error instanceof Error ? error : String(error), 'system', { reviewId: id })
     return { error: error instanceof Error ? error.message : 'Failed to update review' }
   }
 }
 
 export async function deleteReview(id: string, salonId: string): Promise<ActionResult> {
+  const logger = createOperationLogger('deleteReview', { reviewId: id, salonId })
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
+
+    logger.start({ reviewId: id, salonId, userId: session.user.id })
 
     // Verify ownership before deleting
     const { data: review, error: fetchError } = await supabase
@@ -157,13 +203,18 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
       .eq('customer_id', session.user.id)
       .maybeSingle<Pick<Database['public']['Views']['salon_reviews_view']['Row'], 'customer_id'>>()
 
-    if (fetchError) throw fetchError
+    if (fetchError) {
+      logger.error(fetchError, 'database', { reviewId: id, salonId, userId: session.user.id })
+      throw fetchError
+    }
 
     if (!review) {
+      logger.error('Review not found', 'not_found', { reviewId: id, salonId, userId: session.user.id })
       return { error: 'Review not found' }
     }
 
     if (review.customer_id !== session.user.id) {
+      logger.error('Unauthorized deletion attempt', 'permission', { reviewId: id, salonId, userId: session.user.id, reviewOwnerId: review.customer_id })
       return { error: 'Not authorized to delete this review' }
     }
 
@@ -178,13 +229,24 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
       .eq('id', id)
       .eq('customer_id', session.user.id)
 
-    if (error) throw error
+    if (error) {
+      logger.error(error, 'database', { reviewId: id, salonId, userId: session.user.id })
+      throw error
+    }
+
+    logMutation('delete', 'review', id, {
+      salonId,
+      userId: session.user.id,
+      operationName: 'deleteReview',
+    })
 
     revalidatePath('/customer/reviews', 'page')
     revalidatePath(`/customer/salons/${salonId}`, 'page')
 
+    logger.success({ reviewId: id, salonId, userId: session.user.id })
     return { success: true }
   } catch (error) {
+    logger.error(error instanceof Error ? error : String(error), 'system', { reviewId: id, salonId })
     return { error: error instanceof Error ? error.message : 'Failed to delete review' }
   }
 }

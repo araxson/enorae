@@ -5,10 +5,12 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
 import type { ActionResponse } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { STRING_LIMITS } from '@/lib/config/constants'
 
 const messageClientSchema = z.object({
   customerId: z.string().uuid(),
-  message: z.string().min(1).max(2000),
+  message: z.string().min(1).max(STRING_LIMITS.LONG_TEXT),
   subject: z.string().max(200).optional(),
 })
 
@@ -19,6 +21,9 @@ const messageClientSchema = z.object({
 export async function messageClient(
   data: z.infer<typeof messageClientSchema>
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('messageClient', {})
+  logger.start()
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
@@ -115,7 +120,7 @@ export async function messageClient(
     revalidatePath('/staff/clients', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error messaging client:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send message',

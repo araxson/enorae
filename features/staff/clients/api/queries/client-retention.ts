@@ -1,6 +1,7 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type ClientRetentionMetrics = {
   total_clients: number
@@ -11,6 +12,9 @@ export type ClientRetentionMetrics = {
 }
 
 export async function getClientRetentionMetrics(staffId: string): Promise<ClientRetentionMetrics> {
+  const logger = createOperationLogger('getClientRetentionMetrics', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

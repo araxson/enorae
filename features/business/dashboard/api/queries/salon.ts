@@ -3,11 +3,15 @@ import 'server-only'
 import { requireAnyRole, requireUserSalonId, requireAuth, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type SalonView = Database['public']['Views']['salons_view']['Row']
 type SalonRecord = Database['organization']['Tables']['salons']['Row']
 
 export async function getUserSalon(): Promise<SalonView> {
+  const logger = createOperationLogger('getUserSalon', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
   const supabase = await createClient()
@@ -23,6 +27,9 @@ export async function getUserSalon(): Promise<SalonView> {
 }
 
 export async function getUserSalonIds(): Promise<string[]> {
+  const logger = createOperationLogger('getUserSalonIds', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
@@ -68,7 +75,7 @@ export async function getUserSalonIds(): Promise<string[]> {
     const salonId = await requireUserSalonId()
     return [salonId]
   } catch (error) {
-    console.error('[getUserSalonIds] Unexpected error:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return []
   }
 }

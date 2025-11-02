@@ -7,6 +7,7 @@ import { env } from '@/lib/env'
 
 import { verifySession } from '@/lib/auth/session'
 import { ROLE_GROUPS } from './roles'
+import { logAuthEvent, logError, logInfo } from '@/lib/observability/logger'
 
 export type SalonContext = {
   activeSalonId: string | null
@@ -15,7 +16,10 @@ export type SalonContext = {
 
 export async function getUserSalonIds(): Promise<string[]> {
   const session = await verifySession()
-  if (!session) return []
+  if (!session) {
+    logInfo('getUserSalonIds: No session', { operationName: 'getUserSalonIds' })
+    return []
+  }
 
   const supabase = await createClient()
 
@@ -28,8 +32,23 @@ export async function getUserSalonIds(): Promise<string[]> {
       .not('salon_id', 'is', null),
   ])
 
-  if (ownedSalonsResult.error) throw ownedSalonsResult.error
-  if (staffSalonsResult.error) throw staffSalonsResult.error
+  if (ownedSalonsResult.error) {
+    logError('getUserSalonIds: Failed to fetch owned salons', {
+      operationName: 'getUserSalonIds',
+      userId: session.user.id,
+      error: ownedSalonsResult.error,
+    })
+    throw ownedSalonsResult.error
+  }
+
+  if (staffSalonsResult.error) {
+    logError('getUserSalonIds: Failed to fetch staff salons', {
+      operationName: 'getUserSalonIds',
+      userId: session.user.id,
+      error: staffSalonsResult.error,
+    })
+    throw staffSalonsResult.error
+  }
 
   const ownedSalonRows = (ownedSalonsResult.data ?? []) as Array<{ id: string | null }>
   const staffSalonRows = (staffSalonsResult.data ?? []) as Array<{ salon_id: string | null }>
@@ -48,7 +67,14 @@ export async function getUserSalonIds(): Promise<string[]> {
     }
   }
 
-  return Array.from(ids)
+  const salonIds = Array.from(ids)
+
+  logInfo('getUserSalonIds: Retrieved salon IDs', {
+    operationName: 'getUserSalonIds',
+    userId: session.user.id,
+  })
+
+  return salonIds
 }
 
 export async function getSalonContext(): Promise<SalonContext> {
@@ -79,12 +105,27 @@ export async function getUserSalonId(): Promise<string | null> {
 }
 
 export async function setActiveSalonId(salonId: string): Promise<void> {
+  const session = await verifySession()
   const { accessibleSalonIds } = await getSalonContext()
+
   if (!accessibleSalonIds.length) {
+    logError('setActiveSalonId: No salons available', {
+      operationName: 'setActiveSalonId',
+      userId: session?.user.id,
+      error: 'No salons available',
+      salonId,
+    })
     throw new Error('No salons available for current user')
   }
 
   if (!accessibleSalonIds.includes(salonId)) {
+    logAuthEvent('permission_check', {
+      operationName: 'setActiveSalonId',
+      userId: session?.user.id,
+      salonId,
+      reason: 'Unauthorized salon selection',
+      success: false,
+    })
     throw new Error('Unauthorized salon selection')
   }
 
@@ -95,6 +136,12 @@ export async function setActiveSalonId(salonId: string): Promise<void> {
     httpOnly: true,
     secure: env.NODE_ENV === 'production',
     maxAge: 60 * 60 * 24 * 30,
+  })
+
+  logInfo('setActiveSalonId: Active salon changed', {
+    operationName: 'setActiveSalonId',
+    userId: session?.user.id,
+    salonId,
   })
 }
 
@@ -121,9 +168,24 @@ export async function requireUserSalonId(): Promise<string> {
 
 export async function canAccessSalon(salonId: string): Promise<boolean> {
   const session = await verifySession()
-  if (!session) return false
+  if (!session) {
+    logAuthEvent('permission_check', {
+      operationName: 'canAccessSalon',
+      salonId,
+      reason: 'No session',
+      success: false,
+    })
+    return false
+  }
 
   if (ROLE_GROUPS.PLATFORM_ADMINS.includes(session.role)) {
+    logAuthEvent('permission_check', {
+      operationName: 'canAccessSalon',
+      userId: session.user.id,
+      salonId,
+      reason: 'Platform admin access',
+      success: true,
+    })
     return true
   }
 
@@ -136,7 +198,16 @@ export async function canAccessSalon(salonId: string): Promise<boolean> {
     .eq('owner_id', session.user.id)
     .single()
 
-  if (salonData) return true
+  if (salonData) {
+    logAuthEvent('permission_check', {
+      operationName: 'canAccessSalon',
+      userId: session.user.id,
+      salonId,
+      reason: 'Salon owner',
+      success: true,
+    })
+    return true
+  }
 
   const { data: staffData } = await supabase
     .from('staff_profiles_view')
@@ -145,5 +216,15 @@ export async function canAccessSalon(salonId: string): Promise<boolean> {
     .eq('salon_id', salonId)
     .single()
 
-  return Boolean(staffData)
+  const hasAccess = Boolean(staffData)
+
+  logAuthEvent('permission_check', {
+    operationName: 'canAccessSalon',
+    userId: session.user.id,
+    salonId,
+    reason: hasAccess ? 'Staff member' : 'No access',
+    success: hasAccess,
+  })
+
+  return hasAccess
 }

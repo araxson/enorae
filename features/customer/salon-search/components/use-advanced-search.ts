@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useId } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { UI_TIMEOUTS, STRING_LIMITS, TIME_MS } from '@/lib/config/constants'
 
 interface UseAdvancedSearchOptions {
   onSearchStart?: () => void
@@ -27,16 +28,17 @@ export function useAdvancedSearch(options: UseAdvancedSearchOptions = {}) {
     const controller = new AbortController()
 
     const fetchSuggestions = async () => {
-      if (searchTerm.length < 2) {
+      if (searchTerm.length < STRING_LIMITS.MIN_SEARCH) {
         setSuggestions([])
         setFocusedIndex(-1)
         return
       }
 
       try {
+        const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
         const response = await fetch(
           `/api/salons/suggestions?q=${encodeURIComponent(searchTerm)}`,
-          { signal: controller.signal },
+          { signal: AbortSignal.any([controller.signal, timeoutSignal]) },
         )
         if (!controller.signal.aborted && response.ok) {
           const data = await response.json()
@@ -50,7 +52,7 @@ export function useAdvancedSearch(options: UseAdvancedSearchOptions = {}) {
       }
     }
 
-    const debounceTimer = setTimeout(fetchSuggestions, 300)
+    const debounceTimer = setTimeout(fetchSuggestions, UI_TIMEOUTS.SEARCH_DEBOUNCE)
     return () => {
       controller.abort()
       clearTimeout(debounceTimer)
@@ -74,8 +76,8 @@ export function useAdvancedSearch(options: UseAdvancedSearchOptions = {}) {
     setTimeout(() => {
       setIsSearching(false)
       options.onSearchComplete?.()
-    }, 500)
-  }, [searchTerm, city, state, verifiedOnly, minRating, router, options])
+    }, UI_TIMEOUTS.NAVIGATION_DELAY)
+  }, [searchTerm, city, state, verifiedOnly, minRating, router, options.onSearchStart, options.onSearchComplete])
 
   const handleInputKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {

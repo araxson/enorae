@@ -2,11 +2,15 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Get unread notification count for current user
  */
 export async function getUnreadCount() {
+  const logger = createOperationLogger('getUnreadCount', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()

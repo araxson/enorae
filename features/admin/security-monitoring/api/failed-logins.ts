@@ -1,7 +1,7 @@
-import { normalizeIp, toFailedLoginAttempt, type AuditLogRow } from './transformers'
+import { normalizeIp, toFailedLoginAttempt, type AuditLogViewRow } from './transformers'
 import type { FailedLoginSummary } from './types'
 
-export const groupFailedLogins = (rows: AuditLogRow[]): FailedLoginSummary => {
+export const groupFailedLogins = (rows: AuditLogViewRow[]): FailedLoginSummary => {
   const total = rows.length
   const cutoff = Date.now() - 24 * 60 * 60 * 1000
   let last24h = 0
@@ -13,7 +13,7 @@ export const groupFailedLogins = (rows: AuditLogRow[]): FailedLoginSummary => {
     const userKey = row.user_id ?? 'anonymous'
     byIp.set(ip, (byIp.get(ip) ?? 0) + 1)
     byUser.set(userKey, (byUser.get(userKey) ?? 0) + 1)
-    if (new Date(row.created_at).getTime() >= cutoff) {
+    if (row.created_at && new Date(row.created_at).getTime() >= cutoff) {
       last24h += 1
     }
   })

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PATHS, UUID_REGEX } from './shared'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const blockedTimeSchema = z.object({
   salon_id: z.string().regex(UUID_REGEX, 'Invalid salon ID'),
@@ -16,6 +17,9 @@ const blockedTimeSchema = z.object({
 })
 
 export async function createBlockedTime(input: z.infer<typeof blockedTimeSchema>) {
+  const logger = createOperationLogger('createBlockedTime', {})
+  logger.start()
+
   try {
     const validated = blockedTimeSchema.parse(input)
     const supabase = await resolveClient()

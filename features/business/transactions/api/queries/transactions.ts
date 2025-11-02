@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type ManualTransaction = Database['public']['Views']['manual_transactions_view']['Row']
 
@@ -25,6 +26,9 @@ export type ManualTransactionWithDetails = ManualTransaction & {
  * Get manual transactions for the user's salon
  */
 export async function getManualTransactions(limit = 100): Promise<ManualTransactionWithDetails[]> {
+  const logger = createOperationLogger('getManualTransactions', {})
+  logger.start()
+
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
@@ -46,9 +50,9 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
   const transactions = (data || []) as ManualTransactionWithDetails[]
 
   // Collect all unique IDs for batch fetching
-  const staffIds = [...new Set(transactions.map((t) => t.staff_id).filter(Boolean))] as string[]
-  const customerIds = [...new Set(transactions.map((t) => t.customer_id).filter(Boolean))] as string[]
-  const createdByIds = [...new Set(transactions.map((t) => t.created_by_id).filter(Boolean))] as string[]
+  const staffIds = [...new Set(transactions.map((t) => t.staff_id).filter((id): id is string => typeof id === 'string'))]
+  const customerIds = [...new Set(transactions.map((t) => t.customer_id).filter((id): id is string => typeof id === 'string'))]
+  const createdByIds = [...new Set(transactions.map((t) => t.created_by_id).filter((id): id is string => typeof id === 'string'))]
 
   // Fetch staff details
   let staffMap = new Map<string, { id: string; full_name: string | null }>()
@@ -60,21 +64,26 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
       .in('id', staffIds)
     if (staffData) {
       // Get profiles for staff
-      const userIds = staffData.map((s: any) => s.user_id).filter(Boolean)
+      const userIds = staffData
+        .map((s) => s.user_id)
+        .filter((id): id is string => typeof id === 'string')
       if (userIds.length > 0) {
-        const { data: profilesMetadata } = await supabase
-          .schema('identity')
-          .from('profiles_metadata')
-          .select('profile_id, full_name')
-          .in('profile_id', userIds)
+        const { data: profiles } = await supabase
+          .from('profiles_view')
+          .select('id, full_name')
+          .in('id', userIds)
         const profileMap = new Map<string, string | null>()
-        if (profilesMetadata) {
-          profilesMetadata.forEach((p: any) => {
-            profileMap.set(p.profile_id, p.full_name)
+        if (profiles) {
+          profiles.forEach((p) => {
+            if (p.id) {
+              profileMap.set(p.id, p.full_name)
+            }
           })
         }
-        staffData.forEach((s: any) => {
-          staffMap.set(s.id, { id: s.id, full_name: profileMap.get(s.user_id) || null })
+        staffData.forEach((s) => {
+          if (s.id && s.user_id) {
+            staffMap.set(s.id, { id: s.id, full_name: profileMap.get(s.user_id) || null })
+          }
         })
       }
     }
@@ -83,29 +92,24 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
   // Fetch customer details
   let customerMap = new Map<string, { id: string; full_name: string | null; email: string | null }>()
   if (customerIds.length > 0) {
-    const { data: profiles } = await supabase
-      .schema('identity')
-      .from('profiles')
-      .select('id, email')
+    const { data: profiles, error: profilesError } = await supabase
+      .from('profiles_view')
+      .select('id, email, full_name')
       .in('id', customerIds)
 
-    // Get customer metadata for full_name
-    const { data: customerMetadata } = await supabase
-      .schema('identity')
-      .from('profiles_metadata')
-      .select('profile_id, full_name')
-      .in('profile_id', customerIds)
-
-    const metadataMap = new Map<string, string | null>()
-    if (customerMetadata) {
-      customerMetadata.forEach((m: any) => {
-        metadataMap.set(m.profile_id, m.full_name)
-      })
+    if (profilesError) {
+      console.error('Error fetching profiles:', profilesError)
     }
 
-    if (profiles) {
-      profiles.forEach((c: any) => {
-        customerMap.set(c.id, { id: c.id, full_name: metadataMap.get(c.id) || null, email: c.email })
+    if (profiles && Array.isArray(profiles)) {
+      profiles.forEach((c) => {
+        if (c.id) {
+          customerMap.set(c.id, {
+            id: c.id,
+            full_name: c.full_name || null,
+            email: c.email || null
+          })
+        }
       })
     }
   }
@@ -119,8 +123,10 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
       .select('profile_id, full_name')
       .in('profile_id', createdByIds)
     if (createdByMetadata) {
-      createdByMetadata.forEach((u: any) => {
-        createdByMap.set(u.profile_id, { id: u.profile_id, full_name: u.full_name })
+      createdByMetadata.forEach((u) => {
+        if (u.profile_id) {
+          createdByMap.set(u.profile_id, { id: u.profile_id, full_name: u.full_name })
+        }
       })
     }
   }
@@ -187,22 +193,19 @@ export async function getManualTransactionById(
   }
 
   // Fetch customer
-  let customer = null
+  let customer: { id: string; full_name: string | null; email: string | null } | null = null
   if (transaction.customer_id) {
     const { data: profileData, error: profileError } = await supabase
-      .schema('identity')
-      .from('profiles')
-      .select('id, email')
+      .from('profiles_view')
+      .select('id, email, full_name')
       .eq('id', transaction.customer_id)
       .single()
-    if (!profileError && profileData && typeof profileData === 'object' && 'id' in profileData) {
-      const { data: metadataData } = await supabase
-        .schema('identity')
-        .from('profiles_metadata')
-        .select('profile_id, full_name')
-        .eq('profile_id', transaction.customer_id)
-        .single()
-      customer = { id: (profileData as any).id, full_name: metadataData?.full_name || null, email: (profileData as any).email }
+    if (!profileError && profileData && profileData.id) {
+      customer = {
+        id: profileData.id,
+        full_name: profileData.full_name || null,
+        email: profileData.email || null
+      }
     }
   }
 

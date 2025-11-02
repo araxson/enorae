@@ -2,6 +2,7 @@ import 'server-only'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 type ManualTransaction = Database['public']['Views']['manual_transactions_view']['Row']
@@ -11,6 +12,9 @@ type Profile = Database['public']['Views']['profiles_view']['Row']
  * Get customer insights and analytics
  */
 export async function getCustomerInsights(salonId: string) {
+  const logger = createOperationLogger('getCustomerInsights', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {

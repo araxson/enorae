@@ -4,6 +4,7 @@ import { Camera } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Spinner } from '@/components/ui/spinner'
 import { uploadPortfolioImage } from '@/features/staff/profile/api/mutations'
 import {
   Field,
@@ -84,10 +85,13 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
                       onClick={() => document.getElementById('photo-upload')?.click()}
                     >
                       {isUploading ? (
-                        <>Uploading...</>
+                        <>
+                          <Spinner />
+                          Uploading
+                        </>
                       ) : (
                         <>
-                          <Camera className="size-4 mr-2" />
+                          <Camera className="size-4" />
                           Change Photo
                         </>
                       )}

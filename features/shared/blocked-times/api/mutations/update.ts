@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PATHS, UUID_REGEX } from './shared'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const updateSchema = z.object({
   staff_id: z.string().regex(UUID_REGEX).optional(),
@@ -15,6 +16,9 @@ const updateSchema = z.object({
 })
 
 export async function updateBlockedTime(id: string, input: Partial<z.infer<typeof updateSchema>>) {
+  const logger = createOperationLogger('updateBlockedTime', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(id)) {
       return { error: 'Invalid blocked time ID' }

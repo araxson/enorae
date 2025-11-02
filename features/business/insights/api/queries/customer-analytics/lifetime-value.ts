@@ -2,6 +2,7 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentSummary = {
   id: string
@@ -22,6 +23,9 @@ type PaymentRecord = {
  * Calculate Customer Lifetime Value (CLV)
  */
 export async function calculateCustomerLifetimeValue(customerId: string) {
+  const logger = createOperationLogger('calculateCustomerLifetimeValue', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
 

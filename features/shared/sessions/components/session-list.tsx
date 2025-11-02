@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -36,6 +36,16 @@ export function SessionList({ sessions }: SessionListProps) {
   const [revokingAll, setRevokingAll] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current)
+      }
+    }
+  }, [])
 
   const otherSessions = sessions.filter(s => !s.is_current)
 
@@ -68,8 +78,13 @@ export function SessionList({ sessions }: SessionListProps) {
 
     if (result.success) {
       toast.success(`Successfully revoked ${result.data.count} session(s)`)
-      setTimeout(() => {
+      // Clear any existing timer
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current)
+      }
+      refreshTimerRef.current = setTimeout(() => {
         router.refresh()
+        refreshTimerRef.current = null
       }, 500)
     } else {
       toast.error(result.error)

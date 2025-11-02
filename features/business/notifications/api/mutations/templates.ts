@@ -4,6 +4,7 @@ import 'server-only'
 import { z } from 'zod'
 import { getSupabaseClient, revalidateNotifications, notificationChannels, notificationEvents } from '../mutations/utilities'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const templateSchema = z.object({
   id: z.string().uuid().optional(),
@@ -32,87 +33,127 @@ function normalizeTemplates(
 export async function upsertNotificationTemplate(
   template: TemplateInput,
 ) {
-  const supabase = await getSupabaseClient()
+  const logger = createOperationLogger('upsertNotificationTemplate', {})
+  logger.start()
 
-  const validation = templateSchema.safeParse(template)
-  if (!validation.success) {
-    throw new Error(validation.error.issues[0]?.message ?? 'Validation failed')
+  // ASYNC FIX: Wrap in try-catch to handle all Promise rejections
+  try {
+    const supabase = await getSupabaseClient()
+
+    const validation = templateSchema.safeParse(template)
+    if (!validation.success) {
+      const errorMsg = validation.error.issues[0]?.message ?? 'Validation failed'
+      logger.error(errorMsg, 'validation')
+      return { success: false, error: errorMsg }
+    }
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError) {
+      logger.error(authError, 'auth')
+      return { success: false, error: authError.message }
+    }
+    if (!user) {
+      return { success: false, error: 'Unauthorized' }
+    }
+
+    const currentTemplates =
+      (user.user_metadata?.['notification_templates'] as
+        | NotificationTemplate[]
+        | undefined) ?? []
+
+    const timestamp = new Date().toISOString()
+    const templateId = validation.data.id ?? globalThis.crypto.randomUUID()
+
+    const existing = currentTemplates.find(
+      (entry) => entry.id === validation.data.id,
+    )
+
+    const updatedTemplate: NotificationTemplate = {
+      id: templateId,
+      name: validation.data.name,
+      description: validation.data.description ?? undefined,
+      channel: validation.data.channel,
+      event: validation.data.event,
+      subject: validation.data.subject ?? undefined,
+      body: validation.data.body,
+      updated_at: timestamp,
+      created_at: existing?.created_at ?? timestamp,
+    }
+
+    const nextTemplates = normalizeTemplates(currentTemplates, updatedTemplate)
+
+    const { error } = await supabase.auth.updateUser({
+      data: {
+        notification_templates: nextTemplates,
+      },
+    })
+
+    if (error) {
+      logger.error(error, 'database')
+      return { success: false, error: error.message }
+    }
+
+    revalidateNotifications()
+    logger.success()
+    return { success: true, data: updatedTemplate }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to upsert template'
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'unknown')
+    return { success: false, error: errorMessage }
   }
-
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser()
-
-  if (authError) throw authError
-  if (!user) throw new Error('Unauthorized')
-
-  const currentTemplates =
-    (user.user_metadata?.['notification_templates'] as
-      | NotificationTemplate[]
-      | undefined) ?? []
-
-  const timestamp = new Date().toISOString()
-  const templateId = validation.data.id ?? globalThis.crypto.randomUUID()
-
-  const existing = currentTemplates.find(
-    (entry) => entry.id === validation.data.id,
-  )
-
-  const updatedTemplate: NotificationTemplate = {
-    id: templateId,
-    name: validation.data.name,
-    description: validation.data.description ?? undefined,
-    channel: validation.data.channel,
-    event: validation.data.event,
-    subject: validation.data.subject ?? undefined,
-    body: validation.data.body,
-    updated_at: timestamp,
-    created_at: existing?.created_at ?? timestamp,
-  }
-
-  const nextTemplates = normalizeTemplates(currentTemplates, updatedTemplate)
-
-  const { error } = await supabase.auth.updateUser({
-    data: {
-      notification_templates: nextTemplates,
-    },
-  })
-
-  if (error) throw error
-
-  revalidateNotifications()
-  return updatedTemplate
 }
 
 export async function deleteNotificationTemplate(templateId: string) {
-  const supabase = await getSupabaseClient()
+  const logger = createOperationLogger('deleteNotificationTemplate', {})
+  logger.start()
 
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser()
+  // ASYNC FIX: Wrap in try-catch to handle all Promise rejections
+  try {
+    const supabase = await getSupabaseClient()
 
-  if (authError) throw authError
-  if (!user) throw new Error('Unauthorized')
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
 
-  const currentTemplates =
-    (user.user_metadata?.['notification_templates'] as
-      | NotificationTemplate[]
-      | undefined) ?? []
+    if (authError) {
+      logger.error(authError, 'auth')
+      return { success: false, error: authError.message }
+    }
+    if (!user) {
+      return { success: false, error: 'Unauthorized' }
+    }
 
-  const nextTemplates = currentTemplates.filter(
-    (template) => template.id !== templateId,
-  )
+    const currentTemplates =
+      (user.user_metadata?.['notification_templates'] as
+        | NotificationTemplate[]
+        | undefined) ?? []
 
-  const { error } = await supabase.auth.updateUser({
-    data: {
-      notification_templates: nextTemplates,
-    },
-  })
+    const nextTemplates = currentTemplates.filter(
+      (template) => template.id !== templateId,
+    )
 
-  if (error) throw error
+    const { error } = await supabase.auth.updateUser({
+      data: {
+        notification_templates: nextTemplates,
+      },
+    })
 
-  revalidateNotifications()
-  return { success: true }
+    if (error) {
+      logger.error(error, 'database')
+      return { success: false, error: error.message }
+    }
+
+    revalidateNotifications()
+    logger.success()
+    return { success: true }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to delete template'
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'unknown')
+    return { success: false, error: errorMessage }
+  }
 }

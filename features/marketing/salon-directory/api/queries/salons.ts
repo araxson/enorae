@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 
@@ -17,6 +18,9 @@ export interface SalonSearchParams {
  * Public endpoint - no auth required
  */
 export async function getPublicSalons(params?: SalonSearchParams): Promise<Salon[]> {
+  const logger = createOperationLogger('getPublicSalons', {})
+  logger.start()
+
   const supabase = await createClient()
 
   // Build query with filters

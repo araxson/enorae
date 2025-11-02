@@ -8,11 +8,15 @@ import { logRoleAudit } from './audit'
 import { applyRoleAssignment } from './assignments'
 import { requireAdminContext } from './context'
 import { bulkSchema, ROLES_NEEDING_SALON } from './validation'
-import type { RoleActionResponse } from './types'
+import type { RoleActionResponse } from '../../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function bulkAssignRoles(
   formData: FormData,
 ): Promise<RoleActionResponse<{ success: number; failed: number; errors: string[] }>> {
+  const logger = createOperationLogger('bulkAssignRoles', {})
+  logger.start()
+
   try {
     const payloadRaw = formData.get('payload')?.toString()
     if (!payloadRaw) {

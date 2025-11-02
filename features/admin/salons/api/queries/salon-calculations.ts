@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { differenceInCalendarDays } from 'date-fns'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type LicenseStatus = 'valid' | 'expiring' | 'expired' | 'unknown'
 export type ComplianceLevel = 'low' | 'medium' | 'high'

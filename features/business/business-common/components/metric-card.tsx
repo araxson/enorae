@@ -1,10 +1,10 @@
 'use client'
 
 import type { ReactNode, ComponentType } from 'react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
+
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
-import { TrendingDown, TrendingUp } from 'lucide-react'
-import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
 import {
   Item,
   ItemActions,
@@ -12,6 +12,8 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+
+import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
 
 export type MetricCardVariant = 'default' | 'progress' | 'trend' | 'highlight'
 

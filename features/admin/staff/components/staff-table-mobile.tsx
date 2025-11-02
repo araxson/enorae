@@ -56,7 +56,7 @@ export function StaffTableMobile({ staff }: StaffTableMobileProps) {
               <div>
                 <span className="block font-medium">Certifications</span>
                 <Badge variant="secondary">{member.certifications.length}</Badge>
-                {member.certifications.slice(0, 2).map((certification) => {
+                {member.certifications.slice(0, 2).map((certification: string) => {
                   const label = certification.replace(/^cert:/i, '')
                   return (
                     <span key={certification} className="block truncate text-xs text-muted-foreground" title={label}>

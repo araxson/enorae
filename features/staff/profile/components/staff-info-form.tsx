@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { updateStaffInfo } from '@/features/staff/profile/api/mutations'
+import { TIME_MS } from '@/lib/config/constants'
 import {
   Field,
   FieldContent,
@@ -40,8 +41,7 @@ export function StaffInfoForm({ profile }: StaffInfoFormProps) {
 
     if (result.success) {
       setSuccess(true)
-      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
-      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
+      setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error)
     }

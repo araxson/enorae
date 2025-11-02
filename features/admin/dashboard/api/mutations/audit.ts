@@ -2,6 +2,7 @@
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database, Json } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function logDashboardAudit(
   supabase: ReturnType<typeof createServiceRoleClient>,
@@ -10,6 +11,9 @@ export async function logDashboardAudit(
   severity: 'info' | 'warning' | 'critical',
   metadata?: Json,
 ) {
+  const logger = createOperationLogger('logDashboardAudit', {})
+  logger.start()
+
   const metadataObject = metadata ?? null
   const entityId =
     metadataObject && typeof metadataObject === 'object' && !Array.isArray(metadataObject)

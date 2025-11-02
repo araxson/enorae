@@ -1,4 +1,6 @@
+import 'server-only'
 import { randomInt } from 'crypto'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 import {
   CONFIRMATION_CODE_LETTERS,
   CONFIRMATION_CODE_NUMBERS,

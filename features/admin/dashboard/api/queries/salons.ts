@@ -3,8 +3,12 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
 import type { AdminSalon } from '@/features/admin/salons'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getRecentSalons(): Promise<AdminSalon[]> {
+  const logger = createOperationLogger('getRecentSalons', {})
+  logger.start()
+
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 

@@ -1,75 +1,56 @@
 import { z } from 'zod'
 
-/**
- * Schema for phone number validation
- * Basic format check for phone numbers
- */
-const phoneSchema = z
-  .string()
-  .regex(/^\+?[\d\s\-()]+$/, 'Invalid phone number format')
-  .min(7, 'Phone number must be at least 7 characters')
-  .max(20, 'Phone number must not exceed 20 characters')
+const phoneRegExp = /^[+0-9][0-9\s().-]{7,19}$/
+
+const optionalPhone = z
+  .union([
+    z
+      .string()
+      .trim()
+      .regex(phoneRegExp, 'Phone number must include 8-20 digits and may contain +, spaces, or dashes'),
+    z.null(),
+  ])
   .optional()
-  .nullable()
 
-/**
- * Schema for email validation
- */
-const emailSchema = z.string().email('Invalid email address').optional().nullable()
-
-/**
- * Schema for URL validation
- */
-const urlSchema = z
-  .string()
-  .url('Invalid URL format')
-  .max(500, 'URL must not exceed 500 characters')
+const optionalEmail = z
+  .union([z.string().trim().email('Invalid email address'), z.null()])
   .optional()
-  .nullable()
 
-/**
- * Schema for social media username (WhatsApp, Telegram)
- */
-const usernameSchema = z
-  .string()
-  .min(1, 'Username cannot be empty')
-  .max(100, 'Username must not exceed 100 characters')
+const optionalUrl = z
+  .union([z.string().trim().url('Invalid URL'), z.null()])
   .optional()
-  .nullable()
 
-/**
- * Schema for hours display text
- */
-const hoursDisplaySchema = z
-  .string()
-  .max(200, 'Hours display text must not exceed 200 characters')
-  .optional()
-  .nullable()
-
-/**
- * Schema for updating salon contact details
- * Validates all contact information fields
- */
-export const updateSalonContactDetailsSchema = z.object({
-  salonId: z.string().uuid('Invalid salon ID format'),
-  primary_phone: phoneSchema,
-  secondary_phone: phoneSchema,
-  primary_email: emailSchema,
-  booking_email: emailSchema,
-  website_url: urlSchema,
-  booking_url: urlSchema,
-  facebook_url: urlSchema,
-  instagram_url: urlSchema,
-  twitter_url: urlSchema,
-  tiktok_url: urlSchema,
-  linkedin_url: urlSchema,
-  youtube_url: urlSchema,
-  whatsapp_number: phoneSchema,
-  telegram_username: usernameSchema,
-  hours_display_text: hoursDisplaySchema,
+export const settingsContactSchema = z.object({
+  primary_email: z.string().trim().email('Primary email is required'),
+  booking_email: optionalEmail,
+  primary_phone: optionalPhone,
+  secondary_phone: optionalPhone,
+  website_url: optionalUrl,
+  booking_url: optionalUrl,
+  facebook_url: optionalUrl,
+  instagram_url: optionalUrl,
+  twitter_url: optionalUrl,
+  tiktok_url: optionalUrl,
+  linkedin_url: optionalUrl,
+  youtube_url: optionalUrl,
+  whatsapp_number: optionalPhone,
+  telegram_username: z
+    .union([
+      z
+        .string()
+        .trim()
+        .min(3, 'Telegram username must be at least 3 characters')
+        .max(32, 'Telegram username must be at most 32 characters')
+        .regex(/^[A-Za-z0-9_]+$/, 'Telegram username can contain letters, numbers, and underscores only'),
+      z.null(),
+    ])
+    .optional(),
+  hours_display_text: z
+    .union([
+      z.string().trim().max(500, 'Hours description must be 500 characters or fewer'),
+      z.null(),
+    ])
+    .optional(),
 })
 
-/**
- * Type exports for mutations
- */
-export type UpdateSalonContactDetailsInput = z.infer<typeof updateSalonContactDetailsSchema>
+export type SettingsContactSchema = z.infer<typeof settingsContactSchema>

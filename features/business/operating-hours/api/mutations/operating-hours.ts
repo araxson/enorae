@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 // UUID validation regex
 const UUID_REGEX =
@@ -35,6 +36,9 @@ const operatingHourSchema = z.object({
  * Create or update operating hours for a salon
  */
 export async function upsertOperatingHours(input: z.infer<typeof operatingHourSchema>) {
+  const logger = createOperationLogger('upsertOperatingHours', {})
+  logger.start()
+
   try {
     // Validate input
     const validated = operatingHourSchema.parse(input)

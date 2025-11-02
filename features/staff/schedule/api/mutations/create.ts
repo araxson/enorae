@@ -2,14 +2,18 @@
 
 import { revalidatePath } from 'next/cache'
 
-import { scheduleSchema } from './constants'
+import { scheduleSchema } from '../constants'
 import { getAuthorizedContext } from './context'
-import type { ActionResult } from './types'
+import type { ActionResult } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function createStaffSchedule(
   salonId: string,
   data: { staff_id: string; day_of_week: string; start_time: string; end_time: string; break_start?: string; break_end?: string; is_active?: boolean },
 ): Promise<ActionResult> {
+  const logger = createOperationLogger('createStaffSchedule', {})
+  logger.start()
+
   try {
     const validation = scheduleSchema.parse(data)
     const context = await getAuthorizedContext(salonId)
@@ -57,7 +61,7 @@ export async function createStaffSchedule(
     revalidatePath('/business/staff/schedules', 'page')
     return { success: true, data: schedule }
   } catch (error) {
-    console.error('Error creating schedule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Failed to create schedule' }
   }
 }

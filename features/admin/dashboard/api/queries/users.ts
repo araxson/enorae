@@ -2,8 +2,12 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getUserStats() {
+  const logger = createOperationLogger('getUserStats', {})
+  logger.start()
+
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
@@ -22,8 +26,8 @@ export async function getUserStats() {
 
   const roleCounts = (roleDistribution || []).reduce<Record<string, number>>(
     (acc, row) => {
-      const role = (row as any)?.role
-      if (role) {
+      if (row && typeof row === 'object' && 'role' in row && typeof row.role === 'string') {
+        const role = row.role
         acc[role] = (acc[role] || 0) + 1
       }
       return acc

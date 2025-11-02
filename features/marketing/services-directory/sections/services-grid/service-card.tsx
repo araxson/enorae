@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react'
 import Link from 'next/link'
 import {
   Item,
@@ -20,9 +21,11 @@ interface ServiceCardProps {
   service: Service
 }
 
-export function ServiceCard({ service }: ServiceCardProps) {
-  const hasPrice = service['current_price'] !== null
-  const hasSalePrice = service['sale_price'] !== null && service['sale_price'] < (service['current_price'] || 0)
+export const ServiceCard = memo(function ServiceCard({ service }: ServiceCardProps) {
+  const { hasPrice, hasSalePrice } = useMemo(() => ({
+    hasPrice: service['current_price'] !== null,
+    hasSalePrice: service['sale_price'] !== null && service['sale_price'] < (service['current_price'] || 0),
+  }), [service])
 
   return (
     <Item variant="outline" className="flex h-full flex-col gap-6">
@@ -92,4 +95,4 @@ export function ServiceCard({ service }: ServiceCardProps) {
       </ItemFooter>
     </Item>
   )
-}
+})

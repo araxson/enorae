@@ -1,96 +1,37 @@
 import { z } from 'zod'
 
 /**
- * Schema for staff ID validation
- * Enforces valid UUID format
- */
-export const staffIdSchema = z.string().uuid('Invalid staff ID format')
-
-/**
- * Schema for email validation
- */
-const emailSchema = z.string().email('Invalid email address')
-
-/**
- * Schema for full name validation
- */
-const fullNameSchema = z
-  .string()
-  .min(1, 'Full name is required')
-  .max(100, 'Full name must not exceed 100 characters')
-
-/**
- * Schema for title validation
- */
-const titleSchema = z
-  .string()
-  .max(100, 'Title must not exceed 100 characters')
-  .optional()
-
-/**
- * Schema for bio validation
- */
-const bioSchema = z
-  .string()
-  .max(500, 'Bio must not exceed 500 characters')
-  .optional()
-
-/**
- * Schema for phone validation
- */
-const phoneSchema = z
-  .string()
-  .regex(/^\+?[\d\s\-()]+$/, 'Invalid phone number format')
-  .min(7, 'Phone number must be at least 7 characters')
-  .max(20, 'Phone number must not exceed 20 characters')
-  .optional()
-
-/**
- * Schema for experience years validation
- */
-const experienceYearsSchema = z
-  .number()
-  .int('Experience years must be a whole number')
-  .min(0, 'Experience years cannot be negative')
-  .max(70, 'Experience years must not exceed 70')
-  .optional()
-
-/**
- * Schema for creating a new staff member
+ * Validation schema for creating a new staff member
  */
 export const createStaffMemberSchema = z.object({
-  email: emailSchema,
-  full_name: fullNameSchema,
-  title: titleSchema,
-  bio: bioSchema,
-  phone: phoneSchema,
-  experience_years: experienceYearsSchema,
+  email: z.string().email('Invalid email address').min(1, 'Email is required'),
+  full_name: z.string().min(2, 'Full name must be at least 2 characters').max(100, 'Full name too long'),
+  title: z.string().max(100, 'Title too long').optional(),
+  bio: z.string().max(1000, 'Bio too long').optional(),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format').optional().or(z.literal('')),
+  experience_years: z.number().int().min(0, 'Experience years must be non-negative').max(100, 'Experience years must be realistic').optional(),
 })
 
 /**
- * Schema for updating an existing staff member
- * All fields are optional for partial updates
+ * Validation schema for updating an existing staff member
  */
 export const updateStaffMemberSchema = z.object({
-  staffId: staffIdSchema,
-  email: emailSchema.optional(),
-  full_name: fullNameSchema.optional(),
-  title: titleSchema,
-  bio: bioSchema,
-  phone: phoneSchema,
-  experience_years: experienceYearsSchema,
+  full_name: z.string().min(2, 'Full name must be at least 2 characters').max(100, 'Full name too long').optional(),
+  title: z.string().max(100, 'Title too long').optional(),
+  bio: z.string().max(1000, 'Bio too long').optional(),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format').optional().or(z.literal('')),
+  experience_years: z.number().int().min(0, 'Experience years must be non-negative').max(100, 'Experience years must be realistic').optional(),
 })
 
-/**
- * Schema for deactivating/reactivating staff member
- */
-export const staffActionSchema = z.object({
-  staffId: staffIdSchema,
-})
+// Legacy aliases for backwards compatibility
+export const createStaffSchema = createStaffMemberSchema
+export const updateStaffSchema = updateStaffMemberSchema
 
-/**
- * Type exports for mutations
- */
+export const staffSchema = z.object({})
+export type StaffSchema = z.infer<typeof staffSchema>
+export type CreateStaffSchema = z.infer<typeof createStaffSchema>
+export type UpdateStaffSchema = z.infer<typeof updateStaffSchema>
+
+// Type exports
 export type CreateStaffMemberInput = z.infer<typeof createStaffMemberSchema>
 export type UpdateStaffMemberInput = z.infer<typeof updateStaffMemberSchema>
-export type StaffActionInput = z.infer<typeof staffActionSchema>

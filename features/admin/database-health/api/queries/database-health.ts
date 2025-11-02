@@ -2,6 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type TableBloat = Database['public']['Views']['table_bloat_estimate_view']['Row']
 type CacheHitRatio = Database['public']['Views']['table_cache_hit_ratio_view']['Row']
@@ -24,6 +25,9 @@ export interface DatabaseHealthSnapshot {
 export async function getDatabaseHealth(
   limit = 50
 ): Promise<DatabaseHealthSnapshot> {
+  const logger = createOperationLogger('getDatabaseHealth', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

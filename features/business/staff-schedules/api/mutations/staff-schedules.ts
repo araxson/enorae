@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type DayOfWeek = Database['public']['Enums']['day_of_week']
 
@@ -26,6 +27,9 @@ export type UpsertPayload = {
 export async function upsertStaffSchedule(
   payload: UpsertPayload
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('upsertStaffSchedule', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()

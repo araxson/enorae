@@ -2,10 +2,14 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Review = Database['public']['Views']['salon_reviews_view']['Row']
 
 export async function getCustomerReviews(): Promise<Review[]> {
+  const logger = createOperationLogger('getCustomerReviews', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

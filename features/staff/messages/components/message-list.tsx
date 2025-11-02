@@ -56,8 +56,10 @@ export function MessageList({ messages, currentUserId }: MessageListProps) {
               )}
             >
               <ItemContent className="gap-2">
-                <ItemTitle className="text-xs font-medium text-muted-foreground">
-                  {isFromMe ? 'You' : 'Staff member'}
+                <ItemTitle>
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {isFromMe ? 'You' : 'Staff member'}
+                  </span>
                 </ItemTitle>
                 <p className="whitespace-pre-wrap text-sm leading-relaxed">{message['content']}</p>
               </ItemContent>

@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const optimizeColumnSchema = z.object({
   tableName: z.string().min(1),
@@ -13,6 +14,9 @@ const optimizeColumnSchema = z.object({
 })
 
 export async function optimizeToastUsage(formData: FormData) {
+  const logger = createOperationLogger('optimizeToastUsage', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -50,7 +54,7 @@ export async function optimizeToastUsage(formData: FormData) {
     revalidatePath('/admin/database-health', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error optimizing TOAST usage:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

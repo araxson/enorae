@@ -2,11 +2,15 @@
 
 import { revalidatePath } from 'next/cache'
 import { getAuthorizedContext, verifyRoleAccess, UUID_REGEX, type ActionResult } from './helpers'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 /**
  * Deactivate user role (soft delete)
  */
 export async function deactivateUserRole(id: string): Promise<ActionResult> {
+  const logger = createOperationLogger('deactivateUserRole', {})
+  logger.start()
+
   try {
     // Validate ID
     if (!UUID_REGEX.test(id)) {

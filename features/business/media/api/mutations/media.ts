@@ -4,9 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
+import { UUID_REGEX } from '@/lib/validations/shared'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
-// UUID validation
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const brandColorsSchema = z.array(z.string())
 
 const updateMediaSchema = z.object({
   salonId: z.string().regex(UUID_REGEX, 'Invalid salon ID'),
@@ -31,6 +32,9 @@ const removeImageSchema = z.object({
 })
 
 export async function updateSalonMedia(formData: FormData) {
+  const logger = createOperationLogger('updateSalonMedia', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
@@ -45,7 +49,11 @@ export async function updateSalonMedia(formData: FormData) {
     if (brand_colors) {
       try {
         const parsed = JSON.parse(brand_colors)
-        brandColorsData = Array.isArray(parsed) ? parsed.filter((c): c is string => typeof c === 'string') : undefined
+        const validated = brandColorsSchema.safeParse(parsed)
+        brandColorsData = validated.success ? validated.data : undefined
+        if (!validated.success) {
+          return { error: 'Invalid brand colors format' }
+        }
       } catch {
         return { error: 'Invalid brand colors format' }
       }

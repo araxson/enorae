@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const acknowledgeAlertSchema = z.object({
   accessId: z.string().uuid(),
@@ -27,6 +28,9 @@ type SecurityAccessRecord = {
 }
 
 export async function acknowledgeSecurityAlert(formData: FormData) {
+  const logger = createOperationLogger('acknowledgeSecurityAlert', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -68,12 +72,15 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
     revalidatePath('/admin/security/monitoring', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error acknowledging alert:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function dismissSecurityAlert(formData: FormData) {
+  const logger = createOperationLogger('dismissSecurityAlert', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -115,12 +122,15 @@ export async function dismissSecurityAlert(formData: FormData) {
     revalidatePath('/admin/security/monitoring', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error dismissing alert:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function suppressSecurityAlert(formData: FormData) {
+  const logger = createOperationLogger('suppressSecurityAlert', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -188,7 +198,7 @@ export async function suppressSecurityAlert(formData: FormData) {
     revalidatePath('/admin/security/monitoring', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error suppressing alert:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

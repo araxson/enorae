@@ -5,9 +5,13 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
-import { reactivateUserSchema, UUID_REGEX } from './constants'
+import { reactivateUserSchema, UUID_REGEX } from '../../constants'
+import { createOperationLogger, logError } from '@/lib/observability/logger'
 
 export async function reactivateUser(formData: FormData) {
+  const logger = createOperationLogger('reactivateUser', {})
+  logger.start()
+
   try {
     const parsed = reactivateUserSchema.safeParse({
       userId: formData.get('userId')?.toString(),
@@ -41,7 +45,7 @@ export async function reactivateUser(formData: FormData) {
     if (profileError) return { error: profileError.message }
 
     // Reactivate roles
-    await supabase
+    const { error: rolesError } = await supabase
       .schema('identity')
       .from('user_roles')
       .update({
@@ -50,13 +54,15 @@ export async function reactivateUser(formData: FormData) {
       })
       .eq('user_id', userId)
 
+    if (rolesError) return { error: rolesError.message }
+
     // Audit logging
     const metadata: Json = {
       note: sanitizedNote ?? 'No note provided',
       reactivated_by: session.user.id,
     }
 
-    await supabase.schema('audit').from('audit_logs').insert({
+    const { error: auditError } = await supabase.schema('audit').from('audit_logs').insert({
       event_type: 'user_reactivated',
       event_category: 'identity',
       severity: 'info',
@@ -70,6 +76,10 @@ export async function reactivateUser(formData: FormData) {
       metadata,
       is_success: true,
     })
+
+    if (auditError) {
+      logger.error(auditError, 'system')
+    }
 
     revalidatePath('/admin/users', 'page')
     return { success: true }

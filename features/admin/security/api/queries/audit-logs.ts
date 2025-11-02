@@ -2,6 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AuditLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
 
@@ -79,6 +80,8 @@ export async function getAuditLogs(filters?: {
   dateTo?: string
   limit?: number
 }): Promise<AuditLog[]> {
+  const logger = createOperationLogger('getAuditLogs', {})
+  logger.start()
   // SECURITY: Require platform admin
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 

@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
-
-import { Spinner } from '@/components/ui/spinner'
+import { PageLoading } from '@/features/shared/ui-components'
 import { HowItWorksPage, howItWorksMetadata } from '@/features/marketing/how-it-works'
 
 export const metadata = howItWorksMetadata
@@ -8,11 +7,7 @@ export const metadata = howItWorksMetadata
 export default function Page() {
   return (
     <Suspense
-      fallback={
-        <div className="flex justify-center py-16">
-          <Spinner className="size-6 text-muted-foreground" />
-        </div>
-      }
+      fallback={<PageLoading />}
     >
       <HowItWorksPage />
     </Suspense>

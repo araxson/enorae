@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
-import { blockedTimeSchema, type BlockedTimeFormData } from '@/features/staff/blocked-times/schema'
-import { createBlockedTime, updateBlockedTime } from '@/features/staff/blocked-times/api/mutations'
+import { blockedTimeSchema, type BlockedTimeFormData } from '../api/schema'
+import { createBlockedTime, updateBlockedTime } from '../api/mutations'
 import type { BlockedTime } from '@/features/staff/blocked-times/types'
 import {
   Field,

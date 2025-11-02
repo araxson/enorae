@@ -2,14 +2,18 @@ import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 import type {
   AdminSalonOverviewRow,
   ChainCompliance,
   SalonChainRow,
-} from './types'
+} from '../../types'
 
 export async function getChainCompliance(): Promise<ChainCompliance[]> {
+  const logger = createOperationLogger('getChainCompliance', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 
@@ -21,22 +25,38 @@ export async function getChainCompliance(): Promise<ChainCompliance[]> {
 
   if (chainsError) throw chainsError
 
+  // PERFORMANCE FIX: Batch fetch all salons in one query instead of N+1
+  const chainIds = (chains ?? []).map((c) => c['id']).filter(Boolean) as string[]
+
+  if (chainIds.length === 0) return []
+
+  const { data: allSalonSummaries, error: salonsError } = await supabase
+    .from('admin_salons_overview_view')
+    .select('id, chain_id, is_accepting_bookings')
+    .in('chain_id', chainIds)
+    .returns<AdminSalonOverviewRow[]>()
+
+  if (salonsError) throw salonsError
+
+  // Group salons by chain_id
+  const salonsByChain = new Map<string, AdminSalonOverviewRow[]>()
+  for (const salon of allSalonSummaries ?? []) {
+    const chainId = salon['chain_id']
+    if (!chainId) continue
+    if (!salonsByChain.has(chainId)) {
+      salonsByChain.set(chainId, [])
+    }
+    salonsByChain.get(chainId)!.push(salon)
+  }
+
   const results: ChainCompliance[] = []
 
   for (const chain of chains ?? []) {
     if (!chain['id']) continue
 
-    const { data: salonSummaries, error: salonsError } = await supabase
-      .from('admin_salons_overview_view')
-      .select('id, chain_id, is_accepting_bookings')
-      .eq('chain_id', chain['id'])
-      .returns<AdminSalonOverviewRow[]>()
-
-    if (salonsError) throw salonsError
-
-    const totalSalons = salonSummaries?.length ?? 0
-    const activeSalons =
-      salonSummaries?.filter((salon) => Boolean(salon['is_accepting_bookings'])).length ?? 0
+    const salonSummaries = salonsByChain.get(chain['id']) ?? []
+    const totalSalons = salonSummaries.length
+    const activeSalons = salonSummaries.filter((salon) => Boolean(salon['is_accepting_bookings'])).length
     const inactiveSalons = Math.max(totalSalons - activeSalons, 0)
     const complianceRate = totalSalons > 0 ? (activeSalons / totalSalons) * 100 : 0
 

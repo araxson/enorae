@@ -4,14 +4,19 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { UUID_REGEX } from './schemas'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Mark messages from a specific user as read
  */
 export async function markMessagesAsRead(fromUserId: string) {
+  const logger = createOperationLogger('markMessagesAsRead', { fromUserId })
+  logger.start()
+
   try {
     // Validate ID
     if (!UUID_REGEX.test(fromUserId)) {
+      logger.error('Invalid user ID format', 'validation')
       return { error: 'Invalid user ID' }
     }
 
@@ -33,13 +38,16 @@ export async function markMessagesAsRead(fromUserId: string) {
       .eq('is_read', false)
 
     if (error) {
+      logger.error(error, 'database')
       return { error: error.message }
     }
 
     revalidatePath('/customer/messages', 'page')
 
+    logger.success({ fromUserId, userId: session.user.id })
     return { success: true, error: null }
-  } catch {
+  } catch (error) {
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to mark messages as read' }
   }
 }
@@ -48,9 +56,13 @@ export async function markMessagesAsRead(fromUserId: string) {
  * Mark a thread as unread
  */
 export async function markThreadAsUnread(threadId: string) {
+  const logger = createOperationLogger('markThreadAsUnread', { threadId })
+  logger.start()
+
   try {
     // Validate ID
     if (!UUID_REGEX.test(threadId)) {
+      logger.error('Invalid thread ID format', 'validation')
       return { error: 'Invalid thread ID' }
     }
 
@@ -69,14 +81,17 @@ export async function markThreadAsUnread(threadId: string) {
       .eq('to_user_id', session.user.id)
 
     if (error) {
+      logger.error(error, 'database')
       return { error: error.message }
     }
 
     revalidatePath('/customer/messages', 'page')
     revalidatePath('/business/messages', 'page')
 
+    logger.success({ threadId, userId: session.user.id })
     return { success: true, error: null }
-  } catch {
+  } catch (error) {
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to mark thread as unread' }
   }
 }

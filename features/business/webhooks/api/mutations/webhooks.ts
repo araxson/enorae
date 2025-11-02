@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -14,6 +15,9 @@ export type ActionResponse<T = void> =
  * Retry a failed webhook
  */
 export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
+  const logger = createOperationLogger('retryWebhook', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(webhookId)) {
       return { success: false, error: 'Invalid webhook ID format' }
@@ -58,7 +62,7 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
 
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error retrying webhook:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to retry webhook',
@@ -70,6 +74,9 @@ export async function retryWebhook(webhookId: string): Promise<ActionResponse> {
  * Delete a webhook entry
  */
 export async function deleteWebhook(webhookId: string): Promise<ActionResponse> {
+  const logger = createOperationLogger('deleteWebhook', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(webhookId)) {
       return { success: false, error: 'Invalid webhook ID format' }
@@ -105,7 +112,7 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
 
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error deleting webhook:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to delete webhook',
@@ -117,6 +124,9 @@ export async function deleteWebhook(webhookId: string): Promise<ActionResponse> 
  * Retry all failed webhooks for the salon
  */
 export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: number }>> {
+  const logger = createOperationLogger('retryAllFailedWebhooks', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -143,7 +153,7 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
       data: { count: count || 0 }
     }
   } catch (error) {
-    console.error('Error retrying webhooks:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to retry webhooks',
@@ -155,6 +165,9 @@ export async function retryAllFailedWebhooks(): Promise<ActionResponse<{ count: 
  * Clear completed webhooks (older than 30 days)
  */
 export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: number }>> {
+  const logger = createOperationLogger('clearCompletedWebhooks', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -181,7 +194,7 @@ export async function clearCompletedWebhooks(): Promise<ActionResponse<{ count: 
       data: { count: count || 0 }
     }
   } catch (error) {
-    console.error('Error clearing webhooks:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to clear webhooks',

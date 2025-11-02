@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 // Type aliases for database views
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
@@ -17,6 +18,9 @@ export interface AnomalyAlert {
 }
 
 export async function getAnomalyAlerts(salonId: string): Promise<AnomalyAlert[]> {
+  const logger = createOperationLogger('getAnomalyAlerts', {})
+  logger.start()
+
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 
@@ -24,12 +28,18 @@ export async function getAnomalyAlerts(salonId: string): Promise<AnomalyAlert[]>
   const alerts: AnomalyAlert[] = []
 
   // Get recent metrics with anomaly scores
-  const { data: metrics } = await supabase
+  const { data: metrics, error: metricsError } = await supabase
     .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })
     .limit(7)
+
+  if (metricsError) {
+    logger.error(metricsError, 'database')
+    console.error('[getAnomalyAlerts] Failed to fetch metrics:', metricsError)
+    throw new Error('Failed to fetch anomaly metrics')
+  }
 
   if (!metrics) return alerts
 

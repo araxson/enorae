@@ -7,6 +7,7 @@ import { sanitizeAdminText } from '@/features/admin/admin-common'
 import type { Tables } from '@/lib/types/database.types'
 import { updateChainActiveStatusSchema } from './schemas'
 import { logChainAudit } from './audit'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type ChainActionResponse =
   | { success: true; message: string }
@@ -22,6 +23,9 @@ export async function updateChainActiveStatus(data: {
   isActive: boolean
   reason: string
 }): Promise<ChainActionResponse> {
+  const logger = createOperationLogger('updateChainActiveStatus', {})
+  logger.start()
+
   try {
     const parsed = updateChainActiveStatusSchema.safeParse(data)
     if (!parsed.success) {

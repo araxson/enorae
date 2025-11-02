@@ -5,13 +5,17 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
-import { banUserSchema, UUID_REGEX } from './constants'
+import { banUserSchema, UUID_REGEX } from '../../constants'
+import { createOperationLogger, logError } from '@/lib/observability/logger'
 
 /**
  * Ban user permanently - requires super_admin role
  * Terminates all sessions and marks user as permanently banned
  */
 export async function banUser(formData: FormData) {
+  const logger = createOperationLogger('banUser', {})
+  logger.start()
+
   try {
     const parsed = banUserSchema.safeParse({
       userId: formData.get('userId')?.toString(),
@@ -50,7 +54,7 @@ export async function banUser(formData: FormData) {
     if (profileError) return { error: profileError.message }
 
     // Deactivate all roles
-    await supabase
+    const { error: rolesError } = await supabase
       .schema('identity')
       .from('user_roles')
       .update({
@@ -59,8 +63,14 @@ export async function banUser(formData: FormData) {
       })
       .eq('user_id', userId)
 
+    if (rolesError) {
+      console.error('[banUser] Failed to deactivate user roles:', rolesError)
+      logger.error(rolesError, 'database')
+      return { error: 'Failed to deactivate user roles' }
+    }
+
     // Terminate all sessions
-    await supabase
+    const { error: sessionsError } = await supabase
       .schema('identity')
       .from('sessions')
       .update({
@@ -70,6 +80,12 @@ export async function banUser(formData: FormData) {
       })
       .eq('user_id', userId)
 
+    if (sessionsError) {
+      console.error('[banUser] Failed to terminate user sessions:', sessionsError)
+      logger.error(sessionsError, 'database')
+      return { error: 'Failed to terminate user sessions' }
+    }
+
     // Critical audit log
     const metadata: Json = {
       reason: sanitizedReason,
@@ -77,7 +93,7 @@ export async function banUser(formData: FormData) {
       banned_by: session.user.id,
     }
 
-    await supabase.schema('audit').from('audit_logs').insert({
+    const { error: auditError } = await supabase.schema('audit').from('audit_logs').insert({
       event_type: 'user_banned',
       event_category: 'security',
       severity: 'critical',
@@ -91,6 +107,12 @@ export async function banUser(formData: FormData) {
       metadata,
       is_success: true,
     })
+
+    if (auditError) {
+      // Log but don't fail - audit logging is important but shouldn't block the operation
+      console.error('[banUser] Failed to log audit trail:', auditError)
+      logger.error(auditError, 'database')
+    }
 
     revalidatePath('/admin/users', 'page')
     return { success: true }

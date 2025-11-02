@@ -5,8 +5,9 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
 import { getAuthorizedContext } from './context'
-import { UUID_REGEX, type DayOfWeek } from './constants'
-import type { ActionResult } from './types'
+import { UUID_REGEX, type DayOfWeek } from '../constants'
+import type { ActionResult } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function updateStaffSchedule(
   scheduleId: string,
@@ -20,6 +21,9 @@ export async function updateStaffSchedule(
     is_active?: boolean
   },
 ): Promise<ActionResult> {
+  const logger = createOperationLogger('updateStaffSchedule', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(scheduleId)) {
       return { error: 'Invalid schedule ID format' }
@@ -67,7 +71,7 @@ export async function updateStaffSchedule(
     revalidatePath('/business/staff/schedules', 'page')
     return { success: true, data: updated }
   } catch (error) {
-    console.error('Error updating schedule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Failed to update schedule' }
   }
 }

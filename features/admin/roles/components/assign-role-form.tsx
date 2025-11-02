@@ -1,33 +1,20 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Shield } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { assignRole } from '@/features/admin/roles/api/mutations'
-import { PermissionsEditor } from './permissions-editor'
-import { RoleSelector } from './role-selector'
-import { SalonSelector } from './salon-selector'
 import type { RoleTemplate } from '@/features/admin/roles/components/role-templates'
 import type { RoleValue } from './types'
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Spinner } from '@/components/ui/spinner'
-import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
+import { AssignRoleFormHeader } from './assign-role-form-header'
+import { AssignRoleFormFields } from './assign-role-form-fields'
+import { AssignRolePermissionsSection } from './assign-role-permissions-section'
 
 type AssignRoleFormProps = {
   open: boolean
@@ -52,7 +39,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
   const [permissions, setPermissions] = useState<string[]>([])
   const [templateId, setTemplateId] = useState('')
   const [errors, setErrors] = useState<{ userId?: string; role?: string; salonId?: string }>({})
-  const userIdRef = useRef<HTMLInputElement>(null)
+  const userIdRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     if (!open) {
@@ -73,6 +60,17 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
       setRole(template.role as RoleValue)
       setPermissions(template.permissions)
     }
+  }
+
+  const handleRoleChange = (value: RoleValue | '') => {
+    setRole(value)
+    setTemplateId('')
+    setErrors((current) => ({ ...current, role: undefined }))
+  }
+
+  const handleSalonChange = (value: string) => {
+    setSalonId(value)
+    setErrors((current) => ({ ...current, salonId: undefined }))
   }
 
   const handleAddPermission = (permission: string) => {
@@ -137,87 +135,30 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
           }
         }}
       >
-        <DialogHeader>
-          <ItemGroup>
-            <Item variant="muted">
-              <ItemMedia variant="icon">
-                <Shield className="size-5" />
-              </ItemMedia>
-            <ItemContent>
-              <DialogTitle>Assign Role</DialogTitle>
-              <DialogDescription>
-                Assign a role to a user and optionally configure granular permissions with templates.
-              </DialogDescription>
-            </ItemContent>
-            </Item>
-          </ItemGroup>
-        </DialogHeader>
+        <AssignRoleFormHeader />
 
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-8">
-            <div className="flex flex-col gap-6">
-              <Field data-invalid={Boolean(errors.userId)}>
-                <FieldLabel htmlFor="userId">User ID *</FieldLabel>
-                <FieldContent>
-                  <Input
-                    ref={userIdRef}
-                    id="userId"
-                    placeholder="Enter user UUID"
-                    value={userId}
-                    onChange={(event) => setUserId(event.target.value)}
-                    required
-                    aria-invalid={Boolean(errors.userId)}
-                  />
-                  <FieldDescription>The UUID of the user to assign the role to.</FieldDescription>
-                </FieldContent>
-                {errors.userId ? <FieldError>{errors.userId}</FieldError> : null}
-              </Field>
+            <AssignRoleFormFields
+              userId={userId}
+              role={role}
+              salonId={salonId}
+              templateId={templateId}
+              needsSalon={needsSalon}
+              salons={salons}
+              errors={errors}
+              onUserIdChange={setUserId}
+              onRoleChange={handleRoleChange}
+              onSalonChange={handleSalonChange}
+              onTemplateChange={handleTemplateChange}
+              userIdRef={userIdRef}
+            />
 
-              <RoleSelector
-                role={role}
-                onRoleChange={(value) => {
-                  setRole(value)
-                  setTemplateId('')
-                  setErrors((current) => ({ ...current, role: undefined }))
-                }}
-                templateId={templateId}
-                onTemplateChange={handleTemplateChange}
-              />
-              {errors.role && <p className="text-xs text-destructive">{errors.role}</p>}
-
-              {needsSalon && (
-                <>
-                  <SalonSelector
-                    salons={salons}
-                    value={salonId}
-                    onChange={(value) => {
-                      setSalonId(value)
-                      setErrors((current) => ({ ...current, salonId: undefined }))
-                    }}
-                    required
-                  />
-                  {errors.salonId && <p className="text-xs text-destructive">{errors.salonId}</p>}
-                </>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <ItemGroup>
-                <Item>
-                  <ItemContent>
-                    <FieldLabel>Permissions</FieldLabel>
-                    <ItemDescription>
-                      Templates prefill permissions; add or remove as needed.
-                    </ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-              <PermissionsEditor
-                permissions={permissions}
-                onAdd={handleAddPermission}
-                onRemove={handleRemovePermission}
-              />
-            </div>
+            <AssignRolePermissionsSection
+              permissions={permissions}
+              onAdd={handleAddPermission}
+              onRemove={handleRemovePermission}
+            />
 
             <ButtonGroup aria-label="Actions">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>

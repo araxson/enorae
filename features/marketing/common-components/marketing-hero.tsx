@@ -39,8 +39,8 @@ export function MarketingHero({
     <MarketingSection spacing={spacingVariant} groupClassName="gap-0">
       <Item variant="outline" className="flex flex-col gap-6">
         <ItemHeader className={cn('flex flex-col gap-4 md:gap-6', headerAlignment)}>
-          <ItemTitle className="text-balance">
-            <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+          <ItemTitle>
+            <h1 className="text-balance text-3xl font-semibold tracking-tight md:text-4xl">
               {title}
             </h1>
           </ItemTitle>

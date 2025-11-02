@@ -1,3 +1,5 @@
+'use server'
+
 import { z } from 'zod'
 import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
 

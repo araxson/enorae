@@ -1,14 +1,18 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { requireUser } from '@/lib/auth/guards-simple'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Refresh service performance analytics
  * Note: Since the RPC doesn't exist, we return true as analytics are calculated on-demand
  */
 export async function refreshServicePerformance(serviceId: string): Promise<boolean> {
+  const logger = createOperationLogger('refreshServicePerformance', {})
+  logger.start()
+
+  await requireUser()
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
 
   // Verify service exists and user has access
   const { error } = await supabase

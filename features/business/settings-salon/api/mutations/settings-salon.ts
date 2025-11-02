@@ -4,6 +4,7 @@ import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -14,6 +15,9 @@ const salonInfoSchema = z.object({
 })
 
 export async function updateSalonInfo(salonId: string, formData: FormData) {
+  const logger = createOperationLogger('updateSalonInfo', {})
+  logger.start()
+
   try {
     // SECURITY: Require business user role
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -65,7 +69,7 @@ export async function updateSalonInfo(salonId: string, formData: FormData) {
 
     return { success: true }
   } catch (error) {
-    console.error('Error updating salon info:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     if (error instanceof z.ZodError) {
       return { error: 'Validation failed: ' + error.issues[0]?.message }
     }

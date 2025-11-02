@@ -1,6 +1,7 @@
 import 'server-only'
 import type { Database } from '@/lib/types/database.types'
 import type { ServerSupabaseClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 import type {
   AppointmentServiceRow,
   AppointmentWithProfile,
@@ -16,6 +17,9 @@ export async function fetchAppointments(
   client: Client,
   salonId: string,
 ): Promise<AppointmentWithProfile[]> {
+  const logger = createOperationLogger('fetchAppointments', {})
+  logger.start()
+
   const { data, error } = await client
     .from('appointments_view')
     .select(`
@@ -30,10 +34,16 @@ export async function fetchAppointments(
 
   if (error) throw error
 
-  const appointments = (data ?? []) as any[]
+  const appointments = data ?? []
 
   // Fetch customer profiles separately
-  const customerIds = [...new Set(appointments.map((a) => a.customer_id).filter(Boolean))]
+  const customerIds = [
+    ...new Set(
+      appointments
+        .map((a) => a.customer_id)
+        .filter((id): id is string => typeof id === 'string')
+    )
+  ]
   let profilesMap = new Map<string, { username: string | null }>()
 
   if (customerIds.length > 0) {
@@ -44,8 +54,10 @@ export async function fetchAppointments(
       .in('id', customerIds)
 
     if (profiles) {
-      profiles.forEach((p: any) => {
-        profilesMap.set(p.id, { username: p.username })
+      profiles.forEach((p) => {
+        if (p.id) {
+          profilesMap.set(p.id, { username: p.username })
+        }
       })
     }
   }
@@ -131,17 +143,21 @@ export async function fetchNameMaps(
 
   const staffNameMap = new Map<string, string>()
   ;(staffProfiles.data ?? []).forEach((entry) => {
-    const profile = entry as StaffProfileRow
-    if (profile['id']) {
-      staffNameMap.set(profile['id'], profile['username'] || 'N/A')
+    if (entry && typeof entry === 'object' && 'id' in entry && 'username' in entry) {
+      const profile = entry as StaffProfileRow
+      if (profile.id) {
+        staffNameMap.set(profile.id, profile.username || 'N/A')
+      }
     }
   })
 
   const serviceNameMap = new Map<string, string>()
   ;(services.data ?? []).forEach((entry) => {
-    const service = entry as Pick<ServiceRow, 'id' | 'name'>
-    if (service['id']) {
-      serviceNameMap.set(service['id'], service['name'] || 'N/A')
+    if (entry && typeof entry === 'object' && 'id' in entry && 'name' in entry) {
+      const service = entry as Pick<ServiceRow, 'id' | 'name'>
+      if (service.id) {
+        serviceNameMap.set(service.id, service.name || 'N/A')
+      }
     }
   })
 

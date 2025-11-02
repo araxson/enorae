@@ -3,10 +3,14 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { CustomerFavoriteView } from '@/features/customer/favorites'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 const FAVORITES_LIMIT = 10
 
 export async function getFavorites(): Promise<CustomerFavoriteView[]> {
+  const logger = createOperationLogger('getFavorites', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

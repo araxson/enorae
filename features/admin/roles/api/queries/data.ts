@@ -3,6 +3,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AdminUserRole = Database['public']['Views']['user_roles_view']['Row']
 
@@ -23,6 +24,9 @@ export interface RoleAuditEvent {
  * SECURITY: Platform admin only
  */
 export async function getAllRoleAssignments(): Promise<AdminUserRole[]> {
+  const logger = createOperationLogger('getAllRoleAssignments', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()

@@ -3,7 +3,8 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
 
-import type { RoleType } from './types'
+import type { RoleType } from '../../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type AssignmentPayload = {
   userId: string
@@ -17,6 +18,9 @@ export async function applyRoleAssignment(
   data: AssignmentPayload,
   actorId: string,
 ) {
+  const logger = createOperationLogger('applyRoleAssignment', {})
+  logger.start()
+
   let existingQuery = supabase
     .schema('identity')
     .from('user_roles')

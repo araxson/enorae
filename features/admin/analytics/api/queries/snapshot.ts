@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   getPlatformMetrics,
   getUserGrowthMetrics,
@@ -25,6 +26,9 @@ export {
  * @param options - Options with windowDays (defaults to 30)
  */
 export async function getPlatformAnalyticsSnapshot(options?: { windowDays?: number }) {
+  const logger = createOperationLogger('getPlatformAnalyticsSnapshot', {})
+  logger.start()
+
   const windowDays = options?.windowDays || 30
   const endDate = new Date().toISOString()
   const startDate = new Date(Date.now() - windowDays * 24 * 60 * 60 * 1000).toISOString()

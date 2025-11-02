@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import 'server-only'
 import type { Database } from '@/lib/types/database.types'
 import type { Session } from '@/lib/auth'
 import { deriveBookingDurations, derivePricingMetrics } from '@/lib/services/calculations'
@@ -29,10 +29,6 @@ export type ServiceBookingRulesData = {
   buffer_minutes?: number | null
   min_advance_booking_hours?: number | null
   max_advance_booking_days?: number | null
-}
-
-export function extractFirstError(error: z.ZodError): string {
-  return error.issues[0]?.message ?? 'Invalid service data'
 }
 
 export function buildServiceInsert(
@@ -119,7 +115,15 @@ export async function rollbackService(
   includePricing: boolean = false,
 ) {
   if (includePricing) {
-    await supabase.schema('catalog').from('service_pricing').delete().eq('service_id', serviceId)
+    const { error: pricingError } = await supabase.schema('catalog').from('service_pricing').delete().eq('service_id', serviceId)
+    if (pricingError) {
+      console.error('Failed to rollback service pricing:', pricingError)
+      throw pricingError
+    }
   }
-  await supabase.schema('catalog').from('services').delete().eq('id', serviceId)
+  const { error: serviceError } = await supabase.schema('catalog').from('services').delete().eq('id', serviceId)
+  if (serviceError) {
+    console.error('Failed to rollback service:', serviceError)
+    throw serviceError
+  }
 }

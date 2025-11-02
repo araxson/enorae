@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type ActionResult = {
   success?: boolean
@@ -15,6 +16,9 @@ type ActionResult = {
  * Uses junction table to track votes and prevent duplicates
  */
 export async function markReviewAsHelpful(reviewId: string): Promise<ActionResult> {
+  const logger = createOperationLogger('markReviewAsHelpful', {})
+  logger.start()
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()

@@ -68,7 +68,9 @@ export async function AdminReviews() {
               <Item key={stat.label} variant="outline" className="items-start">
                 <ItemContent className="gap-1">
                   <ItemDescription>{stat.label}</ItemDescription>
-                  <ItemTitle className="text-2xl font-semibold">{stat.value}</ItemTitle>
+                  <ItemTitle>
+                    <span className="text-2xl font-semibold">{stat.value}</span>
+                  </ItemTitle>
                 </ItemContent>
               </Item>
             ))}

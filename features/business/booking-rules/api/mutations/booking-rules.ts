@@ -2,23 +2,18 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { z } from 'zod'
+import { ruleSchema } from '@/features/business/booking-rules/api/schema'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
-
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-const ruleSchema = z.object({
-  serviceId: z.string().regex(UUID_REGEX),
-  durationMinutes: z.number().int().min(0).optional(),
-  bufferMinutes: z.number().int().min(0).optional(),
-  minAdvanceBookingHours: z.number().int().min(0).optional(),
-  maxAdvanceBookingDays: z.number().int().min(0).optional(),
-})
-
 export async function upsertBookingRule(formData: FormData) {
+  const logger = createOperationLogger('upsertBookingRule', {})
+  logger.start()
+
   try {
     const result = ruleSchema.safeParse({
       serviceId: formData.get('serviceId'),

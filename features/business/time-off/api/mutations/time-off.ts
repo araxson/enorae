@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -16,6 +17,9 @@ type ActionResult = {
  * SECURITY: Business users only, salon ownership verified
  */
 export async function approveTimeOffRequest(requestId: string, notes?: string): Promise<ActionResult> {
+  const logger = createOperationLogger('approveTimeOffRequest', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(requestId)) {
       return { error: 'Invalid request ID' }

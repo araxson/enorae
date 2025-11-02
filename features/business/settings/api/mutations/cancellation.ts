@@ -3,6 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const cancellationPolicySchema = z.object({
   cancellation_hours: z.number().int().min(0).max(168),
@@ -14,6 +15,9 @@ export async function updateCancellationPolicy(
   salonId: string,
   formData: FormData,
 ) {
+  const logger = createOperationLogger('updateCancellationPolicy', {})
+  logger.start()
+
   try {
     const supabase = await getSalonContext(salonId)
 
@@ -41,7 +45,7 @@ export async function updateCancellationPolicy(
     revalidateSettings()
     return { success: true }
   } catch (error) {
-    console.error('Error updating cancellation policy:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     if (error instanceof z.ZodError) {
       return { error: `Validation failed: ${error.issues[0]?.message}` }
     }

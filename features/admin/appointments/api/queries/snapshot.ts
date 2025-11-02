@@ -3,6 +3,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '@/features/admin/appointments/types'
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   buildStatusTotals,
   calculatePerformanceMetrics,
@@ -37,6 +38,9 @@ const DEFAULT_OPTIONS: Required<SnapshotOptions> = {
 export async function getAppointmentSnapshot(
   options: SnapshotOptions = {},
 ): Promise<AppointmentSnapshot> {
+  const logger = createOperationLogger('getAppointmentSnapshot', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const settings = { ...DEFAULT_OPTIONS, ...options }

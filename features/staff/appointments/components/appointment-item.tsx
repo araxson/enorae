@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useCallback } from 'react'
 import { format } from 'date-fns'
 import { Calendar, Clock, CheckCircle, XCircle, Play, User } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -40,7 +41,8 @@ const statusConfig: Record<AppointmentStatus, { label: string; variant: 'default
   rescheduled: { label: 'Rescheduled', variant: 'outline' },
 }
 
-export function AppointmentItem({
+// PERFORMANCE FIX: Wrap in React.memo to prevent unnecessary re-renders in list
+export const AppointmentItem = memo(function AppointmentItem({
   appointment,
   showActions = true,
   onSelect,
@@ -52,6 +54,14 @@ export function AppointmentItem({
   const customerId = appointment.customer_id
   const confirmationCode = appointment.confirmation_code
 
+  // PERFORMANCE FIX: Memoize keyboard handler
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onSelect()
+    }
+  }, [onSelect])
+
   return (
     <Item
       role="button"
@@ -59,12 +69,7 @@ export function AppointmentItem({
       variant="outline"
       className="cursor-pointer transition-colors hover:bg-accent"
       onClick={onSelect}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault()
-          onSelect()
-        }
-      }}
+      onKeyDown={handleKeyDown}
     >
       <ItemContent>
         <ItemTitle>
@@ -153,4 +158,4 @@ export function AppointmentItem({
       ) : null}
     </Item>
   )
-}
+})

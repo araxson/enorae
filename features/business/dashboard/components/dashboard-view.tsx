@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { memo, type ReactNode } from 'react'
 import type { BusinessDashboardState } from '@/features/business/dashboard/types'
 import { DashboardToolbar } from './dashboard-toolbar'
 import { DashboardFilters } from './dashboard-filters'
@@ -11,7 +11,7 @@ type DashboardViewProps = BusinessDashboardState & {
   analyticsPanel: ReactNode
 }
 
-export function DashboardView({
+export const DashboardView = memo(function DashboardView({
   salon,
   metrics,
   reviewStats,
@@ -44,4 +44,4 @@ export function DashboardView({
       </div>
     </section>
   )
-}
+})

@@ -2,18 +2,16 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
-type BookingRule = Database['catalog']['Tables']['service_booking_rules']['Row']
+type BookingRule = Database['public']['Views']['service_booking_rules_view']['Row']
 
-export type BookingRuleWithService = BookingRule & {
-  service: {
-    id: string
-    name: string
-    salon_id: string
-  } | null
-}
+export type BookingRuleWithService = BookingRule
 
 export async function getBookingRules(): Promise<BookingRuleWithService[]> {
+  const logger = createOperationLogger('getBookingRules', {})
+  logger.start()
+
   // SECURITY: Require authentication
   const { supabase, salonId } = await resolveSalonContext()
   const { data, error } = await supabase
@@ -23,7 +21,9 @@ export async function getBookingRules(): Promise<BookingRuleWithService[]> {
     .is('deleted_at', null)
 
   if (error) throw error
-  return (data as unknown as BookingRuleWithService[]) ?? []
+
+  // Data from view already matches BookingRuleWithService type
+  return (data ?? [])
 }
 
 export type BookingRuleServiceOption = {
@@ -58,11 +58,13 @@ async function resolveSalonContext() {
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 
+  type StaffProfileSalonId = { salon_id: string | null }
+
   const { data: staffProfile, error } = await supabase
     .from('staff_profiles_view')
     .select('salon_id')
     .eq('user_id', session.user.id)
-    .single<{ salon_id: string | null }>()
+    .single<StaffProfileSalonId>()
 
   if (error) throw error
   if (!staffProfile?.salon_id) {

@@ -3,6 +3,7 @@ import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
 import { ServiceOptionsResponseSchema } from '@/features/business/appointments/api/queries/service-options-schema'
 import type { ServiceOption, StaffOption, ServiceFormData } from './types'
+import { TIME_MS } from '@/lib/config/constants'
 
 export function useAddServiceForm(
   appointmentId: string,
@@ -34,8 +35,7 @@ export function useAddServiceForm(
       setIsLoadingOptions(true)
       try {
         // API_INTEGRATION_FIX: Add 10 second timeout for API calls
-        const API_REQUEST_TIMEOUT_MS = 10000 // 10 seconds
-        const timeoutSignal = AbortSignal.timeout(API_REQUEST_TIMEOUT_MS)
+        const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
         const response = await fetch(
           `/api/business/appointments/${appointmentId}/service-options`,
           {

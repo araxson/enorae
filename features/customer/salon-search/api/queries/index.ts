@@ -1,1 +1,5 @@
-export * from './salon-search'
+export type { SalonSearchResult, SearchFilters } from '../../types'
+export { searchSalons, getFeaturedSalons } from './basic'
+export { searchSalonsWithFuzzyMatch, getNearbyServices } from './advanced'
+export { getSalonSearchSuggestions } from './suggestions'
+export { getPopularCities, getAvailableStates } from './filters'

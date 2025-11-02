@@ -1,3 +1,4 @@
+import 'server-only'
 // Re-export helper functions from organized files
 export {
   ZERO_TOTALS,

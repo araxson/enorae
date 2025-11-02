@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
+import { settingsContactSchema } from '@/features/business/settings-contact/api/schema'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -30,6 +32,9 @@ export async function updateSalonContactDetails(
   salonId: string,
   input: ContactDetailsInput
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateSalonContactDetails', {})
+  logger.start()
+
   try {
     // SECURITY: Require business user role
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -38,6 +43,15 @@ export async function updateSalonContactDetails(
     if (!(await canAccessSalon(salonId))) {
       return { success: false, error: 'Unauthorized: Not your salon' }
     }
+
+    // Validate input with Zod schema
+    const validation = settingsContactSchema.safeParse(input)
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      return { success: false, error: firstError?.message ?? 'Validation failed' }
+    }
+
+    const validatedData = validation.data
 
     // Check if record exists
     const { data: existing } = await supabase
@@ -53,7 +67,7 @@ export async function updateSalonContactDetails(
         .schema('organization')
         .from('salon_contact_details')
         .update({
-          ...input,
+          ...validatedData,
           updated_at: new Date().toISOString(),
           updated_by_id: session.user.id,
         })
@@ -67,7 +81,7 @@ export async function updateSalonContactDetails(
         .from('salon_contact_details')
         .insert({
           salon_id: salonId,
-          ...input,
+          ...validatedData,
           created_by_id: session.user.id,
           updated_by_id: session.user.id,
         })
@@ -78,7 +92,7 @@ export async function updateSalonContactDetails(
     revalidatePath('/business/settings/contact', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error updating contact details:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update contact details',

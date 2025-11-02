@@ -15,6 +15,7 @@ import { DisputesPanel } from './disputes-panel'
 import { SalonPerformanceTable } from './salon-performance-table'
 import { RecentAppointmentsTable } from './recent-appointments-table'
 import { Spinner } from '@/components/ui/spinner'
+import { TIME_MS } from '@/lib/config/constants'
 import {
   Item,
   ItemActions,
@@ -44,8 +45,13 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
     setIsRefreshing(true)
     setError(null)
 
+    const controller = new AbortController()
     try {
-      const response = await fetch('/api/admin/appointments/oversight', { cache: 'no-store' })
+      const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
+      const response = await fetch('/api/admin/appointments/oversight', {
+        cache: 'no-store',
+        signal: AbortSignal.any([controller.signal, timeoutSignal])
+      })
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`)
       }
@@ -53,10 +59,15 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
       if (!payload?.data) throw new Error('Snapshot payload missing data property')
       setData(payload.data as AppointmentSnapshot)
     } catch (err) {
-      console.error('[AppointmentsDashboard] refresh failed', err)
-      setError('Unable to refresh right now. Showing cached data.')
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError('Request timed out. Showing cached data.')
+      } else {
+        console.error('[AppointmentsDashboard] refresh failed', err)
+        setError('Unable to refresh right now. Showing cached data.')
+      }
     } finally {
       setIsRefreshing(false)
+      controller.abort()
     }
   }, [])
 

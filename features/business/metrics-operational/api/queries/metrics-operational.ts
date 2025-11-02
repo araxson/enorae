@@ -4,10 +4,14 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
 
 export async function getOperationalMetrics(salonId: string): Promise<OperationalMetric | null> {
+  const logger = createOperationLogger('getOperationalMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
     throw new Error('Unauthorized: Not your salon')

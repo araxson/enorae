@@ -10,6 +10,7 @@ import { RefreshCw, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Spinner } from '@/components/ui/spinner'
 import type { DataRefreshControlsProps } from '@/features/shared/dashboard/types'
+import { TIME_MS } from '@/lib/config/constants'
 
 const DEFAULT_LOADING = 'Refreshing...'
 const DEFAULT_LABEL = 'Refresh'
@@ -34,8 +35,7 @@ export function DataRefreshControls({
     const updateRelativeLabel = () => {
       const now = new Date()
       const diffMs = now.getTime() - generatedDate.getTime()
-      const MS_PER_MINUTE = 60000 // 1 minute in milliseconds
-      const minutes = Math.round(diffMs / MS_PER_MINUTE)
+      const minutes = Math.round(diffMs / TIME_MS.ONE_MINUTE)
 
       if (minutes <= 0) {
         setRelativeLabel('Updated just now')
@@ -50,8 +50,7 @@ export function DataRefreshControls({
     }
 
     updateRelativeLabel()
-    const UPDATE_INTERVAL_MS = 60000 // Update every 1 minute
-    const interval = window.setInterval(updateRelativeLabel, UPDATE_INTERVAL_MS)
+    const interval = window.setInterval(updateRelativeLabel, TIME_MS.ONE_MINUTE)
 
     return () => window.clearInterval(interval)
   }, [generatedDate])

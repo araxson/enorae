@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -15,6 +16,9 @@ export async function respondToReview(
   reviewId: string,
   response: string
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('respondToReview', {})
+  logger.start()
+
   try {
     const { user } = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -50,7 +54,7 @@ export async function respondToReview(
     revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error responding to review:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to respond to review',
@@ -65,6 +69,9 @@ export async function flagReview(
   reviewId: string,
   reason: string
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('flagReview', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -99,7 +106,7 @@ export async function flagReview(
     revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error flagging review:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to flag review',
@@ -114,6 +121,9 @@ export async function toggleFeaturedReview(
   reviewId: string,
   featured: boolean
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('toggleFeaturedReview', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -147,7 +157,7 @@ export async function toggleFeaturedReview(
     revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error toggling featured review:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update review',
@@ -162,6 +172,9 @@ export async function updateReviewResponse(
   reviewId: string,
   response: string
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateReviewResponse', {})
+  logger.start()
+
   try {
     const { user } = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -201,7 +214,7 @@ export async function updateReviewResponse(
     revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error updating review response:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update response',
@@ -215,6 +228,9 @@ export async function updateReviewResponse(
 export async function deleteReviewResponse(
   reviewId: string
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('deleteReviewResponse', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
@@ -254,7 +270,7 @@ export async function deleteReviewResponse(
     revalidatePath('/business/reviews', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error deleting review response:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to delete response',

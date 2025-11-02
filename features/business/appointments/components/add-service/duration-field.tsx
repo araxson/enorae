@@ -1,3 +1,5 @@
+'use client'
+
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 

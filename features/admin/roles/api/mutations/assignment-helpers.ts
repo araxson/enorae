@@ -3,6 +3,10 @@
  * Pure utility functions that can be imported by both server and client code
  */
 
+import { z } from 'zod'
+
+const permissionsArraySchema = z.array(z.string())
+
 export function parsePermissions(
   raw: FormDataEntryValue | null,
 ): string[] | undefined {
@@ -10,9 +14,8 @@ export function parsePermissions(
 
   try {
     const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return undefined
-    // Type guard: filter to ensure all items are strings
-    return parsed.filter((item): item is string => typeof item === 'string')
+    const validated = permissionsArraySchema.safeParse(parsed)
+    return validated.success ? validated.data : undefined
   } catch {
     return undefined
   }

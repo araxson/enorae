@@ -2,12 +2,16 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Get comprehensive admin overview data from all admin views
  * This integrates unused admin overview views for better insights
  */
 export async function getAdminOverview() {
+  const logger = createOperationLogger('getAdminOverview', {})
+  logger.start()
+
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 

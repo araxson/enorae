@@ -18,10 +18,10 @@ export async function ToastStorageAudit() {
 
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return '0 B'
-    const k = 1024
+    const BYTES_PER_KILOBYTE = 1024
     const sizes = ['B', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i]
+    const sizeIndex = Math.floor(Math.log(bytes) / Math.log(BYTES_PER_KILOBYTE))
+    return Math.round((bytes / Math.pow(BYTES_PER_KILOBYTE, sizeIndex)) * 100) / 100 + ' ' + sizes[sizeIndex]
   }
   const summaryCards = [
     {

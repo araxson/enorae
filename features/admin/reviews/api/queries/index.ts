@@ -1,6 +1,7 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type AdminReview = Database['public']['Views']['admin_reviews_overview_view']['Row']
 
@@ -8,7 +9,7 @@ type AdminReview = Database['public']['Views']['admin_reviews_overview_view']['R
  * Get all reviews overview
  * SECURITY: Platform admin only
  */
-export async function getAllReviews(limit = 100): Promise<AdminReview[]> {
+export async function getAllReviews(limit = QUERY_LIMITS.MEDIUM_LIST): Promise<AdminReview[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

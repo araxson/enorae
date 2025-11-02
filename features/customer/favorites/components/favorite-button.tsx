@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, memo, useEffect, useRef } from 'react'
 import { Heart } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -19,24 +19,45 @@ interface FavoriteButtonProps {
   variant?: 'default' | 'icon'
 }
 
-export function FavoriteButton({ salonId, initialFavorited = false, variant = 'default' }: FavoriteButtonProps) {
+export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFavorited = false, variant = 'default' }: FavoriteButtonProps) {
   const [favorited, setFavorited] = useState(initialFavorited)
   const [loading, setLoading] = useState(false)
+  const isMountedRef = useRef(true)
 
-  async function handleToggle() {
-    setLoading(true)
-    const result = await toggleFavorite(salonId)
-
-    if (!result.success) {
-      toast.error(result.error)
-    } else {
-      const nextFavorited = result.data.favorited
-      setFavorited(nextFavorited)
-      toast.success(nextFavorited ? 'Added to favorites' : 'Removed from favorites')
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
     }
+  }, [])
 
-    setLoading(false)
-  }
+  const handleToggle = useCallback(async () => {
+    if (!isMountedRef.current) return
+
+    setLoading(true)
+
+    try {
+      const result = await toggleFavorite(salonId)
+
+      // Check if component is still mounted before updating state
+      if (!isMountedRef.current) return
+
+      if (!result.success) {
+        toast.error(result.error)
+      } else {
+        const nextFavorited = result.data.favorited
+        setFavorited(nextFavorited)
+        toast.success(nextFavorited ? 'Added to favorites' : 'Removed from favorites')
+      }
+    } catch (error) {
+      if (!isMountedRef.current) return
+      console.error('[FavoriteButton] Error toggling favorite:', error)
+      toast.error('Failed to update favorite. Please try again.')
+    } finally {
+      if (isMountedRef.current) {
+        setLoading(false)
+      }
+    }
+  }, [salonId])
 
   if (variant === 'icon') {
     return (
@@ -93,4 +114,4 @@ export function FavoriteButton({ salonId, initialFavorited = false, variant = 'd
       </Tooltip>
     </TooltipProvider>
   )
-}
+})

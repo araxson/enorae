@@ -2,10 +2,20 @@
 
 import { verifySession } from '@/lib/auth/session'
 import { ROLE_GROUPS, type RoleType } from './roles'
+import { logAuthEvent } from '@/lib/observability/logger'
 
 export async function hasRole(role: RoleType): Promise<boolean> {
   const session = await verifySession()
-  return session?.role === role
+  const hasAccess = session?.role === role
+
+  logAuthEvent('permission_check', {
+    operationName: 'hasRole',
+    userId: session?.user.id,
+    reason: `Checking role: ${role}`,
+    success: hasAccess,
+  })
+
+  return hasAccess
 }
 
 export async function hasAnyRole(roles: RoleType[]): Promise<boolean> {

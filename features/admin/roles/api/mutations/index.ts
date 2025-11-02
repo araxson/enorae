@@ -21,4 +21,4 @@ export const updateRolePermissions = createServerActionProxy(updateRolePermissio
 export const revokeRole = createServerActionProxy(revokeRoleAction)
 export const deleteRole = createServerActionProxy(deleteRoleAction)
 
-export type { RoleActionResponse, RoleType } from './types'
+export type { RoleActionResponse, RoleType } from '../../types'

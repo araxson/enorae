@@ -33,11 +33,11 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
   }
 
   const getMethodIcon = (method: string) => {
-    const m = method.toLowerCase()
-    if (m.includes('card') || m.includes('credit') || m.includes('debit')) return '💳'
-    if (m.includes('cash')) return '💵'
-    if (m.includes('online') || m.includes('digital')) return '📱'
-    if (m.includes('wallet')) return '👛'
+    const methodLower = method.toLowerCase()
+    if (methodLower.includes('card') || methodLower.includes('credit') || methodLower.includes('debit')) return '💳'
+    if (methodLower.includes('cash')) return '💵'
+    if (methodLower.includes('online') || methodLower.includes('digital')) return '📱'
+    if (methodLower.includes('wallet')) return '👛'
     return '💰'
   }
 

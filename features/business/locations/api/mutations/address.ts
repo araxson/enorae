@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -29,6 +30,9 @@ export async function updateLocationAddress(
   locationId: string,
   input: AddressInput
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateLocationAddress', {})
+  logger.start()
+
   try {
     // SECURITY: Require business user role
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -88,7 +92,7 @@ export async function updateLocationAddress(
     revalidatePath('/business/locations', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error updating location address:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update address',
@@ -97,6 +101,9 @@ export async function updateLocationAddress(
 }
 
 export async function deleteLocationAddress(locationId: string): Promise<ActionResponse> {
+  const logger = createOperationLogger('deleteLocationAddress', {})
+  logger.start()
+
   try {
     // SECURITY: Require business user role
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -128,7 +135,7 @@ export async function deleteLocationAddress(locationId: string): Promise<ActionR
     revalidatePath('/business/locations', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error deleting location address:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to delete address',

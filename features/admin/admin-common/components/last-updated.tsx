@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Clock } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemMedia } from '@/components/ui/item'
+import { TIME_MS } from '@/lib/config/constants'
 
 export function LastUpdated() {
   const [time, setTime] = useState(new Date())
@@ -11,7 +12,7 @@ export function LastUpdated() {
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(new Date())
-    }, 60000) // Update every 1 minute (60000ms)
+    }, TIME_MS.ONE_MINUTE)
 
     return () => clearInterval(interval)
   }, [])

@@ -3,11 +3,12 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import type { PostgrestError } from '@supabase/supabase-js'
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   discoveryFilterSchema,
   discoveryPaginationSchema,
   discoverySearchSchema,
-} from '@/features/customer/discovery/schema'
+} from '@/features/customer/discovery/api/schema'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 type Service = Database['public']['Views']['services_view']['Row']
@@ -19,6 +20,9 @@ type LocationAddress = Database['public']['Views']['location_addresses_view']['R
 type ServiceCategory = Database['public']['Views']['service_categories_view']['Row']
 
 export async function getSalons(categoryFilter?: string) {
+  const logger = createOperationLogger('getSalons', {})
+  logger.start()
+
   await requireAuth()
   const supabase = await createClient()
 

@@ -3,6 +3,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   computeCompliance,
   calculateHealthScore,
@@ -69,6 +70,9 @@ function deriveVerificationStatus(row: AdminSalonRow, base: SalonBaseRow | undef
 }
 
 export async function getAllSalons(): Promise<SalonsResponse> {
+  const logger = createOperationLogger('getAllSalons', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()

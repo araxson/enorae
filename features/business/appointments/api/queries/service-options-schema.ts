@@ -4,6 +4,7 @@
  * Validates API responses to ensure type safety and contract compliance
  */
 
+import 'server-only'
 import { z } from 'zod'
 
 export const ServiceOptionSchema = z.object({

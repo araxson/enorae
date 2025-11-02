@@ -5,10 +5,14 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
 import { getAuthorizedContext } from './context'
-import { UUID_REGEX } from './constants'
-import type { ActionResult } from './types'
+import { UUID_REGEX } from '../constants'
+import type { ActionResult } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function deleteStaffSchedule(scheduleId: string): Promise<ActionResult> {
+  const logger = createOperationLogger('deleteStaffSchedule', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(scheduleId)) {
       return { error: 'Invalid schedule ID format' }
@@ -45,7 +49,7 @@ export async function deleteStaffSchedule(scheduleId: string): Promise<ActionRes
     revalidatePath('/business/staff/schedules', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error deleting schedule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Failed to delete schedule' }
   }
 }

@@ -1,8 +1,10 @@
 'use client'
 
-import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+
+import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+
 import { formatPercentage } from '@/features/business/business-common/components/value-formatters'
 
 type StatBadgeProps = {

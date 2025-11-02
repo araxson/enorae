@@ -1,28 +1,37 @@
-import 'server-only'
+import type { Metadata } from 'next'
+import { getSalonBySlug } from './api/queries'
 
-import { getSalonMetadataBySlug } from '@/features/customer/salon-detail/api/queries'
-import { generateMetadata as genMeta } from '@/lib/metadata'
-
-export type SalonDetailParams = { slug: string }
+export interface SalonDetailParams {
+  slug: string
+}
 
 export async function generateSalonDetailMetadata({
   params,
 }: {
   params: Promise<SalonDetailParams> | SalonDetailParams
-}) {
+}): Promise<Metadata> {
   const { slug } = await params
-  const salon = await getSalonMetadataBySlug(slug).catch(() => null)
-  if (!salon) {
-    return genMeta({
-      title: 'Salon Not Found',
-      description: 'The salon you are looking for could not be found',
-    })
-  }
 
-  const name = salon.name || 'Salon'
-  return genMeta({
-    title: name,
-    description: salon.full_description || `${name} - Professional salon services`,
-    keywords: [name, 'salon', 'beauty', salon.formatted_address || 'professional services'],
-  })
+  try {
+    const salon = await getSalonBySlug(slug)
+
+    return {
+      title: `${salon.name || 'Salon'} - Book Appointment`,
+      description:
+        salon.description ||
+        `Book an appointment at ${salon.name || 'this salon'}. View services, staff, and reviews.`,
+      openGraph: {
+        title: `${salon.name || 'Salon'} - Book Appointment`,
+        description:
+          salon.description ||
+          `Book an appointment at ${salon.name || 'this salon'}`,
+        type: 'website',
+      },
+    }
+  } catch {
+    return {
+      title: 'Salon Details',
+      description: 'View salon details, services, staff, and reviews.',
+    }
+  }
 }

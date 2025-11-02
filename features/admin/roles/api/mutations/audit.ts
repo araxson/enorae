@@ -2,6 +2,7 @@
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Json } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type JsonRecord = Record<string, Json>
 
@@ -12,6 +13,9 @@ export async function logRoleAudit(
   severity: 'info' | 'warning' | 'critical',
   metadata: JsonRecord,
 ) {
+  const logger = createOperationLogger('logRoleAudit', {})
+  logger.start()
+
   const { error } = await supabase.schema('audit').from('audit_logs').insert({
     event_type: eventType,
     event_category: 'role_management',

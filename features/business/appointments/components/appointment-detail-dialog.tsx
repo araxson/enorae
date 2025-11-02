@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AppointmentServicesManager } from './appointment-services-manager'
 import { AppointmentServiceProgress } from './appointment-service-progress'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
+import { TIME_MS } from '@/lib/config/constants'
 
 interface AppointmentDetailDialogProps {
   appointmentId: string
@@ -39,8 +40,7 @@ export function AppointmentDetailDialog({
       setIsLoading(true)
       try {
         // API_INTEGRATION_FIX: Add 10 second timeout for API calls
-        const API_REQUEST_TIMEOUT_MS = 10000 // 10 seconds
-        const timeoutSignal = AbortSignal.timeout(API_REQUEST_TIMEOUT_MS)
+        const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
         const response = await fetch(`/api/appointments/${appointmentId}/services`, {
           signal: AbortSignal.any([controller.signal, timeoutSignal]),
         })

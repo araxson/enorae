@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type TimeOffRequest = Database['public']['Views']['time_off_requests_view']['Row']
 
@@ -10,6 +11,9 @@ type TimeOffRequest = Database['public']['Views']['time_off_requests_view']['Row
  * SECURITY: Business users only
  */
 export async function getSalonTimeOffRequests(): Promise<TimeOffRequest[]> {
+  const logger = createOperationLogger('getSalonTimeOffRequests', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
   const supabase = await createClient()

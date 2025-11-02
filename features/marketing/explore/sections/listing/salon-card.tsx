@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Item,
@@ -23,7 +24,7 @@ interface SalonCardProps {
   onBook: (slug?: string | null) => void
 }
 
-export function SalonCard({ salon, index, onBook }: SalonCardProps) {
+export const SalonCard = memo(function SalonCard({ salon, index, onBook }: SalonCardProps) {
   const location =
     salon['formatted_address'] ||
     (salon['city'] && salon['state_province']
@@ -74,4 +75,4 @@ export function SalonCard({ salon, index, onBook }: SalonCardProps) {
       </ItemFooter>
     </Item>
   )
-}
+})

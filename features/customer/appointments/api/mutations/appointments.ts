@@ -6,6 +6,7 @@ import { requireAuth } from '@/lib/auth'
 import { rescheduleSchema } from '@/lib/validations/customer/appointments'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_HOUR, APPOINTMENT_CANCELLATION_HOURS } from '@/lib/constants/time'
+import { createOperationLogger, logMutation } from '@/lib/observability/logger'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -16,9 +17,14 @@ export type ActionResponse<T = void> =
  * Enforces cancellation policy (minimum hours before appointment)
  */
 export async function cancelAppointment(appointmentId: string): Promise<ActionResponse> {
+  const logger = createOperationLogger('cancelAppointment', { appointmentId })
+  logger.start()
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
+
+    logger.start({ userId: session.user.id, customerId: session.user.id })
 
     // Verify ownership and get appointment details
     const { data: appointment, error: fetchError } = await supabase
@@ -29,29 +35,40 @@ export async function cancelAppointment(appointmentId: string): Promise<ActionRe
       .limit(1)
       .maybeSingle<Pick<Database['public']['Views']['appointments_view']['Row'], 'customer_id' | 'start_time' | 'status'>>()
 
-    if (fetchError) throw fetchError
+    if (fetchError) {
+      logger.error(fetchError, 'database')
+      throw fetchError
+    }
 
     if (!appointment) {
+      logger.warn('Appointment not found', { appointmentId, userId: session.user.id })
       return { success: false, error: 'Appointment not found' }
     }
 
     if (appointment.customer_id !== session.user.id) {
+      logger.error('Not authorized to cancel this appointment', 'permission', {
+        appointmentId,
+        userId: session.user.id,
+      })
       return { success: false, error: 'Not authorized to cancel this appointment' }
     }
 
     // Check if already cancelled
     if (appointment.status === 'cancelled') {
+      logger.warn('Appointment already cancelled', { appointmentId })
       return { success: false, error: 'Appointment is already cancelled' }
     }
 
     // Check cancellation policy
     if (!appointment.start_time) {
+      logger.error('Invalid appointment start time', 'validation')
       return { success: false, error: 'Invalid appointment start time' }
     }
     const hoursUntil =
       (new Date(appointment.start_time).getTime() - Date.now()) / MILLISECONDS_PER_HOUR
 
     if (hoursUntil < APPOINTMENT_CANCELLATION_HOURS) {
+      logger.warn('Cancellation policy violation', { hoursUntil, policyHours: APPOINTMENT_CANCELLATION_HOURS })
       return {
         success: false,
         error: `Cannot cancel within ${APPOINTMENT_CANCELLATION_HOURS} hours of appointment. Please contact the salon directly.`,
@@ -69,14 +86,24 @@ export async function cancelAppointment(appointmentId: string): Promise<ActionRe
       })
       .eq('id', appointmentId)
 
-    if (updateError) throw updateError
+    if (updateError) {
+      logger.error(updateError, 'database')
+      throw updateError
+    }
+
+    logMutation('cancel', 'appointment', appointmentId, {
+      userId: session.user.id,
+      operationName: 'cancelAppointment',
+      changes: { status: 'cancelled' },
+    })
 
     revalidatePath('/customer/appointments', 'page')
     revalidatePath(`/customer/appointments/${appointmentId}`, 'page')
 
+    logger.success({ appointmentId })
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error cancelling appointment:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to cancel appointment',
@@ -92,6 +119,9 @@ export async function requestReschedule(
   appointmentId: string,
   formData: FormData
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('requestReschedule', { appointmentId })
+  logger.start()
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
@@ -103,10 +133,13 @@ export async function requestReschedule(
     })
 
     if (!result.success) {
+      logger.error(result.error.issues[0]?.message ?? 'Validation failed', 'validation')
       return { success: false, error: result.error.issues[0]?.message ?? 'Validation failed' }
     }
 
     const { newStartTime, reason } = result.data
+
+    logger.start({ userId: session.user.id, customerId: session.user.id })
 
     // Verify ownership and get appointment details
     const { data: appointment, error: fetchError } = await supabase
@@ -120,23 +153,30 @@ export async function requestReschedule(
         'customer_id' | 'salon_id' | 'staff_id' | 'start_time' | 'status'
       >>()
 
-    if (fetchError) throw fetchError
+    if (fetchError) {
+      logger.error(fetchError, 'database')
+      throw fetchError
+    }
 
     if (!appointment) {
+      logger.warn('Appointment not found')
       return { success: false, error: 'Appointment not found' }
     }
 
     if (appointment.customer_id !== session.user.id) {
+      logger.error('Not authorized to reschedule this appointment', 'permission')
       return { success: false, error: 'Not authorized to reschedule this appointment' }
     }
 
     // Check if appointment can be rescheduled
     if (appointment.status === 'cancelled' || appointment.status === 'completed') {
+      logger.warn(`Cannot reschedule ${appointment.status} appointment`, { status: appointment.status })
       return { success: false, error: `Cannot reschedule ${appointment.status} appointment` }
     }
 
     // Get salon owner for notification
     if (!appointment.salon_id) {
+      logger.error('Invalid salon ID', 'validation')
       return { success: false, error: 'Invalid salon ID' }
     }
 
@@ -147,9 +187,13 @@ export async function requestReschedule(
       .limit(1)
       .maybeSingle<Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name' | 'is_active'>>()
 
-    if (salonError) throw salonError
+    if (salonError) {
+      logger.error(salonError, 'database')
+      throw salonError
+    }
 
     if (!salon || salon.is_active === false) {
+      logger.warn('Salon not available', { salonId: appointment.salon_id })
       return { success: false, error: 'Salon not available' }
     }
 
@@ -179,7 +223,10 @@ export async function requestReschedule(
         updated_at: new Date().toISOString(),
       })
 
-    if (threadError) throw threadError
+    if (threadError) {
+      logger.error(threadError, 'database')
+      throw threadError
+    }
 
     // Update appointment to mark reschedule requested (using 'pending' status)
     const { error: updateError } = await supabase
@@ -192,14 +239,25 @@ export async function requestReschedule(
       })
       .eq('id', appointmentId)
 
-    if (updateError) throw updateError
+    if (updateError) {
+      logger.error(updateError, 'database')
+      throw updateError
+    }
+
+    logMutation('reschedule_request', 'appointment', appointmentId, {
+      userId: session.user.id,
+      salonId: appointment.salon_id,
+      operationName: 'requestReschedule',
+      changes: { status: 'pending', newTime: newStartTime, reason },
+    })
 
     revalidatePath('/customer/appointments', 'page')
     revalidatePath(`/customer/appointments/${appointmentId}`, 'page')
 
+    logger.success({ appointmentId, salonId: appointment.salon_id })
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error requesting reschedule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to request reschedule',

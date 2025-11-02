@@ -6,9 +6,13 @@ import { logRoleAudit } from './audit'
 import { requireAdminContext } from './context'
 import { parsePermissions } from './assignment-helpers'
 import { UUID_REGEX } from './validation'
-import type { RoleActionResponse } from './types'
+import type { RoleActionResponse } from '../../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function updateRolePermissions(formData: FormData): Promise<RoleActionResponse> {
+  const logger = createOperationLogger('updateRolePermissions', {})
+  logger.start()
+
   try {
     const roleId = formData.get('roleId')?.toString()
     if (!roleId || !UUID_REGEX.test(roleId)) {

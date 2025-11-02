@@ -1,6 +1,8 @@
+import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId as authRequireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
@@ -13,6 +15,9 @@ type StaffProfile = Database['public']['Views']['staff_profiles_view']['Row']
  * All other features should import from here.
  */
 export async function getUserSalon(): Promise<Salon> {
+  const logger = createOperationLogger('getUserSalon', {})
+  logger.start()
+
   // SECURITY: Require business user role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 

@@ -1,6 +1,8 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export interface CustomerRelationship {
   customer_id: string
@@ -18,8 +20,11 @@ type AppointmentWithCustomerProfile = {
 
 export async function getStaffCustomerRelationships(
   staffId?: string,
-  limit = 20
+  limit = QUERY_LIMITS.RECENT_ITEMS
 ): Promise<CustomerRelationship[]> {
+  const logger = createOperationLogger('getStaffCustomerRelationships', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
   const { supabase, staffProfile } = await verifyStaffOwnership(staffId)
@@ -31,7 +36,7 @@ export async function getStaffCustomerRelationships(
     .eq('staff_id', targetStaffId)
     .eq('status', 'completed')
     .order('start_time', { ascending: false })
-    .limit(100)
+    .limit(QUERY_LIMITS.MEDIUM_LIST)
     .returns<AppointmentWithCustomerProfile[]>()
 
   if (error) throw error

@@ -1,5 +1,5 @@
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
-import { MessageThreadList } from './index'
+import { MessageThreadList } from './message-thread-list'
 import type { MessageThread } from '../types'
 
 interface MessagesFeatureProps {

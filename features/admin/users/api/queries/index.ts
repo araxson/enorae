@@ -2,4 +2,4 @@
 export * from './single-user'
 export * from './all-users'
 export * from './stats'
-export * from './types'
+export * from '../../types'

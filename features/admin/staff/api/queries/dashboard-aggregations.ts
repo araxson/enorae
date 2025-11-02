@@ -6,6 +6,7 @@ import {
   normalizeBackgroundStatus,
 } from './dashboard-metrics'
 import type { BackgroundStatus } from './dashboard-metrics'
+import { createOperationLogger } from '@/lib/observability/logger'
 import type {
   AppointmentRow,
   MetadataRow,
@@ -13,7 +14,7 @@ import type {
   StaffDashboardStats,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from './types'
+} from '../../types'
 
 export function groupAppointmentsByStaff(rows: AppointmentRow[]) {
   const map = new Map<string, AppointmentRow[]>()
@@ -37,7 +38,7 @@ export function groupReviewsByAppointment(rows: ReviewRow[]) {
 
 export function extractCertifications(metadata?: MetadataRow) {
   if (!metadata?.tags?.length) return [] as string[]
-  return metadata.tags.filter((tag) => {
+  return metadata.tags.filter((tag: string) => {
     const normalized = tag.toLowerCase()
     return (
       normalized.startsWith('cert:') ||

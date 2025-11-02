@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { generateConfirmationCode } from './utilities'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 import {
   validateBookingData,
   validateSalon,
@@ -19,6 +20,9 @@ type AppointmentInsert = Database['scheduling']['Tables']['appointments']['Inser
 type AppointmentServiceInsert = Database['scheduling']['Tables']['appointment_services']['Insert']
 
 export async function createBooking(formData: FormData) {
+  const logger = createOperationLogger('createBooking', {})
+  logger.start()
+
   const salonId = formData.get('salonId') as string
   const serviceId = formData.get('serviceId') as string
   const staffId = formData.get('staffId') as string

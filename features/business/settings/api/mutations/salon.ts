@@ -4,6 +4,7 @@ import 'server-only'
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
 import type { ServerSupabaseClient } from '@/lib/supabase/server'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type Client = ServerSupabaseClient
 
@@ -18,10 +19,14 @@ const salonSettingsSchema = z.object({
   features: z.array(z.string()).nullable(),
 })
 
+const featuresArraySchema = z.array(z.string())
+
 function parseFeatures(raw: FormDataEntryValue | null): string[] | null {
   if (!raw) return null
   try {
-    return JSON.parse(String(raw))
+    const parsed = JSON.parse(String(raw))
+    const validated = featuresArraySchema.safeParse(parsed)
+    return validated.success ? validated.data : null
   } catch {
     return null
   }
@@ -87,6 +92,9 @@ function extractSalonSettings(formData: FormData) {
 }
 
 export async function updateSalonSettings(salonId: string, formData: FormData) {
+  const logger = createOperationLogger('updateSalonSettings', {})
+  logger.start()
+
   try {
     const supabase = await getSalonContext(salonId)
     const validated = extractSalonSettings(formData)
@@ -97,7 +105,7 @@ export async function updateSalonSettings(salonId: string, formData: FormData) {
 
     return { success: true }
   } catch (error) {
-    console.error('Error updating salon settings:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     if (error instanceof z.ZodError) {
       return { error: `Validation failed: ${error.issues[0]?.message}` }
     }
@@ -109,6 +117,9 @@ export async function toggleAcceptingBookings(
   salonId: string,
   isAccepting: boolean,
 ) {
+  const logger = createOperationLogger('toggleAcceptingBookings', { salonId })
+  logger.start()
+
   try {
     const supabase = await getSalonContext(salonId)
 
@@ -126,7 +137,7 @@ export async function toggleAcceptingBookings(
     revalidateSettings()
     return { success: true }
   } catch (error) {
-    console.error('Error toggling bookings:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to update booking status' }
   }
 }
@@ -136,6 +147,9 @@ export async function toggleFeature(
   feature: string,
   enabled: boolean,
 ) {
+  const logger = createOperationLogger('toggleFeature', { salonId })
+  logger.start()
+
   try {
     const supabase = await getSalonContext(salonId)
 
@@ -174,7 +188,7 @@ export async function toggleFeature(
     revalidateSettings()
     return { success: true }
   } catch (error) {
-    console.error('Error toggling feature:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to toggle feature' }
   }
 }

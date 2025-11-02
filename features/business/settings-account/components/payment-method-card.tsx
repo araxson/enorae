@@ -1,9 +1,9 @@
+import { Calendar, CreditCard } from 'lucide-react'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Calendar, CreditCard } from 'lucide-react'
-import type { Subscription } from '../types'
 import {
   Item,
   ItemContent,
@@ -11,6 +11,8 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+
+import type { Subscription } from '../types'
 
 export function PaymentMethodCard({
   subscription,

@@ -2,6 +2,7 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
@@ -15,6 +16,9 @@ export type ClientWithHistory = {
 }
 
 export async function getStaffClients(staffId: string): Promise<ClientWithHistory[]> {
+  const logger = createOperationLogger('getStaffClients', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

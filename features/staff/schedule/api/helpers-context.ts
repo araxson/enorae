@@ -3,9 +3,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
 
-import { UUID_REGEX } from './constants'
+import { UUID_REGEX } from '../constants'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function getAuthorizedContext(salonId: string) {
+  const logger = createOperationLogger('getAuthorizedContext', {})
+  logger.start()
+
   if (!UUID_REGEX.test(salonId)) {
     return { error: 'Invalid salon ID format' as const }
   }

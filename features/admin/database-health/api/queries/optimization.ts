@@ -2,6 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Optimization = Database['public']['Views']['low_priority_optimizations_summary_view']['Row']
 type StatsFreshness = Database['public']['Views']['statistics_freshness_view']['Row']
@@ -23,6 +24,9 @@ export interface OptimizationSnapshot {
 export async function getOptimizationRecommendations(
   limit = 100
 ): Promise<OptimizationSnapshot> {
+  const logger = createOperationLogger('getOptimizationRecommendations', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

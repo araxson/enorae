@@ -8,7 +8,7 @@ export async function getSupabaseClient() {
   return createClient()
 }
 
-export type SupabaseServerClient = Awaited<ReturnType<typeof getSupabaseClient>>
+export type SupabaseServerClient = Awaited<ReturnType<typeof createClient>>
 
 type AssertSalonAccessOptions = {
   skipAccessCheck?: boolean

@@ -3,12 +3,16 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 
 export type AppointmentWithDetails = Appointment
 
 export async function getAppointments(salonId: string) {
+  const logger = createOperationLogger('getAppointments', {})
+  logger.start()
+
   console.log('Fetching appointments', { salonId })
 
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Upload, User } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import {
@@ -64,8 +65,17 @@ export function ProfileImagesSection({
                   onClick={() => avatarInputRef.current?.click()}
                   disabled={isUploadingAvatar}
                 >
-                  <Upload className="size-4" />
-                  <span>{isUploadingAvatar ? 'Uploading...' : 'Upload Avatar'}</span>
+                  {isUploadingAvatar ? (
+                    <>
+                      <Spinner />
+                      Uploading
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="size-4" />
+                      Upload Avatar
+                    </>
+                  )}
                 </Button>
                 <FieldDescription>Max 5MB, JPG or PNG</FieldDescription>
               </div>
@@ -98,8 +108,17 @@ export function ProfileImagesSection({
               onClick={() => coverInputRef.current?.click()}
               disabled={isUploadingCover}
             >
-              <Upload className="size-4" />
-              <span>{isUploadingCover ? 'Uploading...' : 'Upload Cover Image'}</span>
+              {isUploadingCover ? (
+                <>
+                  <Spinner />
+                  Uploading
+                </>
+              ) : (
+                <>
+                  <Upload className="size-4" />
+                  Upload Cover Image
+                </>
+              )}
             </Button>
             <FieldDescription>
               Max 10MB, JPG or PNG, recommended 1200x400px

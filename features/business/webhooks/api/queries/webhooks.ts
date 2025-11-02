@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface WebhookStats {
   total_webhooks: number
@@ -25,6 +26,9 @@ export type WebhookDeliveryLog = {
 }
 
 export async function getWebhookStats(): Promise<WebhookStats> {
+  const logger = createOperationLogger('getWebhookStats', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
 

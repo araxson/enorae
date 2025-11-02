@@ -1,6 +1,8 @@
 import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { DATA_LIMITS, MODERATION_THRESHOLDS } from '@/lib/config/constants'
 
 interface ReputationStats {
   totalReviews: number
@@ -17,9 +19,6 @@ export interface ReviewerAggregate {
   flaggedReviews: number
 }
 
-// Maximum number of reviewer records to sample for reputation calculation
-const REVIEWER_SAMPLE_LIMIT = 5000
-
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max)
 }
@@ -29,19 +28,21 @@ function clamp(value: number, min: number, max: number) {
  */
 export function computeReviewerReputation(stats: ReputationStats): ReputationResult {
   if (stats.totalReviews === 0) {
-    return { score: 50, label: 'neutral' }
+    return { score: MODERATION_THRESHOLDS.DEFAULT_REPUTATION_SCORE, label: 'neutral' }
   }
 
   const flaggedRatio = stats.flaggedReviews / stats.totalReviews
-  let score = 80 - flaggedRatio * 80
+  let score = MODERATION_THRESHOLDS.REPUTATION_BASE_SCORE - flaggedRatio * MODERATION_THRESHOLDS.REPUTATION_BASE_SCORE
 
-  if (stats.totalReviews < 3) score -= 10
+  if (stats.totalReviews < MODERATION_THRESHOLDS.MIN_REVIEWS_FOR_REPUTATION) {
+    score -= MODERATION_THRESHOLDS.LOW_REVIEW_COUNT_PENALTY
+  }
 
   const finalScore = clamp(Math.round(score), 0, 100)
   let label: ReputationResult['label'] = 'neutral'
 
-  if (finalScore >= 70) label = 'trusted'
-  else if (finalScore < 40) label = 'risky'
+  if (finalScore >= MODERATION_THRESHOLDS.TRUSTED_REPUTATION_THRESHOLD) label = 'trusted'
+  else if (finalScore < MODERATION_THRESHOLDS.RISKY_REPUTATION_THRESHOLD) label = 'risky'
 
   return { score: finalScore, label }
 }
@@ -54,6 +55,9 @@ export async function fetchReviewerStats(
   supabase: ReturnType<typeof createServiceRoleClient>,
   reviewerIds: string[],
 ) {
+  const logger = createOperationLogger('fetchReviewerStats', {})
+  logger.start()
+
   if (!reviewerIds.length) return new Map<string, ReviewerAggregate>()
 
   const { data, error } = await supabase
@@ -62,7 +66,7 @@ export async function fetchReviewerStats(
     .from('salon_reviews_with_counts_view')
     .select('customer_id, is_flagged')
     .in('customer_id', reviewerIds)
-    .limit(REVIEWER_SAMPLE_LIMIT)
+    .limit(DATA_LIMITS.REVIEWER_SAMPLE_LIMIT)
 
   if (error) throw error
 

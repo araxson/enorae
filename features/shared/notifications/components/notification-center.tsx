@@ -91,26 +91,26 @@ export function NotificationCenter({ notifications }: Props) {
   }
 
   const getChannelIcon = (contextType: string | null) => {
-    if (!contextType) return <Bell className="size-4" />
-    if (contextType === 'email') return <Mail className="size-4" />
-    if (contextType === 'sms') return <MessageSquare className="size-4" />
-    if (contextType === 'push') return <Smartphone className="size-4" />
-    return <Bell className="size-4" />
+    if (!contextType) return <Bell className="size-4" aria-hidden="true" />
+    if (contextType === 'email') return <Mail className="size-4" aria-hidden="true" />
+    if (contextType === 'sms') return <MessageSquare className="size-4" aria-hidden="true" />
+    if (contextType === 'push') return <Smartphone className="size-4" aria-hidden="true" />
+    return <Bell className="size-4" aria-hidden="true" />
   }
 
   return (
     <Item variant="outline">
       <ItemHeader>
         <div className="flex items-center gap-3">
-          <Bell className="size-5" />
+          <Bell className="size-5" aria-hidden="true" />
           <ItemTitle>Notification Center</ItemTitle>
           {unreadCount > 0 ? (
-            <Badge variant="destructive">{unreadCount}</Badge>
+            <Badge variant="destructive" aria-label={`${unreadCount} unread notifications`}>{unreadCount}</Badge>
           ) : null}
         </div>
         {unreadCount > 0 ? (
-          <Button variant="outline" size="sm" onClick={handleMarkAllAsRead}>
-            <CheckCheck className="size-4" />
+          <Button variant="outline" size="sm" onClick={handleMarkAllAsRead} aria-label={`Mark all ${unreadCount} notifications as read`}>
+            <CheckCheck className="size-4" aria-hidden="true" />
             <span>Mark all as read</span>
           </Button>
         ) : null}
@@ -118,7 +118,7 @@ export function NotificationCenter({ notifications }: Props) {
       <ItemContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <div className="grid w-full grid-cols-5">
-            <TabsList>
+            <TabsList aria-label="Notification filters">
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="unread">
                 Unread {unreadCount > 0 ? `(${unreadCount})` : null}
@@ -151,7 +151,7 @@ export function NotificationCenter({ notifications }: Props) {
                         variant={notification.is_read ? 'outline' : 'muted'}
                         size="sm"
                       >
-                        <ItemMedia variant="icon">
+                        <ItemMedia variant="icon" aria-hidden="true">
                           {getChannelIcon(notification.context_type)}
                         </ItemMedia>
                         <div className="min-w-0 flex-1">

@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type ManualTransactionRow =
   Database['public']['Views']['manual_transactions_view']['Row']
@@ -33,6 +34,9 @@ export type CustomerTransactionWithDetails = ManualTransactionRow & {
  * Get all transactions for the current customer
  */
 export async function getCustomerTransactions(): Promise<CustomerTransactionWithDetails[]> {
+  const logger = createOperationLogger('getCustomerTransactions', {})
+  logger.start()
+
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 

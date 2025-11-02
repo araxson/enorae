@@ -5,9 +5,13 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
-import { suspendUserSchema, UUID_REGEX } from './constants'
+import { suspendUserSchema, UUID_REGEX } from '../../constants'
+import { createOperationLogger, logError } from '@/lib/observability/logger'
 
 export async function suspendUser(formData: FormData) {
+  const logger = createOperationLogger('suspendUser', {})
+  logger.start()
+
   try {
     const parsed = suspendUserSchema.safeParse({
       userId: formData.get('userId')?.toString(),
@@ -74,7 +78,7 @@ export async function suspendUser(formData: FormData) {
       suspended_by: session.user.id,
     }
 
-    await supabase.schema('audit').from('audit_logs').insert({
+    const { error: auditError } = await supabase.schema('audit').from('audit_logs').insert({
       event_type: 'user_suspended',
       event_category: 'identity',
       severity: 'warning',
@@ -88,6 +92,10 @@ export async function suspendUser(formData: FormData) {
       metadata,
       is_success: true,
     })
+
+    if (auditError) {
+      logger.error(auditError, 'system')
+    }
 
     revalidatePath('/admin/users', 'page')
     return { success: true }

@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import Link from 'next/link'
 import { Calendar, Users, Scissors, Package, Settings, Sparkles } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -43,7 +44,7 @@ const secondaryActions = [
   },
 ]
 
-export function QuickActions() {
+export const QuickActions = memo(function QuickActions() {
   return (
     <Card>
       <CardHeader>
@@ -85,7 +86,7 @@ export function QuickActions() {
                       href={action.href}
                       className="flex flex-1 flex-col items-start gap-2 text-left"
                     >
-                      <action.icon className="size-5" />
+                      <action.icon className="size-5" aria-hidden="true" />
                       <span className="text-xs font-medium">{action.label}</span>
                     </Link>
                   </Button>
@@ -109,7 +110,7 @@ export function QuickActions() {
                       href={action.href}
                       className="flex flex-1 flex-col items-start gap-2 text-left"
                     >
-                      <action.icon className="size-5" />
+                      <action.icon className="size-5" aria-hidden="true" />
                       <span className="text-xs font-medium">{action.label}</span>
                     </Link>
                   </Button>
@@ -125,7 +126,7 @@ export function QuickActions() {
                     href="/business/settings/salon"
                     className="flex flex-1 flex-col items-start gap-2 text-left"
                   >
-                    <Settings className="size-5" />
+                    <Settings className="size-5" aria-hidden="true" />
                     <span className="text-xs font-medium">Settings</span>
                   </Link>
                 </Button>
@@ -137,4 +138,4 @@ export function QuickActions() {
       </CardContent>
     </Card>
   )
-}
+})

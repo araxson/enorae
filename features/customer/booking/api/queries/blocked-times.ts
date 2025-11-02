@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type BlockedTime = Database['scheduling']['Tables']['blocked_times']['Row']
 
@@ -12,6 +13,9 @@ export async function getSalonBlockedTimes(
   salonId: string,
   startDate?: Date
 ): Promise<BlockedTime[]> {
+  const logger = createOperationLogger('getSalonBlockedTimes', {})
+  logger.start()
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')

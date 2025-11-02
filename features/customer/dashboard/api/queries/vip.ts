@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { getDateRanges } from '@/lib/utils/dates'
 import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type UserRole = Database['public']['Views']['user_roles_view']['Row']
 type AppointmentOverview = Database['public']['Views']['admin_appointments_overview_view']['Row']
@@ -25,6 +26,9 @@ const defaultVipResponse = {
 export type CustomerVipStatus = typeof defaultVipResponse
 
 export async function getVIPStatus() {
+  const logger = createOperationLogger('getVIPStatus', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

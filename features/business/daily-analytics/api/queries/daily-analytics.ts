@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 
@@ -24,6 +25,9 @@ export async function getDailyMetrics(
   dateFrom: string,
   dateTo: string
 ): Promise<DailyMetric[]> {
+  const logger = createOperationLogger('getDailyMetrics', {})
+  logger.start()
+
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 

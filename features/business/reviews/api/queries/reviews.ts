@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type SalonReviewView = Database['engagement']['Views']['salon_reviews_with_counts_view']['Row']
 
@@ -14,6 +15,9 @@ export type SalonReviewWithDetails = SalonReviewView & {
  * Get all reviews for the user's salon
  */
 export async function getSalonReviews(): Promise<SalonReviewWithDetails[]> {
+  const logger = createOperationLogger('getSalonReviews', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
   const supabase = await createClient()

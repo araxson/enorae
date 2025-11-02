@@ -1,3 +1,6 @@
+import 'server-only'
+
+import { createOperationLogger } from '@/lib/observability/logger'
 export type BackgroundStatus = 'clear' | 'pending' | 'failed' | 'missing'
 export type ComplianceStatus = 'compliant' | 'warning' | 'critical'
 

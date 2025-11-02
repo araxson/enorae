@@ -1,17 +1,20 @@
 'use client'
 
+import { memo, useCallback } from 'react'
+import Link from 'next/link'
+import { Calendar, User, Clock, MoreHorizontal, ChevronRight } from 'lucide-react'
+
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { AppointmentWithDetails } from '@/features/business/dashboard/api/types'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { getStatusConfig } from '@/lib/constants/appointment-statuses'
 import { formatAppointmentDate, formatAppointmentTime } from '@/lib/utils/dates'
-import { Calendar, User, Clock, MoreHorizontal, ChevronRight } from 'lucide-react'
-import Link from 'next/link'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+
+import type { AppointmentWithDetails } from '@/features/business/dashboard/api/types'
 import {
   Empty,
   EmptyContent,
@@ -35,18 +38,19 @@ type RecentBookingsProps = {
   appointments: AppointmentWithDetails[]
 }
 
-export function RecentBookings({ appointments }: RecentBookingsProps) {
-  const isEmpty = appointments.length === 0
+// PERFORMANCE FIX: Memoize getInitials to prevent recreation on every render
+const getInitials = (name: string) => {
+  if (!name) return 'U'
+  return name
+    .split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
+}
 
-  const getInitials = (name: string) => {
-    if (!name) return 'U'
-    return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2)
-  }
+export const RecentBookings = memo(function RecentBookings({ appointments }: RecentBookingsProps) {
+  const isEmpty = appointments.length === 0
 
   return (
     <Item variant="outline">
@@ -63,7 +67,7 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/business/appointments">
                   View all
-                  <ChevronRight className="ml-1 size-4" />
+                  <ChevronRight className="ml-1 size-4" aria-hidden="true" />
                 </Link>
               </Button>
             </TooltipTrigger>
@@ -113,18 +117,18 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
 
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <div className="flex items-center gap-1">
-                            <Calendar className="size-3" />
+                            <Calendar className="size-3" aria-hidden="true" />
                             <span>{formatAppointmentDate(appointment.start_time)}</span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <Clock className="size-3" />
+                            <Clock className="size-3" aria-hidden="true" />
                             <span>{formatAppointmentTime(appointment.start_time)}</span>
                           </div>
                         </div>
 
                         {appointment.staff_id ? (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <User className="size-3" />
+                            <User className="size-3" aria-hidden="true" />
                             <span>Staff ID: {appointment.staff_id}</span>
                           </div>
                         ) : null}
@@ -156,4 +160,4 @@ export function RecentBookings({ appointments }: RecentBookingsProps) {
       </ItemContent>
     </Item>
   )
-}
+})

@@ -50,8 +50,9 @@ export function StaffManagementClient({
 
       <StaffFormDialog
         open={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        onOpenChange={setIsDialogOpen}
         onSuccess={handleSuccess}
+        staff={null}
       />
     </>
   )

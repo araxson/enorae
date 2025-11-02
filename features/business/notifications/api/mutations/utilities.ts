@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { getUserSalonIds, requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type StaffProfileRow = Database['public']['Views']['staff_profiles_view']['Row']
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
@@ -49,6 +50,9 @@ export const notificationSchema = z.object({
 export const notificationIdsSchema = z.array(z.string().uuid()).optional()
 
 export async function getSupabaseClient() {
+  const logger = createOperationLogger('getSupabaseClient', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   return createClient()
 }

@@ -3,6 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type NotificationChannel = Database['public']['Enums']['notification_channel']
 type NotificationType = Database['public']['Enums']['notification_type']
@@ -20,6 +21,9 @@ export type NotificationTemplate = {
 }
 
 export async function getNotificationTemplates(): Promise<NotificationTemplate[]> {
+  const logger = createOperationLogger('getNotificationTemplates', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()

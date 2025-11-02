@@ -29,34 +29,41 @@ export function OTPInput({
     if (newValue.length > 1) return
     if (newValue && !/^\d$/.test(newValue)) return
 
-    const newOtp = [...otp]
-    newOtp[index] = newValue
-    setOtp(newOtp)
+    setOtp((prevOtp) => {
+      const newOtp = [...prevOtp]
+      newOtp[index] = newValue
 
-    const otpString = newOtp.join('')
-    onChange?.(otpString)
+      const otpString = newOtp.join('')
+      onChange?.(otpString)
 
-    if (newValue && index < length - 1) {
-      inputRefs.current[index + 1]?.focus()
-    }
+      if (newValue && index < length - 1) {
+        inputRefs.current[index + 1]?.focus()
+      }
 
-    if (otpString.length === length && !otpString.includes('')) {
-      onComplete?.(otpString)
-    }
-  }, [length, onChange, onComplete, otp])
+      if (otpString.length === length && !otpString.includes('')) {
+        onComplete?.(otpString)
+      }
+
+      return newOtp
+    })
+  }, [length, onChange, onComplete])
 
   const handleKeyDown = useCallback((index: number, e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus()
-    }
+    setOtp((prevOtp) => {
+      if (e.key === 'Backspace' && !prevOtp[index] && index > 0) {
+        inputRefs.current[index - 1]?.focus()
+      }
 
-    if (e.key === 'ArrowLeft' && index > 0) {
-      inputRefs.current[index - 1]?.focus()
-    }
-    if (e.key === 'ArrowRight' && index < length - 1) {
-      inputRefs.current[index + 1]?.focus()
-    }
-  }, [length, otp])
+      if (e.key === 'ArrowLeft' && index > 0) {
+        inputRefs.current[index - 1]?.focus()
+      }
+      if (e.key === 'ArrowRight' && index < length - 1) {
+        inputRefs.current[index + 1]?.focus()
+      }
+
+      return prevOtp
+    })
+  }, [length])
 
   const handlePaste = useCallback((e: ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault()

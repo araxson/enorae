@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
 
@@ -17,6 +18,9 @@ export interface CustomerMetrics {
  * Get customer analytics metrics
  */
 export async function getCustomerMetrics(): Promise<CustomerMetrics> {
+  const logger = createOperationLogger('getCustomerMetrics', {})
+  logger.start()
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')

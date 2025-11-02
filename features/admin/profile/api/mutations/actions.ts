@@ -6,6 +6,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { basicDetailsSchema, metadataSchema, preferencesSchema } from '../queries/schemas'
 import type { Json } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export interface ActionResponse {
   success: boolean
@@ -16,6 +17,9 @@ const success = (message: string): ActionResponse => ({ success: true, message }
 const failure = (message: string): ActionResponse => ({ success: false, message })
 
 export async function updateProfileBasicsAction(payload: unknown): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateProfileBasicsAction', {})
+  logger.start()
+
   const parsed = basicDetailsSchema.safeParse(payload)
   if (!parsed.success) {
     return failure(parsed.error.issues[0]?.message ?? 'Invalid profile details')

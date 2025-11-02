@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type OperatingHour = Database['public']['Views']['operating_hours_view']['Row']
 type DayOfWeek = Database['public']['Enums']['day_of_week']
@@ -20,6 +21,9 @@ function numberToDayName(day: number): DayOfWeek {
  * Get operating hours for a specific salon
  */
 export async function getOperatingHoursBySalon(salonId: string): Promise<OperatingHour[]> {
+  const logger = createOperationLogger('getOperatingHoursBySalon', {})
+  logger.start()
+
   // SECURITY: Require business role and verify access
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
@@ -36,11 +40,12 @@ export async function getOperatingHoursBySalon(salonId: string): Promise<Operati
 
   if (error) throw error
 
-  // Filter out any rows with null IDs
-  const validRows = (data || []).filter((row): row is Exclude<typeof row, null | undefined> => row && row.id !== null)
+  // Filter out any rows with null IDs and validate structure
+  const validRows = (data || []).filter((row): row is OperatingHour => {
+    return row !== null && row !== undefined && 'id' in row && row.id !== null
+  })
 
-  // Ensure the type matches what the component expects
-  return validRows as unknown as OperatingHour[]
+  return validRows
 }
 
 /**

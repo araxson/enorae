@@ -1,13 +1,17 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
-import { UUID_REGEX, updateProfileSchema } from './constants'
+import { UUID_REGEX, updateProfileSchema } from '../../constants'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function updateUserProfile(formData: FormData) {
+  const logger = createOperationLogger('updateUserProfile', {})
+  logger.start()
+
   try {
     const userId = formData.get('userId')?.toString()
     if (!userId || !UUID_REGEX.test(userId)) {

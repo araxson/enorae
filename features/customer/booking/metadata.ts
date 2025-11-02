@@ -1,23 +1,24 @@
-import 'server-only'
+import type { Metadata } from 'next'
 
-import { getSalonMetadata } from '@/features/customer/booking/api/queries'
-import { generateMetadata as genMeta } from '@/lib/metadata'
-
-export type SalonRouteParams = { 'salon-id': string }
+export interface SalonRouteParams {
+  'salon-id': string
+}
 
 export async function generateBookingMetadata({
   params,
 }: {
   params: Promise<SalonRouteParams> | SalonRouteParams
-}) {
+}): Promise<Metadata> {
   const resolvedParams = await params
   const salonId = resolvedParams['salon-id']
-  const salon = await getSalonMetadata(salonId).catch(() => null)
-  const name = salon?.name ?? 'Salon'
 
-  return genMeta({
-    title: `Book Appointment - ${name}`,
-    description: salon?.short_description ?? `Book your appointment at ${name}`,
-    keywords: ['book appointment', 'salon booking', name],
-  })
+  return {
+    title: 'Book Appointment',
+    description: `Book an appointment at this salon. View available services and staff members.`,
+    openGraph: {
+      title: 'Book Appointment',
+      description: `Book an appointment at this salon`,
+      type: 'website',
+    },
+  }
 }

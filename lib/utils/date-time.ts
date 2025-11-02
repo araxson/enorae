@@ -5,14 +5,22 @@
 
 import { format } from 'date-fns'
 
+const NOON_HOUR = 12
+const MIDNIGHT_HOUR = 0
+const DISPLAY_NOON_HOUR = 12
+const TIME_PART_PADDING_LENGTH = 2
+const TIME_PART_PADDING_CHAR = '0'
+const AM_INDICATOR = 'AM'
+const PM_INDICATOR = 'PM'
+
 /**
  * Format time from hour number to 12-hour format with AM/PM
  * Used for displaying business hours, schedules, etc.
  */
 export function formatHourTo12Hour(hour: number, minute: number = 0): string {
-  const ampm = hour >= 12 ? 'PM' : 'AM'
-  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour
-  const displayMinute = minute.toString().padStart(2, '0')
+  const ampm = hour >= NOON_HOUR ? PM_INDICATOR : AM_INDICATOR
+  const displayHour = hour > NOON_HOUR ? hour - NOON_HOUR : hour === MIDNIGHT_HOUR ? DISPLAY_NOON_HOUR : hour
+  const displayMinute = minute.toString().padStart(TIME_PART_PADDING_LENGTH, TIME_PART_PADDING_CHAR)
   return `${displayHour}:${displayMinute} ${ampm}`
 }
 
@@ -72,12 +80,12 @@ export function getDayName(day: string): string {
  * Format analytics date (shorter format for charts)
  */
 export function formatAnalyticsDate(date: string | Date): string {
-  const d = typeof date === 'string' ? new Date(date) : date
+  const dateObject = typeof date === 'string' ? new Date(date) : date
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-  }).format(d)
+  }).format(dateObject)
 }
 
 /**

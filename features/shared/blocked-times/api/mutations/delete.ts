@@ -2,8 +2,12 @@
 
 import { revalidatePath } from 'next/cache'
 import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PATHS, UUID_REGEX } from './shared'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function deleteBlockedTime(id: string) {
+  const logger = createOperationLogger('deleteBlockedTime', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(id)) {
       return { error: 'Invalid blocked time ID' }

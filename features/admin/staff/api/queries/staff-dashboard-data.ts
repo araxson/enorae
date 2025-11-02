@@ -18,9 +18,13 @@ import {
   fetchReviewSample,
 } from './dashboard-fetchers'
 import { normalizeBackgroundStatus } from './dashboard-metrics'
-import type { StaffDashboardData, StaffWithMetrics } from './types'
+import type { StaffDashboardData, StaffWithMetrics } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getStaffDashboardData(): Promise<StaffDashboardData> {
+  const logger = createOperationLogger('getStaffDashboardData', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

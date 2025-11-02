@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const CATALOG_SCHEMA = 'catalog'
 const PRICING_TABLE = 'service_pricing'
@@ -16,6 +17,9 @@ type PricingWithService = {
 }
 
 export async function deleteServicePricing(formData: FormData) {
+  const logger = createOperationLogger('deleteServicePricing', {})
+  logger.start()
+
   try {
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) {
@@ -56,7 +60,7 @@ export async function deleteServicePricing(formData: FormData) {
     revalidatePath(SERVICES_PATH, 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error deleting service pricing:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       error: error instanceof Error ? error.message : 'Failed to delete pricing',
     }

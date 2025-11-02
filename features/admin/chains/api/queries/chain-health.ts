@@ -2,12 +2,13 @@ import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 import type {
   AdminRevenueOverviewRow,
   AdminSalonOverviewRow,
   SalonChainRow,
-} from './types'
+} from '../../types'
 
 interface HealthScoreInput {
   isVerified: boolean
@@ -17,6 +18,9 @@ interface HealthScoreInput {
 }
 
 export async function getChainHealthMetrics(chainId: string) {
+  const logger = createOperationLogger('getChainHealthMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

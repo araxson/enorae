@@ -25,7 +25,7 @@ export async function ReferralProgram() {
         </ItemGroup>
 
         <ReferralDashboard
-          referralCode={referralCode}
+          referralCode={referralCode ?? null}
           stats={stats}
           history={history}
         />

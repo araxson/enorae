@@ -1,3 +1,4 @@
+import 'server-only'
 import { parseModeration } from './moderation'
 import { toTimestamp } from './utils'
 import type {

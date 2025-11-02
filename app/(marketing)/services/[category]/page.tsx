@@ -1,10 +1,6 @@
 import { Suspense } from 'react'
-
-import { Spinner } from '@/components/ui/spinner'
-import {
-  ServicesCategoryPage,
-  generateServicesCategoryMetadata,
-} from '@/features/marketing/services-directory'
+import { ServicesCategoryPage, generateServicesCategoryMetadata } from '@/features/marketing/services-directory'
+import { PageLoading } from '@/features/shared/ui-components'
 
 export { generateServicesCategoryMetadata as generateMetadata }
 
@@ -12,13 +8,7 @@ type PageProps = Parameters<typeof ServicesCategoryPage>[0]
 
 export default async function ServiceCategoryPage(props: PageProps) {
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-16">
-          <Spinner className="size-6 text-muted-foreground" />
-        </div>
-      }
-    >
+    <Suspense fallback={<PageLoading />}>
       <ServicesCategoryPage {...props} />
     </Suspense>
   )

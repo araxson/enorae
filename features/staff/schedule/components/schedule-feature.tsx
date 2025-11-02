@@ -8,7 +8,7 @@ import {
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffMemberSchedule } from '../api/queries'
 import { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
-import { StaffScheduleClient } from './index'
+import { StaffScheduleClient } from './schedule-client'
 
 export async function ScheduleFeature() {
   let staffProfile

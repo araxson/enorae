@@ -2,6 +2,8 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database, Json } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type NotificationQueue = Database['public']['Views']['communication_notification_queue_view']['Row']
 
@@ -16,8 +18,11 @@ export interface NotificationQueueSnapshot {
 }
 
 export async function getNotificationQueue(
-  limit = 100
+  limit = QUERY_LIMITS.MEDIUM_LIST
 ): Promise<NotificationQueueSnapshot> {
+  const logger = createOperationLogger('getNotificationQueue', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

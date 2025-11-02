@@ -1,3 +1,4 @@
+import 'server-only'
 import { parseISO } from 'date-fns'
 import type { AppointmentRow } from '@/features/admin/appointments/types'
 import type {

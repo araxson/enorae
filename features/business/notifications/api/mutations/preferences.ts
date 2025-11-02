@@ -3,6 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSupabaseClient, revalidateNotifications } from './utilities'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const updatePreferencesSchema = z.object({
   preferences: z.object({
@@ -19,29 +20,48 @@ export async function updateNotificationPreferences(preferences: {
   in_app?: Record<string, boolean>
   push?: Record<string, boolean>
 }) {
-  const supabase = await getSupabaseClient()
+  const logger = createOperationLogger('updateNotificationPreferences', {})
+  logger.start()
 
-  const validation = updatePreferencesSchema.safeParse({ preferences })
-  if (!validation.success) {
-    throw new Error(validation.error.issues[0]?.message ?? "Validation failed")
+  // ASYNC FIX: Wrap in try-catch to handle all Promise rejections
+  try {
+    const supabase = await getSupabaseClient()
+
+    const validation = updatePreferencesSchema.safeParse({ preferences })
+    if (!validation.success) {
+      return { success: false, error: validation.error.issues[0]?.message ?? "Validation failed" }
+    }
+
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError) {
+      logger.error(authError, 'auth')
+      return { success: false, error: authError.message }
+    }
+    if (!user) {
+      return { success: false, error: 'Unauthorized' }
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      data: {
+        notification_preferences: preferences,
+      },
+    })
+
+    if (error) {
+      logger.error(error, 'database')
+      return { success: false, error: error.message }
+    }
+
+    revalidateNotifications()
+    logger.success()
+    return { success: true }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update preferences'
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'unknown')
+    return { success: false, error: errorMessage }
   }
-
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser()
-
-  if (authError) throw authError
-  if (!user) throw new Error('Unauthorized')
-
-  const { error } = await supabase.auth.updateUser({
-    data: {
-      notification_preferences: preferences,
-    },
-  })
-
-  if (error) throw error
-
-  revalidateNotifications()
-  return { success: true }
 }

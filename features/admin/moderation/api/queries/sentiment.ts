@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createOperationLogger } from '@/lib/observability/logger'
 const POSITIVE_WORDS = [
   'great',
   'excellent',

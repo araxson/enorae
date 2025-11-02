@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
@@ -12,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { Form } from '@/components/ui/form'
+import { categorySchema, type CategorySchema } from '@/features/business/service-categories/api/schema'
 import { createServiceCategory, updateServiceCategory } from '@/features/business/service-categories/api/mutations'
 import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -25,92 +28,96 @@ type CategoryFormProps = {
 }
 
 export function CategoryForm({ category, categories, open, onOpenChange }: CategoryFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [parentId, setParentId] = useState<string>(category?.['parent_id'] || '')
+  const isEditMode = Boolean(category)
 
   // Filter out current category and its descendants to prevent circular references
   const availableParents = categories.filter((c) => {
     if (!category) return true // Creating new, all categories available
     if (c['id'] === category['id']) return false // Can't be own parent
-    // TODO: Also filter out descendants when path field is available
     return true
   })
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  const form = useForm<CategorySchema>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      name: category?.name || '',
+      parentId: category?.['parent_id'] || null,
+    },
+  })
 
-    const formData = new FormData(e.currentTarget)
-    // Add parentId to formData
-    if (parentId) {
-      formData.set('parentId', parentId)
-    }
-
+  const handleSubmit = async (values: CategorySchema) => {
     try {
-      const result = category
+      const formData = new FormData()
+      formData.set('name', values.name)
+      if (values.parentId) formData.set('parentId', values.parentId)
+
+      if (isEditMode && category?.id) {
+        formData.set('id', category.id)
+      }
+
+      const result = isEditMode
         ? await updateServiceCategory(formData)
         : await createServiceCategory(formData)
 
       if (result.error) {
         toast.error(result.error)
       } else {
-        toast.success(category ? 'Category updated' : 'Category created')
+        toast.success(isEditMode ? 'Category updated' : 'Category created')
         onOpenChange(false)
+        form.reset()
       }
     } catch {
       toast.error('Failed to save category')
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
-          <DialogHeader>
-            <DialogTitle>
-              {category ? 'Edit Category' : 'Create Category'}
-            </DialogTitle>
-            <DialogDescription>
-              {category
-                ? 'Update the service category details'
-                : 'Add a new service category to organize your services'}
-            </DialogDescription>
-          </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <div className="space-y-6">
+              <DialogHeader>
+                <DialogTitle>
+                  {isEditMode ? 'Edit Category' : 'Create Category'}
+                </DialogTitle>
+                <DialogDescription>
+                  {isEditMode
+                    ? 'Update the service category details'
+                    : 'Add a new service category to organize your services'}
+                </DialogDescription>
+              </DialogHeader>
 
-          <CategoryFormFields
-            category={category}
-            availableParents={availableParents}
-            parentId={parentId}
-            onParentIdChange={setParentId}
-          />
-          </div>
+              <CategoryFormFields
+                form={form}
+                availableParents={availableParents}
+              />
+            </div>
 
-          <DialogFooter>
-            <ButtonGroup>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isSubmitting}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <>
-                    <Spinner className="size-4" />
-                    <span>Saving...</span>
-                  </>
-                ) : (
-                  <span>{category ? 'Update' : 'Create'}</span>
-                )}
-              </Button>
-            </ButtonGroup>
-          </DialogFooter>
-        </form>
+            <DialogFooter>
+              <ButtonGroup>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => onOpenChange(false)}
+                  disabled={form.formState.isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? (
+                    <>
+                      <Spinner className="size-4" />
+                      <span>Saving...</span>
+                    </>
+                  ) : (
+                    <span>{isEditMode ? 'Update' : 'Create'}</span>
+                  )}
+                </Button>
+              </ButtonGroup>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

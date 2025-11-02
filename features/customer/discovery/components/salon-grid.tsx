@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, memo, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/features/shared/salons'
 import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
@@ -40,7 +40,7 @@ interface SalonGridProps {
   itemsPerPage?: number
 }
 
-export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
+export const SalonGrid = memo(function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -49,10 +49,17 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   const endIndex = startIndex + itemsPerPage
   const currentSalons = salons.slice(startIndex, endIndex)
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
+
+  // PERFORMANCE FIX: Memoize navigation handler to prevent recreating on every render
+  const handleNavigate = useCallback((slug: string | null) => {
+    if (slug) {
+      router.push(`/salons/${slug}`)
+    }
+  }, [router])
 
   if (salons.length === 0) {
     return (
@@ -117,12 +124,8 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
               rating={rating}
               reviewCount={reviewCount}
               isAcceptingBookings={salon['is_accepting_bookings'] ?? true}
-              onBook={() => {
-                router.push(`/salons/${salon['slug']}`)
-              }}
-              onViewDetails={() => {
-                router.push(`/salons/${salon['slug']}`)
-              }}
+              onBook={() => handleNavigate(salon['slug'])}
+              onViewDetails={() => handleNavigate(salon['slug'])}
               favoriteAction={
                 salon['id'] ? (
                   <FavoriteButton
@@ -187,4 +190,4 @@ export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
       )}
     </div>
   )
-}
+})

@@ -1,23 +1,22 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
-import { UUID_REGEX, createThreadSchema, sendMessageSchema } from './schemas'
+import { createThreadSchema, sendMessageSchema } from './schemas'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { revalidatePath } from 'next/cache'
 
 /**
  * Create a new message thread
  */
 export async function createThread(input: z.infer<typeof createThreadSchema>) {
+  const logger = createOperationLogger('createThread')
+  logger.start()
+
   try {
-    // Validate input
     const validated = createThreadSchema.parse(input)
-
     const supabase = await createClient()
-
-    // Auth check
-    // SECURITY: Require authentication
     const session = await requireAuth()
 
     // Verify salon exists
@@ -28,11 +27,9 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
       .single()
 
     if (salonError || !salon) {
+      logger.error('Salon not found', 'not_found', { salonId: validated.salon_id })
       return { error: 'Salon not found' }
     }
-
-    // Create thread with correct status and priority enum values
-    // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
     const { data, error } = await supabase
       .schema('communication')
@@ -48,17 +45,19 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
       .single()
 
     if (error) {
+      logger.error('Thread creation failed', 'database', { error })
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages', 'page')
-    revalidatePath('/business/messages', 'page')
+    logger.success({ threadId: data.id })
+    revalidatePath('/messages', 'page')
 
     return { data, error: null }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
+      return { error: error.issues[0]?.message ?? 'Validation failed' }
     }
+    logger.error('Thread creation failed', 'unknown', { error })
     return { error: 'Failed to create thread' }
   }
 }
@@ -67,18 +66,13 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
  * Send a direct message to another user
  */
 export async function sendMessage(input: z.infer<typeof sendMessageSchema>) {
+  const logger = createOperationLogger('sendMessage')
+  logger.start()
+
   try {
-    // Validate input
     const validated = sendMessageSchema.parse(input)
-
     const supabase = await createClient()
-
-    // Auth check
-    // SECURITY: Require authentication
     const session = await requireAuth()
-
-    // Send message using the actual database schema (from_user_id, to_user_id)
-    // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
     const { data, error } = await supabase
       .schema('communication')
@@ -95,17 +89,19 @@ export async function sendMessage(input: z.infer<typeof sendMessageSchema>) {
       .single()
 
     if (error) {
+      logger.error('Message send failed', 'database', { error })
       return { error: error.message }
     }
 
-    revalidatePath('/customer/messages', 'page')
-    revalidatePath('/business/messages', 'page')
+    logger.success({ messageId: data.id, toUserId: validated.to_user_id })
+    revalidatePath('/messages', 'page')
 
     return { data, error: null }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.issues?.[0]?.message ?? 'Validation failed' }
+      return { error: error.issues[0]?.message ?? 'Validation failed' }
     }
+    logger.error('Message send failed', 'unknown', { error })
     return { error: 'Failed to send message' }
   }
 }

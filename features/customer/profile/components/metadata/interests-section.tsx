@@ -53,7 +53,7 @@ export function InterestsSection({
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Heart className="size-4" />
+                  <Heart className="size-4" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No interests yet</EmptyTitle>
                 <EmptyDescription>Add topics to personalize your recommendations.</EmptyDescription>
@@ -74,7 +74,7 @@ export function InterestsSection({
                       onClick={() => removeInterest(interest)}
                       aria-label={`Remove ${interest}`}
                     >
-                      <X className="size-3" />
+                      <X className="size-3" aria-hidden="true" />
                     </Button>
                   </ItemActions>
                 </Item>

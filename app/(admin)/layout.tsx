@@ -19,10 +19,10 @@ export default async function AdminLayout({
       <AdminSidebar />
       <SidebarInset>
         <PortalHeader />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <main id="main-content" className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <AdminKeyboardShortcuts />
           {children}
-        </div>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   )

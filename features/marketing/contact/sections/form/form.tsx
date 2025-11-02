@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Spinner } from '@/components/ui/spinner'
-import { contactSchema, type ContactSchema } from '@/features/marketing/contact/schema'
+import { contactSchema, type ContactSchema } from '@/features/marketing/contact/api/schema'
 import { submitContactMessage } from '@/features/marketing/contact/api/mutations'
 import {
   Item,

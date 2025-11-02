@@ -135,11 +135,10 @@ export function ProfileManagementClient({
     if (!initialProfile && initialProfiles.length > 0) {
       const firstProfile = initialProfiles[0]
       if (firstProfile) {
-        loadProfile(firstProfile.id)
+        void loadProfile(firstProfile.id)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [initialProfile, initialProfiles, loadProfile])
 
   return (
     <div className="flex flex-col gap-10">

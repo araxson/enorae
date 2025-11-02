@@ -2,6 +2,7 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentSummary = {
   id: string
@@ -24,6 +25,9 @@ type PaymentRecord = {
  * Get top customers by value
  */
 export async function getTopCustomers(limit: number = 10) {
+  const logger = createOperationLogger('getTopCustomers', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
 

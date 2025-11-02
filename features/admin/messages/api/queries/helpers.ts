@@ -1,3 +1,4 @@
+import 'server-only'
 import type { AdminMessageRow, MessageRow } from '../types'
 import { toTimestamp } from './utils'
 

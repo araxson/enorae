@@ -14,11 +14,15 @@ import {
   groupServicesByCustomer,
 } from './transformers'
 import { selectTopByLifetimeValue } from '@/lib/utils/insights'
-import type { CustomerMetrics } from './types'
+import type { CustomerMetrics } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getCustomerInsights(
   limit = 50,
 ): Promise<CustomerMetrics[]> {
+  const logger = createOperationLogger('getCustomerInsights', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
   const supabase = await createClient()

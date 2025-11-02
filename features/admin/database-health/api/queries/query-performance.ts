@@ -2,6 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type MostCalledQuery = Database['public']['Views']['most_called_queries_view']['Row']
 type SlowQuery = Database['public']['Views']['slow_queries_view']['Row']
@@ -22,6 +23,9 @@ export interface QueryPerformanceSnapshot {
 export async function getQueryPerformance(
   limit = 50
 ): Promise<QueryPerformanceSnapshot> {
+  const logger = createOperationLogger('getQueryPerformance', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

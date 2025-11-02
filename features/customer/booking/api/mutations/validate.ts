@@ -2,8 +2,12 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { bookingSchema } from '@/lib/validations/booking'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function validateBookingData(formData: FormData, userId: string, salonId: string) {
+  const logger = createOperationLogger('validateBookingData', {})
+  logger.start()
+
   const serviceId = formData.get('serviceId') as string
   const staffId = formData.get('staffId') as string
 

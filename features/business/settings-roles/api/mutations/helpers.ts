@@ -1,3 +1,4 @@
+import 'server-only'
 import { z } from 'zod'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
@@ -64,12 +65,15 @@ export async function verifyRoleAccess(
   return roleData
 }
 
+const permissionsSchema = z.array(z.string())
+
 export function parsePermissions(permissionsRaw: FormDataEntryValue | null): string[] | undefined {
   if (!permissionsRaw) return undefined
 
   try {
-    const parsed = JSON.parse(permissionsRaw as string)
-    return Array.isArray(parsed) ? parsed.filter((p): p is string => typeof p === 'string') : undefined
+    const parsed = JSON.parse(String(permissionsRaw))
+    const validated = permissionsSchema.safeParse(parsed)
+    return validated.success ? validated.data : undefined
   } catch {
     throw new Error('Invalid permissions format')
   }

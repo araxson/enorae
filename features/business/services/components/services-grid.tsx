@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,6 +10,15 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { Scissors, Edit, DollarSign, Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -44,27 +52,29 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
   return (
     <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {services.map((service) => (
-        <Card key={service['id']}>
-          <CardHeader>
-            <CardTitle>{service['name']}</CardTitle>
-            {service['category_name'] ? (
-              <CardDescription>{service['category_name']}</CardDescription>
-            ) : null}
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            <div className="flex items-start justify-between gap-4">
-              {service['description'] ? (
-                <p className="text-sm leading-7 text-muted-foreground line-clamp-2">
-                  {service['description']}
-                </p>
-              ) : (
-                <span className="text-sm text-muted-foreground">No description provided</span>
-              )}
+        <Item key={service['id']} variant="outline" className="flex-col gap-4">
+          <ItemHeader>
+            <ItemContent>
+              <ItemTitle>{service['name']}</ItemTitle>
+              {service['category_name'] ? (
+                <ItemDescription>{service['category_name']}</ItemDescription>
+              ) : null}
+            </ItemContent>
+            <ItemActions>
               <Badge variant={service['is_active'] ? 'default' : 'secondary'}>
                 {service['is_active'] ? 'Active' : 'Inactive'}
               </Badge>
-            </div>
+            </ItemActions>
+          </ItemHeader>
+
+          <ItemContent className="space-y-4">
+            {service['description'] ? (
+              <p className="text-sm leading-7 text-muted-foreground line-clamp-2">
+                {service['description']}
+              </p>
+            ) : (
+              <span className="text-sm text-muted-foreground">No description provided</span>
+            )}
 
             <div className="flex flex-wrap gap-4 text-sm">
               {service['current_price'] ? (
@@ -83,15 +93,11 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
                 </div>
               ) : null}
             </div>
-
-            {service['category_name'] ? (
-              <p className="text-xs text-muted-foreground">{service['category_name']}</p>
-            ) : null}
-          </CardContent>
+          </ItemContent>
 
           {onEditService && (
-            <CardFooter>
-              <ButtonGroup aria-label="Service actions">
+            <ItemFooter>
+              <ButtonGroup aria-label="Service actions" className="w-full">
                 <Button
                   variant="outline"
                   size="sm"
@@ -102,9 +108,9 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
                   Edit Service
                 </Button>
               </ButtonGroup>
-            </CardFooter>
+            </ItemFooter>
           )}
-        </Card>
+        </Item>
       ))}
     </div>
   )

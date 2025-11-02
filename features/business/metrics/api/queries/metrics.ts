@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 // COMPLIANCE: Use organization schema Views for SELECT typing
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
@@ -26,6 +27,9 @@ export type SalonMetricsData = {
  * Get latest metrics for the user's salon
  */
 export async function getLatestSalonMetrics(): Promise<SalonMetricsData | null> {
+  const logger = createOperationLogger('getLatestSalonMetrics', {})
+  logger.start()
+
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 

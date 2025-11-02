@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const createIndexSchema = z.object({
   tableName: z.string().min(1),
@@ -13,6 +14,9 @@ const createIndexSchema = z.object({
 })
 
 export async function createRecommendedIndex(formData: FormData) {
+  const logger = createOperationLogger('createRecommendedIndex', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -55,7 +59,7 @@ export async function createRecommendedIndex(formData: FormData) {
     revalidatePath('/admin/database-health', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error creating index:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

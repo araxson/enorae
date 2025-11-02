@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const createRuleSchema = z.object({
   ruleName: z.string().min(1).max(255),
@@ -33,6 +34,9 @@ const deleteRuleSchema = z.object({
 })
 
 export async function createRateLimitRule(formData: FormData) {
+  const logger = createOperationLogger('createRateLimitRule', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -87,12 +91,15 @@ export async function createRateLimitRule(formData: FormData) {
     revalidatePath('/admin/security', 'page')
     return { success: true, ruleId: newRule?.id }
   } catch (error) {
-    console.error('Error creating rate limit rule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function updateRateLimitRule(formData: FormData) {
+  const logger = createOperationLogger('updateRateLimitRule', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -142,12 +149,15 @@ export async function updateRateLimitRule(formData: FormData) {
     revalidatePath('/admin/security', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error updating rate limit rule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function toggleRateLimitRule(formData: FormData) {
+  const logger = createOperationLogger('toggleRateLimitRule', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -186,12 +196,15 @@ export async function toggleRateLimitRule(formData: FormData) {
     revalidatePath('/admin/security', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error toggling rate limit rule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function deleteRateLimitRule(formData: FormData) {
+  const logger = createOperationLogger('deleteRateLimitRule', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -228,7 +241,7 @@ export async function deleteRateLimitRule(formData: FormData) {
     revalidatePath('/admin/security', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error deleting rate limit rule:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

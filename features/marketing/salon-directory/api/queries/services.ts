@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -9,6 +10,9 @@ type Service = Database['public']['Views']['services_view']['Row']
  * Public endpoint - no auth required
  */
 export async function getPublicServiceCategories(): Promise<string[]> {
+  const logger = createOperationLogger('getPublicServiceCategories', {})
+  logger.start()
+
   const supabase = await createClient()
 
   type ServiceRow = { category_name: string | null }

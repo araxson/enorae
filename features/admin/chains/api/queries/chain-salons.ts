@@ -2,15 +2,19 @@ import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 import type {
   AdminSalonOverviewRow,
   ChainSalon,
   LocationAddressRow,
   SalonLocationRow,
-} from './types'
+} from '../../types'
 
 export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
+  const logger = createOperationLogger('getChainSalons', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

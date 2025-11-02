@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ChainAnalyticsTable, ChainComplianceTable, SalonChainsClient } from '.'
+import { ChainAnalyticsTable } from './chain-analytics'
+import { ChainComplianceTable } from './chain-compliance'
+import { SalonChainsClient } from './salon-chains-client'
 import type { getAllSalonChains, getChainAnalytics, getChainCompliance } from '../api/queries'
 
 type AdminChainsContentProps = {

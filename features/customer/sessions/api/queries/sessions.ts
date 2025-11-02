@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 // FIXED: Use public sessions_view (application sessions metadata)
 type Session = Database['public']['Views']['sessions_view']['Row']
@@ -17,6 +18,9 @@ export type SessionWithDevice = SessionWithMetadata
  * IMPROVED: Uses identity.sessions view (application sessions)
  */
 export async function getUserSessions(): Promise<SessionWithMetadata[]> {
+  const logger = createOperationLogger('getUserSessions', {})
+  logger.start()
+
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 

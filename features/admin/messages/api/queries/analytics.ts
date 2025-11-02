@@ -1,3 +1,4 @@
+import 'server-only'
 import { LOOKBACK_DAYS } from '../constants'
 import { parseThreadMetadata } from './moderation'
 import {

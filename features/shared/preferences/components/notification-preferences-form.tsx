@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Bell, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { updateNotificationPreferences } from '@/features/shared/preferences/api/mutations'
+import { TIME_MS } from '@/lib/config/constants'
 import {
   Item,
   ItemContent,
@@ -54,8 +55,7 @@ export function NotificationPreferencesForm({
     if (result.success) {
       setSuccess(true)
       router.refresh()
-      const SUCCESS_MESSAGE_TIMEOUT = 3000
-      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
+      setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error)
     }

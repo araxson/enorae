@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Link from 'next/link'
 import { MapPin, StickyNote } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -30,7 +31,7 @@ interface FavoritesListProps {
   favorites: FavoriteWithSalon[]
 }
 
-export function FavoritesList({ favorites }: FavoritesListProps) {
+export const FavoritesList = memo(function FavoritesList({ favorites }: FavoritesListProps) {
   if (favorites.length === 0) {
     return (
       <Empty>
@@ -112,4 +113,4 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
       })}
     </div>
   )
-}
+})

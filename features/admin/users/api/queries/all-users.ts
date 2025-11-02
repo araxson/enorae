@@ -3,10 +3,15 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
-import type { AdminUser, UserFilters } from './types'
+import type { AdminUser, UserFilters } from '../../types'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
+  const logger = createOperationLogger('getAllUsers', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
@@ -49,7 +54,7 @@ export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
     .or(`full_name.ilike.%${searchTerm}%,username.ilike.%${searchTerm}%`)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
-    .limit(50)
+    .limit(QUERY_LIMITS.DEFAULT_LIST)
 
   if (error) {
     console.error('admin_users_overview error in searchUsers:', error)

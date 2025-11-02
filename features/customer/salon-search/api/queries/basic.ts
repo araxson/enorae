@@ -1,9 +1,13 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import type { SalonSearchResult, SearchFilters } from './types'
+import type { SalonSearchResult, SearchFilters } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function searchSalons(filters: SearchFilters): Promise<SalonSearchResult[]> {
+  const logger = createOperationLogger('searchSalons', {})
+  logger.start()
+
   await requireAuth()
   const supabase = await createClient()
 
@@ -42,7 +46,11 @@ export async function searchSalons(filters: SearchFilters): Promise<SalonSearchR
     is_featured: boolean | null
   }
 
-  const data = (salons || []).map((salon: any) => ({
+  const isSalonRow = (item: unknown): item is SalonRow => {
+    return item !== null && typeof item === 'object' && 'id' in item
+  }
+
+  const data = (salons || []).filter(isSalonRow).map((salon) => ({
     id: salon.id || '',
     name: salon.name || '',
     slug: salon.slug || '',
@@ -76,7 +84,21 @@ export async function getFeaturedSalons(limit = 6): Promise<SalonSearchResult[]>
 
   if (error) throw error
 
-  return (data || []).map((salon: any) => ({
+  type SalonRow = {
+    id: string
+    name: string | null
+    slug: string | null
+    address: { street?: string; city?: string; state?: string; zip_code?: string } | null
+    rating_average: number | null
+    is_verified: boolean | null
+    is_featured: boolean | null
+  }
+
+  const isSalonRow = (item: unknown): item is SalonRow => {
+    return item !== null && typeof item === 'object' && 'id' in item
+  }
+
+  return (data || []).filter(isSalonRow).map((salon): SalonSearchResult => ({
     id: salon.id || '',
     name: salon.name || '',
     slug: salon.slug || '',
@@ -84,5 +106,5 @@ export async function getFeaturedSalons(limit = 6): Promise<SalonSearchResult[]>
     rating_average: salon.rating_average || 0,
     is_verified: salon.is_verified || false,
     is_featured: salon.is_featured || false,
-  })) as SalonSearchResult[]
+  }))
 }

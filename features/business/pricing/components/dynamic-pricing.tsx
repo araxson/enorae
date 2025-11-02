@@ -1,7 +1,10 @@
 import { getPricingRules } from '../api/queries'
 import { getPricingServices, buildPricingAnalytics } from '../api/analytics'
 import type { PricingService } from '../api/analytics'
-import { BulkPricingAdjuster, DynamicPricingDashboard, PricingRulesForm, PricingRulesList } from '.'
+import { BulkPricingAdjuster } from './bulk-pricing-adjuster'
+import { DynamicPricingDashboard } from './dynamic-pricing-dashboard'
+import { PricingRulesForm } from './pricing-rules-form'
+import { PricingRulesList } from './pricing-rules-list'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import {
   Item,

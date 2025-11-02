@@ -2,13 +2,20 @@ import 'server-only'
 
 import type { RevenueForecast } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
+import { createOperationLogger } from '@/lib/observability/logger'
 
-export async function getRevenueForecast(days = 30): Promise<RevenueForecast[]> {
+const DEFAULT_FORECAST_DAYS = 30
+const HISTORICAL_DATA_DAYS = 90
+
+export async function getRevenueForecast(days = DEFAULT_FORECAST_DAYS): Promise<RevenueForecast[]> {
+  const logger = createOperationLogger('getRevenueForecast', {})
+  logger.start()
+
   const supabase = await requireAdminClient()
 
   const endDate = new Date()
   const startDate = new Date()
-  startDate.setDate(startDate.getDate() - 90)
+  startDate.setDate(startDate.getDate() - HISTORICAL_DATA_DAYS)
 
   const { data, error } = await supabase
     .from('admin_revenue_overview_view')
@@ -40,9 +47,13 @@ export async function getRevenueForecast(days = 30): Promise<RevenueForecast[]> 
     const dateStr = forecastDate.toISOString().split('T')[0]
     if (!dateStr) continue
 
+    const FORECAST_VARIANCE_RANGE = 0.2
+    const FORECAST_VARIANCE_OFFSET = 0.1
+    const forecastedAmount = avgDailyRevenue * (1 + (Math.random() * FORECAST_VARIANCE_RANGE - FORECAST_VARIANCE_OFFSET))
+
     forecast.push({
       date: dateStr,
-      forecast: avgDailyRevenue * (1 + (Math.random() * 0.2 - 0.1)),
+      forecast: forecastedAmount,
       actual: dailyRevenue[dateStr],
     })
   }

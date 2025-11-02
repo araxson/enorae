@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Upload, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Spinner } from '@/components/ui/spinner'
 import { uploadPortfolioImage } from '@/features/staff/profile/api/mutations'
 import Image from 'next/image'
 import {
@@ -79,10 +80,13 @@ export function PortfolioGallery({ portfolioImages = [] }: PortfolioGalleryProps
                   onClick={() => document.getElementById('portfolio-upload')?.click()}
                 >
                   {isUploading ? (
-                    <>Uploading...</>
+                    <>
+                      <Spinner />
+                      Uploading
+                    </>
                   ) : (
                     <>
-                      <Plus className="size-4 mr-2" />
+                      <Plus className="size-4" />
                       Add Image
                     </>
                   )}

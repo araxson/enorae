@@ -3,19 +3,10 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { ShieldAlert, Store } from 'lucide-react'
 import { getUserRole } from '@/lib/auth'
-import {
-  getDashboardMetrics,
-  getRecentAppointments,
-  getUserSalon,
-  getMultiLocationMetrics,
-} from '@/features/business/dashboard/api/queries'
+import { getDashboardMetrics, getRecentAppointments, getUserSalon, getMultiLocationMetrics } from '../api/queries'
 import { getReviewStats } from '@/features/business/reviews/api/queries'
-import type { AppointmentWithDetails } from '@/features/business/dashboard/api/queries'
-import type {
-  BusinessDashboardMetrics,
-  BusinessMultiLocationMetrics,
-  BusinessReviewStats,
-} from '@/features/business/dashboard/types'
+import type { AppointmentWithDetails } from '../api/queries'
+import type { BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from '../types'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
@@ -26,7 +17,6 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { Spinner } from '@/components/ui/spinner'
-
 import { AnalyticsTab } from './analytics-tab'
 import { DashboardView } from './dashboard-view'
 
@@ -55,29 +45,27 @@ export async function BusinessDashboardPage() {
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
     if (message.includes('Authentication required')) {
-      redirect('/login?redirect=/business')
+      redirect('/login?redirect=/business/dashboard')
     }
     if (message.includes('role required')) {
       return (
-        <section className="py-16 md:py-24 lg:py-32">
-          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <ShieldAlert className="size-8" aria-hidden="true" />
-                </EmptyMedia>
-                <EmptyTitle>Access denied</EmptyTitle>
-                <EmptyDescription>
-                  You don&apos;t have permission to access the business dashboard. Please contact your administrator.
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Button asChild variant="outline">
-                  <Link href="/">Go home</Link>
-                </Button>
-              </EmptyContent>
-            </Empty>
-          </div>
+        <section className="py-10 w-full px-6">
+          <Empty>
+            <EmptyMedia variant="icon">
+              <ShieldAlert className="size-6" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle>Access denied</EmptyTitle>
+              <EmptyDescription>
+                You don't have permission to access the business dashboard. Please contact your administrator.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild variant="outline">
+                <Link href="/">Go home</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
         </section>
       )
     }
@@ -86,25 +74,23 @@ export async function BusinessDashboardPage() {
 
   if (!salon || !salon.id) {
     return (
-      <section className="py-16 md:py-24 lg:py-32">
-        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Store className="size-8" aria-hidden="true" />
-              </EmptyMedia>
-              <EmptyTitle>No Salon Found</EmptyTitle>
-              <EmptyDescription>
-                You need to create or be assigned to a salon to access the dashboard.
-              </EmptyDescription>
-            </EmptyHeader>
-            <EmptyContent>
-              <Button variant="default" asChild>
-                <Link href="/business/settings/salon">Create Salon</Link>
-              </Button>
-            </EmptyContent>
-          </Empty>
-        </div>
+      <section className="py-10 w-full px-6">
+        <Empty>
+          <EmptyMedia variant="icon">
+            <Store className="size-6" aria-hidden="true" />
+          </EmptyMedia>
+          <EmptyHeader>
+            <EmptyTitle>No salon found</EmptyTitle>
+            <EmptyDescription>
+              You need to create or be assigned to a salon to access the dashboard.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button asChild>
+              <Link href="/business/settings/salon">Create Salon</Link>
+            </Button>
+          </EmptyContent>
+        </Empty>
       </section>
     )
   }
@@ -130,7 +116,7 @@ export async function BusinessDashboardPage() {
       analyticsPanel={
         <Suspense
           fallback={
-            <Empty className="py-12">
+            <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
                   <Spinner className="size-8" />

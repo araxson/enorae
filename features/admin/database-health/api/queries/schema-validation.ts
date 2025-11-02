@@ -2,6 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type TableWithoutRLS = Database['public']['Views']['public_tables_without_rls_view']['Row']
 type TableWithoutPK = Database['public']['Views']['tables_without_primary_keys_view']['Row']
@@ -17,6 +18,9 @@ export interface SchemaValidationSnapshot {
 }
 
 export async function getSchemaValidation(): Promise<SchemaValidationSnapshot> {
+  const logger = createOperationLogger('getSchemaValidation', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

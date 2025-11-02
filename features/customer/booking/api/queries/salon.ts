@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   mergeStaffWithUsers,
   type EnrichedStaffProfile,
@@ -13,6 +14,9 @@ type UserOverviewRow = Database['public']['Views']['admin_users_overview_view'][
 type Salon = Database['public']['Views']['salons_view']['Row']
 
 export async function getSalonById(salonId: string) {
+  const logger = createOperationLogger('getSalonById', {})
+  logger.start()
+
   await requireAuth()
   const supabase = await createClient()
 

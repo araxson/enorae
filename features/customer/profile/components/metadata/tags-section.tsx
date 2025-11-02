@@ -53,7 +53,7 @@ export function TagsSection({
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Tag className="size-4" />
+                  <Tag className="size-4" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No tags yet</EmptyTitle>
                 <EmptyDescription>
@@ -76,7 +76,7 @@ export function TagsSection({
                       onClick={() => removeTag(tag)}
                       aria-label={`Remove ${tag}`}
                     >
-                      <X className="size-3" />
+                      <X className="size-3" aria-hidden="true" />
                     </Button>
                   </ItemActions>
                 </Item>

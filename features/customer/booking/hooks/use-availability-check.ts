@@ -12,6 +12,16 @@ export function useAvailabilityCheck(
   const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>('idle')
   const [isCheckingAvailability, startAvailabilityCheck] = useTransition()
   const latestCheckRef = useRef(0)
+  const abortControllerRef = useRef<AbortController | null>(null)
+
+  useEffect(() => {
+    // Cleanup function to abort ongoing requests
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!selectedStaff || !startDate || !endDate) {
@@ -19,6 +29,15 @@ export function useAvailabilityCheck(
       setAvailabilityMessage(null)
       return
     }
+
+    // Abort any pending request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    // Create new AbortController for this request
+    const controller = new AbortController()
+    abortControllerRef.current = controller
 
     setAvailabilityStatus('checking')
     setAvailabilityMessage(null)
@@ -34,7 +53,8 @@ export function useAvailabilityCheck(
           endTime: endDate.toISOString(),
         })
 
-        if (checkId !== latestCheckRef.current) {
+        // Check if request was aborted or superseded
+        if (controller.signal.aborted || checkId !== latestCheckRef.current) {
           return
         }
 
@@ -51,6 +71,11 @@ export function useAvailabilityCheck(
           }
         }
       } catch (availabilityError) {
+        // Ignore aborted requests
+        if (controller.signal.aborted) {
+          return
+        }
+
         if (checkId !== latestCheckRef.current) {
           return
         }
@@ -62,7 +87,7 @@ export function useAvailabilityCheck(
         )
       }
     })
-  }, [selectedStaff, startDate, endDate])
+  }, [selectedStaff, startDate, endDate, startAvailabilityCheck])
 
   return {
     availabilityStatus,

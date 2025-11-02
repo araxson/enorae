@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Dialog,
@@ -24,13 +24,13 @@ interface DeleteReviewDialogProps {
   children?: React.ReactNode
 }
 
-export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps) {
+export const DeleteReviewDialog = memo(function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (!review['salon_id'] || !review['id']) {
       setError('Review ID or Salon ID not found')
       return
@@ -49,7 +49,7 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
     }
 
     setIsLoading(false)
-  }
+  }, [review, router])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -112,4 +112,4 @@ export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps
       </DialogContent>
     </Dialog>
   )
-}
+})

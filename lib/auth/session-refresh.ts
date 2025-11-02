@@ -19,6 +19,7 @@ const SESSION_CONFIG = {
 } as const
 
 let refreshTimer: NodeJS.Timeout | null = null
+let isRefreshing = false
 
 /**
  * Start automatic session refresh
@@ -31,8 +32,25 @@ export function startSessionRefresh() {
   }
 
   const checkAndRefresh = async () => {
+    // Prevent concurrent refresh attempts (synchronization lock)
+    if (isRefreshing) {
+      return
+    }
+
     try {
       const supabase = createClient()
+      // SECURITY: Use getUser() instead of getSession() for server-validated auth
+      // getSession() only reads from cookies (spoofable), getUser() validates with Supabase
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        stopSessionRefresh()
+        return
+      }
+
+      // Get session for expiry check
       const {
         data: { session },
       } = await supabase.auth.getSession()
@@ -50,16 +68,22 @@ export function startSessionRefresh() {
       if (timeUntilExpiry < SESSION_CONFIG.REFRESH_THRESHOLD_MS) {
         console.log('[Session] Refreshing session (expires in', Math.round(timeUntilExpiry / 1000), 'seconds)')
 
-        const { error } = await supabase.auth.refreshSession()
+        isRefreshing = true
+        try {
+          const { error } = await supabase.auth.refreshSession()
 
-        if (error) {
-          console.error('[Session] Failed to refresh:', error)
-          stopSessionRefresh()
-        } else {
-          console.log('[Session] Successfully refreshed')
+          if (error) {
+            console.error('[Session] Failed to refresh:', error)
+            stopSessionRefresh()
+          } else {
+            console.log('[Session] Successfully refreshed')
+          }
+        } finally {
+          isRefreshing = false
         }
       }
     } catch (error) {
+      isRefreshing = false
       console.error('[Session] Error checking session:', error)
     }
   }

@@ -1,6 +1,7 @@
+import { Activity } from 'lucide-react'
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Activity } from 'lucide-react'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 
 type RealtimeMonitoringCardProps = {

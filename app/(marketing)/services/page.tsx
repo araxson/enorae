@@ -1,22 +1,12 @@
 import { Suspense } from 'react'
-
-import { Spinner } from '@/components/ui/spinner'
-import {
-  ServicesDirectoryPage,
-  marketingServicesDirectoryMetadata,
-} from '@/features/marketing/services-directory'
+import { ServicesDirectoryPage, marketingServicesDirectoryMetadata } from '@/features/marketing/services-directory'
+import { PageLoading } from '@/features/shared/ui-components'
 
 export const metadata = marketingServicesDirectoryMetadata
 
 export default async function ServicesPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-16">
-          <Spinner className="size-6 text-muted-foreground" />
-        </div>
-      }
-    >
+    <Suspense fallback={<PageLoading />}>
       <ServicesDirectoryPage />
     </Suspense>
   )

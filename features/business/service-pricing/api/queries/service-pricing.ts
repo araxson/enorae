@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { ServicePricing } from '@/features/business/services'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type ServicePricingWithService = ServicePricing & {
   service: {
@@ -16,6 +17,9 @@ export type ServicePricingWithService = ServicePricing & {
  * Get all service pricing for the user's salon
  */
 export async function getServicePricing(): Promise<ServicePricingWithService[]> {
+  const logger = createOperationLogger('getServicePricing', {})
+  logger.start()
+
   // SECURITY: Require authentication
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
@@ -37,42 +41,43 @@ export async function getServicePricing(): Promise<ServicePricingWithService[]> 
     .order('created_at', { ascending: false })
 
   if (error) throw error
-
-  // Fetch service details separately for each pricing record
   if (!data) return []
 
-  const pricingWithServices: ServicePricingWithService[] = []
-  for (const pricing of data) {
-    if (!pricing.service_id) {
-      pricingWithServices.push({
-        ...pricing,
-        service: null,
-      })
-      continue
-    }
+  // PERFORMANCE FIX: Batch fetch all services in one query instead of N+1
+  const serviceIds = data
+    .map((pricing) => pricing.service_id)
+    .filter(Boolean) as string[]
 
-    const { data: serviceData } = await supabase
-      .from('services_view')
-      .select('id, name, description, salon_id')
-      .eq('id', pricing.service_id)
-      .single()
-
-    const service = serviceData && serviceData.id && serviceData.name
-      ? {
-          id: serviceData.id,
-          name: serviceData.name,
-          description: serviceData.description,
-          salon_id: serviceData.salon_id,
-        }
-      : null
-
-    pricingWithServices.push({
-      ...pricing,
-      service,
-    })
+  if (serviceIds.length === 0) {
+    return data.map((pricing) => ({ ...pricing, service: null }))
   }
 
-  return pricingWithServices
+  const { data: servicesData, error: servicesError } = await supabase
+    .from('services_view')
+    .select('id, name, description, salon_id')
+    .in('id', serviceIds)
+
+  if (servicesError) throw servicesError
+
+  // Create a map for fast lookup
+  const servicesMap = new Map(
+    (servicesData ?? []).map((service) => [
+      service.id,
+      service.id && service.name
+        ? {
+            id: service.id,
+            name: service.name,
+            description: service.description,
+            salon_id: service.salon_id,
+          }
+        : null,
+    ])
+  )
+
+  return data.map((pricing) => ({
+    ...pricing,
+    service: pricing.service_id ? servicesMap.get(pricing.service_id) ?? null : null,
+  }))
 }
 
 /**

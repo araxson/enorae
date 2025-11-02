@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const quarantineSessionSchema = z.object({
   sessionId: z.string().uuid(),
@@ -34,6 +35,9 @@ type SessionSecurityRecord = {
 }
 
 export async function quarantineSession(formData: FormData) {
+  const logger = createOperationLogger('quarantineSession', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -92,12 +96,15 @@ export async function quarantineSession(formData: FormData) {
     revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error quarantining session:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function requireMfaForUser(formData: FormData) {
+  const logger = createOperationLogger('requireMfaForUser', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -141,12 +148,15 @@ export async function requireMfaForUser(formData: FormData) {
     revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error requiring MFA:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function evictSession(formData: FormData) {
+  const logger = createOperationLogger('evictSession', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -202,12 +212,15 @@ export async function evictSession(formData: FormData) {
     revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error evicting session:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function overrideSeverity(formData: FormData) {
+  const logger = createOperationLogger('overrideSeverity', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -276,7 +289,7 @@ export async function overrideSeverity(formData: FormData) {
     revalidatePath('/admin/settings/sessions', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error overriding severity:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

@@ -1,5 +1,7 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export interface LoyaltyPoints {
   total_points: number
@@ -19,12 +21,15 @@ export interface LoyaltyTransaction {
 }
 
 export async function getLoyaltyPoints() {
+  const logger = createOperationLogger('getLoyaltyPoints', {})
+  logger.start()
+
   await requireAuth()
   // Loyalty program is not available yet (schema absent)
   return null
 }
 
-export async function getLoyaltyTransactions(limit = 50) {
+export async function getLoyaltyTransactions(limit = QUERY_LIMITS.DEFAULT_LIST) {
   await requireAuth()
   // Loyalty program is not available yet (schema absent)
   return []

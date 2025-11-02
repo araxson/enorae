@@ -3,7 +3,17 @@ import type {
   CustomerSegment,
   CustomerSegmentation,
   InsightsSummary,
-} from '@/features/business/insights/api/queries/types'
+} from '@/features/business/insights/types'
+
+const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
+const CHURNED_THRESHOLD_DAYS = 90
+const NEW_CUSTOMER_VISIT_THRESHOLD = 2
+const VIP_VISIT_THRESHOLD = 10
+const VIP_LIFETIME_VALUE_THRESHOLD = 1000
+const LOYAL_VISIT_THRESHOLD = 5
+const AT_RISK_VISIT_THRESHOLD = 3
+const AT_RISK_DAYS_THRESHOLD = 45
+const AT_RISK_CANCELLATION_RATE_THRESHOLD = 20
 
 export function calculateSegment(input: {
   totalVisits: number
@@ -12,15 +22,14 @@ export function calculateSegment(input: {
   cancellationRate: number
 }): CustomerSegment {
   const daysSinceLastVisit = Math.floor(
-    (Date.now() - new Date(input.lastVisitDate).getTime()) /
-      (1000 * 60 * 60 * 24),
+    (Date.now() - new Date(input.lastVisitDate).getTime()) / MILLISECONDS_PER_DAY,
   )
 
-  if (daysSinceLastVisit > 90) return 'Churned'
-  if (input.totalVisits <= 2) return 'New'
-  if (input.totalVisits >= 10 && input.lifetimeValue >= 1000) return 'VIP'
-  if (input.totalVisits >= 5) return 'Loyal'
-  if (input.totalVisits >= 3 && (daysSinceLastVisit > 45 || input.cancellationRate > 20)) {
+  if (daysSinceLastVisit > CHURNED_THRESHOLD_DAYS) return 'Churned'
+  if (input.totalVisits <= NEW_CUSTOMER_VISIT_THRESHOLD) return 'New'
+  if (input.totalVisits >= VIP_VISIT_THRESHOLD && input.lifetimeValue >= VIP_LIFETIME_VALUE_THRESHOLD) return 'VIP'
+  if (input.totalVisits >= LOYAL_VISIT_THRESHOLD) return 'Loyal'
+  if (input.totalVisits >= AT_RISK_VISIT_THRESHOLD && (daysSinceLastVisit > AT_RISK_DAYS_THRESHOLD || input.cancellationRate > AT_RISK_CANCELLATION_RATE_THRESHOLD)) {
     return 'At Risk'
   }
 

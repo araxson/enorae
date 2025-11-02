@@ -3,11 +3,15 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { getAuthorizedContext, userRoleSchema, parsePermissions, type ActionResult } from './helpers'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 /**
  * Assign role to user
  */
 export async function assignUserRole(formData: FormData): Promise<ActionResult> {
+  const logger = createOperationLogger('assignUserRole', {})
+  logger.start()
+
   try {
     const { session, accessibleSalonIds, supabase } = await getAuthorizedContext()
 

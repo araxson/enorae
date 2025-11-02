@@ -1,6 +1,8 @@
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { NotificationPreferences, PrivacySettings, DisplayPreferences } from './index'
+import { NotificationPreferences } from './notification-preferences'
+import { PrivacySettings } from './privacy-settings'
+import { DisplayPreferences } from './display-preferences'
 import { getUserPreferences } from '../api/queries'
 import type { UserPreferences } from '../types'
 

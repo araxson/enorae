@@ -6,6 +6,7 @@ import { Calendar, DollarSign, Mail, User } from 'lucide-react'
 import type { ClientWithHistory } from '@/features/staff/clients/api/queries'
 import type { Database } from '@/lib/types/database.types'
 import { ClientAppointmentHistory } from './client-appointment-history'
+import { TIME_MS } from '@/lib/config/constants'
 import {
   Item,
   ItemContent,
@@ -38,8 +39,7 @@ export function ClientDetailDialog({ client, staffId, open, onOpenChange }: Clie
       setLoading(true)
       try {
         // API_INTEGRATION_FIX: Add 10 second timeout for API calls
-        const API_REQUEST_TIMEOUT_MS = 10000 // 10 seconds
-        const timeoutSignal = AbortSignal.timeout(API_REQUEST_TIMEOUT_MS)
+        const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
         const response = await fetch(
           `/api/staff/clients/${client['customer_id']}/appointments?staffId=${staffId}`,
           {

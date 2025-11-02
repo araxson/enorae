@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 // Type aliases for database views
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
@@ -17,6 +18,9 @@ export interface BusinessRecommendation {
 }
 
 export async function getBusinessRecommendations(salonId: string): Promise<BusinessRecommendation[]> {
+  const logger = createOperationLogger('getBusinessRecommendations', {})
+  logger.start()
+
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 
@@ -27,12 +31,18 @@ export async function getBusinessRecommendations(salonId: string): Promise<Busin
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-  const { data: metrics } = await supabase
+  const { data: metrics, error: metricsError } = await supabase
     .from('daily_metrics_view')
     .select('*')
     .eq('salon_id', salonId)
     .gte('metric_at', thirtyDaysAgo.toISOString().split('T')[0])
     .order('metric_at', { ascending: false })
+
+  if (metricsError) {
+    logger.error(metricsError, 'database')
+    console.error('[getBusinessRecommendations] Failed to fetch metrics:', metricsError)
+    throw new Error('Failed to fetch business metrics')
+  }
 
   if (!metrics || metrics.length < 7) {
     return recommendations

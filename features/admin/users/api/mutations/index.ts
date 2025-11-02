@@ -1,4 +1,4 @@
-export * from './constants'
+export * from '../../constants'
 export * from './profile'
 export * from './status'
 export * from './sessions'

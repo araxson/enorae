@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type ServiceViewRow = Database['public']['Views']['services_view']['Row']
 
@@ -20,6 +21,9 @@ export async function searchServicesFulltext(
   salonId: string,
   searchQuery: string
 ): Promise<ServiceSearchResult[]> {
+  const logger = createOperationLogger('searchServicesFulltext', {})
+  logger.start()
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')

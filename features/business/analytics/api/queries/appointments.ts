@@ -3,6 +3,7 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 interface AppointmentStats {
   total_appointments: number
@@ -20,6 +21,9 @@ export async function getAppointmentStats(
   startDate: string,
   endDate: string
 ): Promise<AppointmentStats | null> {
+  const logger = createOperationLogger('getAppointmentStats', {})
+  logger.start()
+
   const supabase = await createClient()
   const {
     data: { user },

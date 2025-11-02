@@ -4,8 +4,8 @@ export {
   type ServiceFormData,
   type ServicePricingData,
   type ServiceBookingRulesData,
-} from './create-service.mutation'
+} from './create-service'
 
-export { updateService } from './update-service.mutation'
-export { deleteService } from './delete-service.mutation'
-export { permanentlyDeleteService } from './permanently-delete-service.mutation'
+export { updateService } from './update-service'
+export { deleteService } from './delete-service'
+export { permanentlyDeleteService } from './permanently-delete-service'

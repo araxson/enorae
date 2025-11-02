@@ -1,7 +1,8 @@
 import 'server-only'
 
 import { authorizeStaffAccess, toDateOnly } from '@/lib/utils/commission'
-import type { PayoutSchedule } from './types'
+import type { PayoutSchedule } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 const MILLIS_IN_DAY = 24 * 60 * 60 * 1000
 
@@ -13,6 +14,9 @@ export async function getPayoutSchedule(
   staffId: string,
   months = 6,
 ): Promise<PayoutSchedule[]> {
+  const logger = createOperationLogger('getPayoutSchedule', {})
+  logger.start()
+
   const { supabase } = await authorizeStaffAccess(staffId)
 
   const payouts: PayoutSchedule[] = []

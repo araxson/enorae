@@ -1,11 +1,15 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function calculateCustomerFavoriteStaff(
   customerId: string,
   salonId: string
 ): Promise<string | null> {
+  const logger = createOperationLogger('calculateCustomerFavoriteStaff', {})
+  logger.start()
+
   const session = await requireAuth()
   if (session.user.id !== customerId) {
     throw new Error('Unauthorized')

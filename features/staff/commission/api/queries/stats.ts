@@ -1,8 +1,9 @@
 import 'server-only'
 
-import type { AppointmentRow } from './types'
+import type { AppointmentRow } from '../../types'
 import { authorizeStaffAccess } from '@/lib/utils/commission'
-import type { CommissionData, DailyEarnings } from './types'
+import type { CommissionData, DailyEarnings } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 function sumRevenue(appointments: AppointmentRow[] | null | undefined) {
   return (
@@ -28,6 +29,9 @@ function formatISO(date: Date) {
 export async function getStaffCommission(
   staffId: string,
 ): Promise<CommissionData> {
+  const logger = createOperationLogger('getStaffCommission', {})
+  logger.start()
+
   const { supabase } = await authorizeStaffAccess(staffId)
 
   const now = new Date()

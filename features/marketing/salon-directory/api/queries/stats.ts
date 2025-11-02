@@ -1,5 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Get platform statistics for homepage
@@ -10,6 +11,8 @@ export async function getPublicPlatformStats(): Promise<{
   totalCities: number
   totalServices: number
 }> {
+  const logger = createOperationLogger('getPublicPlatformStats', {})
+  logger.start()
   const supabase = await createClient()
 
   // Count active salons

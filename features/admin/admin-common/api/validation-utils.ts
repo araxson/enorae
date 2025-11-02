@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { z } from 'zod'
+import { STRING_LIMITS } from '@/lib/config/constants'
 
 /**
  * Shared validation utilities for admin operations
@@ -16,10 +17,10 @@ export const REASON_SCHEMA = z
   .string()
   .trim()
   .min(20, 'Reason must be at least 20 characters for audit trail')
-  .max(500, 'Reason must not exceed 500 characters')
+  .max(STRING_LIMITS.REASON, 'Reason must not exceed 500 characters')
 
 // Optional reason (with fallback)
-export const OPTIONAL_REASON_SCHEMA = z.string().trim().max(500).default('No reason provided')
+export const OPTIONAL_REASON_SCHEMA = z.string().trim().max(STRING_LIMITS.REASON).default('No reason provided')
 
 // Email validation
 export const EMAIL_SCHEMA = z.string().email('Invalid email format')
@@ -40,7 +41,7 @@ export const DURATION_DAYS_SCHEMA = z
   .max(365, 'Duration cannot exceed 365 days')
 
 // Note/comment validation
-export const NOTE_SCHEMA = z.string().trim().max(1000, 'Note must not exceed 1000 characters').optional()
+export const NOTE_SCHEMA = z.string().trim().max(STRING_LIMITS.DESCRIPTION, 'Note must not exceed 1000 characters').optional()
 
 // Confirmation token validation
 export const CONFIRMATION_TOKEN_SCHEMA = UUID_SCHEMA

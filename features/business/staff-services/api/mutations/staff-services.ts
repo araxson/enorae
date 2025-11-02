@@ -1,21 +1,28 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type MutationResult = {
   success?: boolean
   error?: string
 }
 
+const serviceIdsSchema = z.array(z.string().uuid()).min(1)
+
 /**
  * Assign a service to a staff member
  * TODO: Implement actual database mutation
  */
 export async function assignServiceToStaff(formData: FormData): Promise<MutationResult> {
-  const staffId = formData.get('staffId') as string
-  const serviceId = formData.get('serviceId') as string
+  const logger = createOperationLogger('assignServiceToStaff', {})
+  logger.start()
 
-  if (!staffId || !serviceId) {
+  const staffId = formData.get('staffId')
+  const serviceId = formData.get('serviceId')
+
+  if (!staffId || typeof staffId !== 'string' || !serviceId || typeof serviceId !== 'string') {
     return { error: 'Missing required fields' }
   }
 
@@ -29,10 +36,10 @@ export async function assignServiceToStaff(formData: FormData): Promise<Mutation
  * TODO: Implement actual database mutation
  */
 export async function unassignServiceFromStaff(formData: FormData): Promise<MutationResult> {
-  const staffId = formData.get('staffId') as string
-  const serviceId = formData.get('serviceId') as string
+  const staffId = formData.get('staffId')
+  const serviceId = formData.get('serviceId')
 
-  if (!staffId || !serviceId) {
+  if (!staffId || typeof staffId !== 'string' || !serviceId || typeof serviceId !== 'string') {
     return { error: 'Missing required fields' }
   }
 
@@ -46,19 +53,19 @@ export async function unassignServiceFromStaff(formData: FormData): Promise<Muta
  * TODO: Implement actual database mutation
  */
 export async function bulkAssignServices(formData: FormData): Promise<MutationResult> {
-  const staffId = formData.get('staffId') as string
-  const serviceIdsJson = formData.get('serviceIds') as string
+  const staffId = formData.get('staffId')
+  const serviceIdsJson = formData.get('serviceIds')
 
-  if (!staffId || !serviceIdsJson) {
+  if (!staffId || typeof staffId !== 'string' || !serviceIdsJson || typeof serviceIdsJson !== 'string') {
     return { error: 'Missing required fields' }
   }
 
   try {
     const parsed = JSON.parse(serviceIdsJson)
-    if (!Array.isArray(parsed) || parsed.length === 0) {
+    const validated = serviceIdsSchema.safeParse(parsed)
+    if (!validated.success) {
       return { error: 'Invalid service IDs' }
     }
-    const serviceIds = parsed.filter((id): id is string => typeof id === 'string')
 
     // TODO: Implement actual database mutation
     // For now, return error indicating feature is not yet implemented

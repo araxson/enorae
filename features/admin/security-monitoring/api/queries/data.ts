@@ -10,12 +10,12 @@ import {
   toSecurityEvent,
   toSuspiciousSession,
   toIpAccessEvent,
+  type AuditLogViewRow,
   type AuditLogRow,
-  type AccessMonitoringRow,
-  type SessionSecurityRow,
+  type AccessMonitoringViewRow,
+  type SessionSecurityViewRow,
   type RateLimitTrackingRow,
   type RateLimitRuleRow,
-  type SecurityAuditLogRow,
 } from '@/features/admin/security-monitoring/api/transformers'
 import { groupFailedLogins } from '@/features/admin/security-monitoring/api/failed-logins'
 import type {
@@ -164,36 +164,98 @@ export async function getSecurityMonitoringSnapshot(
         .limit(settings.incidentsLimit),
     ])
 
-  const accessRows = (accessRes.data ?? []) as AccessMonitoringRow[]
+  // Type guard for access monitoring view rows (nullable fields from view)
+  const isAccessMonitoringViewRow = (row: unknown): row is AccessMonitoringViewRow => {
+    if (!row || typeof row !== 'object') return false
+    const record = row as Record<string, unknown>
+    // Views have nullable fields, so we just check that it's an object with some expected properties
+    return (
+      (typeof record['id'] === 'string' || record['id'] === null) &&
+      (typeof record['created_at'] === 'string' || record['created_at'] === null)
+    )
+  }
+
+  // Type guard for session security view rows (nullable fields from view)
+  const isSessionSecurityViewRow = (row: unknown): row is SessionSecurityViewRow => {
+    if (!row || typeof row !== 'object') return false
+    const record = row as Record<string, unknown>
+    return (
+      (typeof record['id'] === 'string' || record['id'] === null) &&
+      (typeof record['suspicious_score'] === 'number' || record['suspicious_score'] === null)
+    )
+  }
+
+  const accessRows = (accessRes.data ?? []).filter(isAccessMonitoringViewRow)
   const accessAttempts = accessRows.map(toAccessAttempt)
   if (accessRes.error) console.error('[SecurityMonitoring] Access query failed', accessRes.error)
 
-  const suspiciousSessions = (sessionsRes.data ?? []).map((row) => toSuspiciousSession(row as SessionSecurityRow))
+  const suspiciousSessions = (sessionsRes.data ?? []).filter(isSessionSecurityViewRow).map(toSuspiciousSession)
   if (sessionsRes.error) console.error('[SecurityMonitoring] Session query failed', sessionsRes.error)
 
-  // Cast eventsRes.data to proper type - these are from audit_logs_view which matches AuditLogRow
-  const eventsData = eventsRes.data as unknown[]
-  const recentEvents = (eventsData ?? [])
-    .filter((row): row is Record<string, unknown> => row !== null && typeof row === 'object')
-    .map((row) => toSecurityEvent(row as unknown as AuditLogRow))
+  // Type guard for audit log view rows (all fields nullable from view)
+  const isAuditLogViewRow = (row: unknown): row is AuditLogViewRow => {
+    if (!row || typeof row !== 'object') return false
+    const record = row as Record<string, unknown>
+    return (
+      (typeof record['id'] === 'string' || record['id'] === null) &&
+      (typeof record['created_at'] === 'string' || record['created_at'] === null)
+    )
+  }
+
+  // Filter and transform events with proper type guards
+  const eventsData = eventsRes.data ?? []
+  const recentEvents = eventsData.filter(isAuditLogViewRow).map(toSecurityEvent)
   if (eventsRes.error) console.error('[SecurityMonitoring] Audit events query failed', eventsRes.error)
 
-  // Cast failedLoginsRes.data to proper type
-  const failedLoginsData = failedLoginsRes.data as unknown[]
-  const failedLoginRows = (failedLoginsData ?? [])
-    .filter((row): row is Record<string, unknown> => row !== null && typeof row === 'object')
-    .map((row) => row as unknown as AuditLogRow)
+  // Filter and transform failed logins with proper type guards
+  const failedLoginsData = failedLoginsRes.data ?? []
+  const failedLoginRows = failedLoginsData.filter(isAuditLogViewRow)
   if (failedLoginsRes.error) console.error('[SecurityMonitoring] Failed login query failed', failedLoginsRes.error)
   const failedLoginSummary = groupFailedLogins(failedLoginRows)
 
-  const rateLimitViolationRows = (rateTrackingRes.data ?? []) as RateLimitTrackingRow[]
+  // Type guard for rate limit tracking rows (view with nullable fields)
+  const isRateLimitTrackingRow = (row: unknown): row is RateLimitTrackingRow => {
+    if (!row || typeof row !== 'object') return false
+    const record = row as Record<string, unknown>
+    return (
+      (typeof record['identifier'] === 'string' || record['identifier'] === null) &&
+      (typeof record['window_start_at'] === 'string' || record['window_start_at'] === null)
+    )
+  }
+
+  // Type guard for rate limit rule rows (view with nullable fields)
+  const isRateLimitRuleRow = (row: unknown): row is RateLimitRuleRow => {
+    if (!row || typeof row !== 'object') return false
+    const record = row as Record<string, unknown>
+    return (
+      (typeof record['id'] === 'string' || record['id'] === null) &&
+      (typeof record['rule_name'] === 'string' || record['rule_name'] === null)
+    )
+  }
+
+  // Type guard for audit log rows (table with required fields)
+  const isAuditLogRow = (row: unknown): row is AuditLogRow => {
+    if (!row || typeof row !== 'object') return false
+    const record = row as Record<string, unknown>
+    return (
+      typeof record['id'] === 'string' &&
+      typeof record['created_at'] === 'string' &&
+      typeof record['action'] === 'string' &&
+      typeof record['event_type'] === 'string' &&
+      typeof record['event_category'] === 'string' &&
+      typeof record['target_schema'] === 'string' &&
+      typeof record['target_table'] === 'string'
+    )
+  }
+
+  const rateLimitViolationRows = (rateTrackingRes.data ?? []).filter(isRateLimitTrackingRow)
   if (rateTrackingRes.error) console.error('[SecurityMonitoring] Rate tracking query failed', rateTrackingRes.error)
   const rateLimitViolations = filterActiveViolations(rateLimitViolationRows.map(toRateLimitViolation))
 
-  const rateLimitRules = ((rateRulesRes.data ?? []) as RateLimitRuleRow[]).map(toRateLimitRule)
+  const rateLimitRules = (rateRulesRes.data ?? []).filter(isRateLimitRuleRow).map(toRateLimitRule)
   if (rateRulesRes.error) console.error('[SecurityMonitoring] Rate rules query failed', rateRulesRes.error)
 
-  const incidents = ((incidentsRes.data ?? []) as SecurityAuditLogRow[]).map(toIncident)
+  const incidents = (incidentsRes.data ?? []).filter(isAuditLogRow).map(toIncident)
   if (incidentsRes.error) console.error('[SecurityMonitoring] Incident query failed', incidentsRes.error)
 
   const blockedSessions = suspiciousSessions.filter((session) => Boolean(session.isBlocked)).length

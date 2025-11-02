@@ -4,11 +4,15 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getNotificationHistory } from './notification-list'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type NotificationStatus = Database['public']['Enums']['notification_status']
 type NotificationChannel = Database['public']['Enums']['notification_channel']
 
 export async function getNotificationStatistics() {
+  const logger = createOperationLogger('getNotificationStatistics', {})
+  logger.start()
+
   const history = await getNotificationHistory(200)
 
   const totals = history.reduce<

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -11,6 +12,9 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
  * Assign/reassign a salon to a chain
  */
 export async function assignSalonToChain(formData: FormData) {
+  const logger = createOperationLogger('assignSalonToChain', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = formData.get('salonId')?.toString()

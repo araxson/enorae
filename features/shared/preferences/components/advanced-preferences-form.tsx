@@ -7,6 +7,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Globe, AlertCircle } from 'lucide-react'
 import { updateAdvancedPreferences } from '@/features/shared/preferences/api/mutations'
+import { TIME_MS } from '@/lib/config/constants'
 import {
   Item,
   ItemContent,
@@ -51,8 +52,7 @@ export function AdvancedPreferencesForm({
     if (result.success) {
       setSuccess(true)
       router.refresh()
-      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
-      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
+      setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error)
     }

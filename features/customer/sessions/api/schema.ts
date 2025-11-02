@@ -1,20 +1,13 @@
 import { z } from 'zod'
+import { UUID_REGEX } from '@/lib/validations/shared'
 
 /**
- * Schema for session ID validation
- * Enforces valid UUID format for session identifiers
- */
-export const sessionIdSchema = z.string().uuid('Invalid session ID format')
-
-/**
- * Schema for revoking a specific session
- * Validates session ID format
+ * Schema for revoking a session
  */
 export const revokeSessionSchema = z.object({
-  sessionId: sessionIdSchema,
+  sessionId: z.string()
+    .regex(UUID_REGEX, 'Invalid session ID format')
+    .describe('The UUID of the session to revoke'),
 })
 
-/**
- * Type exports for mutations
- */
 export type RevokeSessionInput = z.infer<typeof revokeSessionSchema>

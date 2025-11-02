@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Profile = Database['public']['Views']['profiles_view']['Row']
 type Appointment = Database['public']['Views']['appointments_view']['Row']
@@ -15,6 +16,9 @@ export type AppointmentWithRelations = Appointment & {
 }
 
 export async function getProfile() {
+  const logger = createOperationLogger('getProfile', {})
+  logger.start()
+
   // SECURITY: Require authentication
   const session = await requireAuth()
 

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 import type { Appointment } from '@/features/business/analytics/api/analytics.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type CustomerCohort = {
   cohort: string
@@ -15,6 +16,9 @@ export async function getCustomerCohorts(
   salonId: string,
   months: number = 6
 ): Promise<CustomerCohort[]> {
+  const logger = createOperationLogger('getCustomerCohorts', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
     throw new Error('Unauthorized: Not your salon')

@@ -4,6 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database, Json } from '@/lib/types/database.types'
 import type { RateLimitRecord, RateLimitSnapshot, RateLimitRule } from '@/features/admin/rate-limit-tracking/types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type TrackingRow = Database['public']['Views']['security_rate_limit_tracking_view']['Row']
 type RuleRow = Database['public']['Views']['security_rate_limit_rules_view']['Row']
@@ -113,6 +114,9 @@ const mapRule = (rule: RuleRow): RateLimitRule => ({
 export async function getRateLimitTracking(
   options: { limit?: number; offset?: number } = {},
 ): Promise<RateLimitSnapshot> {
+  const logger = createOperationLogger('getRateLimitTracking', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()

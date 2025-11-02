@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import { updateSalonContactDetails, type ContactDetailsInput } from '@/features/business/settings-contact/api/mutations'
 
 import type { Database } from '@/lib/types/database.types'
+import { TIME_MS } from '@/lib/config/constants'
 
 type SalonContactDetails = Database['public']['Views']['salon_contact_details_view']['Row']
 
@@ -30,6 +31,16 @@ export function useContactForm({ salonId, contactDetails }: UseContactFormParams
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const successTimerRef = useRef<NodeJS.Timeout | undefined>(undefined)
+
+  // ASYNC FIX: Cleanup timer on unmount to prevent state updates after unmount
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current)
+      }
+    }
+  }, [])
 
   const initialValues: ContactDetailsInput = {
     primary_phone: contactDetails?.['primary_phone'] ?? null,
@@ -79,8 +90,11 @@ export function useContactForm({ salonId, contactDetails }: UseContactFormParams
 
     if (result.success) {
       setSuccess(true)
-      const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
-      setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
+      // ASYNC FIX: Store timer ref and clear previous timer to prevent multiple timers
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current)
+      }
+      successTimerRef.current = setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
     } else {
       setError(result.error ?? 'Unable to update contact details')
     }

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { STRING_LIMITS } from '@/lib/config/constants'
 
 import type { Database } from '@/lib/types/database.types'
 
@@ -11,9 +12,9 @@ export type AppointmentStatus = Database['public']['Enums']['appointment_status'
 
 const appointmentNotesSchema = z.object({
   appointmentId: z.string().uuid(),
-  serviceNotes: z.string().max(1000).optional(),
+  serviceNotes: z.string().max(STRING_LIMITS.DESCRIPTION).optional(),
   productsUsed: z.array(z.string()).optional(),
-  nextVisitRecommendations: z.string().max(500).optional(),
+  nextVisitRecommendations: z.string().max(STRING_LIMITS.REASON).optional(),
 })
 
 export async function updateAppointmentStatus(

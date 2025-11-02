@@ -4,6 +4,7 @@ import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getStaffById, type EnrichedStaffProfile } from '@/features/business/staff/api/queries'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type StaffServiceRow = Database['public']['Views']['staff_services_view']['Row']
 type ServiceRow = Database['public']['Views']['services_view']['Row']
@@ -61,6 +62,9 @@ async function getAvailableServices(salonId: string): Promise<ServiceRow[]> {
 export async function getStaffServicesData(
   staffId: string,
 ): Promise<StaffServicesData> {
+  const logger = createOperationLogger('getStaffServicesData', {})
+  logger.start()
+
   const staff = await getStaffById(staffId)
 
   if (!staff || !staff.id) {

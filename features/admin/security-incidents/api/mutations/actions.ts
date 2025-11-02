@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const updateIncidentSchema = z.object({
   incidentId: z.string().uuid(),
@@ -37,6 +38,9 @@ const logIncidentSchema = z.object({
 })
 
 export async function updateIncidentStatus(formData: FormData) {
+  const logger = createOperationLogger('updateIncidentStatus', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -70,12 +74,15 @@ export async function updateIncidentStatus(formData: FormData) {
     revalidatePath('/admin/security/incidents', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error updating incident:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function logSecurityIncident(formData: FormData) {
+  const logger = createOperationLogger('logSecurityIncident', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -115,7 +122,7 @@ export async function logSecurityIncident(formData: FormData) {
     revalidatePath('/admin/security/incidents', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error logging incident:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

@@ -11,3 +11,6 @@ export { RolesFilters } from './roles-filters'
 export { RolesStats } from './roles-stats'
 export { RolesTable } from './roles-table'
 export { SalonSelector } from './salon-selector'
+
+// Export types
+export type { RoleValue } from './types'

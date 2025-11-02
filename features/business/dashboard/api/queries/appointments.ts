@@ -3,6 +3,7 @@ import 'server-only'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentWithDetails = Database['public']['Views']['appointments_view']['Row']
 
@@ -10,6 +11,9 @@ export async function getRecentAppointments(
   salonId: string,
   limit: number = 5
 ): Promise<AppointmentWithDetails[]> {
+  const logger = createOperationLogger('getRecentAppointments', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
@@ -33,7 +37,7 @@ export async function getRecentAppointments(
 
     return (data || []) as AppointmentWithDetails[]
   } catch (error) {
-    console.error('[getRecentAppointments] Unexpected error:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return []
   }
 }

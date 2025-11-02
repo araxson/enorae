@@ -2,12 +2,16 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 // NOTE: pricing_rules table does not exist in database
 // Dynamic pricing is handled through service_pricing table
 // This functionality is deprecated and should use service_pricing instead
 
 export async function createPricingRule(_input: unknown) {
+  const logger = createOperationLogger('createPricingRule', {})
+  logger.start()
+
   throw new Error('createPricingRule is deprecated - use service_pricing table instead')
 }
 
@@ -36,32 +40,44 @@ export async function bulkAdjustPricing(input: BulkPricingAdjustmentInput) {
 
   if (fetchError) throw fetchError
 
-  let updated = 0
   const now = new Date().toISOString()
 
-  for (const pricing of pricingRecords || []) {
+  // PERFORMANCE FIX: Calculate all new prices and update in batch instead of N+1
+  const updates = (pricingRecords || []).map((pricing) => {
     const basePrice = Number(pricing.base_price || 0)
     const newPrice =
       input.adjustment_type === 'percentage'
         ? basePrice * (1 + input.adjustment_value / 100)
         : basePrice + input.adjustment_value
 
-    const { error: updateError } = await supabase
+    return {
+      id: pricing.id,
+      base_price: Number(newPrice.toFixed(2)),
+      updated_at: now,
+    }
+  })
+
+  // Update all pricing records in parallel
+  const updatePromises = updates.map((update) =>
+    supabase
       .schema('catalog')
       .from('service_pricing')
       .update({
-        base_price: Number(newPrice.toFixed(2)),
-        updated_at: now,
+        base_price: update.base_price,
+        updated_at: update.updated_at,
       })
-      .eq('id', pricing.id)
+      .eq('id', update.id)
+  )
 
-    if (updateError) throw updateError
-    updated += 1
+  const results = await Promise.all(updatePromises)
+  const errors = results.filter((r) => r.error)
+  if (errors.length > 0 && errors[0]) {
+    throw errors[0].error
   }
 
   revalidatePath('/business/services/pricing', 'page')
   revalidatePath('/business/pricing', 'page')
-  return { updated }
+  return { updated: updates.length }
 }
 
 export async function updatePricingRule(_id: string, _input: unknown) {

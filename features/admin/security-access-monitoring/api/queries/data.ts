@@ -3,6 +3,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type SecurityAccessViewRow = Database['public']['Views']['security_access_monitoring_view']['Row']
 
@@ -51,6 +52,9 @@ export interface SecurityAccessSnapshot {
 export async function getSecurityAccessMonitoring(
   options: { limit?: number; offset?: number } = {},
 ): Promise<SecurityAccessSnapshot> {
+  const logger = createOperationLogger('getSecurityAccessMonitoring', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
-import { profilePreferencesFormSchema } from '@/features/customer/profile/schema'
+import { profilePreferencesFormSchema } from '@/features/customer/profile/api/schema'
 import type { ProfilePreferences } from './types'
 import { parsePreferences } from './types'
 

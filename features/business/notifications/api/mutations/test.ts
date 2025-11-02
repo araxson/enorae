@@ -4,8 +4,12 @@ import 'server-only'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
 import { getSupabaseClient } from './utilities'
 import { sendNotification } from './send'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function sendNotificationForTemplate(templateId: string) {
+  const logger = createOperationLogger('sendNotificationForTemplate', {})
+  logger.start()
+
   const supabase = await getSupabaseClient()
 
   const {

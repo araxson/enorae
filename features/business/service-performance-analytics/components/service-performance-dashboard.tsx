@@ -5,7 +5,7 @@ import { Users, Link2 } from 'lucide-react'
 import type { ServicePerformance } from '@/features/business/service-performance-analytics/api/queries'
 import { RevenueLeaders } from './partials/revenue-leaders'
 import { PopularityRanking } from './partials/popularity-ranking'
-import { formatCurrency } from './partials/format-utils'
+import { formatCurrency } from '@/lib/utils/formatting'
 import {
   ProfitabilitySection,
   ServiceOverviewSection,

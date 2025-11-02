@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { getAllSalons, type AdminSalon } from './salon-list'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface SalonFilters {
   chain_id?: string
@@ -11,6 +12,9 @@ export interface SalonFilters {
 
 // Compatibility export for existing call sites
 export async function getAllSalonsLegacy(filters?: SalonFilters) {
+  const logger = createOperationLogger('getAllSalonsLegacy', {})
+  logger.start()
+
   const { salons, stats } = await getAllSalons()
 
   const filtered = (filters ? applySalonFilters(salons, filters) : salons)

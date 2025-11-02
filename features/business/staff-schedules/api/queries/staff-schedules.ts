@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type StaffSchedule = Database['public']['Views']['staff_schedules_view']['Row']
 
@@ -14,6 +15,9 @@ export type StaffScheduleWithDetails = StaffSchedule & {
  * Get all staff schedules for the salon
  */
 export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
+  const logger = createOperationLogger('getStaffSchedules', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
   const supabase = await createClient()
@@ -41,8 +45,18 @@ export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
       .in('id', staffIds)
 
     if (staffData) {
+      // Type guards for staff and profile data
+      type StaffRow = { id: string; user_id: string | null; title: string | null }
+      type ProfileRow = { profile_id: string; full_name: string | null }
+
+      const isStaffRow = (item: unknown): item is StaffRow => {
+        return item !== null && typeof item === 'object' && 'id' in item && 'user_id' in item
+      }
+
+      const validStaff = staffData.filter(isStaffRow)
+
       // Get profiles for all staff
-      const userIds = staffData.map((s: any) => s.user_id).filter(Boolean)
+      const userIds = validStaff.map((s) => s.user_id).filter((id): id is string => id !== null)
       if (userIds.length > 0) {
         const { data: profilesMetadata } = await supabase
           .schema('identity')
@@ -52,13 +66,16 @@ export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
 
         const profileMap = new Map<string, string | null>()
         if (profilesMetadata) {
-          profilesMetadata.forEach((p: any) => {
+          const validProfiles = profilesMetadata.filter((p): p is ProfileRow => {
+            return p !== null && typeof p === 'object' && 'profile_id' in p
+          })
+          validProfiles.forEach((p) => {
             profileMap.set(p.profile_id, p.full_name)
           })
         }
 
-        staffData.forEach((staff: any) => {
-          staffMap.set(staff.id, { full_name: profileMap.get(staff.user_id) || null, title: staff.title })
+        validStaff.forEach((staff) => {
+          staffMap.set(staff.id, { full_name: staff.user_id ? profileMap.get(staff.user_id) || null : null, title: staff.title })
         })
       }
     }
@@ -160,9 +177,14 @@ export async function getStaffForScheduling(): Promise<
     .in('profile_id', userIds)
     .order('full_name')
 
+  type ProfileRow = { profile_id: string; full_name: string | null }
+
   const profileMap = new Map<string, string | null>()
   if (profilesMetadata) {
-    profilesMetadata.forEach((p: any) => {
+    const validProfiles = profilesMetadata.filter((p): p is ProfileRow => {
+      return p !== null && typeof p === 'object' && 'profile_id' in p
+    })
+    validProfiles.forEach((p) => {
       profileMap.set(p.profile_id, p.full_name)
     })
   }

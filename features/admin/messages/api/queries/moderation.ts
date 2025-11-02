@@ -1,3 +1,4 @@
+import 'server-only'
 import { SPAM_THRESHOLD, TOXICITY_THRESHOLD } from '../constants'
 import type { Json } from '../types'
 import type { ParsedModeration, ParsedThreadMetadata } from '../types'
@@ -10,21 +11,21 @@ export const parseModeration = (metadata: Json | null): ParsedModeration => {
     return { isFlagged: false, reason: '', severity: 'low', status: 'clean' }
   }
 
-  const moderation = isObject(metadata['moderation']) ? (metadata['moderation'] as Record<string, unknown>) : undefined
+  const moderation = isObject(metadata['moderation']) ? metadata['moderation'] : undefined
   const spamScore =
     typeof metadata['spam_score'] === 'number'
       ? metadata['spam_score']
       : typeof moderation?.['spam_score'] === 'number'
-        ? (moderation['spam_score'] as number)
+        ? moderation['spam_score']
         : null
   const toxicityScore =
     typeof metadata['toxicity_score'] === 'number'
       ? metadata['toxicity_score']
       : typeof moderation?.['toxicity'] === 'number'
-        ? (moderation['toxicity'] as number)
+        ? moderation['toxicity']
         : null
   const flaggedCategories = Array.isArray(moderation?.['categories'])
-    ? (moderation!['categories'] as unknown[]).filter((item) => typeof item === 'string')
+    ? (moderation['categories'] as unknown[]).filter((item) => typeof item === 'string')
     : undefined
 
   const baseReason =

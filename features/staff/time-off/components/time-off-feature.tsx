@@ -4,7 +4,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { TimeOffRequestsClient } from './index'
+import { TimeOffRequestsClient } from './time-off-requests-client'
 import {
   getTimeOffRequests,
   getPendingTimeOffRequests,

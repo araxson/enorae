@@ -10,7 +10,7 @@ import {
   getUpcomingAppointments,
   getPastAppointments,
 } from '../api/queries'
-import { AppointmentsClient } from './index'
+import { AppointmentsClient } from './appointments-client'
 
 export async function AppointmentsFeature() {
   let staffProfile

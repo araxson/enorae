@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -15,6 +15,7 @@ import type { SessionWithDevice } from '@/features/customer/sessions/api/queries
 import { formatDate, getActivityStatus } from '../utils/session-helpers'
 import { SessionTableRow } from './session-table-row'
 import { RevokeAllDialog } from './revoke-all-dialog'
+import { UI_TIMEOUTS } from '@/lib/config/constants'
 
 interface SessionListProps {
   sessions: SessionWithDevice[]
@@ -26,6 +27,16 @@ export function SessionList({ sessions }: SessionListProps) {
   const [revokingAll, setRevokingAll] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current)
+      }
+    }
+  }, [])
 
   const otherSessions = sessions.filter(s => !s.is_current)
 
@@ -58,9 +69,14 @@ export function SessionList({ sessions }: SessionListProps) {
 
     if (result.success) {
       toast.success(`Successfully revoked ${result.data.count} session(s)`)
-      setTimeout(() => {
+      // Clear any existing timer
+      if (refreshTimerRef.current) {
+        clearTimeout(refreshTimerRef.current)
+      }
+      refreshTimerRef.current = setTimeout(() => {
         router.refresh()
-      }, 500)
+        refreshTimerRef.current = null
+      }, UI_TIMEOUTS.NAVIGATION_DELAY)
     } else {
       toast.error(result.error)
       setError(result.error)

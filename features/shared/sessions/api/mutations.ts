@@ -1,8 +1,6 @@
 import { revalidatePath } from 'next/cache'
-
+import { UUID_REGEX } from '@/lib/validations/shared'
 import { requireSessionContext } from './session-context'
-
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -93,7 +91,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
     }
 
     const currentSessionId = firstSession.id
-    const sessionIdsToRevoke = activeSessions.slice(1).filter((s) => typeof s.id === 'string').map(s => s.id as string)
+    const sessionIdsToRevoke = activeSessions.slice(1).filter((s: SessionData) => typeof s.id === 'string').map((s: SessionData) => s.id as string)
 
     if (sessionIdsToRevoke.length === 0) {
       return { success: true, data: { count: 0 } }

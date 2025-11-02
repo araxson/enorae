@@ -3,6 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type FavoriteRow = Database['public']['Views']['customer_favorites_view']['Row']
 type SalonView = Database['public']['Views']['salons_view']['Row']
@@ -11,7 +12,10 @@ export type FavoriteWithSalon = FavoriteRow & {
   salon: Pick<SalonView, 'id' | 'name' | 'slug' | 'rating_average' | 'rating_count' | 'formatted_address' | 'is_accepting_bookings'> | null
 }
 
-export async function getUserFavorites() {
+export async function getUserFavorites(): Promise<FavoriteWithSalon[]> {
+  const logger = createOperationLogger('getUserFavorites', {})
+  logger.start()
+
   // SECURITY: Require authentication
   const session = await requireAuth()
 
@@ -38,7 +42,7 @@ export async function getUserFavorites() {
   return (data || []) as FavoriteWithSalon[]
 }
 
-export async function checkIsFavorite(salonId: string) {
+export async function checkIsFavorite(salonId: string): Promise<boolean> {
   // SECURITY: Require authentication
   const session = await requireAuth()
 

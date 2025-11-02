@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   checkAppointmentConflict as sharedCheckAppointmentConflict,
   checkStaffAvailability as sharedCheckStaffAvailability,
@@ -11,6 +12,9 @@ export async function checkStaffAvailability(
   endTime: string,
   excludeAppointmentId?: string
 ): Promise<boolean> {
+  const logger = createOperationLogger('checkStaffAvailability', {})
+  logger.start()
+
   const result = await sharedCheckStaffAvailability({
     staffId,
     startTime,

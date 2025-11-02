@@ -10,6 +10,7 @@ export type EnrichedStaffProfile = StaffProfileRow & {
   email: string | null
   avatar_url: string | null
   status: string | null
+  phone: string | null
 }
 
 export function mergeStaffWithUsers(
@@ -37,6 +38,7 @@ export function mergeStaffWithUsers(
       email: user?.email ?? null,
       avatar_url: user?.avatar_url ?? null,
       status: user?.status ?? null,
+      phone: null, // TODO: Add phone to user profile or staff profile
     }
   })
 }

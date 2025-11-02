@@ -1,5 +1,5 @@
 import 'server-only'
-import type { CustomerMetrics } from './types'
+import type { CustomerMetrics } from '../../types'
 import type {
   AppointmentWithProfile,
   CustomerAggregate,
@@ -7,6 +7,7 @@ import type {
   ServiceAggregation,
 } from './customer-types'
 import { calculateSegment } from '@/lib/utils/insights'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export function groupAppointmentsByCustomer(
   appointments: AppointmentWithProfile[],

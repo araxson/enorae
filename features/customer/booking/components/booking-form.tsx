@@ -84,7 +84,7 @@ export function BookingForm({ salonId, salonName, services, staff }: BookingForm
       <BookingHeader salonName={salonName} progress={progress} />
 
       <form action={handleSubmit} className="space-y-0">
-        <input type="hidden" name="salonId" value={salonId} />
+        <input type="hidden" name="salonId" value={salonId} aria-hidden="true" />
 
         <CardContent className="space-y-6">
           {error && (

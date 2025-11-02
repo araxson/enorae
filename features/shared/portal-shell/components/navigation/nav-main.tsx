@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useMemo } from 'react'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import {
@@ -33,7 +34,7 @@ interface NavItem {
   }[]
 }
 
-export function NavMain({
+export const NavMain = memo(function NavMain({
   items,
   label = "Platform",
 }: {
@@ -59,10 +60,10 @@ export function NavMain({
                 {hasSubItems ? (
                   <>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton tooltip={item.title} isActive={item.isActive}>
-                        <Icon className="size-4" />
+                      <SidebarMenuButton tooltip={item.title} isActive={item.isActive} aria-current={item.isActive ? 'page' : undefined}>
+                        <Icon className="size-4" aria-hidden="true" />
                         <span>{item.title}</span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" aria-hidden="true" />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     {item.badge && item.badge > 0 && (
@@ -85,13 +86,13 @@ export function NavMain({
                 ) : (
                   <>
                     <SidebarMenuButton asChild tooltip={item.title} isActive={item.isActive}>
-                      <Link href={item.url}>
-                        <Icon className="size-4" />
+                      <Link href={item.url} aria-current={item.isActive ? 'page' : undefined}>
+                        <Icon className="size-4" aria-hidden="true" />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                     {item.badge && item.badge > 0 && (
-                      <SidebarMenuBadge>{item.badge > 99 ? '99+' : item.badge}</SidebarMenuBadge>
+                      <SidebarMenuBadge aria-label={`${item.badge > 99 ? 'More than 99' : item.badge} notifications`}>{item.badge > 99 ? '99+' : item.badge}</SidebarMenuBadge>
                     )}
                   </>
                 )}
@@ -102,4 +103,4 @@ export function NavMain({
       </SidebarMenu>
     </SidebarGroup>
   )
-}
+})

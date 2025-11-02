@@ -2,8 +2,13 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export async function getPlatformMetrics() {
+  const logger = createOperationLogger('getPlatformMetrics', {})
+  logger.start()
+
   // SECURITY: Require platform admin role
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
@@ -77,7 +82,7 @@ export async function getPlatformMetrics() {
     .select('user_id')
     .gte('created_at', thirtyDaysAgoISO)
     .not('user_id', 'is', null)
-    .limit(10000) // Admin query limit - fetch up to 10k records for dashboard
+    .limit(QUERY_LIMITS.ADMIN_MAX) // Admin query limit - fetch up to 10k records for dashboard
 
   if (!activeUsersError && activeUsersData) {
     const uniqueUserIds = new Set(

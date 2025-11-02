@@ -1,7 +1,11 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { requireAuthSafe } from '@/lib/auth/guards'
+import { uploadAvatar as uploadAvatarHelper, uploadCoverImage as uploadCoverImageHelper } from '@/lib/storage/upload-helpers'
+
+// Re-export helpers with their original names for backwards compatibility
+export { uploadAvatarHelper as uploadAvatar, uploadCoverImageHelper as uploadCoverImage }
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -23,13 +27,11 @@ export async function updateProfileMetadata(
   input: ProfileMetadataInput
 ): Promise<ActionResponse> {
   try {
-    const supabase = await createClient()
-
-    // Auth check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { success: false, error: 'Unauthorized' }
+    const authResult = await requireAuthSafe()
+    if (!authResult.success) {
+      return { success: false, error: authResult.error }
     }
+    const { user, supabase } = authResult
 
     // Upsert metadata (insert or update)
     const { error } = await supabase
@@ -55,56 +57,31 @@ export async function updateProfileMetadata(
   }
 }
 
-export async function uploadAvatar(formData: FormData): Promise<ActionResponse<{ url: string }>> {
+export async function uploadAvatarAction(formData: FormData): Promise<ActionResponse<{ url: string }>> {
   try {
-    const supabase = await createClient()
-
-    // Auth check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { success: false, error: 'Unauthorized' }
+    const authResult = await requireAuthSafe()
+    if (!authResult.success) {
+      return { success: false, error: authResult.error }
     }
+    const { user } = authResult
 
     const file = formData.get('avatar') as File
     if (!file) {
       return { success: false, error: 'No file provided' }
     }
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return { success: false, error: 'File must be an image' }
+    const result = await uploadAvatarHelper(file, user.id)
+    if (!result.success || !result.url) {
+      return { success: false, error: result.error || 'Upload failed' }
     }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      return { success: false, error: 'File size must be less than 5MB' }
-    }
-
-    // Upload to Supabase Storage
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${user.id}-${Date.now()}.${fileExt}`
-    const filePath = `avatars/${fileName}`
-
-    const { error: uploadError } = await supabase.storage
-      .from('profiles')
-      .upload(filePath, file, {
-        upsert: true,
-      })
-
-    if (uploadError) throw uploadError
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('profiles')
-      .getPublicUrl(filePath)
 
     // Update profile metadata
     await updateProfileMetadata({
-      avatar_url: publicUrl,
-      avatar_thumbnail_url: publicUrl, // In production, generate thumbnail
+      avatar_url: result.url,
+      avatar_thumbnail_url: result.url, // In production, generate thumbnail
     })
 
-    return { success: true, data: { url: publicUrl } }
+    return { success: true, data: { url: result.url } }
   } catch (error) {
     console.error('Error uploading avatar:', error)
     return {
@@ -114,55 +91,30 @@ export async function uploadAvatar(formData: FormData): Promise<ActionResponse<{
   }
 }
 
-export async function uploadCoverImage(formData: FormData): Promise<ActionResponse<{ url: string }>> {
+export async function uploadCoverImageAction(formData: FormData): Promise<ActionResponse<{ url: string }>> {
   try {
-    const supabase = await createClient()
-
-    // Auth check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return { success: false, error: 'Unauthorized' }
+    const authResult = await requireAuthSafe()
+    if (!authResult.success) {
+      return { success: false, error: authResult.error }
     }
+    const { user } = authResult
 
     const file = formData.get('cover') as File
     if (!file) {
       return { success: false, error: 'No file provided' }
     }
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      return { success: false, error: 'File must be an image' }
+    const result = await uploadCoverImageHelper(file, user.id)
+    if (!result.success || !result.url) {
+      return { success: false, error: result.error || 'Upload failed' }
     }
-
-    // Validate file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      return { success: false, error: 'File size must be less than 10MB' }
-    }
-
-    // Upload to Supabase Storage
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${user.id}-${Date.now()}.${fileExt}`
-    const filePath = `covers/${fileName}`
-
-    const { error: uploadError } = await supabase.storage
-      .from('profiles')
-      .upload(filePath, file, {
-        upsert: true,
-      })
-
-    if (uploadError) throw uploadError
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('profiles')
-      .getPublicUrl(filePath)
 
     // Update profile metadata
     await updateProfileMetadata({
-      cover_image_url: publicUrl,
+      cover_image_url: result.url,
     })
 
-    return { success: true, data: { url: publicUrl } }
+    return { success: true, data: { url: result.url } }
   } catch (error) {
     console.error('Error uploading cover image:', error)
     return {
@@ -171,3 +123,7 @@ export async function uploadCoverImage(formData: FormData): Promise<ActionRespon
     }
   }
 }
+
+// Export aliases for backwards compatibility
+export { uploadAvatarAction as uploadAvatar }
+export { uploadCoverImageAction as uploadCoverImage }

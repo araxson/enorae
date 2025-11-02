@@ -6,4 +6,4 @@ export type {
   StaffDashboardStats,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from './types'
+} from '../../types'

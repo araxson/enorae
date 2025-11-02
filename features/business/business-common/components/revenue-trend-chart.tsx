@@ -1,11 +1,12 @@
 'use client'
 
+import { format } from 'date-fns'
+import { DollarSign } from 'lucide-react'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts'
+
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { DollarSign } from 'lucide-react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts'
-import { format } from 'date-fns'
 
 interface RevenueTrendChartProps {
   data: {

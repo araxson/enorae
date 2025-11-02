@@ -5,6 +5,8 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { analyzeSentiment } from './sentiment'
 import { calculateQualityScore } from './quality'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']
 
@@ -22,6 +24,9 @@ export interface ModerationStats {
  * SECURITY: Platform admin only
  */
 export async function getModerationStats(): Promise<ModerationStats> {
+  const logger = createOperationLogger('getModerationStats', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
@@ -55,7 +60,7 @@ export async function getModerationStats(): Promise<ModerationStats> {
       .from('admin_reviews_overview_view')
       .select('comment, helpful_count, has_response, is_flagged')
       .order('created_at', { ascending: false })
-      .limit(150),
+      .limit(QUERY_LIMITS.ANALYTICS_POINTS),
   ])
 
   const sample = (sampleResult.data || []) as Pick<ReviewRow, 'comment' | 'helpful_count' | 'has_response' | 'is_flagged'>[]

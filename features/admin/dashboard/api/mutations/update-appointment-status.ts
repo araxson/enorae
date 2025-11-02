@@ -7,12 +7,16 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { logSupabaseError } from '@/lib/supabase/errors'
 
 import { logDashboardAudit } from './audit'
-import type { ActionResponse, AppointmentStatus } from './types'
+import type { ActionResponse, AppointmentStatus } from '../../types'
 import { VALID_APPOINTMENT_STATUSES } from './validation'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function updateAppointmentStatus(
   formData: FormData,
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateAppointmentStatus', {})
+  logger.start()
+
   try {
     const appointmentId = formData.get('appointmentId')?.toString()
     const status = formData.get('status')?.toString().trim() as AppointmentStatus | undefined

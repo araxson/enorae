@@ -12,7 +12,7 @@ import {
   getCommissionRates,
   getPayoutSchedule,
 } from '../api/queries/index'
-import { CommissionClient } from './index'
+import { CommissionClient } from './commission-client'
 
 export async function CommissionFeature() {
   let staffProfile

@@ -3,11 +3,15 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getUserSalonIds } from '@/lib/auth/permissions'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getChainSalonBreakdown(
   startDate: string,
   endDate: string
 ): Promise<Array<{ salonId: string; salonName: string; revenue: number; appointments: number }>> {
+  const logger = createOperationLogger('getChainSalonBreakdown', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const salonIds = await getUserSalonIds()

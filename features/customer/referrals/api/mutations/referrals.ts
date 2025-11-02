@@ -1,8 +1,13 @@
 'use server'
 
 import { requireAuth } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
-export async function generateReferralCode(): Promise<{ success: boolean; code?: string }> {
+export async function generateReferralCode(): Promise<{
+  success: boolean; code?: string
+}> {
+  const logger = createOperationLogger('generateReferralCode', {})
+  logger.start()
   await requireAuth()
 
   throw new Error('Referral program is not available yet')

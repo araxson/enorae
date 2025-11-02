@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { AdminUserRow, MetadataRow, ProfileSummary } from './types'
+import type { AdminUserRow, MetadataRow, ProfileSummary } from '../../types'
 
 export const sanitizeSearchTerm = (term: string) =>
   term.replace(/[%]/g, '\\%').replace(/_/g, '\\_')

@@ -2,30 +2,22 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { z } from 'zod'
+import { categorySchema } from '@/features/business/service-categories/api/schema'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
-
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-const categorySchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100),
-  parentId: z.string().uuid().optional().nullable(),
-  description: z.string().max(500).optional().or(z.literal('')),
-  displayOrder: z.number().int().min(0).optional(),
-  iconName: z.string().max(50).optional().or(z.literal('')),
-})
-
 export async function createServiceCategory(formData: FormData) {
+  const logger = createOperationLogger('createServiceCategory', {})
+  logger.start()
+
   try {
     const parentIdValue = formData.get('parentId')?.toString()
     const result = categorySchema.safeParse({
       name: formData.get('name'),
       parentId: parentIdValue && parentIdValue !== '' ? parentIdValue : null,
-      description: formData.get('description'),
-      displayOrder: formData.get('displayOrder') ? parseInt(formData.get('displayOrder') as string) : undefined,
-      iconName: formData.get('iconName'),
     })
 
     if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
@@ -79,9 +71,6 @@ export async function updateServiceCategory(formData: FormData) {
     const result = categorySchema.safeParse({
       name: formData.get('name'),
       parentId: parentIdValue && parentIdValue !== '' ? parentIdValue : null,
-      description: formData.get('description'),
-      displayOrder: formData.get('displayOrder') ? parseInt(formData.get('displayOrder') as string) : undefined,
-      iconName: formData.get('iconName'),
     })
 
     if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }

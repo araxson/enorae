@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createOperationLogger } from '@/lib/observability/logger'
 export interface FakeLikelihoodInput {
   isVerified: boolean | null
   helpfulCount: number | null

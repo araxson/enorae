@@ -4,11 +4,15 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { UUID_REGEX } from './schemas'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Archive a message thread
  */
 export async function archiveThread(threadId: string) {
+  const logger = createOperationLogger('archiveThread', {})
+  logger.start()
+
   try {
     // Validate ID
     if (!UUID_REGEX.test(threadId)) {

@@ -3,8 +3,12 @@ import { requireAnyRole, getSalonContext, canAccessSalon, ROLE_GROUPS } from '@/
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import type { SalonLocation, LocationAddress } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getLocationAddress(locationId: string): Promise<LocationAddress | null> {
+  const logger = createOperationLogger('getLocationAddress', {})
+  logger.start()
+
   // SECURITY: Require business user role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()

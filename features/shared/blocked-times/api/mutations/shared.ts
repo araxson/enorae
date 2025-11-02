@@ -1,10 +1,15 @@
+import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const SCHEDULING_SCHEMA = 'scheduling'
 
 export async function resolveClient() {
+  const logger = createOperationLogger('resolveClient', {})
+  logger.start()
+
   return createClient()
 }
 

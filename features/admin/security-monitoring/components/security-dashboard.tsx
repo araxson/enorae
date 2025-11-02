@@ -13,6 +13,7 @@ import { FailedLoginsPanel } from './failed-logins-panel'
 import { RateLimitPanel } from './rate-limit-panel'
 import { IpAccessPanel } from './ip-access-panel'
 import { IncidentResponsePanel } from './incident-response-panel'
+import { TIME_MS } from '@/lib/config/constants'
 import { Spinner } from '@/components/ui/spinner'
 import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 
@@ -40,9 +41,12 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
     setIsRefreshing(true)
     setError(null)
 
+    const controller = new AbortController()
     try {
+      const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
       const response = await fetch('/api/admin/security/monitoring?windowHours=24', {
         cache: 'no-store',
+        signal: AbortSignal.any([controller.signal, timeoutSignal])
       })
 
       if (!response.ok) {
@@ -56,7 +60,12 @@ export function SecurityDashboard({ snapshot }: SecurityDashboardProps) {
 
       setData(payload.data as SecurityMonitoringSnapshot)
     } catch (err) {
-      console.error('[SecurityDashboard] Failed to refresh snapshot', err)
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError('Request timed out. Showing cached data.')
+      } else {
+        console.error('[SecurityDashboard] Failed to refresh snapshot', err)
+      }
+      controller.abort()
       setError('Unable to refresh. Showing cached data.')
     } finally {
       setIsRefreshing(false)

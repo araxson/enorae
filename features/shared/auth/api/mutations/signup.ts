@@ -1,10 +1,14 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { signupSchema } from '../../schema'
+import { signupSchema } from '../schema'
 import type { SignupResult } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function signup(formData: FormData): Promise<SignupResult> {
+  const logger = createOperationLogger('signup', {})
+  logger.start()
+
   const email = formData.get('email') as string
   console.log('Signup attempt started', { email, timestamp: new Date().toISOString() })
 
@@ -45,7 +49,9 @@ export async function signup(formData: FormData): Promise<SignupResult> {
         errorCode: error.code,
         error: error.message
       })
-      return { error: error.message }
+      // SECURITY: Use generic error message to prevent user enumeration attacks
+      // Don't reveal if email already exists or other specific error details
+      return { error: 'Unable to create account. Please try again or contact support.' }
     }
 
     console.log('Signup successful - confirmation email sent', {

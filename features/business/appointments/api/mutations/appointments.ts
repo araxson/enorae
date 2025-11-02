@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation } from '@/lib/observability/logger'
 
 // NOTE: Internal modules './internal/appointment-services', './internal/batch', './internal/bulk-operations'
 // do not exist in database. These features are disabled until the modules are created.
@@ -46,7 +47,8 @@ export async function updateAppointmentStatus(
   appointmentId: string,
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
 ) {
-  console.log('Starting updateAppointmentStatus', { appointmentId, status, timestamp: new Date().toISOString() })
+  const logger = createOperationLogger('updateAppointmentStatus', { appointmentId })
+  logger.start({ requestedStatus: status })
 
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
@@ -54,11 +56,9 @@ export async function updateAppointmentStatus(
   const validation = updateStatusSchema.safeParse({ appointmentId, status })
   if (!validation.success) {
     const validationError = validation.error.issues[0]?.message ?? 'Validation failed'
-    console.error('updateAppointmentStatus validation failed', {
-      appointmentId,
-      requestedStatus: status,
+    logger.error(validationError, 'validation', {
       userId: session.user.id,
-      error: validationError
+      requestedStatus: status,
     })
     throw new Error(validationError)
   }
@@ -73,50 +73,45 @@ export async function updateAppointmentStatus(
     .single()
 
   if (appointmentError) {
-    console.error('updateAppointmentStatus database error', {
-      appointmentId,
-      userId: session.user.id,
-      error: appointmentError.message
-    })
+    logger.error(appointmentError, 'database', { userId: session.user.id })
     throw appointmentError
   }
   if (!appointment) {
-    console.error('updateAppointmentStatus not found', { appointmentId, userId: session.user.id })
+    logger.error('Appointment not found', 'not_found', { userId: session.user.id })
     throw new Error('Appointment not found')
   }
 
   // Type guard for appointment data
-  const appointmentData = appointment as unknown
-  if (typeof appointmentData !== 'object' || appointmentData === null) {
+  if (!appointment || typeof appointment !== 'object') {
+    logger.error('Invalid appointment data', 'validation')
     throw new Error('Invalid appointment data')
   }
 
-  const appointmentTyped = appointmentData as { salon_id?: string | null; status?: string | null }
-  const appointmentSalonId = appointmentTyped.salon_id
-  const currentStatus = appointmentTyped.status
+  const appointmentRecord = appointment as Record<string, unknown>
+  const appointmentSalonId = typeof appointmentRecord['salon_id'] === 'string' ? appointmentRecord['salon_id'] : null
+  const currentStatus = typeof appointmentRecord['status'] === 'string' ? appointmentRecord['status'] : null
 
   if (!appointmentSalonId) {
+    logger.error('Appointment salon not found', 'validation')
     throw new Error('Appointment salon not found')
   }
 
   // FIX 6: Validate status transition
   if (currentStatus && !isValidStatusTransition(currentStatus, status)) {
-    console.error('updateAppointmentStatus invalid transition', {
-      appointmentId,
+    logger.error(`Cannot transition from ${currentStatus} to ${status}`, 'validation', {
+      userId: session.user.id,
+      salonId: appointmentSalonId,
       currentStatus,
       requestedStatus: status,
-      userId: session.user.id,
-      salonId: appointmentSalonId
     })
     throw new Error(`Cannot transition from ${currentStatus} to ${status}`)
   }
 
   const authorized = await canAccessSalon(appointmentSalonId)
   if (!authorized) {
-    console.error('updateAppointmentStatus unauthorized access attempt', {
-      appointmentId,
+    logger.error('Unauthorized: Appointment does not belong to your salon', 'permission', {
       userId: session.user.id,
-      salonId: appointmentSalonId
+      salonId: appointmentSalonId,
     })
     throw new Error('Unauthorized: Appointment does not belong to your salon')
   }
@@ -132,25 +127,30 @@ export async function updateAppointmentStatus(
     .eq('salon_id', appointmentSalonId) // Double-check with RLS
 
   if (error) {
-    console.error('updateAppointmentStatus update failed', {
-      appointmentId,
-      status,
+    logger.error(error, 'database', {
       userId: session.user.id,
       salonId: appointmentSalonId,
-      error: error.message
+      requestedStatus: status,
     })
     throw error
   }
 
-  console.log('updateAppointmentStatus completed successfully', {
-    appointmentId,
-    oldStatus: currentStatus,
-    newStatus: status,
+  logMutation('update_status', 'appointment', appointmentId, {
     userId: session.user.id,
-    salonId: appointmentSalonId
+    salonId: appointmentSalonId,
+    operationName: 'updateAppointmentStatus',
+    changes: { oldStatus: currentStatus, newStatus: status },
   })
 
   revalidatePath('/business/appointments', 'page')
+
+  logger.success({
+    userId: session.user.id,
+    salonId: appointmentSalonId,
+    oldStatus: currentStatus,
+    newStatus: status,
+  })
+
   return { success: true }
 }
 
@@ -167,7 +167,8 @@ export async function completeAppointment(appointmentId: string) {
 }
 
 // Stub implementations for missing internal modules
-// TODO: Implement these properly when internal modules are created
+// NOTE: These functions require internal modules that do not exist in the database
+// Database is source of truth - these features cannot be implemented until proper modules are created
 
 export async function addServiceToAppointment(_data: unknown) {
   throw new Error('addServiceToAppointment: Internal module ./internal/appointment-services does not exist')

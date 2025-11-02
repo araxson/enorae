@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   COMPLIANCE_BADGE_VARIANT,
   LICENSE_BADGE_VARIANT,

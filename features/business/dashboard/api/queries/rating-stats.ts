@@ -1,5 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 interface RatingStats {
   average_rating: number
@@ -8,6 +9,9 @@ interface RatingStats {
 }
 
 export async function getSalonRatingStats(salonId: string): Promise<RatingStats | null> {
+  const logger = createOperationLogger('getSalonRatingStats', {})
+  logger.start()
+
   const supabase = await createClient()
   const {
     data: { user },

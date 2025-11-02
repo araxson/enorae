@@ -2,6 +2,7 @@
 import 'server-only'
 
 import { sendNotification } from './send'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function sendAppointmentConfirmation(
   customerId: string,
@@ -12,6 +13,8 @@ export async function sendAppointmentConfirmation(
     staffName: string
   },
 ) {
+  const logger = createOperationLogger('sendAppointmentConfirmation', {})
+  logger.start()
   return sendNotification({
     userId: customerId,
     title: 'Appointment Confirmed',

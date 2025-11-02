@@ -54,7 +54,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <CalendarX className="size-6" />
+            <CalendarX className="size-6" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No appointments yet</EmptyTitle>
           <EmptyDescription>

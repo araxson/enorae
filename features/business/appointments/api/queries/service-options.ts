@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type ServiceOption = {
   id: string
@@ -24,6 +25,9 @@ export type AppointmentServiceOptions = {
 export async function getAppointmentServiceOptions(
   appointmentId: string
 ): Promise<AppointmentServiceOptions> {
+  const logger = createOperationLogger('getAppointmentServiceOptions', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
   const { activeSalonId } = await getSalonContext()

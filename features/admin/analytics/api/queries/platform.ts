@@ -3,6 +3,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type DailyMetricsRow = Database['public']['Views']['daily_metrics_view']['Row']
 type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']
@@ -15,6 +16,9 @@ type ReviewRow = Database['public']['Views']['salon_reviews_view']['Row']
  * Aggregates key statistics across all salons
  */
 export async function getPlatformMetrics() {
+  const logger = createOperationLogger('getPlatformMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 

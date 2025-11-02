@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import { revokeSessionSchema } from '../schema'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -16,6 +17,9 @@ export type ActionResponse<T = void> =
  * SECURITY: Validates input with Zod schema (SEC-M302)
  */
 export async function revokeSession(sessionId: string): Promise<ActionResponse> {
+  const logger = createOperationLogger('revokeSession', {})
+  logger.start()
+
   try {
     // SEC-M302: Validate input with Zod schema
     const validated = revokeSessionSchema.parse({ sessionId })
@@ -66,7 +70,7 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
 
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error revoking session:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to revoke session',
@@ -79,6 +83,9 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
  * IMPROVED: Uses identity.sessions table for application session management
  */
 export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: number }>> {
+  const logger = createOperationLogger('revokeAllOtherSessions', {})
+  logger.start()
+
   try {
     const session = await verifySession()
     if (!session) return { success: false, error: 'Unauthorized' }
@@ -119,12 +126,14 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
     revalidatePath('/customer/settings/sessions', 'page')
     revalidatePath('/staff/settings/sessions', 'page')
 
+    logger.success({ count: data?.length ?? 0 })
+
     return {
       success: true,
       data: { count: data?.length ?? 0 }
     }
   } catch (error) {
-    console.error('Error revoking sessions:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to revoke sessions',

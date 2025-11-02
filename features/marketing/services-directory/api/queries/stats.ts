@@ -1,6 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -13,6 +14,9 @@ export async function getPublicServiceStats(): Promise<{
   totalCategories: number
   avgPrice: number | null
 }> {
+  const logger = createOperationLogger('getPublicServiceStats', {})
+  logger.start()
+
   const supabase = await createClient()
 
   const { data, error } = await supabase

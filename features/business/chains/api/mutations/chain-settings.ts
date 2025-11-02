@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -53,6 +54,9 @@ const chainSettingsSchema = z.object({
  * Bulk update settings across all chain locations
  */
 export async function updateChainSettings(formData: FormData) {
+  const logger = createOperationLogger('updateChainSettings', {})
+  logger.start()
+
   try {
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const payloadResult = chainSettingsSchema.safeParse({

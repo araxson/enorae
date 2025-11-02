@@ -1,6 +1,7 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type RoleResponse = {
   isGuest: boolean
@@ -8,6 +9,9 @@ type RoleResponse = {
 }
 
 export async function checkGuestRole(): Promise<RoleResponse> {
+  const logger = createOperationLogger('checkGuestRole', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

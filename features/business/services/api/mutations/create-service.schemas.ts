@@ -1,4 +1,6 @@
+import 'server-only'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export const serviceSchema = z.object({
   name: z

@@ -1,3 +1,4 @@
+import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type {
@@ -13,10 +14,14 @@ import type {
   ProfileRoleSummary,
   ProfileActivityEntry,
   ProfileDetail,
-} from './types'
+} from '../../types'
 import { sanitizeSearchTerm, toRecord, mapSummary } from '@/lib/utils/profile'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function searchProfiles(term: string, limit = 20): Promise<ProfileSearchResult[]> {
+  const logger = createOperationLogger('searchProfiles', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()

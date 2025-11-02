@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type StaffRow = {
   id: string
@@ -39,6 +40,9 @@ export async function requestScheduleChange(
   newEndTime: string,
   reason: string
 ) {
+  const logger = createOperationLogger('requestScheduleChange', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
 

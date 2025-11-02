@@ -95,7 +95,7 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
             {rules.map((rule) => (
               <Item key={rule.id} variant="outline" className="flex flex-col gap-3">
                 <ItemHeader>
-                  <ItemTitle>{rule.service?.name || 'Unknown Service'}</ItemTitle>
+                  <ItemTitle>{rule.service_name || 'Unknown Service'}</ItemTitle>
                   {rule.total_duration_minutes ? (
                     <ItemDescription>Total {rule.total_duration_minutes} minutes</ItemDescription>
                   ) : null}

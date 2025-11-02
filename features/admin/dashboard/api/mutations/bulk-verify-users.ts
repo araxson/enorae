@@ -8,12 +8,16 @@ import { logSupabaseError } from '@/lib/supabase/errors'
 import { enforceAdminBulkRateLimit } from '@/lib/middleware/rate-limit'
 
 import { logDashboardAudit } from './audit'
-import type { ActionResponse } from './types'
+import type { ActionResponse } from '../../types'
 import { BULK_USER_IDS_SCHEMA } from './validation'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function bulkVerifyUsers(
   formData: FormData,
 ): Promise<ActionResponse<{ verified: number; failed: number }>> {
+  const logger = createOperationLogger('bulkVerifyUsers', {})
+  logger.start()
+
   try {
     const userIds = formData.get('userIds')?.toString()
     if (!userIds) {
@@ -39,21 +43,28 @@ export async function bulkVerifyUsers(
     const supabase = createServiceRoleClient()
     enforceAdminBulkRateLimit(session.user.id, 'dashboard:bulkVerifyUsers')
 
+    // PERFORMANCE FIX: Parallelize auth updates instead of sequential loop
+    // Auth API doesn't support batch operations, but parallel requests are much faster
+    const results = await Promise.allSettled(
+      ids.map(userId =>
+        supabase.auth.admin.updateUserById(userId, {
+          email_confirm: true,
+        })
+      )
+    )
+
     let verified = 0
     let failed = 0
 
-    for (const userId of ids) {
-      const { error } = await supabase.auth.admin.updateUserById(userId, {
-        email_confirm: true,
-      })
-
-      if (error) {
-        failed++
-        logSupabaseError(`bulkVerifyUsers:${userId}`, error)
-      } else {
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && !result.value.error) {
         verified++
+      } else {
+        failed++
+        const error = result.status === 'fulfilled' ? result.value.error : result.reason
+        logSupabaseError(`bulkVerifyUsers:${ids[index]}`, error)
       }
-    }
+    })
 
     await logDashboardAudit(supabase, session.user.id, 'bulk_users_email_verified', 'info', {
       total_requested: ids.length,

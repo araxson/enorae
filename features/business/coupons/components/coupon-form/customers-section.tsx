@@ -1,3 +1,5 @@
+'use client'
+
 import { Textarea } from '@/components/ui/textarea'
 import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
 import {

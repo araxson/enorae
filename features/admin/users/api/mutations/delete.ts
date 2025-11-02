@@ -6,9 +6,13 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common'
 
-import { UUID_REGEX } from './constants'
+import { UUID_REGEX } from '../../constants'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function deleteUserPermanently(formData: FormData) {
+  const logger = createOperationLogger('deleteUserPermanently', {})
+  logger.start()
+
   try {
     const userId = formData.get('userId')?.toString()
     if (!userId || !UUID_REGEX.test(userId)) {

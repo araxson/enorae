@@ -1,8 +1,8 @@
+import { CheckCircle2, TrendingUp } from 'lucide-react'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { CheckCircle2, TrendingUp } from 'lucide-react'
-import type { Subscription } from '../types'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Item,
@@ -11,6 +11,8 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+
+import type { Subscription } from '../types'
 
 const tierFeatures: Record<Subscription['tier'], string[]> = {
   basic: [

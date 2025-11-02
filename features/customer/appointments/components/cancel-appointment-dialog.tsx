@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback, memo } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Dialog,
@@ -31,7 +31,7 @@ interface CancelAppointmentDialogProps {
   children?: React.ReactNode
 }
 
-export function CancelAppointmentDialog({
+export const CancelAppointmentDialog = memo(function CancelAppointmentDialog({
   appointmentId,
   startTime,
   children,
@@ -41,26 +41,36 @@ export function CancelAppointmentDialog({
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const hoursUntil = (new Date(startTime).getTime() - Date.now()) / (1000 * 60 * 60)
-  const canCancel = hoursUntil >= 24
-  const remainingHours = Math.max(0, Math.floor(hoursUntil))
-  const remainingMinutes = Math.max(0, Math.floor((hoursUntil % 1) * 60))
+  const { hoursUntil, canCancel, remainingHours, remainingMinutes } = useMemo(() => {
+    const hours = (new Date(startTime).getTime() - Date.now()) / (1000 * 60 * 60)
+    return {
+      hoursUntil: hours,
+      canCancel: hours >= 24,
+      remainingHours: Math.max(0, Math.floor(hours)),
+      remainingMinutes: Math.max(0, Math.floor((hours % 1) * 60)),
+    }
+  }, [startTime])
 
-  const handleCancel = async () => {
+  const handleCancel = useCallback(async () => {
     setIsLoading(true)
     setError(null)
 
-    const result = await cancelAppointment(appointmentId)
+    try {
+      const result = await cancelAppointment(appointmentId)
 
-    if (result.success) {
-      setOpen(false)
-      router.refresh()
-    } else {
-      setError(result.error)
+      if (result.success) {
+        setOpen(false)
+        router.refresh()
+      } else {
+        setError(result.error)
+      }
+    } catch (error) {
+      console.error('[CancelAppointmentDialog] Error cancelling appointment:', error)
+      setError(error instanceof Error ? error.message : 'Failed to cancel appointment. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
-  }
+  }, [appointmentId, router])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -154,4 +164,4 @@ export function CancelAppointmentDialog({
       </DialogContent>
     </Dialog>
   )
-}
+})

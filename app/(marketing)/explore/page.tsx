@@ -1,22 +1,12 @@
 import { Suspense } from 'react'
-
-import { Spinner } from '@/components/ui/spinner'
-import {
-  MarketingExplorePage,
-  exploreSEO,
-} from '@/features/marketing/explore'
+import { MarketingExplorePage, exploreSEO } from '@/features/marketing/explore'
+import { PageLoading } from '@/features/shared/ui-components'
 
 export const metadata = exploreSEO
 
 export default async function ExplorePage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-16">
-          <Spinner className="size-6 text-muted-foreground" />
-        </div>
-      }
-    >
+    <Suspense fallback={<PageLoading />}>
       <MarketingExplorePage />
     </Suspense>
   )

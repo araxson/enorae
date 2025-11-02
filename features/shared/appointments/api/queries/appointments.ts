@@ -3,6 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 const ALLOWED_ROLES: Database['public']['Enums']['role_type'][] = [
   ...ROLE_GROUPS.BUSINESS_USERS,
@@ -22,6 +23,9 @@ async function getSalonContext() {
 }
 
 export async function getSalonAppointments(limit = 50): Promise<AppointmentRow[]> {
+  const logger = createOperationLogger('getSalonAppointments', {})
+  logger.start()
+
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
     .from('admin_appointments_overview_view')

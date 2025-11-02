@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 
@@ -16,6 +17,9 @@ const locationSchema = z.object({
 })
 
 export async function createSalonLocation(formData: FormData) {
+  const logger = createOperationLogger('createSalonLocation', {})
+  logger.start()
+
   try {
     const result = locationSchema.safeParse({
       name: formData.get('name'),

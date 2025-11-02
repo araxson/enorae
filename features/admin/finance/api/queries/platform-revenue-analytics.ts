@@ -2,11 +2,15 @@ import 'server-only'
 
 import type { RevenueMetrics } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getPlatformRevenueAnalytics(
   startDate?: string,
   endDate?: string,
 ): Promise<RevenueMetrics> {
+  const logger = createOperationLogger('getPlatformRevenueAnalytics', {})
+  logger.start()
+
   const supabase = await requireAdminClient()
 
   let query = supabase

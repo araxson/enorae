@@ -2,6 +2,7 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 const UPCOMING_LIMIT = 5
 const PAST_LIMIT = 5
@@ -61,6 +62,9 @@ function sortAppointments(
 }
 
 export async function getUpcomingAppointments(): Promise<DashboardAppointment[]> {
+  const logger = createOperationLogger('getUpcomingAppointments', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
   const now = new Date().toISOString()

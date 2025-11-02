@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 /**
  * Refresh analytics data by revalidating the analytics page
@@ -10,6 +11,9 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
  * Security: Requires admin role to prevent unauthorized cache manipulation
  */
 export async function refreshAnalytics() {
+  const logger = createOperationLogger('refreshAnalytics', {})
+  logger.start()
+
   // Verify admin authorization
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 

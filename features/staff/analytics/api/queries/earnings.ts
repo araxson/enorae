@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getStaffPerformanceMetrics } from './performance'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface StaffEarningsSummary {
   total_revenue: number
@@ -18,6 +19,9 @@ export async function getStaffEarningsSummary(
   startDate?: string,
   endDate?: string
 ) {
+  const logger = createOperationLogger('getStaffEarningsSummary', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
   const supabase = await createClient()

@@ -1819,10 +1819,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -1918,10 +1914,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -2035,10 +2027,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -2116,10 +2104,6 @@
                         {
                           "type": "file",
                           "name": "index.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     },
@@ -2177,10 +2161,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -2216,10 +2196,6 @@
                         {
                           "type": "file",
                           "name": "reject-salon.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         },
                         {
                           "type": "file",
@@ -2309,6 +2285,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "dashboard-header.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "dashboard-hero.tsx"
                     },
                     {
@@ -2331,15 +2311,7 @@
                 },
                 {
                   "type": "file",
-                  "name": "admin-dashboard.tsx"
-                },
-                {
-                  "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -2406,8 +2378,34 @@
                   "name": "components",
                   "children": [
                     {
-                      "type": "file",
-                      "name": "database-health-panel.tsx"
+                      "type": "directory",
+                      "name": "database-health-panel",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "bloat-tab.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "cache-tab.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "database-health-panel.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "hot-updates-tab.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "toast-tab.tsx"
+                        }
+                      ]
                     },
                     {
                       "type": "file",
@@ -2438,10 +2436,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -2511,10 +2505,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -2578,10 +2568,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -2666,10 +2652,6 @@
                         {
                           "type": "file",
                           "name": "transaction-monitoring.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -2720,10 +2702,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -2837,10 +2815,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -2859,31 +2833,27 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "approve-review.mutation.ts"
+                          "name": "approve-review.ts"
                         },
                         {
                           "type": "file",
-                          "name": "ban-review-author.mutation.ts"
+                          "name": "ban-review-author.ts"
                         },
                         {
                           "type": "file",
-                          "name": "constants.ts"
+                          "name": "delete-review.ts"
                         },
                         {
                           "type": "file",
-                          "name": "delete-review.mutation.ts"
+                          "name": "feature-review.ts"
                         },
                         {
                           "type": "file",
-                          "name": "feature-review.mutation.ts"
+                          "name": "flag-review.ts"
                         },
                         {
                           "type": "file",
-                          "name": "flag-review.mutation.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "hide-review.mutation.ts"
+                          "name": "hide-review.ts"
                         },
                         {
                           "type": "file",
@@ -2891,7 +2861,7 @@
                         },
                         {
                           "type": "file",
-                          "name": "respond-to-review.mutation.ts"
+                          "name": "respond-to-review.ts"
                         },
                         {
                           "type": "file",
@@ -2899,7 +2869,7 @@
                         },
                         {
                           "type": "file",
-                          "name": "unflag-review.mutation.ts"
+                          "name": "unflag-review.ts"
                         }
                       ]
                     },
@@ -2952,6 +2922,24 @@
                   "name": "components",
                   "children": [
                     {
+                      "type": "directory",
+                      "name": "reviews-table",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "action-dialog.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "use-review-actions.ts"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "index.ts"
                     },
@@ -2986,20 +2974,16 @@
                     {
                       "type": "file",
                       "name": "reviews-table-row.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "reviews-table.tsx"
                     }
                   ]
                 },
                 {
                   "type": "file",
-                  "name": "index.tsx"
+                  "name": "constants.ts"
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
+                  "name": "index.tsx"
                 },
                 {
                   "type": "file",
@@ -3048,10 +3032,6 @@
                         {
                           "type": "file",
                           "name": "schemas.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -3102,10 +3082,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -3175,10 +3151,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -3242,10 +3214,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -3315,10 +3283,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -3370,10 +3334,6 @@
                         {
                           "type": "file",
                           "name": "revoke-role.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         },
                         {
                           "type": "file",
@@ -3507,10 +3467,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -3529,11 +3485,7 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "approve-salon.mutation.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "approve-salon.mutation.ts.bak"
+                          "name": "approve-salon.ts"
                         },
                         {
                           "type": "file",
@@ -3541,19 +3493,11 @@
                         },
                         {
                           "type": "file",
-                          "name": "reactivate-salon.mutation.ts"
+                          "name": "reactivate-salon.ts"
                         },
                         {
                           "type": "file",
-                          "name": "reactivate-salon.mutation.ts.bak"
-                        },
-                        {
-                          "type": "file",
-                          "name": "reject-salon.mutation.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "reject-salon.mutation.ts.bak"
+                          "name": "reject-salon.ts"
                         },
                         {
                           "type": "file",
@@ -3561,35 +3505,19 @@
                         },
                         {
                           "type": "file",
-                          "name": "suspend-salon.mutation.ts"
+                          "name": "suspend-salon.ts"
                         },
                         {
                           "type": "file",
-                          "name": "suspend-salon.mutation.ts.bak"
+                          "name": "transfer-salon-ownership.ts"
                         },
                         {
                           "type": "file",
-                          "name": "transfer-salon-ownership.mutation.ts"
+                          "name": "update-salon-settings.ts"
                         },
                         {
                           "type": "file",
-                          "name": "transfer-salon-ownership.mutation.ts.bak"
-                        },
-                        {
-                          "type": "file",
-                          "name": "update-salon-settings.mutation.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "update-salon-settings.mutation.ts.bak"
-                        },
-                        {
-                          "type": "file",
-                          "name": "update-salon.mutation.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "update-salon.mutation.ts.bak"
+                          "name": "update-salon.ts"
                         }
                       ]
                     },
@@ -3636,6 +3564,28 @@
                   "name": "components",
                   "children": [
                     {
+                      "type": "directory",
+                      "name": "salons-table",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "desktop-table.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "mobile-cards.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "table-utilities.tsx"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "index.ts"
                     },
@@ -3650,20 +3600,12 @@
                     {
                       "type": "file",
                       "name": "salons-stats.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "salons-table.tsx"
                     }
                   ]
                 },
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -3737,10 +3679,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -3807,10 +3745,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -3874,10 +3808,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -3983,10 +3913,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -4053,10 +3979,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -4119,10 +4041,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -4176,10 +4094,6 @@
                         {
                           "type": "file",
                           "name": "staff-dashboard-data.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -4189,6 +4103,28 @@
                   "type": "directory",
                   "name": "components",
                   "children": [
+                    {
+                      "type": "directory",
+                      "name": "staff-table",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "desktop-table.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "mobile-cards.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "table-cell-renderers.tsx"
+                        }
+                      ]
+                    },
                     {
                       "type": "file",
                       "name": "index.ts"
@@ -4216,20 +4152,12 @@
                     {
                       "type": "file",
                       "name": "staff-table-mobile.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "staff-table.tsx"
                     }
                   ]
                 },
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -4299,10 +4227,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -4326,10 +4250,6 @@
                         {
                           "type": "file",
                           "name": "batch.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "constants.ts"
                         },
                         {
                           "type": "file",
@@ -4380,10 +4300,6 @@
                         {
                           "type": "file",
                           "name": "stats.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -4437,17 +4353,21 @@
                     },
                     {
                       "type": "file",
+                      "name": "users-table-mobile.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "users-table.tsx"
                     }
                   ]
                 },
                 {
                   "type": "file",
-                  "name": "index.tsx"
+                  "name": "constants.ts"
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
+                  "name": "index.tsx"
                 },
                 {
                   "type": "file",
@@ -4602,10 +4522,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -4860,16 +4776,20 @@
                     {
                       "type": "file",
                       "name": "service-status-row.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "services-summary.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "services-table.tsx"
                     }
                   ]
                 },
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -5123,10 +5043,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -5233,10 +5149,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -5323,15 +5235,7 @@
                         },
                         {
                           "type": "file",
-                          "name": "activation-section.tsx.bak"
-                        },
-                        {
-                          "type": "file",
                           "name": "basic-section.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "basic-section.tsx.bak"
                         },
                         {
                           "type": "file",
@@ -5339,23 +5243,11 @@
                         },
                         {
                           "type": "file",
-                          "name": "customers-section.tsx.bak"
-                        },
-                        {
-                          "type": "file",
                           "name": "discount-section.tsx"
                         },
                         {
                           "type": "file",
-                          "name": "discount-section.tsx.bak"
-                        },
-                        {
-                          "type": "file",
                           "name": "limits-section.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "limits-section.tsx.bak"
                         },
                         {
                           "type": "file",
@@ -5437,10 +5329,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -5512,10 +5400,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -5612,10 +5496,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -5783,15 +5663,7 @@
                 },
                 {
                   "type": "file",
-                  "name": "business-dashboard.tsx"
-                },
-                {
-                  "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -5924,10 +5796,6 @@
                         {
                           "type": "file",
                           "name": "trends.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -6016,10 +5884,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -6161,10 +6025,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -6261,10 +6121,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -6340,10 +6196,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -6434,10 +6286,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -6583,10 +6431,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -6658,10 +6502,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -6825,10 +6665,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -6910,10 +6746,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -7089,6 +6921,10 @@
                       "children": [
                         {
                           "type": "file",
+                          "name": "duration-accuracy-section.tsx"
+                        },
+                        {
+                          "type": "file",
                           "name": "format-utils.ts"
                         },
                         {
@@ -7097,11 +6933,27 @@
                         },
                         {
                           "type": "file",
+                          "name": "profitability-section.tsx"
+                        },
+                        {
+                          "type": "file",
                           "name": "revenue-leaders.tsx"
                         },
                         {
                           "type": "file",
+                          "name": "service-overview-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "service-pairings-section.tsx"
+                        },
+                        {
+                          "type": "file",
                           "name": "service-performance-sections.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "staff-performance-section.tsx"
                         }
                       ]
                     },
@@ -7122,10 +6974,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -7237,10 +7085,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -7267,15 +7111,15 @@
                         },
                         {
                           "type": "file",
-                          "name": "create-service.mutation.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "create-service.schemas.ts"
                         },
                         {
                           "type": "file",
-                          "name": "delete-service.mutation.ts"
+                          "name": "create-service.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "delete-service.ts"
                         },
                         {
                           "type": "file",
@@ -7283,7 +7127,7 @@
                         },
                         {
                           "type": "file",
-                          "name": "permanently-delete-service.mutation.ts"
+                          "name": "permanently-delete-service.ts"
                         },
                         {
                           "type": "file",
@@ -7291,7 +7135,7 @@
                         },
                         {
                           "type": "file",
-                          "name": "update-service.mutation.ts"
+                          "name": "update-service.ts"
                         }
                       ]
                     },
@@ -7378,10 +7222,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -7475,10 +7315,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -7566,10 +7402,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -7667,10 +7499,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -7710,10 +7538,6 @@
                           "name": "settings-contact.ts"
                         }
                       ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7806,10 +7630,6 @@
                           "name": "settings-description.ts"
                         }
                       ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7872,10 +7692,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -7966,10 +7782,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8091,6 +7903,24 @@
                   "children": [
                     {
                       "type": "directory",
+                      "name": "staff-form-dialog",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "staff-form-fields.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "use-staff-form.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "directory",
                       "name": "staff-services",
                       "children": [
                         {
@@ -8138,10 +7968,6 @@
                     {
                       "type": "file",
                       "name": "index.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "staff-form-dialog.tsx"
                     },
                     {
                       "type": "file",
@@ -8283,10 +8109,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -8349,10 +8171,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -8392,10 +8210,6 @@
                           "name": "time-off.ts"
                         }
                       ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -8420,10 +8234,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8502,10 +8312,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8619,10 +8425,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -8682,10 +8484,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8750,14 +8548,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8854,14 +8644,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8999,14 +8781,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9078,10 +8852,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
                 },
                 {
                   "type": "file",
@@ -9195,14 +8965,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9285,10 +9047,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
                   "name": "schema.ts"
                 },
                 {
@@ -9363,14 +9121,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9429,14 +9179,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9492,14 +9234,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -9647,10 +9381,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
                   "name": "schema.ts"
                 },
                 {
@@ -9714,14 +9444,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -9799,14 +9521,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9877,14 +9591,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9934,10 +9640,6 @@
                         {
                           "type": "file",
                           "name": "suggestions.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -10014,14 +9716,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -10117,14 +9811,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -10180,14 +9866,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -10250,14 +9928,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -10397,10 +10067,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -10432,10 +10098,6 @@
                 {
                   "type": "file",
                   "name": "newsletter-success.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -10667,10 +10329,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -10766,10 +10424,6 @@
                 {
                   "type": "file",
                   "name": "index.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -10929,10 +10583,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -11063,10 +10713,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -11121,10 +10767,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -11161,10 +10803,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -11262,10 +10900,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -11357,10 +10991,6 @@
                 {
                   "type": "file",
                   "name": "privacy.seo.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -11588,10 +11218,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -11730,10 +11356,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "services-category-page.tsx"
                 },
                 {
@@ -11832,10 +11454,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "terms-page.tsx"
                 },
                 {
@@ -11883,10 +11501,6 @@
                     {
                       "type": "file",
                       "name": "mutations.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "queries.ts"
                     }
                   ]
                 },
@@ -11907,10 +11521,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -11975,6 +11585,28 @@
                   "name": "components",
                   "children": [
                     {
+                      "type": "directory",
+                      "name": "login-form",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "form-fields.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "marketing-panel.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "oauth-buttons.tsx"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "auth-centered-page.tsx"
                     },
@@ -11985,10 +11617,6 @@
                     {
                       "type": "file",
                       "name": "index.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "login-form.tsx"
                     },
                     {
                       "type": "file",
@@ -12130,10 +11758,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -12200,10 +11824,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -12243,10 +11863,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -12354,14 +11970,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -12401,10 +12009,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -12506,10 +12110,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -12577,14 +12177,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "metadata.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -12708,10 +12300,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -12751,10 +12339,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -12808,10 +12392,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -12833,10 +12413,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -13022,10 +12598,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13138,10 +12710,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13205,10 +12773,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -13309,10 +12873,6 @@
                         {
                           "type": "file",
                           "name": "preferences.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     },
@@ -13388,10 +12948,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13433,10 +12989,6 @@
                         {
                           "type": "file",
                           "name": "stats.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     }
@@ -13471,10 +13023,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -13554,10 +13102,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13612,10 +13156,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13659,10 +13199,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -13770,10 +13306,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13870,10 +13402,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13896,10 +13424,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "constants.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "context.ts"
                         },
                         {
@@ -13917,10 +13441,6 @@
                         {
                           "type": "file",
                           "name": "requests.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         },
                         {
                           "type": "file",
@@ -14000,15 +13520,15 @@
                 },
                 {
                   "type": "file",
-                  "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
+                  "name": "constants.ts"
                 },
                 {
                   "type": "file",
                   "name": "types.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
                 }
               ]
             },
@@ -14074,10 +13594,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -14132,10 +13648,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -14187,10 +13699,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -14259,10 +13767,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -14318,10 +13822,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -14459,6 +13959,16 @@
       "children": [
         {
           "type": "directory",
+          "name": "admin",
+          "children": [
+            {
+              "type": "file",
+              "name": "moderation-factory.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
           "name": "auth",
           "children": [
             {
@@ -14486,6 +13996,10 @@
                   "name": "salon-access.ts"
                 }
               ]
+            },
+            {
+              "type": "file",
+              "name": "guards.ts"
             },
             {
               "type": "file",
@@ -14581,7 +14095,15 @@
             },
             {
               "type": "file",
+              "name": "brand-defaults.ts"
+            },
+            {
+              "type": "file",
               "name": "config.ts"
+            },
+            {
+              "type": "file",
+              "name": "confirmation-code.ts"
             },
             {
               "type": "file",
@@ -14598,6 +14120,10 @@
             {
               "type": "file",
               "name": "statuses.ts"
+            },
+            {
+              "type": "file",
+              "name": "time.ts"
             }
           ]
         },
@@ -14650,6 +14176,16 @@
             {
               "type": "file",
               "name": "staff-menus.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "messaging",
+          "children": [
+            {
+              "type": "file",
+              "name": "operations.ts"
             }
           ]
         },
@@ -14724,6 +14260,34 @@
             {
               "type": "file",
               "name": "rate-limit.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "mutations",
+          "children": [
+            {
+              "type": "file",
+              "name": "index.ts"
+            },
+            {
+              "type": "file",
+              "name": "patterns.ts"
+            },
+            {
+              "type": "file",
+              "name": "revalidation.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "observability",
+          "children": [
+            {
+              "type": "file",
+              "name": "logger.ts"
             }
           ]
         },
@@ -14816,6 +14380,26 @@
             {
               "type": "file",
               "name": "calculations.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "staff",
+          "children": [
+            {
+              "type": "file",
+              "name": "staff-helpers.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "storage",
+          "children": [
+            {
+              "type": "file",
+              "name": "upload-helpers.ts"
             }
           ]
         },
@@ -14957,6 +14541,20 @@
         },
         {
           "type": "directory",
+          "name": "validation",
+          "children": [
+            {
+              "type": "file",
+              "name": "helpers.ts"
+            },
+            {
+              "type": "file",
+              "name": "index.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
           "name": "validations",
           "children": [
             {
@@ -14988,6 +14586,10 @@
             {
               "type": "file",
               "name": "index.ts"
+            },
+            {
+              "type": "file",
+              "name": "patterns.ts"
             },
             {
               "type": "file",
@@ -15081,6 +14683,26 @@
     },
     {
       "type": "file",
+      "name": "ARCHITECTURE_AUDIT_REPORT.md"
+    },
+    {
+      "type": "file",
+      "name": "AUDIT_COMPLETE.txt"
+    },
+    {
+      "type": "file",
+      "name": "AUDIT_EXECUTIVE_SUMMARY.md"
+    },
+    {
+      "type": "file",
+      "name": "AUDIT_INDEX.md"
+    },
+    {
+      "type": "file",
+      "name": "AUDIT_SUMMARY.md"
+    },
+    {
+      "type": "file",
       "name": "build-output.log"
     },
     {
@@ -15105,7 +14727,19 @@
     },
     {
       "type": "file",
+      "name": "CODE_DEDUPLICATION_SUMMARY.md"
+    },
+    {
+      "type": "file",
+      "name": "CODE_QUALITY_AUDIT.md"
+    },
+    {
+      "type": "file",
       "name": "components.json"
+    },
+    {
+      "type": "file",
+      "name": "CONFIGURATION_FIXES_SUMMARY.md"
     },
     {
       "type": "file",
@@ -15145,6 +14779,10 @@
     },
     {
       "type": "file",
+      "name": "SHADCN_UI_UPGRADE_AUDIT.md"
+    },
+    {
+      "type": "file",
       "name": "SHARED-FEATURES-CHANGES-SUMMARY.md"
     },
     {
@@ -15170,6 +14808,10 @@
     {
       "type": "file",
       "name": "TURBOPACK_MIGRATION_SUMMARY.md"
+    },
+    {
+      "type": "file",
+      "name": "VIOLATION_DETAILS.md"
     }
   ]
 }

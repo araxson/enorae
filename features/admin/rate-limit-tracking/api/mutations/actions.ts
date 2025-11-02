@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const unblockIdentifierSchema = z.object({
   identifier: z.string().min(1),
@@ -24,6 +25,9 @@ const purgeStaleSchema = z.object({
 })
 
 export async function unblockIdentifier(formData: FormData) {
+  const logger = createOperationLogger('unblockIdentifier', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -90,12 +94,15 @@ export async function unblockIdentifier(formData: FormData) {
     revalidatePath('/admin/security-monitoring', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error unblocking identifier:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function adjustRateLimit(formData: FormData) {
+  const logger = createOperationLogger('adjustRateLimit', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -197,12 +204,15 @@ export async function adjustRateLimit(formData: FormData) {
     revalidatePath('/admin/security-monitoring', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error adjusting rate limit:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }
 
 export async function purgeStaleRecords(formData: FormData) {
+  const logger = createOperationLogger('purgeStaleRecords', {})
+  logger.start()
+
   try {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
@@ -252,7 +262,7 @@ export async function purgeStaleRecords(formData: FormData) {
     revalidatePath('/admin/security-monitoring', 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error purging stale records:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Unknown error' }
   }
 }

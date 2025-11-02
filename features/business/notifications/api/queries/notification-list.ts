@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import type { NotificationEntry, NotificationPayload } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type NotificationsPageRow =
   Database['public']['Functions']['get_notifications_page']['Returns'][number]
@@ -21,6 +22,9 @@ type NotificationChannel = Database['public']['Enums']['notification_channel']
  * Since there's no notifications table in the schema, we use messages as notifications
  */
 export async function getRecentNotifications(limit: number = 20) {
+  const logger = createOperationLogger('getRecentNotifications', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()
@@ -38,20 +42,35 @@ export async function getRecentNotifications(limit: number = 20) {
 
     if (error) throw error
 
-    // Map RPC response to NotificationListEntry format
-    return (data || []).map((row: any): NotificationListEntry => ({
-      id: row.id ?? '',
-      user_id: row.user_id ?? '',
-      channels: row.channels ?? [],
-      status: row.status ?? 'pending',
-      created_at: row.created_at ?? new Date().toISOString(),
-      scheduled_for: row.scheduled_for,
-      sent_at: row.sent_at,
-      notification_type: row.type ?? 'info',
-      payload: null,
-      title: row.title ?? '',
-      message: row.message ?? '',
-    }))
+    // Map RPC response to NotificationListEntry format with type safety
+    return (data || []).map((row): NotificationListEntry => {
+      // Type guard for row properties
+      const safeRow = row as unknown as Record<string, unknown>
+      const getId = () => typeof safeRow['id'] === 'string' ? safeRow['id'] : ''
+      const getUserId = () => typeof safeRow['user_id'] === 'string' ? safeRow['user_id'] : ''
+      const getChannels = () => Array.isArray(safeRow['channels']) ? safeRow['channels'] as NotificationChannel[] : []
+      const getStatus = () => typeof safeRow['status'] === 'string' ? safeRow['status'] as NotificationStatus : 'pending'
+      const getCreatedAt = () => typeof safeRow['created_at'] === 'string' ? safeRow['created_at'] : new Date().toISOString()
+      const getScheduledFor = () => typeof safeRow['scheduled_for'] === 'string' ? safeRow['scheduled_for'] : null
+      const getSentAt = () => typeof safeRow['sent_at'] === 'string' ? safeRow['sent_at'] : null
+      const getType = () => typeof safeRow['type'] === 'string' ? safeRow['type'] : 'info'
+      const getTitle = () => typeof safeRow['title'] === 'string' ? safeRow['title'] : ''
+      const getMessage = () => typeof safeRow['message'] === 'string' ? safeRow['message'] : ''
+
+      return {
+        id: getId(),
+        user_id: getUserId(),
+        channels: getChannels(),
+        status: getStatus(),
+        created_at: getCreatedAt(),
+        scheduled_for: getScheduledFor(),
+        sent_at: getSentAt(),
+        notification_type: getType(),
+        payload: null,
+        title: getTitle(),
+        message: getMessage(),
+      }
+    })
   } catch {
     // RPC not available, return empty list
     return []
@@ -82,39 +101,39 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
   }
 
   const queueEntries = (data ?? []).filter(
-    (entry): entry is NotificationQueueRow & { id: string } => typeof entry.id === 'string',
+    (entry): entry is NotificationQueueRow & { id: string } => typeof entry['id'] === 'string',
   )
 
   return queueEntries.map<NotificationEntry>((entry) => {
-    const payloadValue = (entry.payload ?? null) as Record<string, unknown> | null
+    const payloadValue = (entry['payload'] ?? null) as Record<string, unknown> | null
     const title =
-      payloadValue && typeof payloadValue['title'] === 'string' ? (payloadValue['title'] as string) : null
+      payloadValue && typeof payloadValue['title'] === 'string' ? payloadValue['title'] : null
     const message =
       payloadValue && typeof payloadValue['message'] === 'string'
-        ? (payloadValue['message'] as string)
+        ? payloadValue['message']
         : null
     const errorMessage =
       payloadValue && typeof payloadValue['error'] === 'string'
-        ? (payloadValue['error'] as string)
+        ? payloadValue['error']
         : null
-    const channels =
+    const channels: NotificationChannel[] =
       payloadValue && Array.isArray(payloadValue['channels'])
-        ? (payloadValue['channels'] as string[])
+        ? (payloadValue['channels'].filter((ch): ch is string => typeof ch === 'string') as NotificationChannel[])
         : ['in_app']
     const dataPayload =
       payloadValue && typeof payloadValue === 'object' && !Array.isArray(payloadValue)
-        ? (payloadValue as Record<string, unknown>)
+        ? payloadValue
         : null
 
     return {
-      id: entry.id,
-      user_id: entry.user_id ?? user['id'],
-      channels: channels as unknown as NotificationChannel[],
-      status: entry.status as unknown as NotificationStatus,
-      created_at: entry.created_at,
+      id: entry['id'],
+      user_id: entry['user_id'] ?? user['id'],
+      channels: channels,
+      status: entry['status'] as NotificationStatus,
+      created_at: entry['created_at'],
       scheduled_for: null,
-      sent_at: entry.sent_at,
-      notification_type: entry.notification_type,
+      sent_at: entry['sent_at'],
+      notification_type: entry['notification_type'],
       payload: {
         title,
         message,
@@ -124,6 +143,6 @@ export async function getNotificationHistory(limit: number = 50): Promise<Notifi
       message,
       error: errorMessage,
       data: dataPayload,
-    } as NotificationEntry
+    }
   })
 }

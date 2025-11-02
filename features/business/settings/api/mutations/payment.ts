@@ -3,16 +3,20 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
+import { createOperationLogger, logMutation } from '@/lib/observability/logger'
 
 const paymentMethodsSchema = z.object({
   payment_methods: z.array(z.string()).min(1),
 })
 
+const methodsArraySchema = z.array(z.string())
+
 function parseMethods(raw: FormDataEntryValue | null): string[] {
   if (!raw) return []
   try {
     const parsed = JSON.parse(String(raw))
-    return Array.isArray(parsed) ? parsed : []
+    const validated = methodsArraySchema.safeParse(parsed)
+    return validated.success ? validated.data : []
   } catch {
     return []
   }
@@ -22,6 +26,9 @@ export async function updatePaymentMethods(
   salonId: string,
   formData: FormData,
 ) {
+  const logger = createOperationLogger('updatePaymentMethods', { salonId })
+  logger.start()
+
   try {
     const supabase = await getSalonContext(salonId)
 
@@ -30,6 +37,8 @@ export async function updatePaymentMethods(
     const validated = paymentMethodsSchema.parse({
       payment_methods: methods,
     })
+
+    logger.start({ salonId, methodCount: methods.length })
 
     const { error } = await supabase
       .schema('organization')
@@ -40,15 +49,27 @@ export async function updatePaymentMethods(
       })
       .eq('salon_id', salonId)
 
-    if (error) throw error
+    if (error) {
+      logger.error(error, 'database')
+      throw error
+    }
+
+    logMutation('update_payment_methods', 'salon_settings', salonId, {
+      salonId,
+      operationName: 'updatePaymentMethods',
+      changes: { payment_methods: methods },
+    })
 
     revalidateSettings()
+
+    logger.success({ salonId, methodCount: methods.length })
     return { success: true }
   } catch (error) {
-    console.error('Error updating payment methods:', error)
     if (error instanceof z.ZodError) {
+      logger.error(`Validation failed: ${error.issues[0]?.message}`, 'validation')
       return { error: `Validation failed: ${error.issues[0]?.message}` }
     }
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to update payment methods' }
   }
 }

@@ -2,10 +2,14 @@ import 'server-only'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type SalonDescription = Database['public']['Views']['salon_descriptions_view']['Row']
 
 export async function getSalonDescription(salonId: string): Promise<SalonDescription | null> {
+  const logger = createOperationLogger('getSalonDescription', {})
+  logger.start()
+
   // SECURITY: Require business user role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {

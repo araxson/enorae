@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -22,6 +23,9 @@ export async function updateSalonDescription(
   salonId: string,
   input: DescriptionInput
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateSalonDescription', {})
+  logger.start()
+
   try {
     // SECURITY: Require business user role
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
@@ -70,7 +74,7 @@ export async function updateSalonDescription(
     revalidatePath('/business/settings/description', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error updating salon description:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update description',

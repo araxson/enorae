@@ -3,6 +3,8 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type AuditLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
 
@@ -18,6 +20,8 @@ export async function getSecurityEvents(filters: {
   endDate?: string
   limit?: number
 }) {
+  const logger = createOperationLogger('getSecurityEvents', {})
+  logger.start()
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 
@@ -46,7 +50,7 @@ export async function getSecurityEvents(filters: {
   if (filters.limit) {
     query = query.limit(filters.limit)
   } else {
-    query = query.limit(100)
+    query = query.limit(QUERY_LIMITS.MEDIUM_LIST)
   }
 
   const { data, error } = await query
@@ -59,7 +63,7 @@ export async function getSecurityEvents(filters: {
 /**
  * Get critical security events (errors and critical severity)
  */
-export async function getCriticalSecurityEvents(limit: number = 50) {
+export async function getCriticalSecurityEvents(limit: number = QUERY_LIMITS.DEFAULT_LIST) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 

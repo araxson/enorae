@@ -1,13 +1,17 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
-import { UUID_REGEX } from './constants'
+import { UUID_REGEX } from '../../constants'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function terminateSession(formData: FormData) {
+  const logger = createOperationLogger('terminateSession', {})
+  logger.start()
+
   try {
     const sessionId = formData.get('sessionId')?.toString()
     if (!sessionId || !UUID_REGEX.test(sessionId)) {

@@ -12,20 +12,27 @@ import type {
   SuspiciousSession,
 } from '@/features/admin/security-monitoring/types'
 
+// View types (all fields nullable)
+type AuditLogViewRow = Database['identity']['Views']['audit_logs_view']['Row']
+type AccessMonitoringViewRow = Database['public']['Views']['security_access_monitoring_view']['Row']
+type SessionSecurityViewRow = Database['public']['Views']['security_session_security_view']['Row']
+type RateLimitTrackingRow = Database['public']['Views']['security_rate_limit_tracking_view']['Row']
+type RateLimitRuleRow = Database['public']['Views']['security_rate_limit_rules_view']['Row']
+
+// Table types (required fields non-nullable)
 type AuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 type AccessMonitoringRow = Database['security']['Tables']['access_monitoring']['Row']
 type SessionSecurityRow = Database['security']['Tables']['session_security']['Row']
-type RateLimitTrackingRow = Database['public']['Views']['security_rate_limit_tracking_view']['Row']
-type RateLimitRuleRow = Database['public']['Views']['security_rate_limit_rules_view']['Row']
-type SecurityAuditLogRow = Database['audit']['Tables']['audit_logs']['Row']
 
 export type {
+  AuditLogViewRow,
   AuditLogRow,
   AccessMonitoringRow,
+  AccessMonitoringViewRow,
   SessionSecurityRow,
+  SessionSecurityViewRow,
   RateLimitTrackingRow,
   RateLimitRuleRow,
-  SecurityAuditLogRow,
 }
 
 export const normalizeIp = (value: unknown): string | null => {
@@ -43,37 +50,37 @@ export const normalizeIp = (value: unknown): string | null => {
   return null
 }
 
-export const toAccessAttempt = (row: AccessMonitoringRow): AccessAttempt => ({
+export const toAccessAttempt = (row: AccessMonitoringViewRow): AccessAttempt => ({
   id: row.id ?? '',
-  userId: row.user_id,
-  resourceType: row.resource_type,
-  action: row.action,
+  userId: row.user_id ?? null,
+  resourceType: row.resource_type ?? '',
+  action: row.action ?? '',
   isGranted: row.is_granted ?? false,
   ipAddress: normalizeIp(row.ip_address),
-  userAgent: row.user_agent,
+  userAgent: row.user_agent ?? null,
   createdAt: row.created_at ?? new Date().toISOString(),
 })
 
-export const toSuspiciousSession = (row: SessionSecurityRow): SuspiciousSession => ({
+export const toSuspiciousSession = (row: SessionSecurityViewRow): SuspiciousSession => ({
   id: row.id ?? '',
-  userId: row.user_id,
+  userId: row.user_id ?? null,
   ipAddress: normalizeIp(row.ip_address),
-  userAgent: row.user_agent,
+  userAgent: row.user_agent ?? null,
   suspiciousScore: row.suspicious_score ?? 0,
   isBlocked: row.is_blocked ?? false,
-  lastActivityAt: row.last_activity_at,
-  createdAt: row.created_at,
+  lastActivityAt: row.last_activity_at ?? null,
+  createdAt: row.created_at ?? new Date().toISOString(),
 })
 
-export const toSecurityEvent = (row: AuditLogRow): SecurityEvent => ({
+export const toSecurityEvent = (row: AuditLogViewRow): SecurityEvent => ({
   id: row.id ?? '',
-  eventType: row.event_type ?? row.action ?? 'unknown',
-  severity: (row.severity ?? 'info') as string,
-  eventCategory: (row.event_category ?? null) as string | null,
+  eventType: row.action ?? 'unknown',
+  severity: 'info' as string,
+  eventCategory: null as string | null,
   description: row.error_message ?? null,
-  metadata: (row.metadata as Record<string, unknown> | null) ?? null,
+  metadata: null as Record<string, unknown> | null,
   userId: row.user_id,
-  userEmail: (row.metadata as { user_email?: string } | null)?.user_email ?? null,
+  userEmail: null,
   ipAddress: normalizeIp(row.ip_address),
   createdAt: (row.created_at ?? new Date().toISOString()) as string,
 })
@@ -103,33 +110,33 @@ export const toRateLimitRule = (row: RateLimitRuleRow): RateLimitRule => ({
   isActive: (row.is_active ?? false) as boolean,
 })
 
-export const toFailedLoginAttempt = (row: AuditLogRow): FailedLoginAttempt => ({
+export const toFailedLoginAttempt = (row: AuditLogViewRow): FailedLoginAttempt => ({
   id: (row.id ?? '') as string,
   userId: (row.user_id ?? '') as string,
   ipAddress: normalizeIp(row.ip_address),
   userAgent: (row.user_agent ?? '') as string,
   createdAt: (row.created_at ?? new Date().toISOString()) as string,
-  metadata: (row.metadata as Record<string, unknown> | null) ?? null,
+  metadata: null as Record<string, unknown> | null,
 })
 
-export const toIpAccessEvent = (row: AccessMonitoringRow): IpAccessEvent => ({
-  id: row.id,
+export const toIpAccessEvent = (row: AccessMonitoringViewRow): IpAccessEvent => ({
+  id: row.id ?? '',
   ipAddress: normalizeIp(row.ip_address),
-  isGranted: row.is_granted,
-  resourceType: row.resource_type,
-  action: row.action,
-  userId: row.user_id,
-  userAgent: row.user_agent,
-  createdAt: row.created_at,
+  isGranted: row.is_granted ?? false,
+  resourceType: row.resource_type ?? '',
+  action: row.action ?? '',
+  userId: row.user_id ?? null,
+  userAgent: row.user_agent ?? null,
+  createdAt: row.created_at ?? new Date().toISOString(),
 })
 
-export const toIncident = (row: SecurityAuditLogRow): SecurityIncident => ({
-  id: row.id ?? randomUUID(),
-  eventType: row.event_type ?? 'security_incident',
+export const toIncident = (row: AuditLogRow): SecurityIncident => ({
+  id: row.id,
+  eventType: row.event_type,
   severity: row.severity ?? 'info',
   description: (row.metadata as { description?: string } | null)?.description ?? null,
-  userId: row.user_id,
+  userId: row.user_id ?? null,
   ipAddress: normalizeIp(row.ip_address),
   metadata: (row.metadata as Record<string, unknown> | null) ?? null,
-  createdAt: row.created_at ?? new Date().toISOString(),
+  createdAt: row.created_at,
 })

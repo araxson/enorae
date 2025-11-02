@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   mergeStaffWithUsers,
   type EnrichedStaffProfile,
@@ -13,7 +14,7 @@ type Service = Database['public']['Views']['services_view']['Row']
 
 export type StaffProfile = EnrichedStaffProfile & {
   services?: Service[]
-  // TODO: Add these fields to the staff view
+  // NOTE: These fields should be added to the staff view when implementing ratings feature
   average_rating?: number | null
   review_count?: number | null
   specialties?: string[] | null
@@ -24,6 +25,9 @@ export type StaffProfile = EnrichedStaffProfile & {
  * Get staff member profile by ID
  */
 export async function getStaffProfile(staffId: string): Promise<StaffProfile | null> {
+  const logger = createOperationLogger('getStaffProfile', {})
+  logger.start()
+
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 

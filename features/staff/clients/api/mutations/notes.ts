@@ -4,11 +4,13 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
-import type { ActionResponse, ThreadMetadata } from './types'
+import type { ActionResponse, ThreadMetadata } from '../../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { STRING_LIMITS } from '@/lib/config/constants'
 
 const clientNoteSchema = z.object({
   customerId: z.string().uuid(),
-  note: z.string().min(1).max(1000),
+  note: z.string().min(1).max(STRING_LIMITS.DESCRIPTION),
 })
 
 /**
@@ -18,6 +20,9 @@ const clientNoteSchema = z.object({
 export async function addClientNote(
   data: z.infer<typeof clientNoteSchema>
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('addClientNote', {})
+  logger.start()
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
@@ -106,7 +111,7 @@ export async function addClientNote(
     revalidatePath('/staff/clients', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error adding client note:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to add note',

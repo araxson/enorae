@@ -1,6 +1,7 @@
 import 'server-only'
 
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface ServicePerformance {
   service_id: string
@@ -17,6 +18,9 @@ const warn = (fn: string, extra?: Record<string, unknown>) => {
 }
 
 export async function getServicePerformance(salonId: string, dateFrom?: string, dateTo?: string) {
+  const logger = createOperationLogger('getServicePerformance', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   await requireUserSalonId()
   warn('get_service_performance', { salonId, dateFrom, dateTo })

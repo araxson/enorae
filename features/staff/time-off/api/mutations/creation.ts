@@ -4,10 +4,14 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { requestSchema } from './schemas'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type TimeOffRequestInsert = Database['scheduling']['Tables']['time_off_requests']['Insert']
 
 export async function createTimeOffRequest(formData: FormData) {
+  const logger = createOperationLogger('createTimeOffRequest', {})
+  logger.start()
+
   try {
     const result = requestSchema.safeParse({
       staffId: formData.get('staffId'),

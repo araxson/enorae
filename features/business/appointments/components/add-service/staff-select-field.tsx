@@ -1,3 +1,5 @@
+'use client'
+
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import type { StaffOption } from '@/features/business/appointments/api/queries/service-options'

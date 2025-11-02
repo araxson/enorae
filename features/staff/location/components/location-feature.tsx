@@ -7,7 +7,8 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { MapPin } from 'lucide-react'
-import { LocationCard, AllLocationsList } from './index'
+import { LocationCard } from './location-card'
+import { AllLocationsList } from './all-locations-list'
 import type { StaffLocationDetail } from '../types'
 
 interface LocationFeatureProps {

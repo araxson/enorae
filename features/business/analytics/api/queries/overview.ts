@@ -5,6 +5,7 @@ import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { getUserSalonIds } from '@/lib/auth/permissions'
 
 import type { DailyMetric } from '@/features/business/analytics/api/analytics.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type AnalyticsOverview = {
   revenue: {
@@ -37,6 +38,9 @@ export async function getAnalyticsOverview(
   startDate: string,
   endDate: string
 ): Promise<AnalyticsOverview> {
+  const logger = createOperationLogger('getAnalyticsOverview', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   const supabase = await createClient()

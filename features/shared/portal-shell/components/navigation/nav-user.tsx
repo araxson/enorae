@@ -136,7 +136,7 @@ export function NavUser({
                 <span className="truncate text-xs text-muted-foreground">{user.email}</span>
               </div>
               <div className="ml-auto flex items-center">
-                <ChevronsUpDown className="size-4" />
+                <ChevronsUpDown className="size-4" aria-hidden="true" />
               </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -169,7 +169,7 @@ export function NavUser({
               {menuItems.map((item) => (
                 <DropdownMenuItem key={item.href} asChild>
                   <Link href={item.href}>
-                    <item.icon className="size-4" />
+                    <item.icon className="size-4" aria-hidden="true" />
                     {item.label}
                   </Link>
                 </DropdownMenuItem>
@@ -181,7 +181,7 @@ export function NavUser({
               disabled={isSigningOut}
               aria-busy={isSigningOut}
             >
-              <LogOut className="size-4" />
+              <LogOut className="size-4" aria-hidden="true" />
               {isSigningOut ? 'Signing out...' : 'Sign out'}
             </DropdownMenuItem>
           </DropdownMenuContent>

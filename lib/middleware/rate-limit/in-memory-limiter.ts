@@ -12,6 +12,8 @@
  * - Low-traffic applications
  */
 
+import { TIME_MS } from '@/lib/config/constants'
+
 interface RateLimitEntry {
   count: number
   resetAt: number
@@ -42,10 +44,9 @@ class InMemoryRateLimiter {
     }
 
     // Cleanup expired entries every minute
-    const CLEANUP_INTERVAL_MS = 60000 // 1 minute
     this.cleanupInterval = setInterval(() => {
       this.cleanup()
-    }, CLEANUP_INTERVAL_MS)
+    }, TIME_MS.ONE_MINUTE)
   }
 
   async limit(identifier: string): Promise<{ success: boolean; limit: number; remaining: number; reset: number }> {
@@ -68,11 +69,8 @@ class InMemoryRateLimiter {
       }
     }
 
-    // Increment counter
-    entry.count++
-
-    // Check if exceeded
-    if (entry.count > this.maxRequests) {
+    // Check if already exceeded BEFORE incrementing (prevents race condition)
+    if (entry.count >= this.maxRequests) {
       return {
         success: false,
         limit: this.maxRequests,
@@ -80,6 +78,9 @@ class InMemoryRateLimiter {
         reset: entry.resetAt,
       }
     }
+
+    // Increment counter atomically
+    entry.count++
 
     return {
       success: true,

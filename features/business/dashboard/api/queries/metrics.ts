@@ -4,6 +4,7 @@ import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from 
 import { createClient } from '@/lib/supabase/server'
 import { getUserSalonIds } from './salon'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentWithDetails = Database['public']['Views']['appointments_view']['Row']
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
@@ -15,6 +16,9 @@ type ServiceRow = Database['public']['Views']['services_view']['Row']
 const getSupabaseClient = () => createClient()
 
 export async function getDashboardMetrics(salonId: string) {
+  const logger = createOperationLogger('getDashboardMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
@@ -81,7 +85,7 @@ export async function getDashboardMetrics(salonId: string) {
       last30DaysRevenue,
     }
   } catch (error) {
-    console.error('[getDashboardMetrics] Unexpected error:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       totalAppointments: 0,
       confirmedAppointments: 0,
@@ -134,6 +138,9 @@ export async function getBusinessDashboardData() {
 }
 
 export async function getMultiLocationMetrics() {
+  const logger = createOperationLogger('getMultiLocationMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonIds = await getUserSalonIds()
   const supabase = await getSupabaseClient()
@@ -177,7 +184,7 @@ export async function getMultiLocationMetrics() {
       totalServices: servicesResult.data?.length || 0,
     }
   } catch (error) {
-    console.error('[getMultiLocationMetrics] Unexpected error:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       totalLocations: 0,
       totalAppointments: 0,

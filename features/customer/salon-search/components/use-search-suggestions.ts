@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { UI_TIMEOUTS, STRING_LIMITS, TIME_MS } from '@/lib/config/constants'
 
 type Suggestion = {
   name: string
@@ -10,7 +11,7 @@ export function useSearchSuggestions(searchTerm: string) {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (searchTerm.length < 2) {
+    if (searchTerm.length < STRING_LIMITS.MIN_SEARCH) {
       setSuggestions([])
       return
     }
@@ -23,9 +24,10 @@ export function useSearchSuggestions(searchTerm: string) {
 
     const fetchSuggestions = async () => {
       try {
+        const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
         const response = await fetch(
           `/api/salons/suggestions?q=${encodeURIComponent(searchTerm)}`,
-          { signal: controller.signal }
+          { signal: AbortSignal.any([controller.signal, timeoutSignal]) }
         )
 
         if (response.ok) {
@@ -47,7 +49,7 @@ export function useSearchSuggestions(searchTerm: string) {
       }
     }
 
-    const debounceTimer = setTimeout(fetchSuggestions, 300)
+    const debounceTimer = setTimeout(fetchSuggestions, UI_TIMEOUTS.SEARCH_DEBOUNCE)
 
     return () => {
       isMounted = false

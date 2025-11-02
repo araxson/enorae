@@ -1,13 +1,14 @@
 'use client'
 
+import Link from 'next/link'
+import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
+
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
-import { Star, MessageSquare, AlertTriangle } from 'lucide-react'
-import Link from 'next/link'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemTitle } from '@/components/ui/item'
@@ -52,7 +53,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
       <ItemHeader>
         <ItemContent>
           <div className="flex items-center gap-2">
-            <Star className="size-5" />
+            <Star className="size-5" aria-hidden="true" />
             <ItemTitle>Customer Reviews</ItemTitle>
           </div>
         </ItemContent>
@@ -77,7 +78,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                 <div className="flex flex-col gap-2">
                   <div className="flex items-baseline gap-2">
                     <p className={ratingValueClass}>{stats.averageRating.toFixed(1)}</p>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" role="img" aria-label={`${stats.averageRating.toFixed(1)} out of 5 stars`}>
                       {[...Array(5)].map((_, i) => {
                         const isFilled = i < Math.round(stats.averageRating)
                         return (
@@ -85,6 +86,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
                             key={i}
                             className={`size-4 ${isFilled ? 'text-primary' : 'text-muted-foreground'}`}
                             fill={isFilled ? 'currentColor' : 'none'}
+                            aria-hidden="true"
                           />
                         )
                       })}

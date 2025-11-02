@@ -3,6 +3,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
 import type { Database } from '@/lib/types/database.types'
 import type { ScheduleConflict, StaffSchedule } from '../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
 
@@ -48,6 +49,9 @@ export async function checkScheduleConflict(
   endTime: string,
   excludeScheduleId?: string
 ) {
+  const logger = createOperationLogger('checkScheduleConflict', {})
+  logger.start()
+
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 

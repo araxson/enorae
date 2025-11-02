@@ -7,6 +7,7 @@ import { sanitizeAdminText } from '@/features/admin/admin-common'
 import type { Tables } from '@/lib/types/database.types'
 import { verifyChainSchema } from './schemas'
 import { logChainAudit } from './audit'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type ChainActionResponse =
   | { success: true; message: string }
@@ -22,6 +23,9 @@ export async function verifyChain(data: {
   isVerified: boolean
   reason: string
 }): Promise<ChainActionResponse> {
+  const logger = createOperationLogger('verifyChain', {})
+  logger.start()
+
   try {
     const parsed = verifyChainSchema.safeParse(data)
     if (!parsed.success) {

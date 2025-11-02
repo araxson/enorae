@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 import type { Appointment } from '@/features/business/analytics/api/analytics.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getCustomerSegmentation(
   salonId: string,
@@ -18,6 +19,9 @@ export async function getCustomerSegmentation(
   frequencyBuckets: { one: number; twoToThree: number; fourToNine: number; tenPlus: number }
   aovBuckets: { under50: number; between50And100: number; between100And200: number; over200: number }
 }> {
+  const logger = createOperationLogger('getCustomerSegmentation', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
     throw new Error('Unauthorized: Not your salon')

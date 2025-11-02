@@ -1,15 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 import {
   updateProfileMetadata,
-  uploadAvatar,
-  uploadCoverImage,
+  uploadAvatarAction,
+  uploadCoverImageAction,
   type ProfileMetadataInput,
 } from '@/features/shared/profile-metadata/api/mutations'
 import { SOCIAL_PROFILE_FIELDS, type SocialProfileKey } from './constants'
 import type { Database } from '@/lib/types/database.types'
+import { TIME_MS } from '@/lib/config/constants'
 
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row']
 
@@ -32,11 +33,24 @@ export function useMetadataForm({ metadata }: UseMetadataFormParams) {
   const [tags, setTags] = useState<string[]>(metadata?.tags || [])
 
   const socialProfiles = (metadata?.social_profiles as SocialProfiles) || {}
+  const successTimerRef = useRef<NodeJS.Timeout | undefined>(undefined)
+
+  // ASYNC FIX: Cleanup timer on unmount to prevent state updates after unmount
+  useEffect(() => {
+    return () => {
+      if (successTimerRef.current) {
+        clearTimeout(successTimerRef.current)
+      }
+    }
+  }, [])
 
   const notifySuccess = () => {
     setSuccess(true)
-    const SUCCESS_MESSAGE_TIMEOUT = 3000 // 3 seconds
-    setTimeout(() => setSuccess(false), SUCCESS_MESSAGE_TIMEOUT)
+    // ASYNC FIX: Store timer ref and clear previous timer to prevent multiple timers
+    if (successTimerRef.current) {
+      clearTimeout(successTimerRef.current)
+    }
+    successTimerRef.current = setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
   }
 
   const handleAvatarUpload = async (file: File | null) => {

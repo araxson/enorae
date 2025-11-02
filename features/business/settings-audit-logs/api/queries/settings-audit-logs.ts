@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface AuditLog {
   id: string
@@ -104,6 +105,9 @@ export async function getAuditLogs(
   salonId: string,
   filters?: AuditLogFilters
 ): Promise<AuditLog[]> {
+  const logger = createOperationLogger('getAuditLogs', {})
+  logger.start()
+
   await ensureSalonAccess(salonId)
 
   const supabase = await createClient()

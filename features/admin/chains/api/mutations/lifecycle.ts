@@ -7,6 +7,7 @@ import { sanitizeAdminText } from '@/features/admin/admin-common'
 import type { Tables } from '@/lib/types/database.types'
 import { chainIdSchema, deleteChainSchema } from './schemas'
 import { logChainAudit } from './audit'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type ChainActionResponse =
   | { success: true; message: string }
@@ -21,6 +22,9 @@ export async function deleteChain(data: {
   chainId: string
   reason: string
 }): Promise<ChainActionResponse> {
+  const logger = createOperationLogger('deleteChain', {})
+  logger.start()
+
   try {
     const parsed = deleteChainSchema.safeParse(data)
     if (!parsed.success) {

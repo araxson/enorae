@@ -2,6 +2,7 @@ import 'server-only'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
@@ -14,6 +15,9 @@ type ServiceRow = Database['public']['Views']['services_view']['Row']
  * Get revenue trend data for charts (last 30 days)
  */
 export async function getRevenueTrendData(salonId: string, days: number = 30) {
+  const logger = createOperationLogger('getRevenueTrendData', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {

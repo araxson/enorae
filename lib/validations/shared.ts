@@ -1,12 +1,16 @@
 import { z } from 'zod'
+import { PHONE_REGEX, UUID_REGEX, HEX_COLOR_REGEX, SLUG_REGEX } from './patterns'
 
 /**
  * Shared validation schemas and utilities for consistent validation across the app
  * CLAUDE.md: Layer 6 - Validation standardization
  */
 
+// Re-export commonly used patterns for convenience
+export { UUID_REGEX, PHONE_REGEX, HEX_COLOR_REGEX, SLUG_REGEX } from './patterns'
+
 // UUID Validation
-export const uuidSchema = z.string().uuid('Invalid ID format')
+export const uuidSchema = z.string().regex(UUID_REGEX, 'Invalid ID format')
 
 // Common String Schemas
 export const nameSchema = z.string().trim().min(1, 'Name is required').max(200, 'Name must be 200 characters or less')
@@ -15,7 +19,7 @@ export const descriptionSchema = z.string().trim().max(2000, 'Description must b
 
 export const emailSchema = z.string().trim().email('Invalid email address').toLowerCase()
 
-export const phoneSchema = z.string().trim().regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format').optional()
+export const phoneSchema = z.string().trim().regex(PHONE_REGEX, 'Invalid phone number format').optional()
 
 export const urlSchema = z.string().trim().url('Invalid URL format')
 
@@ -50,10 +54,10 @@ export const slugSchema = z
   .trim()
   .min(1, 'Slug is required')
   .max(MAX_SLUG_LENGTH, `Slug must be ${MAX_SLUG_LENGTH} characters or less`)
-  .regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens')
+  .regex(SLUG_REGEX, 'Slug must contain only lowercase letters, numbers, and hyphens')
 
 // Color Schemas
-export const hexColorSchema = z.string().regex(/^#[0-9A-F]{6}$/i, 'Must be a valid hex color (e.g., #FF0000)')
+export const hexColorSchema = z.string().regex(HEX_COLOR_REGEX, 'Must be a valid hex color (e.g., #FF0000)')
 
 export const brandColorsSchema = z.object({
   primary: hexColorSchema.optional(),

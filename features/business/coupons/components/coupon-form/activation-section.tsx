@@ -1,3 +1,5 @@
+'use client'
+
 import { Switch } from '@/components/ui/switch'
 import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
 import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'

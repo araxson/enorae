@@ -1,5 +1,5 @@
 import { getAppointments, getUserSalon } from '../api/queries'
-import { AppointmentsTableClient } from './index'
+import { AppointmentsTableClient } from './appointments-table-client'
 import {
   Empty,
   EmptyContent,

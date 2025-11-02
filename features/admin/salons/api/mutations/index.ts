@@ -1,6 +1,7 @@
-
-export { updateSalon } from './update-salon.mutation'
-export { updateSalonSettings } from './update-salon-settings.mutation'
-export { suspendSalon } from './suspend-salon.mutation'
-export { reactivateSalon } from './reactivate-salon.mutation'
-export { transferSalonOwnership } from './transfer-salon-ownership.mutation'
+export { updateSalon } from './update-salon'
+export { updateSalonSettings } from './update-salon-settings'
+export { suspendSalon } from './suspend-salon'
+export { reactivateSalon } from './reactivate-salon'
+export { transferSalonOwnership } from './transfer-salon-ownership'
+export { approveSalon } from './approve-salon'
+export { rejectSalon } from './reject-salon'

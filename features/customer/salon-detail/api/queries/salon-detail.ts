@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 type Service = Database['public']['Views']['services_view']['Row']
@@ -34,6 +35,9 @@ type SalonSettings = Pick<
 >
 
 export async function getSalonBySlug(slug: string) {
+  const logger = createOperationLogger('getSalonBySlug', {})
+  logger.start()
+
   await requireAuth()
   const supabase = await createClient()
 

@@ -2,6 +2,7 @@ import 'server-only'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 type Staff = Database['public']['Views']['staff_profiles_view']['Row']
@@ -10,6 +11,9 @@ type Staff = Database['public']['Views']['staff_profiles_view']['Row']
  * Get operational metrics for the salon
  */
 export async function getOperationalMetrics(salonId: string) {
+  const logger = createOperationLogger('getOperationalMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {

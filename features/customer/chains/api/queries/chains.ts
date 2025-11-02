@@ -2,10 +2,11 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   chainIdentifierSchema,
   chainLocationSchema,
-} from '@/features/customer/chains/schema'
+} from '@/features/customer/chains/api/schema'
 
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
 type SalonOverview = Database['public']['Views']['admin_salons_overview_view']['Row']
@@ -82,6 +83,9 @@ async function fetchChainLocations(
  * Get all active salon chains
  */
 export async function getSalonChains(): Promise<SalonChain[]> {
+  const logger = createOperationLogger('getSalonChains', {})
+  logger.start()
+
   const session = await verifySession()
   if (!session) throw new Error('Unauthorized')
 

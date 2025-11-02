@@ -24,4 +24,4 @@ export type {
   ServiceRevenue,
   CommissionRate,
   PayoutSchedule,
-} from './types'
+} from '../../types'

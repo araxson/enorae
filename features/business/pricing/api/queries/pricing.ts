@@ -1,6 +1,8 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { requireUser } from '@/lib/auth/guards-simple'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type ServicePricingView = Database['public']['Views']['service_pricing_view']['Row']
 
@@ -10,9 +12,10 @@ export async function applyDynamicPricing(
   appointmentTime: string,
   salonId: string
 ): Promise<number> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const logger = createOperationLogger('applyDynamicPricing', {})
+  logger.start()
+
+  await requireUser()
 
   // NOTE: pricing_rules table doesn't exist in schema
   // Dynamic pricing functionality is currently not implemented
@@ -27,9 +30,8 @@ export async function calculateServicePrice(
   customerId: string,
   bookingTime: string
 ): Promise<number> {
+  await requireUser()
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
 
   // Get service pricing - price is stored in service_pricing table, not services table
   const { data: pricing, error: pricingError } = await supabase
@@ -54,9 +56,7 @@ export async function calculateServicePrice(
 }
 
 export async function getPricingRules(salonId: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireUser()
 
   // NOTE: pricing_rules table doesn't exist in schema
   // Return empty array until table is added

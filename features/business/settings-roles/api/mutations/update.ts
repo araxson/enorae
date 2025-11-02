@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 import {
   getAuthorizedContext,
   verifyRoleAccess,
@@ -18,6 +19,9 @@ export async function updateUserRole(
   id: string,
   formData: FormData
 ): Promise<ActionResult> {
+  const logger = createOperationLogger('updateUserRole', {})
+  logger.start()
+
   try {
     // Validate ID
     if (!UUID_REGEX.test(id)) {

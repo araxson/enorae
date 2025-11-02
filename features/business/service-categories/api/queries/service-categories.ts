@@ -2,12 +2,15 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 // FIXED: Use service_categories_view with pre-computed counts
 type ServiceCategory = Database['public']['Views']['service_categories_view']['Row']
 
 export type ServiceCategoryWithCounts = ServiceCategory & {
   service_count?: number
+  // Note: description, display_order, and icon_name do not exist in the database schema
+  // These were removed as they are not present in catalog.service_categories table
 }
 
 /**
@@ -15,6 +18,9 @@ export type ServiceCategoryWithCounts = ServiceCategory & {
  * IMPROVED: Uses service_categories_view with pre-computed active_services_count
  */
 export async function getServiceCategories(): Promise<ServiceCategoryWithCounts[]> {
+  const logger = createOperationLogger('getServiceCategories', {})
+  logger.start()
+
   // SECURITY: Require authentication
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 

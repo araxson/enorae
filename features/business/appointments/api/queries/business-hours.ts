@@ -1,11 +1,15 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function calculateBusinessHours(
   startTime: string,
   endTime: string,
   salonId: string
 ): Promise<number> {
+  const logger = createOperationLogger('calculateBusinessHours', {})
+  logger.start()
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')

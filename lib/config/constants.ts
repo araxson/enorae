@@ -250,3 +250,144 @@ export const TIME_CONVERSIONS = {
   /** Convert milliseconds to minutes */
   msToMinutes: (ms: number) => Math.floor(ms / 60000),
 } as const
+
+/**
+ * UI Interaction Timeouts (in milliseconds)
+ */
+export const UI_TIMEOUTS = {
+  /** Debounce delay for search inputs - 300ms */
+  SEARCH_DEBOUNCE: 300,
+  /** Debounce delay for general inputs - 500ms */
+  INPUT_DEBOUNCE: 500,
+  /** Navigation transition delay - 500ms */
+  NAVIGATION_DELAY: 500,
+  /** Loading state minimum duration - 300ms */
+  MIN_LOADING_DURATION: 300,
+} as const
+
+/**
+ * Database Query Limits
+ */
+export const QUERY_LIMITS = {
+  /** Default pagination limit for lists */
+  DEFAULT_LIST: 50,
+  /** Small lists (dropdowns, recent items) */
+  SMALL_LIST: 10,
+  /** Medium lists (search results) */
+  MEDIUM_LIST: 100,
+  /** Large lists (admin queries, exports) */
+  LARGE_LIST: 1000,
+  /** Maximum admin query limit */
+  ADMIN_MAX: 10000,
+  /** Analytics data points */
+  ANALYTICS_POINTS: 150,
+  /** Message history */
+  MESSAGE_HISTORY: 200,
+  /** Webhook logs */
+  WEBHOOK_LOGS: 100,
+  /** Audit logs */
+  AUDIT_LOGS: 100,
+  /** Staff list for dashboards */
+  STAFF_DASHBOARD: 500,
+  /** Top performers/items */
+  TOP_ITEMS: 5,
+  /** Suggested items */
+  SUGGESTIONS: 7,
+  /** Recent items for cards */
+  RECENT_ITEMS: 20,
+} as const
+
+/**
+ * String Length Limits for Validation
+ */
+export const STRING_LIMITS = {
+  /** Short text fields (names, titles) */
+  SHORT_TEXT: 120,
+  /** Reason fields */
+  REASON: 500,
+  /** Description fields */
+  DESCRIPTION: 1000,
+  /** Bio fields */
+  BIO: 1000,
+  /** Long text fields (notes, content) */
+  LONG_TEXT: 2000,
+  /** Very long text fields (detailed descriptions) */
+  VERY_LONG_TEXT: 5000,
+  /** Minimum search term length */
+  MIN_SEARCH: 2,
+} as const
+
+/**
+ * Date Range Presets (in days)
+ */
+export const DATE_RANGES = {
+  /** Last 7 days */
+  WEEK: 7,
+  /** Last 30 days */
+  MONTH: 30,
+  /** Last 90 days */
+  QUARTER: 90,
+  /** Last 365 days */
+  YEAR: 365,
+  /** Future week (7 days ahead) */
+  NEXT_WEEK: 7,
+  /** Future month (30 days ahead) */
+  NEXT_MONTH: 30,
+  /** Future quarter (90 days ahead) */
+  NEXT_QUARTER: 90,
+} as const
+
+/**
+ * Performance Thresholds
+ */
+export const PERFORMANCE_THRESHOLDS = {
+  /** Query execution time threshold (ms) - queries slower than this are considered slow */
+  SLOW_QUERY_MS: 500,
+  /** Price threshold for revenue scoring */
+  REVENUE_SCORE_DIVISOR: 500,
+} as const
+
+/**
+ * Review and Moderation Scoring Thresholds
+ */
+export const MODERATION_THRESHOLDS = {
+  /** Base reputation score for new reviewers with no history */
+  DEFAULT_REPUTATION_SCORE: 50,
+  /** Minimum reviews before full reputation calculation */
+  MIN_REVIEWS_FOR_REPUTATION: 3,
+  /** Reputation score penalty for low review count */
+  LOW_REVIEW_COUNT_PENALTY: 10,
+  /** Reputation score threshold for trusted status */
+  TRUSTED_REPUTATION_THRESHOLD: 70,
+  /** Reputation score threshold for risky status */
+  RISKY_REPUTATION_THRESHOLD: 40,
+  /** Initial base reputation score calculation */
+  REPUTATION_BASE_SCORE: 80,
+
+  /** Base quality score for reviews */
+  BASE_QUALITY_SCORE: 60,
+  /** Quality score bonus for detailed reviews (>200 chars) */
+  DETAILED_REVIEW_BONUS: 10,
+  /** Quality score penalty for short reviews (<40 chars) */
+  SHORT_REVIEW_PENALTY: 15,
+  /** Review length threshold for detailed bonus */
+  DETAILED_REVIEW_LENGTH: 200,
+  /** Review length threshold for short penalty */
+  SHORT_REVIEW_LENGTH: 40,
+  /** Quality score bonus for highly helpful reviews (>3 votes) */
+  HELPFUL_REVIEW_BONUS: 10,
+  /** Helpful vote threshold for bonus */
+  HELPFUL_VOTE_THRESHOLD: 3,
+  /** Quality score penalty for unhelpful reviews (0 votes) */
+  UNHELPFUL_REVIEW_PENALTY: 5,
+  /** Quality score bonus for responded reviews */
+  RESPONDED_REVIEW_BONUS: 5,
+  /** Quality score penalty for flagged reviews */
+  FLAGGED_REVIEW_PENALTY: 20,
+  /** Sentiment score multiplier for quality calculation */
+  SENTIMENT_SCORE_MULTIPLIER: 10,
+  /** High quality score threshold */
+  HIGH_QUALITY_THRESHOLD: 75,
+  /** Medium quality score threshold */
+  MEDIUM_QUALITY_THRESHOLD: 50,
+} as const

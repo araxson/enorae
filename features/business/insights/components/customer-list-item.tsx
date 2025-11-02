@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, memo } from 'react'
 import {
   Crown,
   Heart,
@@ -49,7 +49,8 @@ const getSegmentIcon = (segment: string) => {
   }
 }
 
-export function CustomerListItem({
+// PERFORMANCE FIX: Wrap in React.memo to prevent unnecessary re-renders in list
+export const CustomerListItem = memo(function CustomerListItem({
   customer,
   isLast,
   formatCurrency,
@@ -89,4 +90,4 @@ export function CustomerListItem({
       {!isLast && <ItemSeparator />}
     </Fragment>
   )
-}
+})

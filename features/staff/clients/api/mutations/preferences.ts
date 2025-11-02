@@ -3,8 +3,9 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import type { ActionResponse, ThreadMetadata } from './types'
+import type { ActionResponse, ThreadMetadata } from '../types'
 import type { Json } from '@/lib/types/database.types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 /**
  * Update client preferences (allergies, preferred services, etc.)
@@ -18,6 +19,9 @@ export async function updateClientPreferences(
     notes?: string
   }
 ): Promise<ActionResponse> {
+  const logger = createOperationLogger('updateClientPreferences', {})
+  logger.start()
+
   try {
     const session = await requireAuth()
     const supabase = await createClient()
@@ -90,7 +94,7 @@ export async function updateClientPreferences(
     revalidatePath(`/staff/clients/${customerId}`, 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error updating client preferences:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update preferences',

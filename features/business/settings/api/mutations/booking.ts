@@ -3,6 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const bookingRulesSchema = z.object({
   booking_lead_time_hours: z.number().int().min(0).max(720).optional(),
@@ -29,6 +30,9 @@ export async function updateBookingRules(
   salonId: string,
   formData: FormData,
 ) {
+  const logger = createOperationLogger('updateBookingRules', {})
+  logger.start()
+
   try {
     const supabase = await getSalonContext(salonId)
 
@@ -55,7 +59,7 @@ export async function updateBookingRules(
     revalidateSettings()
     return { success: true }
   } catch (error) {
-    console.error('Error updating booking rules:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     if (error instanceof z.ZodError) {
       return { error: `Validation failed: ${error.issues[0]?.message}` }
     }

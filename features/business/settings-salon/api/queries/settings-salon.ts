@@ -4,10 +4,14 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type SalonView = Database['public']['Views']['salons_view']['Row']
 
 export async function getSalonBusinessInfo() {
+  const logger = createOperationLogger('getSalonBusinessInfo', {})
+  logger.start()
+
   // SECURITY: Require business user role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 

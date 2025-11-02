@@ -5,6 +5,7 @@ import { getDatabaseHealth } from './database-health'
 import { getSchemaValidation } from './schema-validation'
 import { getOptimizationRecommendations } from './optimization'
 import { getNotificationQueue } from './notification-queue'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface DatabaseHealthFullSnapshot {
   queryPerformance: Awaited<ReturnType<typeof getQueryPerformance>>
@@ -26,6 +27,9 @@ export async function getDatabaseHealthSnapshot(
     includeNotificationQueue?: boolean
   } = {}
 ): Promise<DatabaseHealthFullSnapshot> {
+  const logger = createOperationLogger('getDatabaseHealthSnapshot', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const { queryLimit = 50, includeNotificationQueue = true } = options

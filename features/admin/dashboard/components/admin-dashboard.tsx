@@ -3,13 +3,13 @@ import {
   getRecentSalons,
   getUserStats,
   getAdminOverview,
-} from '@/features/admin/dashboard/api/queries'
+} from '../api/queries'
 import { PlatformMetrics } from './platform-metrics'
 import { RecentSalons } from './recent-salons'
 import { UserRoleStats } from './user-role-stats'
 import { AdminOverviewTabs } from './admin-overview-tabs'
-import { DashboardHero } from './dashboard-hero'
-import { DashboardError } from './dashboard-error'
+import { DashboardHeader } from './dashboard-header'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export async function AdminDashboardPage() {
   let platformMetrics
@@ -36,41 +36,51 @@ export async function AdminDashboardPage() {
 
     if (errorMessage.includes('role required') || errorMessage.includes('Unauthorized')) {
       return (
-        <DashboardError
-          variant="destructive"
-          title="Access denied"
-          description="Admin privileges are required to view this dashboard."
-        />
+        <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+          <Alert variant="destructive">
+            <AlertTitle>Access denied</AlertTitle>
+            <AlertDescription>
+              Admin privileges are required to view this dashboard.
+            </AlertDescription>
+          </Alert>
+        </div>
       )
     }
 
     return (
-      <DashboardError
-        variant="destructive"
-        title="Dashboard error"
-        description={
-          <>
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+        <Alert variant="destructive">
+          <AlertTitle>Dashboard error</AlertTitle>
+          <AlertDescription>
             {errorMessage}
             <br />
             Try refreshing the page or contact support if the problem continues.
-          </>
-        }
-      />
+          </AlertDescription>
+        </Alert>
+      </div>
     )
   }
 
   if (!platformMetrics || !recentSalons || !userStats || !adminOverview) {
     return (
-      <DashboardError
-        title="Partial data"
-        description="Some dashboard data is unavailable right now. Please try again shortly."
-      />
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
+        <Alert>
+          <AlertTitle>Partial data</AlertTitle>
+          <AlertDescription>
+            Some dashboard data is unavailable right now. Please try again shortly.
+          </AlertDescription>
+        </Alert>
+      </div>
     )
   }
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-12 pt-6 sm:px-6 lg:px-8">
-      <DashboardHero metrics={platformMetrics} />
+      <DashboardHeader
+        totalSalons={platformMetrics.totalSalons}
+        pendingVerifications={platformMetrics.pendingVerifications}
+      />
+
       <PlatformMetrics metrics={platformMetrics} />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">

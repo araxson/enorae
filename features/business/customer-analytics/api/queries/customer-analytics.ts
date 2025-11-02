@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { createOperationLogger } from '@/lib/observability/logger'
 import {
   getAnalyticsSalon,
   getCustomerInsights,
@@ -42,6 +43,9 @@ function getDefaultDateRange() {
 }
 
 export async function getCustomerAnalyticsData(): Promise<CustomerAnalyticsData> {
+  const logger = createOperationLogger('getCustomerAnalyticsData', {})
+  logger.start()
+
   const { id: salonId } = await getAnalyticsSalon()
   if (!salonId) {
     throw new Error('Salon not found for analytics')

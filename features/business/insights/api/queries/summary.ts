@@ -7,14 +7,18 @@ import {
   buildSegmentationCounts,
   createEmptyInsightsSummary,
 } from '@/lib/utils/insights'
-import type { InsightsSummary } from './types'
+import type { InsightsSummary } from '../../types'
 import { getCustomerInsights } from './customers'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
 
 const CUSTOMER_SAMPLE_LIMIT = 1000
 
 export async function getInsightsSummary(): Promise<InsightsSummary> {
+  const logger = createOperationLogger('getInsightsSummary', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()
 

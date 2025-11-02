@@ -11,6 +11,7 @@ import {
   calculateThreadInsights,
 } from './analytics'
 import { buildThreadMap, groupMessagesByThread } from './helpers'
+import { createOperationLogger } from '@/lib/observability/logger'
 import type {
   AdminMessageRow,
   Json,
@@ -20,10 +21,13 @@ import type {
 } from '../types'
 
 export async function getMessagesDashboard(): Promise<MessagesDashboardData> {
+  const logger = createOperationLogger('getMessagesDashboard', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
-  // Messages feature not implemented - message_threads and messages tables don't exist
-  // TODO: Implement messaging tables and views
+  // NOTE: Messages feature not implemented - message_threads and messages tables don't exist in database
+  // Database is source of truth - this feature requires proper table structure before implementation
   return {
     threads: [],
     stats: {

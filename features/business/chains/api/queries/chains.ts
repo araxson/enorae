@@ -3,6 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type SalonChain = Database['public']['Views']['salon_chains_view']['Row']
 type SalonChainRecord = Database['organization']['Tables']['salon_chains']['Row']
@@ -61,6 +62,9 @@ async function getChainSalonRows(
  * Uses salon_chains_view for pre-computed salon_count and total_staff_count
  */
 export async function getSalonChains(): Promise<SalonChain[]> {
+  const logger = createOperationLogger('getSalonChains', {})
+  logger.start()
+
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
 

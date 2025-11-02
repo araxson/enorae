@@ -1,3 +1,4 @@
+import 'server-only'
 // Core type definitions for staff dashboard
 // This file breaks the circular dependency between types.ts and dashboard-types.ts
 

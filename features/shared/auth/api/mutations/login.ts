@@ -2,10 +2,14 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { loginSchema } from '../../schema'
+import { loginSchema } from '../schema'
 import type { LoginResult } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function login(formData: FormData): Promise<LoginResult> {
+  const logger = createOperationLogger('login', {})
+  logger.start()
+
   const email = formData.get('email') as string
   console.log('Login attempt started', { email, timestamp: new Date().toISOString() })
 
@@ -40,7 +44,8 @@ export async function login(formData: FormData): Promise<LoginResult> {
         errorCode: error.code,
         error: error.message
       })
-      return { error: error.message }
+      // SECURITY: Use generic error message to prevent user enumeration attacks
+      return { error: 'Invalid email or password' }
     }
 
     console.log('Login successful', {

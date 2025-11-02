@@ -1,6 +1,7 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export interface StaffRevenueBreakdown {
   service_id: string
@@ -15,6 +16,9 @@ export async function getStaffRevenueBreakdown(
   startDate?: string,
   endDate?: string
 ): Promise<StaffRevenueBreakdown[]> {
+  const logger = createOperationLogger('getStaffRevenueBreakdown', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 
   const { staffProfile } = await verifyStaffOwnership(staffId)

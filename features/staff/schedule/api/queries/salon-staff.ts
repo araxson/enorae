@@ -2,11 +2,15 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
 import type { Staff } from '../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 /**
  * Get all staff members for a salon
  */
 export async function getSalonStaff(salonId: string) {
+  const logger = createOperationLogger('getSalonStaff', {})
+  logger.start()
+
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
 

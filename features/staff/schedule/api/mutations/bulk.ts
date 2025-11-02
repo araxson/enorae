@@ -3,8 +3,9 @@
 import { revalidatePath } from 'next/cache'
 
 import { getAuthorizedContext } from './context'
-import { UUID_REGEX, type DayOfWeek } from './constants'
-import type { ActionResult } from './types'
+import { UUID_REGEX, type DayOfWeek } from '../constants'
+import type { ActionResult } from '../types'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 export async function bulkCreateSchedules(
   salonId: string,
@@ -18,6 +19,9 @@ export async function bulkCreateSchedules(
     is_active: boolean
   }>,
 ): Promise<ActionResult> {
+  const logger = createOperationLogger('bulkCreateSchedules', {})
+  logger.start()
+
   try {
     if (!UUID_REGEX.test(salonId) || !UUID_REGEX.test(staffId)) {
       return { error: 'Invalid ID format' }
@@ -30,20 +34,20 @@ export async function bulkCreateSchedules(
 
     const { supabase, session } = context
 
-    for (const schedule of schedules) {
-      const { data: existing } = await supabase
-        .schema('scheduling')
-        .from('staff_schedules')
-        .select('id')
-        .eq('staff_id', staffId)
-        .eq('salon_id', salonId)
-        .eq('day_of_week', schedule.day_of_week)
-        .eq('is_active', true)
-        .single()
+    // PERFORMANCE FIX: Check all schedules in one query instead of N+1
+    const daysToCheck = schedules.map((s) => s.day_of_week)
+    const { data: existingSchedules } = await supabase
+      .schema('scheduling')
+      .from('staff_schedules')
+      .select('day_of_week')
+      .eq('staff_id', staffId)
+      .eq('salon_id', salonId)
+      .in('day_of_week', daysToCheck)
+      .eq('is_active', true)
 
-      if (existing) {
-        return { error: `Schedule already exists for ${schedule.day_of_week}` }
-      }
+    if (existingSchedules && existingSchedules.length > 0) {
+      const existingDays = existingSchedules.map((s) => s.day_of_week).join(', ')
+      return { error: `Schedule already exists for ${existingDays}` }
     }
 
     const { data: created, error } = await supabase
@@ -70,7 +74,7 @@ export async function bulkCreateSchedules(
     revalidatePath('/business/staff/schedules', 'page')
     return { success: true, data: created }
   } catch (error) {
-    console.error('Error creating bulk schedules:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: error instanceof Error ? error.message : 'Failed to create schedules' }
   }
 }

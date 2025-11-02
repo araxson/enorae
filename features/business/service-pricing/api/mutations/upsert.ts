@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 const pricingSchema = z.object({
   serviceId: z.string().regex(UUID_REGEX, 'Invalid service ID'),
@@ -73,6 +74,9 @@ const buildPricingRecord = (pricing: PricingInput, userId: string) => {
 }
 
 export async function upsertServicePricing(formData: FormData) {
+  const logger = createOperationLogger('upsertServicePricing', {})
+  logger.start()
+
   try {
     const payload = parsePricingForm(formData)
     const schema = payload.id ? updatePricingSchema : pricingSchema
@@ -128,7 +132,7 @@ export async function upsertServicePricing(formData: FormData) {
     revalidatePath(SERVICES_PATH, 'page')
     return { success: true }
   } catch (error) {
-    console.error('Error upserting service pricing:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return {
       error: error instanceof Error ? error.message : 'Failed to save pricing',
     }

@@ -1,13 +1,17 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
-import type { SalonSearchResult } from './types'
+import { BUSINESS_THRESHOLDS, QUERY_LIMITS } from '@/lib/config/constants'
+import type { SalonSearchResult } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function searchSalonsWithFuzzyMatch(
   searchTerm: string,
   limit = 10
 ): Promise<SalonSearchResult[]> {
+  const logger = createOperationLogger('searchSalonsWithFuzzyMatch', {})
+  logger.start()
+
   await requireAuth()
   const supabase = await createClient()
 
@@ -25,7 +29,7 @@ export async function searchSalonsWithFuzzyMatch(
   const { data: salons, error } = await supabase
     .from('salons_view')
     .select('id, name, slug, address, rating_average, is_verified, is_featured')
-    .limit(100)
+    .limit(QUERY_LIMITS.MEDIUM_LIST)
     .returns<SalonRow[]>()
 
   if (error) throw error

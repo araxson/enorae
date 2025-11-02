@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
+import { createOperationLogger, logMutation, logPayment } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -29,11 +30,8 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
   const transactionType = formData.get('transactionType') as string
   const paymentMethod = formData.get('paymentMethod') as string
 
-  console.log('Starting manual transaction creation', {
-    transactionType,
-    paymentMethod,
-    timestamp: new Date().toISOString()
-  })
+  const logger = createOperationLogger('createManualTransaction', {})
+  logger.start({ transactionType, paymentMethod })
 
   try {
     // SECURITY: Require business role
@@ -49,16 +47,9 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
       .single<{ salon_id: string | null }>()
 
     if (!staffProfile?.salon_id) {
-      console.error('createManualTransaction user salon not found', {
-        userId: session.user.id
-      })
+      logger.error('User salon not found', 'not_found', { userId: session.user.id })
       return { error: 'User salon not found' }
     }
-
-    console.log('createManualTransaction user salon verified', {
-      userId: session.user.id,
-      salonId: staffProfile.salon_id
-    })
 
     // Parse and validate input
     const input = {
@@ -71,15 +62,6 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
     }
 
     const validated = manualTransactionSchema.parse(input)
-
-    console.log('createManualTransaction validation passed', {
-      userId: session.user.id,
-      salonId: staffProfile.salon_id,
-      transactionType: validated.transaction_type,
-      paymentMethod: validated.payment_method,
-      appointmentId: validated.appointment_id,
-      customerId: validated.customer_id
-    })
 
     // Create transaction
     const { data, error } = await supabase
@@ -99,41 +81,39 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
       .single()
 
     if (error) {
-      console.error('createManualTransaction insert failed', {
+      logger.error(error, 'database', {
         userId: session.user.id,
         salonId: staffProfile.salon_id,
-        transactionType: validated.transaction_type,
-        paymentMethod: validated.payment_method,
-        error: error.message
       })
       return { error: error.message }
     }
 
-    console.log('createManualTransaction completed successfully', {
+    logPayment('create_manual_transaction', {
       userId: session.user.id,
-      transactionId: data.id,
       salonId: staffProfile.salon_id,
-      transactionType: validated.transaction_type,
-      paymentMethod: validated.payment_method,
       appointmentId: validated.appointment_id,
-      customerId: validated.customer_id
+      customerId: validated.customer_id,
+      operationName: 'createManualTransaction',
+      paymentMethod: validated.payment_method,
+      status: 'completed',
     })
 
     revalidatePath('/business/analytics/transactions', 'page')
 
+    logger.success({
+      userId: session.user.id,
+      salonId: staffProfile.salon_id,
+      appointmentId: validated.appointment_id,
+      customerId: validated.customer_id,
+    })
+
     return { success: true, data }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('createManualTransaction validation error', {
-        error: error.issues[0]?.message ?? 'Validation failed',
-        errors: error.issues
-      })
+      logger.error(error.issues[0]?.message ?? 'Validation failed', 'validation')
       return { error: error.issues[0]?.message ?? 'Validation failed' }
     }
-    console.error('createManualTransaction unexpected error', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to create manual transaction' }
   }
 }
@@ -142,12 +122,13 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
  * Delete a manual transaction
  */
 export async function deleteManualTransaction(id: string): Promise<ActionResult> {
-  console.log('Starting manual transaction deletion', { transactionId: id, timestamp: new Date().toISOString() })
+  const logger = createOperationLogger('deleteManualTransaction', {})
+  logger.start()
 
   try {
     // Validate ID
     if (!UUID_REGEX.test(id)) {
-      console.error('deleteManualTransaction invalid ID format', { transactionId: id })
+      logger.error('Invalid transaction ID', 'validation')
       return { error: 'Invalid transaction ID' }
     }
 
@@ -164,10 +145,7 @@ export async function deleteManualTransaction(id: string): Promise<ActionResult>
       .single<{ salon_id: string | null }>()
 
     if (!staffProfile?.salon_id) {
-      console.error('deleteManualTransaction user salon not found', {
-        userId: session.user.id,
-        transactionId: id
-      })
+      logger.error('User salon not found', 'not_found', { userId: session.user.id })
       return { error: 'User salon not found' }
     }
 
@@ -180,11 +158,10 @@ export async function deleteManualTransaction(id: string): Promise<ActionResult>
       .single<{ salon_id: string | null }>()
 
     if (!transaction || transaction.salon_id !== staffProfile.salon_id) {
-      console.error('deleteManualTransaction unauthorized access attempt', {
+      logger.error('Transaction not found or unauthorized', 'permission', {
         userId: session.user.id,
         userSalonId: staffProfile.salon_id,
-        transactionId: id,
-        transactionSalonId: transaction?.salon_id
+        transactionSalonId: transaction?.salon_id,
       })
       return { error: 'Transaction not found or unauthorized' }
     }
@@ -197,30 +174,26 @@ export async function deleteManualTransaction(id: string): Promise<ActionResult>
       .eq('id', id)
 
     if (error) {
-      console.error('deleteManualTransaction delete failed', {
+      logger.error(error, 'database', {
         userId: session.user.id,
-        transactionId: id,
         salonId: staffProfile.salon_id,
-        error: error.message
       })
       return { error: error.message }
     }
 
-    console.log('deleteManualTransaction completed successfully', {
+    logMutation('delete', 'manual_transaction', id, {
       userId: session.user.id,
-      transactionId: id,
-      salonId: staffProfile.salon_id
+      salonId: staffProfile.salon_id,
+      operationName: 'deleteManualTransaction',
     })
 
     revalidatePath('/business/analytics/transactions', 'page')
 
+    logger.success({ userId: session.user.id, salonId: staffProfile.salon_id })
+
     return { success: true }
   } catch (error) {
-    console.error('deleteManualTransaction unexpected error', {
-      transactionId: id,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to delete transaction' }
   }
 }

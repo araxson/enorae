@@ -22,6 +22,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { TIME_MS } from '@/lib/config/constants'
 
 interface PlatformAnalyticsDashboardProps {
   snapshot: PlatformAnalyticsSnapshot
@@ -43,8 +44,13 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
     setIsRefreshing(true)
     setError(null)
 
+    const controller = new AbortController()
     try {
-      const response = await fetch('/api/admin/analytics/overview', { cache: 'no-store' })
+      const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
+      const response = await fetch('/api/admin/analytics/overview', {
+        cache: 'no-store',
+        signal: AbortSignal.any([controller.signal, timeoutSignal])
+      })
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`)
       }
@@ -56,10 +62,15 @@ export function PlatformAnalyticsDashboard({ snapshot }: PlatformAnalyticsDashbo
 
       setData(payload.data as PlatformAnalyticsSnapshot)
     } catch (err: unknown) {
-      console.error('[PlatformAnalyticsDashboard] refresh failed', err)
-      setError('Unable to refresh analytics right now. Showing cached data.')
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError('Request timed out. Showing cached data.')
+      } else {
+        console.error('[PlatformAnalyticsDashboard] refresh failed', err)
+        setError('Unable to refresh analytics right now. Showing cached data.')
+      }
     } finally {
       setIsRefreshing(false)
+      controller.abort()
     }
   }, []) // No dependencies - refresh function is stable
 

@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 type AppointmentService = Database['scheduling']['Tables']['appointment_services']['Row']
 
@@ -21,6 +22,9 @@ type StaffAvailability = StaffSummary & { is_available: boolean }
 export async function getAppointmentServices(
   appointmentId: string
 ): Promise<AppointmentServiceDetails[]> {
+  const logger = createOperationLogger('getAppointmentServices', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const supabase = await createClient()
   const accessibleSalonIds = await getUserSalonIds()

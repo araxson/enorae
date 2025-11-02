@@ -7,15 +7,19 @@ import {
   MAX_APPOINTMENT_SAMPLE,
   MAX_REVIEW_SAMPLE,
 } from './dashboard-constants'
-import type { AppointmentRow, BackgroundRow, MetadataRow, ReviewRow } from './types'
+import type { AppointmentRow, BackgroundRow, MetadataRow, ReviewRow } from '../../types'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function fetchBackgroundChecks(
   _supabase: ReturnType<typeof createServiceRoleClient>,
   _userIds: string[],
 ) {
+  const logger = createOperationLogger('fetchBackgroundChecks', {})
+  logger.start()
+
   // NOTE: Background check functionality disabled - table 'private.user_sensitive_data' does not exist in database
   // Database is source of truth - this feature cannot be implemented until the table is created
-  // TODO: Create private.user_sensitive_data table if background checks are needed
+  // To enable: Create private.user_sensitive_data table with appropriate schema and RLS policies
   return new Map<string, BackgroundRow>()
 }
 

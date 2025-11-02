@@ -4,10 +4,11 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
+import { STRING_LIMITS } from '@/lib/config/constants'
 
 const updateStaffInfoSchema = z.object({
   title: z.string().max(100).optional().nullable(),
-  bio: z.string().max(1000).optional().nullable(),
+  bio: z.string().max(STRING_LIMITS.BIO).optional().nullable(),
   experienceYears: z.number().int().min(0).max(100).optional().nullable(),
 })
 

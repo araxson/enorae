@@ -1,7 +1,9 @@
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
+import { requireUser } from '@/lib/auth/guards-simple'
 import { requireUserSalonId } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export type CouponServiceOption = {
   id: string
@@ -11,10 +13,11 @@ export type CouponServiceOption = {
 export async function getCouponServiceOptions(
   salonId?: string,
 ): Promise<CouponServiceOption[]> {
-  const supabase = await createClient()
+  const logger = createOperationLogger('getCouponServiceOptions', {})
+  logger.start()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  await requireUser()
+  const supabase = await createClient()
 
   const userSalonId = salonId || await requireUserSalonId()
 

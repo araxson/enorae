@@ -1,5 +1,7 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { DollarSign, TrendingDown, TrendingUp, Users } from 'lucide-react'
+
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+
 import type { InsightsSummary } from './types'
 import { formatCurrency, formatPercentage } from './utils'
 

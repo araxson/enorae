@@ -1,4 +1,6 @@
+import 'server-only'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 interface CouponValidationResult {
   is_valid: boolean
@@ -59,6 +61,9 @@ export async function validateCoupon(
   customerId: string,
   amount: number
 ): Promise<CouponValidationResult> {
+  const logger = createOperationLogger('validateCoupon', {})
+  logger.start()
+
   return {
     is_valid: false,
     discount_amount: 0,

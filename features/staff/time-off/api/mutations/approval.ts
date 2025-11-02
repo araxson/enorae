@@ -4,10 +4,14 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { UUID_REGEX } from './schemas'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
 
 type TimeOffRequestUpdate = Database['scheduling']['Tables']['time_off_requests']['Update']
 
 export async function approveTimeOffRequest(formData: FormData) {
+  const logger = createOperationLogger('approveTimeOffRequest', {})
+  logger.start()
+
   try {
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) return { error: 'Invalid ID' }

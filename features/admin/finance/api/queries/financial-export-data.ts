@@ -3,11 +3,15 @@ import 'server-only'
 import type { FinancialExportData } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
 import { getPlatformRevenueAnalytics } from './platform-revenue-analytics'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 export async function getFinancialExportData(
   startDate: string,
   endDate: string,
 ): Promise<FinancialExportData> {
+  const logger = createOperationLogger('getFinancialExportData', {})
+  logger.start()
+
   const supabase = await requireAdminClient()
 
   const summary = await getPlatformRevenueAnalytics(startDate, endDate)
@@ -40,8 +44,9 @@ export async function getFinancialExportData(
     [] as { date: string; revenue: number; appointments: number }[],
   )
 
-  // Manual transactions feature not implemented - return empty array
-  // TODO: Implement manual_transactions table and query
+  // Manual transactions are not included in this export
+  // The manual_transactions table and query would be added here
+  // when the manual transaction recording feature is implemented
   const transactions: never[] = []
 
   return {

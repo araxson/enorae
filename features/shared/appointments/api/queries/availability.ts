@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -42,6 +43,9 @@ type ConflictResult = {
 }
 
 export async function checkStaffAvailability(params: AvailabilityArgs): Promise<AvailabilityResult> {
+  const logger = createOperationLogger('checkStaffAvailability', {})
+  logger.start()
+
   const parsed = availabilityInputSchema.safeParse({
     staffId: params.staffId,
     startTime: params.startTime,

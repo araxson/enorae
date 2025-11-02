@@ -1,7 +1,7 @@
 'use server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { blockedTimeSchema, type BlockedTimeFormData } from '@/features/staff/blocked-times/schema'
+import { blockedTimeSchema, type BlockedTimeFormData } from './schema'
 
 export async function createBlockedTime(data: BlockedTimeFormData) {
   const supabase = await createClient()

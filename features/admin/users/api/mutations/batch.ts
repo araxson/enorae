@@ -4,12 +4,16 @@ import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Json } from '@/lib/types/database.types'
-import { UUID_REGEX } from './constants'
+import { UUID_REGEX } from '../../constants'
+import { createOperationLogger, logError } from '@/lib/observability/logger'
 
 /**
  * Batch update user status - for bulk operations
  */
 export async function batchUpdateUserStatus(formData: FormData) {
+  const logger = createOperationLogger('batchUpdateUserStatus', {})
+  logger.start()
+
   try {
     const userIdsString = formData.get('userIds')?.toString()
     const action = formData.get('action')?.toString()
@@ -32,7 +36,7 @@ export async function batchUpdateUserStatus(formData: FormData) {
 
     if (action === 'suspend') {
       // Suspend multiple users
-      await supabase
+      const { error: profileError } = await supabase
         .schema('identity')
         .from('profiles')
         .update({
@@ -41,7 +45,9 @@ export async function batchUpdateUserStatus(formData: FormData) {
         })
         .in('id', userIds)
 
-      await supabase
+      if (profileError) throw profileError
+
+      const { error: rolesError } = await supabase
         .schema('identity')
         .from('user_roles')
         .update({
@@ -50,7 +56,9 @@ export async function batchUpdateUserStatus(formData: FormData) {
         })
         .in('user_id', userIds)
 
-      await supabase
+      if (rolesError) throw rolesError
+
+      const { error: sessionsError } = await supabase
         .schema('identity')
         .from('sessions')
         .update({
@@ -59,9 +67,11 @@ export async function batchUpdateUserStatus(formData: FormData) {
           deleted_by_id: session.user.id,
         })
         .in('user_id', userIds)
+
+      if (sessionsError) throw sessionsError
     } else if (action === 'reactivate') {
       // Reactivate multiple users
-      await supabase
+      const { error: profileError } = await supabase
         .schema('identity')
         .from('profiles')
         .update({
@@ -70,7 +80,9 @@ export async function batchUpdateUserStatus(formData: FormData) {
         })
         .in('id', userIds)
 
-      await supabase
+      if (profileError) throw profileError
+
+      const { error: rolesError } = await supabase
         .schema('identity')
         .from('user_roles')
         .update({
@@ -78,6 +90,8 @@ export async function batchUpdateUserStatus(formData: FormData) {
           updated_by_id: session.user.id,
         })
         .in('user_id', userIds)
+
+      if (rolesError) throw rolesError
     }
 
     // Batch audit log
@@ -89,7 +103,7 @@ export async function batchUpdateUserStatus(formData: FormData) {
       updated_by: session.user.id,
     }
 
-    await supabase.schema('audit').from('audit_logs').insert({
+    const { error: auditError } = await supabase.schema('audit').from('audit_logs').insert({
       event_type: 'batch_user_status_update',
       event_category: 'identity',
       severity: 'warning',
@@ -101,6 +115,10 @@ export async function batchUpdateUserStatus(formData: FormData) {
       metadata,
       is_success: true,
     })
+
+    if (auditError) {
+      logger.error(auditError, 'system')
+    }
 
     revalidatePath('/admin/users', 'page')
     return { success: true, count: userIds.length }

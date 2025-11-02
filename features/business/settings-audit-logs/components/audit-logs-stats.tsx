@@ -1,5 +1,6 @@
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Activity, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react'
+
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   Item,
   ItemContent,

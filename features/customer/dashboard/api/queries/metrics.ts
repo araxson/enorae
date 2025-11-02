@@ -1,8 +1,18 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
+import { createOperationLogger } from '@/lib/observability/logger'
 
-export async function getCustomerMetrics() {
+export interface CustomerMetrics {
+  upcomingAppointments: number
+  completedAppointments: number
+  favorites: number
+}
+
+export async function getCustomerMetrics(): Promise<CustomerMetrics> {
+  const logger = createOperationLogger('getCustomerMetrics', {})
+  logger.start()
+
   const session = await requireAuth()
   const supabase = await createClient()
   const now = new Date().toISOString()

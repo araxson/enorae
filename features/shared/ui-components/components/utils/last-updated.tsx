@@ -2,6 +2,7 @@
 
 import { Clock } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { TIME_MS } from '@/lib/config/constants'
 
 /**
  * Last Updated Timestamp Component
@@ -22,8 +23,7 @@ export function LastUpdated() {
     const updateRelativeTime = () => {
       const now = new Date()
       const diff = now.getTime() - lastUpdated.getTime()
-      const MS_PER_MINUTE = 60000 // 1 minute in milliseconds
-      const minutes = Math.floor(diff / MS_PER_MINUTE)
+      const minutes = Math.floor(diff / TIME_MS.ONE_MINUTE)
 
       if (minutes === 0) {
         setRelativeTime('Just now')
@@ -41,8 +41,7 @@ export function LastUpdated() {
     updateRelativeTime()
 
     // Update every minute
-    const UPDATE_INTERVAL_MS = 60000 // Update every 1 minute
-    const interval = setInterval(updateRelativeTime, UPDATE_INTERVAL_MS)
+    const interval = setInterval(updateRelativeTime, TIME_MS.ONE_MINUTE)
 
     return () => clearInterval(interval)
   }, [lastUpdated])

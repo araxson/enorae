@@ -2,6 +2,7 @@
 import 'server-only'
 
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
+import { createOperationLogger } from '@/lib/observability/logger'
 
 const warnUnavailable = (fn: string, details?: Record<string, unknown>) => {
   console.warn(`[analytics] RPC "${fn}" is unavailable; returning fallback data.`, details ?? {})
@@ -23,6 +24,9 @@ export async function calculateCustomerMetrics(
   customerId: string,
   salonId: string
 ): Promise<CustomerMetrics | null> {
+  const logger = createOperationLogger('calculateCustomerMetrics', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   await requireUserSalonId()
   warnUnavailable('calculate_customer_metrics', { customerId, salonId })

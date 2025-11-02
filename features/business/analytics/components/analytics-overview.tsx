@@ -1,3 +1,4 @@
+import { memo, useMemo, useCallback } from 'react'
 import { Badge } from '@/components/ui/badge'
 import type { AnalyticsOverview } from '@/features/business/analytics/api/queries'
 import {
@@ -15,21 +16,21 @@ type AnalyticsOverviewProps = {
   data: AnalyticsOverview
 }
 
-export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
-  const formatCurrency = (amount: number) => {
+export const AnalyticsOverviewCards = memo(function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
+  const formatCurrency = useCallback((amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount)
-  }
+  }, [])
 
-  const formatPercent = (value: number) => {
+  const formatPercent = useCallback((value: number) => {
     return `${value.toFixed(1)}%`
-  }
+  }, [])
 
-  const cards = [
+  const cards = useMemo(() => [
     {
       title: 'Total Revenue',
       value: formatCurrency(data.revenue.total),
@@ -61,7 +62,7 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       iconColor: 'text-accent',
       subtitle: 'Team members',
     },
-  ]
+  ], [data, formatCurrency, formatPercent])
 
   const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
 
@@ -96,4 +97,4 @@ export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
       ))}
     </ItemGroup>
   )
-}
+})
