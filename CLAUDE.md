@@ -73,6 +73,7 @@ app/
 ├── (staff)/         # Staff portal
 ├── (business)/      # Business portal
 └── (admin)/         # Admin portal
+└── (auth)/         # auth pages
 ```
 
 ---
@@ -98,6 +99,18 @@ features/{portal}/{feature}/
 
 **File Limits:** Components < 200, Queries/Mutations < 300, Index < 50
 
+features/auth/[page]/
+├── api/
+│   ├── mutations/
+│   │   ├── index.ts                    # Re-exports (< 50 lines)
+│   │   └── [action].ts                 # Action mutations (< 300 lines)
+│   └── schema.ts                       # Page-specific schemas (< 250 lines)
+├── components/
+│   ├── [page]-form.tsx                 # Main form (< 200 lines)
+│   ├── [page]-[field].tsx              # Form field components (< 200 lines)
+│   └── [page]-feature.tsx              # Feature wrapper (< 200 lines)
+└── index.tsx                           # Feature export (< 50 lines)
+```
 ---
 
 ## Database Pattern

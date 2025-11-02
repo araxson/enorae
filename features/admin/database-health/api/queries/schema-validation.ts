@@ -2,7 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type TableWithoutRLS = Database['public']['Views']['public_tables_without_rls_view']['Row']
 type TableWithoutPK = Database['public']['Views']['tables_without_primary_keys_view']['Row']

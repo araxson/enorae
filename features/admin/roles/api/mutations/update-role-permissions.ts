@@ -7,7 +7,7 @@ import { requireAdminContext } from './context'
 import { parsePermissions } from './assignment-helpers'
 import { UUID_REGEX } from './validation'
 import type { RoleActionResponse } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function updateRolePermissions(formData: FormData): Promise<RoleActionResponse> {
   const logger = createOperationLogger('updateRolePermissions', {})

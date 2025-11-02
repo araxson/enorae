@@ -13,7 +13,7 @@ import {
 
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, CheckCircle, AlertTriangle, TrendingUp } from 'lucide-react'
-import type { DatabaseHealthFullSnapshot } from '@/features/admin/database-health/api/queries/snapshot'
+import type { DatabaseHealthFullSnapshot } from '@/features/admin/database-health/api/queries'
 
 interface HealthOverviewProps {
   snapshot: DatabaseHealthFullSnapshot

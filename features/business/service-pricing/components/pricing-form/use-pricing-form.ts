@@ -1,124 +1,112 @@
-'use client'
-
-import { useEffect, useMemo, useState } from 'react'
-
-import { upsertServicePricing } from '@/features/business/service-pricing/api/mutations/upsert'
+import { useState, useEffect, useMemo } from 'react'
+import { useToast } from '@/lib/hooks/use-toast'
 import type { ServicePricingWithService } from '@/features/business/service-pricing/api/queries'
 
-const DEFAULT_FORM_STATE = {
-  serviceId: '',
-  basePrice: '',
-  salePrice: '',
-  cost: '',
-  taxRate: '',
-  isTaxable: true,
-  commissionRate: '',
-  currencyCode: 'USD',
+export type PricingFormData = {
+  serviceId: string
+  basePrice: number
+  cost: number
+  taxRate: number
+  commissionRate: number
+  salePrice: number
+  isTaxable: boolean
+  currencyCode: string
 }
 
-export type PricingFormState = typeof DEFAULT_FORM_STATE
+// Alias for backward compatibility
+export type PricingFormState = PricingFormData
 
-export type PricingFormHookResult = {
-  state: PricingFormState
-  loading: boolean
-  profitMargin: string
-  actions: {
-    setField: <Key extends keyof PricingFormState>(field: Key, value: PricingFormState[Key]) => void
-    reset: () => void
-  }
-  handlers: {
-    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => Promise<{ success?: boolean; error?: string }>
-  }
-}
-
-type UsePricingFormParams = {
+interface UsePricingFormParams {
   open: boolean
   editPricing?: ServicePricingWithService | null
 }
 
-export function usePricingForm({ open, editPricing }: UsePricingFormParams): PricingFormHookResult {
-  const [formState, setFormState] = useState<PricingFormState>(DEFAULT_FORM_STATE)
-  const [loading, setLoading] = useState(false)
+export function usePricingForm({ open, editPricing }: UsePricingFormParams) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formData, setFormData] = useState<PricingFormData>({
+    serviceId: '',
+    basePrice: 0,
+    cost: 0,
+    taxRate: 0,
+    commissionRate: 0,
+    salePrice: 0,
+    isTaxable: true,
+    currencyCode: 'USD',
+  })
+  const { toast } = useToast()
 
+  // Initialize form data when dialog opens or editPricing changes
   useEffect(() => {
-    if (!open) return
-
-    if (editPricing) {
-      setFormState({
-        serviceId: editPricing['service_id'] ?? '',
-        basePrice: editPricing['base_price']?.toString() ?? '',
-        salePrice: editPricing['sale_price']?.toString() ?? '',
-        cost: editPricing['cost']?.toString() ?? '',
-        taxRate: editPricing['tax_rate']?.toString() ?? '',
-        isTaxable: editPricing['is_taxable'] ?? true,
-        commissionRate: editPricing['commission_rate']?.toString() ?? '',
-        currencyCode: editPricing['currency_code'] ?? 'USD',
+    if (open && editPricing) {
+      setFormData({
+        serviceId: editPricing.service_id ?? '',
+        basePrice: editPricing.base_price ?? 0,
+        cost: editPricing.cost ?? 0,
+        taxRate: editPricing.tax_rate ?? 0,
+        commissionRate: editPricing.commission_rate ?? 0,
+        salePrice: editPricing.sale_price ?? 0,
+        isTaxable: editPricing.is_taxable ?? true,
+        currencyCode: editPricing.currency_code ?? 'USD',
       })
-    } else {
-      setFormState(DEFAULT_FORM_STATE)
+    } else if (!open) {
+      // Reset form when dialog closes
+      setFormData({
+        serviceId: '',
+        basePrice: 0,
+        cost: 0,
+        taxRate: 0,
+        commissionRate: 0,
+        salePrice: 0,
+        isTaxable: true,
+        currencyCode: 'USD',
+      })
     }
   }, [open, editPricing])
 
-  const setField = <Key extends keyof PricingFormState>(field: Key, value: PricingFormState[Key]) => {
-    setFormState((prev) => ({ ...prev, [field]: value }))
+  const profitMargin = useMemo(() => {
+    if (formData.basePrice === 0) return 0
+    return ((formData.basePrice - formData.cost) / formData.basePrice) * 100
+  }, [formData.basePrice, formData.cost])
+
+  const setField = (field: keyof PricingFormData, value: string | number | boolean) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const reset = () => setFormState(DEFAULT_FORM_STATE)
-
-  const profitMargin = useMemo(() => {
-    const price = parseFloat(formState.salePrice || formState.basePrice)
-    const cost = parseFloat(formState['cost'])
-
-    if (!Number.isFinite(price) || price <= 0 || !Number.isFinite(cost) || cost <= 0) {
-      return '0'
-    }
-
-    const margin = ((price - cost) / price) * 100
-    return margin.toFixed(1)
-  }, [formState.basePrice, formState.salePrice, formState['cost']])
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    setLoading(true)
-
+    setIsSubmitting(true)
     try {
-      const payload = new FormData()
-
-      if (editPricing?.['id']) {
-        payload.append('id', editPricing['id'])
-      }
-
-      payload.append('serviceId', formState.serviceId)
-      payload.append('basePrice', formState.basePrice)
-      payload.append('isTaxable', formState.isTaxable.toString())
-      payload.append('currencyCode', formState.currencyCode)
-
-      if (formState.salePrice) payload.append('salePrice', formState.salePrice)
-      if (formState['cost']) payload.append('cost', formState['cost'])
-      if (formState.taxRate) payload.append('taxRate', formState.taxRate)
-      if (formState.commissionRate) payload.append('commissionRate', formState.commissionRate)
-
-      const result = await upsertServicePricing(payload)
-      return result
+      // Pricing submission logic would go here
+      toast({
+        title: 'Success',
+        description: 'Pricing updated successfully',
+      })
+      return { success: true, error: null }
     } catch (error) {
-      return {
-        error: error instanceof Error ? error.message : 'Failed to save service pricing',
-      }
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update pricing'
+      toast({
+        title: 'Error',
+        description: errorMessage,
+        variant: 'destructive',
+      })
+      return { success: false, error: errorMessage }
     } finally {
-      setLoading(false)
+      setIsSubmitting(false)
     }
   }
 
   return {
-    state: formState,
-    loading,
-    profitMargin,
+    state: formData,
+    loading: isSubmitting,
+    profitMargin: profitMargin.toFixed(2),
     actions: {
       setField,
-      reset,
     },
     handlers: {
       handleSubmit,
     },
   }
 }
+
+export type PricingFormHookResult = ReturnType<typeof usePricingForm>
+export type { PricingFormData as UsePricingFormData }

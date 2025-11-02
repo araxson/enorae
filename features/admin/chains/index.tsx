@@ -1,5 +1,5 @@
 import { getAllSalonChains, getChainAnalytics, getChainCompliance } from './api/queries'
-import { AdminChainsContent } from './components/admin-chains-content'
+import { AdminChainsContent } from './components'
 
 export async function AdminChains() {
   const [chains, analytics, compliance] = await Promise.all([
@@ -12,3 +12,4 @@ export async function AdminChains() {
 }
 
 export { AdminChainsSkeleton } from './components/admin-chains-skeleton'
+export * from './types'

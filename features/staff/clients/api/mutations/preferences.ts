@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { ActionResponse, ThreadMetadata } from '../types'
 import type { Json } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 /**
  * Update client preferences (allergies, preferred services, etc.)

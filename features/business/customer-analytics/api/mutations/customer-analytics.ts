@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 
 import { verifySession } from '@/lib/auth/session'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function revalidateCustomerAnalytics() {
   const logger = createOperationLogger('revalidateCustomerAnalytics', {})

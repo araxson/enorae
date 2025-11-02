@@ -19,10 +19,14 @@ import { Spinner } from '@/components/ui/spinner'
 
 type SalonOption = Pick<Database['public']['Views']['salons_view']['Row'], 'id' | 'name'>
 
+type ActionResponse<T = void> =
+  | { success: true; data: T }
+  | { success: false; error: string }
+
 type ClientProps = {
   salons: SalonOption[]
   activeSalonId: string
-  setActiveSalon: (formData: FormData) => Promise<void>
+  setActiveSalon: (formData: FormData) => Promise<ActionResponse>
 }
 
 export function BusinessSalonSwitcherClient({ salons, activeSalonId, setActiveSalon }: ClientProps) {

@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import { revokeSessionSchema } from '../schema'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }

@@ -3,7 +3,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import {
   computeCompliance,
   calculateHealthScore,

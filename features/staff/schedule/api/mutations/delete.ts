@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getAuthorizedContext } from './context'
 import { UUID_REGEX } from '../constants'
 import type { ActionResult } from '../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function deleteStaffSchedule(scheduleId: string): Promise<ActionResult> {
   const logger = createOperationLogger('deleteStaffSchedule', {})
@@ -15,7 +15,7 @@ export async function deleteStaffSchedule(scheduleId: string): Promise<ActionRes
 
   try {
     if (!UUID_REGEX.test(scheduleId)) {
-      return { error: 'Invalid schedule ID format' }
+      return { success: false, error: 'Invalid schedule ID format' }
     }
 
     const supabase = await createClient()
@@ -28,15 +28,15 @@ export async function deleteStaffSchedule(scheduleId: string): Promise<ActionRes
       .single<{ salon_id: string | null }>()
 
     if (!schedule?.salon_id) {
-      return { error: 'Schedule not found' }
+      return { success: false, error: 'Schedule not found' }
     }
 
-    const context = await getAuthorizedContext(schedule.salon_id)
-    if ('error' in context) {
-      return context
+    const contextResult = await getAuthorizedContext(schedule.salon_id)
+    if (!contextResult.success) {
+      return contextResult
     }
 
-    const { supabase: client } = context
+    const { supabase: client } = contextResult.data
 
     const { error } = await client
       .schema('scheduling')
@@ -50,6 +50,6 @@ export async function deleteStaffSchedule(scheduleId: string): Promise<ActionRes
     return { success: true }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: error instanceof Error ? error.message : 'Failed to delete schedule' }
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to delete schedule' }
   }
 }

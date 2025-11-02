@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type ManualTransaction = Database['public']['Views']['manual_transactions_view']['Row']
 
@@ -46,8 +46,8 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
 
   if (error) throw error
 
-  // Fetch related profile details separately
-  const transactions = (data || []) as ManualTransactionWithDetails[]
+  // Start with database type, will be enriched below to ManualTransactionWithDetails
+  const transactions = (data || []) as ManualTransaction[]
 
   // Collect all unique IDs for batch fetching
   const staffIds = [...new Set(transactions.map((t) => t.staff_id).filter((id): id is string => typeof id === 'string'))]
@@ -89,28 +89,79 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
     }
   }
 
-  // Fetch customer details
+  // Fetch customer details with comprehensive error handling
   let customerMap = new Map<string, { id: string; full_name: string | null; email: string | null }>()
   if (customerIds.length > 0) {
-    const { data: profiles, error: profilesError } = await supabase
-      .from('profiles_view')
-      .select('id, email, full_name')
-      .in('id', customerIds)
+    try {
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles_view')
+        .select('id, email, full_name')
+        .in('id', customerIds)
 
-    if (profilesError) {
-      console.error('Error fetching profiles:', profilesError)
-    }
+      if (profilesError) {
+        console.error('[getManualTransactions] Error fetching customer profiles', {
+          customerIds,
+          error: profilesError,
+          errorCode: profilesError.code,
+          errorMessage: profilesError.message,
+          timestamp: new Date().toISOString(),
+        })
+        // Continue execution with empty map - transactions will have null customer data
+      } else if (!profiles) {
+        console.warn('[getManualTransactions] Profiles query returned null', {
+          customerIds,
+          expectedCount: customerIds.length,
+          timestamp: new Date().toISOString(),
+        })
+        // Continue with empty map
+      } else if (!Array.isArray(profiles)) {
+        console.error('[getManualTransactions] Profiles data is not an array', {
+          customerIds,
+          profilesType: typeof profiles,
+          timestamp: new Date().toISOString(),
+        })
+        // Continue with empty map
+      } else {
+        // Validate and populate customer map
+        profiles.forEach((c) => {
+          if (!c) {
+            console.warn('[getManualTransactions] Null customer profile in array')
+            return
+          }
 
-    if (profiles && Array.isArray(profiles)) {
-      profiles.forEach((c) => {
-        if (c.id) {
+          if (!c.id) {
+            console.warn('[getManualTransactions] Customer profile missing id', {
+              profile: c,
+              timestamp: new Date().toISOString(),
+            })
+            return
+          }
+
           customerMap.set(c.id, {
             id: c.id,
-            full_name: c.full_name || null,
-            email: c.email || null
+            full_name: c.full_name ?? null,
+            email: c.email ?? null,
+          })
+        })
+
+        // Log if we got fewer profiles than expected
+        if (customerMap.size !== customerIds.length) {
+          console.warn('[getManualTransactions] Customer profile count mismatch', {
+            requestedIds: customerIds.length,
+            retrievedProfiles: customerMap.size,
+            missingIds: customerIds.filter((id) => !customerMap.has(id)),
+            timestamp: new Date().toISOString(),
           })
         }
+      }
+    } catch (error) {
+      console.error('[getManualTransactions] Fatal error fetching customer profiles', {
+        customerIds,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        timestamp: new Date().toISOString(),
       })
+      // Continue with empty map - transactions will have null customer data
     }
   }
 
@@ -210,7 +261,7 @@ export async function getManualTransactionById(
   }
 
   // Fetch created_by
-  let created_by = null
+  let created_by: { id: string; full_name: string | null } | null = null
   if (transaction.created_by_id) {
     const { data: metadataData } = await supabase
       .schema('identity')
@@ -218,8 +269,8 @@ export async function getManualTransactionById(
       .select('profile_id, full_name')
       .eq('profile_id', transaction.created_by_id)
       .single()
-    if (metadataData) {
-      created_by = { id: metadataData.profile_id, full_name: metadataData.full_name }
+    if (metadataData && metadataData.profile_id) {
+      created_by = { id: metadataData.profile_id, full_name: metadataData.full_name || null }
     }
   }
 

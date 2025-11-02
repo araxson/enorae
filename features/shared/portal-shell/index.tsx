@@ -9,3 +9,4 @@ export { PortalHeader } from './components/portal-header'
 
 // Types
 export type { NavItem, NavSecondaryItem, FavoriteItem } from './types'
+export * from './types'

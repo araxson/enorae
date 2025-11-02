@@ -3,7 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { DollarSign, CalendarClock, Award, Activity } from 'lucide-react'
-import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
+import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries'
 
 type MetricCardsProps = {
   summary: ReturnType<typeof buildCouponEffectiveness>

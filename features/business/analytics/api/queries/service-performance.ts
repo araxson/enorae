@@ -1,7 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/auth/guards-simple'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 /**
  * Refresh service performance analytics

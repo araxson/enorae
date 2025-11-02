@@ -12,7 +12,7 @@ import {
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { useToast } from '@/lib/hooks/use-toast'
 import { CouponForm } from './coupon-form'
-import type { CouponWithStats } from '@/features/business/coupons/api/queries/coupon-validation'
+import type { CouponWithStats } from '@/features/business/coupons/api/queries'
 import { CouponCard } from './coupon-card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 

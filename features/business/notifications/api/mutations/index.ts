@@ -1,4 +1,3 @@
-
 export {
   sendNotification,
   markNotificationsRead,
@@ -14,3 +13,8 @@ export {
   sendReviewRequest,
   sendTestNotification,
 } from './workflows'
+// Export specific functions from helpers to avoid duplicates
+export { validateNotificationData, sendNotificationEmail, logNotificationActivity } from './helpers'
+// Export everything from utilities (includes getSupabaseClient, ensureRecipientAuthorized)
+export * from './utilities'
+export * from './test'

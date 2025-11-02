@@ -1,5 +1,5 @@
 import { getUserSalonContactDetails } from './api/queries'
-import { ContactForm } from './components/contact-form'
+import { ContactForm } from './components'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 export async function SalonContactSettings() {
@@ -11,3 +11,4 @@ export async function SalonContactSettings() {
 
   return <ContactForm salonId={salonId} contactDetails={contactDetails} />
 }
+export * from './types'

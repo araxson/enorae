@@ -7,7 +7,7 @@ import { ButtonGroup } from '@/components/ui/button-group'
 import { AssignedServicesList } from './assigned-services-list'
 import { BulkAssignSection } from './bulk-assign-section'
 import { SingleAssignSection } from './single-assign-section'
-import type { AssignServicesDialogState } from './use-assign-services-dialog'
+import type { AssignServicesDialogState } from '../../hooks/use-assign-services-dialog'
 import type { StaffMemberWithServices, ServiceRow } from './types'
 
 type AssignedService = {

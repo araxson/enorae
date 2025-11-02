@@ -8,7 +8,7 @@ import {
   ItemDescription,
   ItemGroup,
 } from '@/components/ui/item'
-import { formatCurrency } from './value-formatters'
+import { formatCurrency } from '../utils/value-formatters'
 
 type BreakdownItem = {
   label: string

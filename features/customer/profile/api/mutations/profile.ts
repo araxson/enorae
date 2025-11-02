@@ -4,7 +4,8 @@ import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Json } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { getOptionalString, getOptionalJsonObject } from '@/lib/utils/safe-form-data'
 
 export async function updateProfileMetadata(formData: FormData) {
   const logger = createOperationLogger('updateProfileMetadata', {})
@@ -15,8 +16,8 @@ export async function updateProfileMetadata(formData: FormData) {
 
     logger.start({ userId: session.user.id })
 
-    const interests = formData.get('interests')?.toString()
-    const tags = formData.get('tags')?.toString()
+    const interests = getOptionalString(formData, 'interests')
+    const tags = getOptionalString(formData, 'tags')
 
     // Parse comma-separated values into arrays
     const interestsArray = interests ? interests.split(',').map(i => i.trim()).filter(Boolean) : []
@@ -54,7 +55,7 @@ export async function updateProfileMetadata(formData: FormData) {
 
     logger.success({ userId: session.user.id, interestsCount: interestsArray.length, tagsCount: tagsArray.length })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
     throw error
   }
@@ -96,7 +97,7 @@ export async function updateProfileAvatar(avatarUrl: string) {
 
     logger.success({ userId: session.user.id })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
     throw error
   }
@@ -111,21 +112,14 @@ export async function updateProfilePreferences(formData: FormData) {
 
     logger.start({ userId: session.user.id })
 
-    const timezone = formData.get('timezone')?.toString()
-    const locale = formData.get('locale')?.toString()
-    const currencyCode = formData.get('currency_code')?.toString()
-    const preferencesJson = formData.get('preferences')?.toString()
+    const timezone = getOptionalString(formData, 'timezone')
+    const locale = getOptionalString(formData, 'locale')
+    const currencyCode = getOptionalString(formData, 'currency_code')
+    const preferencesJson = getOptionalString(formData, 'preferences')
 
-    let preferences: Record<string, unknown> = {}
-    if (preferencesJson) {
-      try {
-        const parsed = JSON.parse(preferencesJson)
-        preferences = typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) ? parsed : {}
-      } catch (error) {
-        logger.error('Invalid preferences JSON format', 'validation', { userId: session.user.id })
-        return { error: 'Invalid preferences format' }
-      }
-    }
+    const preferences = preferencesJson
+      ? getOptionalJsonObject<Record<string, unknown>>(formData, 'preferences', {})
+      : {}
 
     console.log('Updating profile preferences', {
       userId: session.user.id,
@@ -135,17 +129,17 @@ export async function updateProfilePreferences(formData: FormData) {
       timestamp: new Date().toISOString()
     })
 
-    // Convert to Json type for database - Json can be object, array, string, number, boolean, or null
-    const preferencesForDb = JSON.parse(JSON.stringify(preferences)) as Json
+    // Cast preferences to Json type for database
+    const preferencesForDb = preferences as Json
 
     const { error } = await supabase
       .schema('identity')
       .from('profiles_preferences')
       .upsert({
         profile_id: session.user.id,
-        timezone: timezone || null,
-        locale: locale || null,
-        currency_code: currencyCode || null,
+        timezone: timezone ?? null,
+        locale: locale ?? null,
+        currency_code: currencyCode ?? null,
         preferences: preferencesForDb,
         updated_at: new Date().toISOString(),
       })
@@ -165,7 +159,7 @@ export async function updateProfilePreferences(formData: FormData) {
 
     logger.success({ userId: session.user.id, timezone, locale, currencyCode })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
     throw error
   }

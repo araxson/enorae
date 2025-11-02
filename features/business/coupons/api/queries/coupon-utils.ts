@@ -4,7 +4,7 @@
  */
 import 'server-only'
 import type { CouponAnalyticsSnapshot } from './coupon-validation'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export function buildCouponEffectivenessReport(analytics: CouponAnalyticsSnapshot) {
   const { coupons, usage } = analytics

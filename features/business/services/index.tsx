@@ -1,6 +1,5 @@
 import { getServices, getUserSalon } from './api/queries'
-import { ServicesManagementClient } from './components/services-management-client'
-import { ServicesAuthError, ServicesNoSalonError } from './components/services-error-state'
+import { ServicesManagementClient, ServicesAuthError, ServicesNoSalonError } from './components'
 
 export type * from './types'
 

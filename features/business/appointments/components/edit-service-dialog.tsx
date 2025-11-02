@@ -11,8 +11,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/lib/hooks/use-toast'
 import { updateAppointmentService } from '@/features/business/appointments/api/mutations'
-import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
-import { useServiceFormOptions } from './shared/use-service-form-data'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries'
+import { useServiceFormOptions } from '../hooks/use-service-form-data'
 import { Spinner } from '@/components/ui/spinner'
 import { EditServiceFormFields } from './edit-service-dialog-form'
 

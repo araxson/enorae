@@ -1,4 +1,5 @@
 'use server'
+import 'server-only'
 
 /**
  * Secure Session Verification - DAL Pattern
@@ -16,7 +17,7 @@ import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import type { User } from '@supabase/supabase-js'
-import { logAuthEvent, logError } from '@/lib/observability/logger'
+import { logAuthEvent, logError } from '@/lib/observability'
 
 type RoleType = Database['public']['Enums']['role_type']
 

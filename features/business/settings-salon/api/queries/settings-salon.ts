@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type SalonView = Database['public']['Views']['salons_view']['Row']
 

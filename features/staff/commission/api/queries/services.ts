@@ -1,9 +1,9 @@
 import 'server-only'
 
 import type { AppointmentRow, CommissionRate, ServiceRevenue } from '../../types'
-import { authorizeStaffAccess } from '@/lib/utils/commission'
+import { authorizeStaffAccess } from '@/features/staff/commission/utils/commission'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type AppointmentViewRow = Database['public']['Views']['appointments_view']['Row']
 type StaffServiceViewRow = Database['public']['Views']['staff_services_view']['Row']

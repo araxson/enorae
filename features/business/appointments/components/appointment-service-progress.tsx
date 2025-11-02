@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card'
 import { updateServiceStatus } from '@/features/business/appointments/api/mutations'
-import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries'
 import { useToast } from '@/lib/hooks/use-toast'
 import { ServiceCompletionCard } from './service-completion-card'
 import { ServiceStatusRow } from './service-status-row'

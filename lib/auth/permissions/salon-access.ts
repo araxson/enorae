@@ -7,7 +7,7 @@ import { env } from '@/lib/env'
 
 import { verifySession } from '@/lib/auth/session'
 import { ROLE_GROUPS } from './roles'
-import { logAuthEvent, logError, logInfo } from '@/lib/observability/logger'
+import { logAuthEvent, logError, logInfo } from '@/lib/observability'
 
 export type SalonContext = {
   activeSalonId: string | null

@@ -3,7 +3,7 @@
 import { ArrowDownRight, ArrowUpRight, Equal } from 'lucide-react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import type { MetricsComparison } from '@/lib/utils/metrics'
+import type { MetricsComparison } from '@/features/business/metrics/utils/metrics'
 import {
   Item,
   ItemContent,

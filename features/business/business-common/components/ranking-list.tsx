@@ -13,7 +13,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import { formatCurrency } from '@/features/business/business-common/components/value-formatters'
+import { formatCurrency } from '@/features/business/business-common/utils/value-formatters'
 
 export type RankingItem = {
   /**

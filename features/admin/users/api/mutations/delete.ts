@@ -7,7 +7,7 @@ import { requireAnyRole } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common'
 
 import { UUID_REGEX } from '../../constants'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function deleteUserPermanently(formData: FormData) {
   const logger = createOperationLogger('deleteUserPermanently', {})

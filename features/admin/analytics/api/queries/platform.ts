@@ -3,7 +3,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type DailyMetricsRow = Database['public']['Views']['daily_metrics_view']['Row']
 type AdminSalonRow = Database['public']['Views']['admin_salons_overview_view']['Row']

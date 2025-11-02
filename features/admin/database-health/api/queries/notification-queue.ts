@@ -2,7 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database, Json } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type NotificationQueue = Database['public']['Views']['communication_notification_queue_view']['Row']

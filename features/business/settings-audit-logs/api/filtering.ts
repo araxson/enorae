@@ -1,7 +1,6 @@
 'use server'
 
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
+import { requireAnyRole, ROLE_GROUPS, canAccessSalon } from '@/lib/auth'
 import type { PostgrestFilterBuilder } from '@supabase/postgrest-js'
 import type {
   AuditLog,

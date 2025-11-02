@@ -2,7 +2,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type Optimization = Database['public']['Views']['low_priority_optimizations_summary_view']['Row']
 type StatsFreshness = Database['public']['Views']['statistics_freshness_view']['Row']

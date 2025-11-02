@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { bulkAdjustPricing } from '@/features/business/pricing/api/mutations/pricing-rules'
+import { bulkAdjustPricing } from '@/features/business/pricing/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
   Field,

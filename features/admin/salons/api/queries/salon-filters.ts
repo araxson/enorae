@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { getAllSalons, type AdminSalon } from './salon-list'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export interface SalonFilters {
   chain_id?: string

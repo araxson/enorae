@@ -52,5 +52,3 @@ export const settingsContactSchema = z.object({
     ])
     .optional(),
 })
-
-export type SettingsContactSchema = z.infer<typeof settingsContactSchema>

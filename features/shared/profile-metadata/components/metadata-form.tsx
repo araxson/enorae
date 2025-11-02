@@ -15,7 +15,7 @@ import type { Database } from '@/lib/types/database.types'
 import { InterestsTagsSection } from './interests-tags-section'
 import { ProfileImagesSection } from './profile-images-section'
 import { SocialProfilesSection } from './social-profiles-section'
-import { useMetadataForm } from './use-metadata-form'
+import { useMetadataForm } from '../hooks/use-metadata-form'
 
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row']
 

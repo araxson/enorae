@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MapPin, Globe, CheckCircle } from 'lucide-react'
-import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/mutations/bulk-address'
+import { bulkUpdateAddresses, geocodeAllAddresses } from '@/features/business/locations/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
   Field,

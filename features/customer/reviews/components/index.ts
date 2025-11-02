@@ -1,3 +1,5 @@
 export { DeleteReviewDialog } from './delete-review-dialog'
 export { EditReviewDialog } from './edit-review-dialog'
+export { EditReviewForm } from './edit-review-form'
+export { EditWindowAlert } from './edit-window-alert'
 export { ReviewsList } from './reviews-list'

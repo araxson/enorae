@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { categorySchema } from '@/features/business/service-categories/api/schema'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 

@@ -3,9 +3,9 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { favoriteSchema } from '@/lib/validations/customer/favorites'
+import { favoriteSchema } from '@/features/customer/favorites/api/validation'
 import { UUID_REGEX } from '@/lib/validations/shared'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -22,7 +22,7 @@ export async function toggleFavorite(
     const supabase = await createClient()
     const engagement = supabase.schema('engagement')
 
-    logger.start({ salonId, userId: session.user.id, hasNotes: !!notes })
+    logger.start({ salonId, userId: session.user.id, hasNotes: Boolean(notes) })
 
     // Validate input
     const validation = favoriteSchema.safeParse({ salonId, notes })
@@ -264,7 +264,7 @@ export async function removeFromFavorites(favoriteId: string): Promise<ActionRes
       .eq('customer_id', session.user.id) // Security check
 
     if (error) {
-      logger.error(error, 'database', { favoriteId, salonId: favorite.salon_id, userId: session.user.id })
+      logger.error(error, 'database', { favoriteId, salonId: favorite.salon_id ?? undefined, userId: session.user.id })
       throw error
     }
 

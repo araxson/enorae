@@ -1,6 +1,6 @@
 import 'server-only'
 import { randomInt } from 'crypto'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 import {
   CONFIRMATION_CODE_LETTERS,
   CONFIRMATION_CODE_NUMBERS,
@@ -11,6 +11,7 @@ import {
 
 /**
  * Generate a unique confirmation code in format ABC-1234
+ * @returns A confirmation code in format ABC-1234
  */
 export function generateConfirmationCode(): string {
   let code = ''

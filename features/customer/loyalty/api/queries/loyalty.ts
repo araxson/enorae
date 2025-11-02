@@ -1,6 +1,6 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export interface LoyaltyPoints {

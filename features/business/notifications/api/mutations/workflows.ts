@@ -2,7 +2,7 @@
 import 'server-only'
 
 import { sendNotification } from './send'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function sendAppointmentConfirmation(
   customerId: string,

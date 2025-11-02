@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { getAuthorizedContext } from './context'
 import { UUID_REGEX, type DayOfWeek } from '../constants'
 import type { ActionResult } from '../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function bulkCreateSchedules(
   salonId: string,
@@ -24,15 +24,15 @@ export async function bulkCreateSchedules(
 
   try {
     if (!UUID_REGEX.test(salonId) || !UUID_REGEX.test(staffId)) {
-      return { error: 'Invalid ID format' }
+      return { success: false, error: 'Invalid ID format' }
     }
 
-    const context = await getAuthorizedContext(salonId)
-    if ('error' in context) {
-      return context
+    const contextResult = await getAuthorizedContext(salonId)
+    if (!contextResult.success) {
+      return contextResult
     }
 
-    const { supabase, session } = context
+    const { supabase, session } = contextResult.data
 
     // PERFORMANCE FIX: Check all schedules in one query instead of N+1
     const daysToCheck = schedules.map((s) => s.day_of_week)
@@ -46,8 +46,8 @@ export async function bulkCreateSchedules(
       .eq('is_active', true)
 
     if (existingSchedules && existingSchedules.length > 0) {
-      const existingDays = existingSchedules.map((s) => s.day_of_week).join(', ')
-      return { error: `Schedule already exists for ${existingDays}` }
+      const existingDays = existingSchedules.map((s: { day_of_week: string }) => s.day_of_week).join(', ')
+      return { success: false, error: `Schedule already exists for ${existingDays}` }
     }
 
     const { data: created, error } = await supabase
@@ -75,6 +75,6 @@ export async function bulkCreateSchedules(
     return { success: true, data: created }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: error instanceof Error ? error.message : 'Failed to create schedules' }
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to create schedules' }
   }
 }

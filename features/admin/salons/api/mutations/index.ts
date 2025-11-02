@@ -5,3 +5,6 @@ export { reactivateSalon } from './reactivate-salon'
 export { transferSalonOwnership } from './transfer-salon-ownership'
 export { approveSalon } from './approve-salon'
 export { rejectSalon } from './reject-salon'
+
+// Re-export shared utilities
+export * from './shared'

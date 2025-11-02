@@ -2,7 +2,7 @@
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database, Json } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function logDashboardAudit(
   supabase: ReturnType<typeof createServiceRoleClient>,

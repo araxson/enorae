@@ -4,7 +4,7 @@ import 'server-only'
 import { z } from 'zod'
 import { getSupabaseClient, revalidateNotifications, notificationChannels, notificationEvents } from '../mutations/utilities'
 import type { NotificationTemplate } from '@/features/business/notifications/api/queries'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const templateSchema = z.object({
   id: z.string().uuid().optional(),

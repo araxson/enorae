@@ -80,7 +80,7 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
                   step="0.01"
                   min="0"
                   value={state.basePrice}
-                  onChange={(event) => onChange('basePrice', event.target.value)}
+                  onChange={(event) => onChange('basePrice', parseFloat(event.target.value) || 0)}
                   placeholder="0.00"
                   required
                 />
@@ -97,7 +97,7 @@ export function ServiceSelection({ services, state, editing, onChange }: Service
                   step="0.01"
                   min="0"
                   value={state.salePrice}
-                  onChange={(event) => onChange('salePrice', event.target.value)}
+                  onChange={(event) => onChange('salePrice', parseFloat(event.target.value) || 0)}
                   placeholder="0.00"
                 />
               </FieldContent>

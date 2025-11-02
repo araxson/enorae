@@ -15,7 +15,7 @@ import type { Database } from '@/lib/types/database.types'
 import { DescriptionsSection } from './description-form/descriptions-section'
 import { ArrayFieldsSection } from './description-form/array-fields-section'
 import { SeoSection } from './description-form/seo-section'
-import { useDescriptionForm } from './description-form/use-description-form'
+import { useDescriptionForm } from '../hooks/use-description-form'
 
 type SalonDescription = Database['public']['Views']['salon_descriptions_view']['Row']
 

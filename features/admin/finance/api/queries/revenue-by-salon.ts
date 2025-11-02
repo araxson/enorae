@@ -2,7 +2,7 @@ import 'server-only'
 
 import type { SalonRevenueRow } from '../../types'
 import { requireAdminClient } from './client'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getRevenueBySalon(
   startDate?: string,

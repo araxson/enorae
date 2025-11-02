@@ -1,2 +1,5 @@
 export { ProfileEditForm } from './profile-edit-form'
+export { ProfileAvatarUpload } from './profile-avatar-upload'
+export { ProfileNameField } from './profile-name-field'
+export { ProfileFormActions } from './profile-form-actions'
 export { UsernameForm } from './username-form'

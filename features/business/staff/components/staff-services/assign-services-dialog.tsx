@@ -3,7 +3,7 @@
 import { Dialog } from '@/components/ui/dialog'
 
 import { AssignServicesDialogContent } from './assign-services-dialog-content'
-import { useAssignServicesDialog } from './use-assign-services-dialog'
+import { useAssignServicesDialog } from '../../hooks/use-assign-services-dialog'
 import type { StaffMemberWithServices, ServiceRow } from './types'
 
 type AssignServicesDialogProps = {

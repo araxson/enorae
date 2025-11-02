@@ -4,7 +4,7 @@ import 'server-only'
 import type { Json } from '@/lib/types/database.types'
 import { getSupabaseClient, ensureRecipientAuthorized } from './helpers'
 import { notificationSchema, revalidateNotifications, notificationIdsSchema } from './utilities'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function sendNotification(input: {
   userId: string

@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { DATA_LIMITS, MODERATION_THRESHOLDS } from '@/lib/config/constants'
 
 interface ReputationStats {

@@ -6,7 +6,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
 import { suspendUserSchema, UUID_REGEX } from '../../constants'
-import { createOperationLogger, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 export async function suspendUser(formData: FormData) {
   const logger = createOperationLogger('suspendUser', {})

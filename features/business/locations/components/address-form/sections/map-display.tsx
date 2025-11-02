@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card'
 import { EXTERNAL_APIS } from '@/lib/config/env'
-import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
+import type { LocationAddress } from '@/features/business/locations/types'
 
 type MapDisplayProps = {
   address: LocationAddress | null

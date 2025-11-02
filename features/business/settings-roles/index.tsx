@@ -1,5 +1,5 @@
 import { getUserRoles, getAvailableStaff } from './api/queries'
-import { RolesClient } from './components/roles-client'
+import { RolesClient } from './components'
 
 export async function RolesManagement() {
   const [roles, staff] = await Promise.all([
@@ -9,3 +9,4 @@ export async function RolesManagement() {
 
   return <RolesClient roles={roles} availableStaff={staff} />
 }
+export * from './types'

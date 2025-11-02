@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const optimizeColumnSchema = z.object({
   tableName: z.string().min(1),

@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { ANALYTICS_CONFIG } from '@/lib/config/constants'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 /**
  * Get search suggestions for salon names (for autocomplete)

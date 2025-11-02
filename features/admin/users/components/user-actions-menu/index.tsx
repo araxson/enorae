@@ -1,2 +1,5 @@
 export { UserActionsMenu } from './user-actions-menu'
+export { UserActionDialogs } from './dialogs'
+export { UserActionsMenuContent } from './menu'
 export type { UserActionsMenuProps } from './types'
+export * from './types'

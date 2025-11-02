@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { QueryPerformanceSnapshot } from '@/features/admin/database-health/api/queries/query-performance'
+import type { QueryPerformanceSnapshot } from '@/features/admin/database-health/api/queries'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Timer } from 'lucide-react'
 

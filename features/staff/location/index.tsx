@@ -13,3 +13,4 @@ export async function StaffLocationPage() {
     </section>
   )
 }
+export * from './types'

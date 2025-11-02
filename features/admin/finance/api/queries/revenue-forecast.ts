@@ -2,7 +2,7 @@ import 'server-only'
 
 import type { RevenueForecast } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 const DEFAULT_FORECAST_DAYS = 30
 const HISTORICAL_DATA_DAYS = 90

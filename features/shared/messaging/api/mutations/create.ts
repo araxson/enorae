@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
 import { createThreadSchema, sendMessageSchema } from './schemas'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { revalidatePath } from 'next/cache'
 
 /**

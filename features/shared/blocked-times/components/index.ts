@@ -1,2 +1,5 @@
 export { BlockedTimeForm } from './blocked-time-form'
 export { BlockedTimesList } from './blocked-times-list'
+export { BlockTypeSelect } from './block-type-select'
+export { RecurrenceDescription } from './recurrence-description'
+export { RecurrencePatternSelect } from './recurrence-pattern-select'

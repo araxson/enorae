@@ -1,5 +1,5 @@
 import { getWebhookQueue } from './api/queries'
-import { WebhookList } from './components/webhook-list'
+import { WebhookList } from './components'
 
 export async function WebhookQueue() {
   const webhooks = await getWebhookQueue()
@@ -9,3 +9,4 @@ export async function WebhookQueue() {
 
 export { getWebhookQueue, getWebhookQueueById } from './api/queries'
 export { retryWebhook, deleteWebhook, retryAllFailedWebhooks, clearCompletedWebhooks } from './api/mutations'
+export * from './types'

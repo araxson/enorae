@@ -7,7 +7,7 @@ import { analyzeSentiment, type SentimentResult } from './sentiment'
 import { estimateFakeLikelihood, type FakeLikelihoodInput } from './fraud'
 import { calculateQualityScore } from './quality'
 import { computeReviewerReputation, fetchReviewerStats, type ReviewerAggregate } from './reputation'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']
 

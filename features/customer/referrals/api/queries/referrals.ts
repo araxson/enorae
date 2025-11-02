@@ -1,6 +1,6 @@
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export interface Referral {
   id: string

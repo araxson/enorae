@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getStaffSchedules, getStaffForScheduling } from './api/queries'
-import { SchedulesClient } from './components/schedules-client'
+import { SchedulesClient } from './components'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
 export async function StaffSchedulesManagement() {
@@ -31,3 +31,4 @@ export async function StaffSchedulesManagement() {
     </section>
   )
 }
+export * from './types'

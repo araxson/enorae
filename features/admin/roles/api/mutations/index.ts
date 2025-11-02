@@ -22,3 +22,8 @@ export const revokeRole = createServerActionProxy(revokeRoleAction)
 export const deleteRole = createServerActionProxy(deleteRoleAction)
 
 export type { RoleActionResponse, RoleType } from '../../types'
+export * from './assignments'
+export * from './assignment-helpers'
+export * from './audit'
+export * from './context'
+export * from './validation'

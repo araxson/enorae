@@ -41,3 +41,4 @@ export async function CustomerAppointments() {
     </div>
   )
 }
+export * from './types'

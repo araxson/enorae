@@ -15,8 +15,8 @@ import type {
   ProfileActivityEntry,
   ProfileDetail,
 } from '../../types'
-import { sanitizeSearchTerm, toRecord, mapSummary } from '@/lib/utils/profile'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { sanitizeSearchTerm, toRecord, mapSummary } from './profile-helpers'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function searchProfiles(term: string, limit = 20): Promise<ProfileSearchResult[]> {
   const logger = createOperationLogger('searchProfiles', {})

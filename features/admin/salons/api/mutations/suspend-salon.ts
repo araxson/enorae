@@ -1,0 +1,116 @@
+'use server'
+
+import { revalidatePath } from 'next/cache'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+
+/**
+ * Suspend salon - disables bookings and cancels future appointments
+ */
+export async function suspendSalon(formData: FormData) {
+  const logger = createOperationLogger('suspendSalon', {})
+  logger.start()
+
+  try {
+    const salonId = formData.get('salonId')?.toString()
+    const reason = formData.get('reason')?.toString()
+    const duration = formData.get('duration')?.toString()
+
+    if (!salonId || !UUID_REGEX.test(salonId)) {
+      return { error: 'Invalid salon ID' }
+    }
+
+    const session = await ensurePlatformAdmin()
+    const supabase = await getSupabaseClient()
+
+    // Get salon info
+    const { data: salon, error: fetchError } = await supabase
+      .from('salons_view')
+      .select('name')
+      .eq('id', salonId)
+      .maybeSingle()
+
+    if (fetchError) {
+      return { error: fetchError.message }
+    }
+
+    if (!salon) {
+      return { error: 'Salon not found' }
+    }
+
+    const timestamp = new Date().toISOString()
+
+    // Suspend salon
+    const { error: salonError } = await supabase
+      .schema('organization')
+      .from('salons')
+      .update({
+        deleted_at: timestamp,
+        deleted_by_id: session.user.id,
+      })
+      .eq('id', salonId)
+
+    if (salonError) return { error: salonError.message }
+
+    // Disable bookings
+    const { error: settingsError } = await supabase
+      .schema('organization')
+      .from('salon_settings')
+      .update({
+        is_accepting_bookings: false,
+        updated_at: timestamp,
+      })
+      .eq('salon_id', salonId)
+
+    if (settingsError) return { error: settingsError.message }
+
+    // Cancel all future appointments
+    const { error: appointmentsError } = await supabase
+      .schema('scheduling')
+      .from('appointments')
+      .update({
+        status: 'cancelled',
+        updated_at: timestamp,
+      })
+      .eq('salon_id', salonId)
+      .gte('start_time', timestamp)
+      .neq('status', 'cancelled')
+
+    if (appointmentsError) {
+      logger.error(appointmentsError, 'system')
+    }
+
+    // Audit log
+    const { error: auditError } = await supabase.schema('audit').from('audit_logs').insert({
+      event_type: 'salon_suspended',
+      event_category: 'business',
+      severity: 'critical',
+      user_id: session.user.id,
+      action: 'suspend_salon',
+      entity_type: 'salon',
+      entity_id: salonId,
+      salon_id: salonId,
+      target_schema: 'organization',
+      target_table: 'salons',
+      metadata: {
+        salon_name: salon.name,
+        reason: reason || 'No reason provided',
+        duration_days: duration ? parseInt(duration, 10) : null,
+        suspended_by: session.user.id,
+      },
+      is_success: true,
+    })
+
+    if (auditError) {
+      logger.error(auditError, 'system')
+    }
+
+    revalidatePath('/admin/salons', 'page')
+    return { success: true }
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : 'Failed to suspend salon',
+    }
+  }
+}

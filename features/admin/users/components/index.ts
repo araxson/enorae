@@ -1,4 +1,5 @@
 export { AdminUsersClient } from './admin-users-client'
 export { UserActionsMenu } from './user-actions-menu'
 export { UsersTable } from './users-table'
+export { UserTableRow } from './users-table-row'
 export { UsersMobileTable } from './users-table-mobile'

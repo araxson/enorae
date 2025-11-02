@@ -1,11 +1,11 @@
 import { CustomerInsightsCard } from '@/features/business/business-common/components/customer-insights-card'
-import { CohortsTable } from '@/features/business/analytics/components/sections/cohorts-table'
+import { CohortsTable } from '@/features/business/analytics/components'
 import { ChurnRiskTable } from './churn-risk-table'
 import { ReactivationOpportunities } from './reactivation-opportunities'
 import { SegmentationOverview } from './segmentation-overview'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getCustomerInsights, getCustomerSegmentation, getCustomerCohorts } from '@/features/business/analytics/api/queries'
-import { getAtRiskCustomers, getReactivationOpportunities } from '@/features/business/insights/api/queries/churn-prediction'
+import { getAtRiskCustomers, getReactivationOpportunities } from '@/features/business/insights/api/queries'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function CustomerAnalytics() {

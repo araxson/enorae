@@ -1,8 +1,8 @@
 'use server'
 
 import type { ActionResponse } from '../../types'
-import { rejectSalon as rejectSalonMutation } from '@/features/admin/salons/api/mutations/reject-salon'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { rejectSalon as rejectSalonMutation } from '@/features/admin/salons/api/mutations'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function rejectSalon(formData: FormData): Promise<ActionResponse> {
   const logger = createOperationLogger('rejectSalon', {})

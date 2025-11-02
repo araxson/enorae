@@ -6,7 +6,7 @@ import { requireAnyRole } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
 import { banUserSchema, UUID_REGEX } from '../../constants'
-import { createOperationLogger, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 /**
  * Ban user permanently - requires super_admin role

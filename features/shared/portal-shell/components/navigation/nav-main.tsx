@@ -19,7 +19,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import { getNavIcon, type IconName } from './icon-map'
+import { getNavIcon, type IconName } from '../../constants/icon-map'
 
 interface NavItem {
   title: string

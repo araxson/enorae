@@ -2,7 +2,7 @@
 
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import type { ServiceOption } from '@/features/business/appointments/api/queries/service-options'
+import type { ServiceOption } from '@/features/business/appointments/api/queries'
 
 type ServiceSelectFieldProps = {
   value: string

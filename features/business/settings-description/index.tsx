@@ -1,5 +1,5 @@
 import { getUserSalonDescription } from './api/queries'
-import { DescriptionForm } from './components/description-form'
+import { DescriptionForm } from './components'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
 export async function SalonDescriptionSettings() {
@@ -10,3 +10,4 @@ export async function SalonDescriptionSettings() {
 
   return <DescriptionForm salonId={salonId} description={description} />
 }
+export * from './types'

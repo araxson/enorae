@@ -1,6 +1,6 @@
 import { getServicePricing } from './api/queries'
 import { getServices, getUserSalon } from '@/features/business/services/api/queries'
-import { ServicePricingClient } from './components/service-pricing-client'
+import { ServicePricingClient } from './components'
 
 export async function ServicePricing() {
   const salon = await getUserSalon()
@@ -19,3 +19,4 @@ export async function ServicePricing() {
 
   return <ServicePricingClient pricing={pricing} services={simpleServices} />
 }
+export * from './types'

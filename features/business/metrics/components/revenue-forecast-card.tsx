@@ -13,7 +13,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { cn } from '@/lib/utils/index'
-import type { RevenueForecast } from '@/lib/utils/metrics'
+import type { RevenueForecast } from '@/features/business/metrics/utils/metrics'
 
 type RevenueForecastCardProps = {
   forecast: RevenueForecast

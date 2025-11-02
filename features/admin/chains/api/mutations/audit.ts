@@ -2,7 +2,7 @@
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Json } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 /**
  * Log chain management actions to audit trail

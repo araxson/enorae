@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { generateConfirmationCode } from './utilities'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 import {
   validateBookingData,
   validateSalon,

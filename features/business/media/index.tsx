@@ -20,3 +20,4 @@ export async function SalonMedia() {
 
   return <SalonMediaContent media={media} salonName={salonName} />
 }
+export * from './types'

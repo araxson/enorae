@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { requestSchema } from './schemas'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 type TimeOffRequestInsert = Database['scheduling']['Tables']['time_off_requests']['Insert']
 

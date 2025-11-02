@@ -3,7 +3,7 @@ import 'server-only'
 import type { FinancialExportData } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
 import { getPlatformRevenueAnalytics } from './platform-revenue-analytics'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getFinancialExportData(
   startDate: string,

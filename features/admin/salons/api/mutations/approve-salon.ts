@@ -1,0 +1,106 @@
+'use server'
+
+import { revalidatePath } from 'next/cache'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+
+/**
+ * Approve salon and make it live on the platform
+ * Sets is_accepting_bookings to true and logs approval
+ */
+export async function approveSalon(formData: FormData) {
+  const logger = createOperationLogger('approveSalon', {})
+  logger.start()
+
+  try {
+    const salonId = formData.get('salonId')?.toString()
+    const note = formData.get('note')?.toString()
+
+    if (!salonId || !UUID_REGEX.test(salonId)) {
+      return { error: 'Invalid salon ID' }
+    }
+
+    const session = await ensurePlatformAdmin()
+    const supabase = await getSupabaseClient()
+
+    // Get salon owner for notification
+    const { data: salon, error: salonError } = await supabase
+      .from('salons_view')
+      .select('name')
+      .eq('id', salonId)
+      .maybeSingle()
+
+    if (salonError) {
+      return { error: salonError.message }
+    }
+
+    if (!salon) {
+      return { error: 'Salon not found' }
+    }
+
+    // Enable booking acceptance
+    const { error: settingsError } = await supabase
+      .schema('organization')
+      .from('salon_settings')
+      .update({
+        is_accepting_bookings: true,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('salon_id', salonId)
+
+    if (settingsError) return { error: settingsError.message }
+
+    // Ensure salon is not soft-deleted
+    const { error: salonUpdateError } = await supabase
+      .schema('organization')
+      .from('salons')
+      .update({
+        deleted_at: null,
+        updated_by_id: session.user.id,
+      })
+      .eq('id', salonId)
+
+    if (salonUpdateError) return { error: salonUpdateError.message }
+
+    // Audit log
+    const { error: auditError } = await supabase.schema('audit').from('audit_logs').insert({
+      event_type: 'salon_approved',
+      event_category: 'business',
+      severity: 'info',
+      user_id: session.user.id,
+      action: 'approve_salon',
+      entity_type: 'salon',
+      entity_id: salonId,
+      salon_id: salonId,
+      target_schema: 'organization',
+      target_table: 'salons',
+      metadata: {
+        salon_name: salon.name,
+        note: note || 'Salon approved for platform listing',
+        approved_by: session.user.id,
+      },
+      is_success: true,
+    })
+
+    if (auditError) {
+      logger.error(auditError, 'system')
+    }
+
+    // TODO: Send notification to salon owner when notification system is ready
+    // await supabase.rpc('communication.send_notification', {
+    //   p_user_id: salon.owner_id,
+    //   p_type: 'salon_approved',
+    //   p_title: 'Salon Approved',
+    //   p_message: 'Your salon has been verified and is now live',
+    //   p_data: { salon_id: salonId }
+    // })
+
+    revalidatePath('/admin/salons', 'page')
+    return { success: true }
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : 'Failed to approve salon',
+    }
+  }
+}

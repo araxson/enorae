@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { getUserSalonIds, requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 type StaffProfileRow = Database['public']['Views']['staff_profiles_view']['Row']
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']

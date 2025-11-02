@@ -45,9 +45,11 @@ export const calculateThreadInsights = (
     const responses = messagesByThread.get(threadId) ?? []
     const firstResponse = computeFirstResponse(thread, responses)
 
+    const RESPONSE_TIME_THRESHOLD_MINUTES = 60 // 1 hour threshold for fast response metric
+
     if (firstResponse.minutes !== null) {
       firstResponseDurations.push(firstResponse.minutes)
-      if (firstResponse.minutes <= 60) {
+      if (firstResponse.minutes <= RESPONSE_TIME_THRESHOLD_MINUTES) {
         responsesWithinHour += 1
       }
       if (firstResponse.firstCustomerMessageAt) {

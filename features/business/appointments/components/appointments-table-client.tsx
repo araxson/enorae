@@ -13,7 +13,7 @@ import {
 import { Calendar } from 'lucide-react'
 import type { AppointmentWithDetails } from '@/features/business/appointments/api/queries'
 import { confirmAppointment, cancelAppointment, completeAppointment } from '@/features/business/appointments/api/mutations'
-import { useAppointmentsFilter } from './appointments-table/use-appointments-filter'
+import { useAppointmentsFilter } from '../hooks/use-appointments-filter'
 import { AppointmentsFilterControls } from './appointments-table/filter-controls'
 import { AppointmentsTableRow } from './appointments-table/table-row'
 

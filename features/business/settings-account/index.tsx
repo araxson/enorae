@@ -1,6 +1,6 @@
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
 import { getUserProfile } from './api/queries'
-import { AccountSettingsContent } from './components/account-settings-content'
+import { AccountSettingsContent } from './components'
 
 export async function AccountSettings() {
   const profile = await getUserProfile()
@@ -8,3 +8,4 @@ export async function AccountSettings() {
 
   return <AccountSettingsContent profile={profile} metadata={metadata} />
 }
+export * from './types'

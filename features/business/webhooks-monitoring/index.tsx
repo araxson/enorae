@@ -1,6 +1,6 @@
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { MonitoringPanel } from './components/monitoring-panel'
+import { MonitoringPanel } from './components'
 import { getWebhookMonitoringData } from './api/queries'
 
 export const webhookMonitoringMetadata = genMeta({
@@ -32,3 +32,4 @@ export async function WebhookMonitoring() {
     )
   }
 }
+export * from './types'

@@ -2,7 +2,7 @@ import 'server-only'
 
 import type { CustomerMetrics, CustomerSegment } from '../../types'
 import { getCustomerInsights } from './customers'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 const SEGMENT_SAMPLE_LIMIT = 1000
 

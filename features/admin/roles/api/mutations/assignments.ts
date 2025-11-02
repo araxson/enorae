@@ -4,7 +4,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
 
 import type { RoleType } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export type AssignmentPayload = {
   userId: string

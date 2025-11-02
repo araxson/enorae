@@ -3,7 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const cancellationPolicySchema = z.object({
   cancellation_hours: z.number().int().min(0).max(168),

@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { SalonSearchResult } from '@/features/customer/salon-search/api/queries'
-import { useSearchSuggestions } from './use-search-suggestions'
+import { useSearchSuggestions } from '../hooks/use-search-suggestions'
 import { SearchBarSection } from './search-bar-section'
 import { FeaturedSalonsSection } from './featured-salons-section'
 import { SearchResultsSection } from './search-results-section'

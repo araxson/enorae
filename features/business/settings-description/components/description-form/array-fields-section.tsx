@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react'
 
-import type { ArrayFieldState } from './use-description-form'
+import type { ArrayFieldState } from '../../hooks/use-description-form'
 
 import { KeywordsSection } from './keywords-section'
 

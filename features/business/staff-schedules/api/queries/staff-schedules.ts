@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type StaffSchedule = Database['public']['Views']['staff_schedules_view']['Row']
 

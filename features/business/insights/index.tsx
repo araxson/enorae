@@ -25,3 +25,4 @@ export {
 // Business Insights Dashboard
 // Customer Insights Dashboard
 export { BusinessInsights, CustomerInsights } from './components'
+export * from './types'

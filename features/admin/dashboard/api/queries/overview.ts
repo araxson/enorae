@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 /**
  * Get comprehensive admin overview data from all admin views

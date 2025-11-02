@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AppointmentServicesManager } from './appointment-services-manager'
 import { AppointmentServiceProgress } from './appointment-service-progress'
-import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries'
 import { TIME_MS } from '@/lib/config/constants'
 
 interface AppointmentDetailDialogProps {

@@ -1,4 +1,4 @@
-import type { IconName } from './components/navigation/icon-map'
+import type { IconName } from './constants/icon-map'
 
 export interface NavItem {
   title: string

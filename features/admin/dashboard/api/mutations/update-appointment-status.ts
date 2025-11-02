@@ -9,7 +9,7 @@ import { logSupabaseError } from '@/lib/supabase/errors'
 import { logDashboardAudit } from './audit'
 import type { ActionResponse, AppointmentStatus } from '../../types'
 import { VALID_APPOINTMENT_STATUSES } from './validation'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function updateAppointmentStatus(
   formData: FormData,

@@ -2,13 +2,15 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type SalonReviewView = Database['engagement']['Views']['salon_reviews_with_counts_view']['Row']
 
 export type SalonReviewWithDetails = SalonReviewView & {
   customer_name?: string | null
   responded_by_name?: string | null
+  responded_at: string | null
+  response_text: string | null
 }
 
 /**
@@ -66,6 +68,8 @@ export async function getSalonReviews(): Promise<SalonReviewWithDetails[]> {
     ...review,
     customer_name: review.customer_id ? customerNames[review.customer_id] : null,
     responded_by_name: review.responded_by_id ? responderNames[review.responded_by_id] : null,
+    responded_at: review.responded_by_id ? review.created_at : null,
+    response_text: null,
   }))
 }
 

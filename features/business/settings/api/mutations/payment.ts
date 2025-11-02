@@ -3,7 +3,8 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
-import { createOperationLogger, logMutation } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation } from '@/lib/observability'
+import { safeJsonParseStringArray } from '@/lib/utils/safe-json'
 
 const paymentMethodsSchema = z.object({
   payment_methods: z.array(z.string()).min(1),
@@ -13,13 +14,9 @@ const methodsArraySchema = z.array(z.string())
 
 function parseMethods(raw: FormDataEntryValue | null): string[] {
   if (!raw) return []
-  try {
-    const parsed = JSON.parse(String(raw))
-    const validated = methodsArraySchema.safeParse(parsed)
-    return validated.success ? validated.data : []
-  } catch {
-    return []
-  }
+  const parsed = safeJsonParseStringArray(String(raw), [])
+  const validated = methodsArraySchema.safeParse(parsed)
+  return validated.success ? validated.data : []
 }
 
 export async function updatePaymentMethods(
@@ -64,7 +61,7 @@ export async function updatePaymentMethods(
 
     logger.success({ salonId, methodCount: methods.length })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       logger.error(`Validation failed: ${error.issues[0]?.message}`, 'validation')
       return { error: `Validation failed: ${error.issues[0]?.message}` }

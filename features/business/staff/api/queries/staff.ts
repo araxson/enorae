@@ -4,7 +4,7 @@ import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from 
 import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { mergeStaffWithUsers, type EnrichedStaffProfile } from '@/features/shared/staff/api/enrich'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type StaffProfileRow = Database['public']['Views']['staff_profiles_view']['Row']
 type UserOverviewRow = Database['public']['Views']['admin_users_overview_view']['Row']

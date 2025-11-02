@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getSalonReviews, getReviewStats } from './api/queries'
-import { ReviewsList } from './components/reviews-list'
+import { ReviewsList } from './components'
 import { ReviewsStats } from './components/reviews-stats'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 
@@ -43,3 +43,4 @@ export async function SalonReviews() {
     </section>
   )
 }
+export * from './types'

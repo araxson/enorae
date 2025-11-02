@@ -32,3 +32,4 @@ export async function BookingRules() {
     </section>
   )
 }
+export * from './types'

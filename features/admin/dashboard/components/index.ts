@@ -9,5 +9,10 @@ export { DashboardError } from './dashboard-error'
 export { DashboardHeader } from './dashboard-header'
 export { DashboardHero } from './dashboard-hero'
 export { PlatformMetrics } from './platform-metrics'
+export { PlatformMetricCard } from './platform-metric-card'
+export { getPlatformMetricsConfig } from './platform-metrics-config'
 export { RecentSalons } from './recent-salons'
 export { UserRoleStats } from './user-role-stats'
+
+// Re-export utilities
+export * from './admin-overview-utils'

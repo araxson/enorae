@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 const UPCOMING_LIMIT = 5
 const PAST_LIMIT = 5

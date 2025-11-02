@@ -29,3 +29,4 @@ export async function AdminAppointments() {
     )
   }
 }
+export * from './types'

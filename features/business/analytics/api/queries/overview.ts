@@ -4,8 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { getUserSalonIds } from '@/lib/auth/permissions'
 
-import type { DailyMetric } from '@/features/business/analytics/api/analytics.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import type { DailyMetric } from '@/features/business/analytics/api/types'
+import { createOperationLogger } from '@/lib/observability'
 
 export type AnalyticsOverview = {
   revenue: {

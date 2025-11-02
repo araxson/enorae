@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { PageLoading } from '@/features/shared/ui-components'
-import { VerifyOtpPage, verifyOtpPageMetadata } from '@/features/shared/auth'
+import { VerifyOtpPage, verifyOtpPageMetadata } from '@/features/auth'
 
 export const metadata = verifyOtpPageMetadata
 

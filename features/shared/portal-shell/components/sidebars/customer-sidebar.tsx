@@ -10,11 +10,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { NavMain } from '@/features/shared/portal-shell/components/navigation/nav-main'
-import { NavSecondary } from '@/features/shared/portal-shell/components/navigation/nav-secondary'
-import { NavUser } from '@/features/shared/portal-shell/components/navigation/nav-user'
-import { NavFavorites } from '@/features/shared/portal-shell/components/navigation/nav-favorites'
-import { getMenuForUser } from '@/lib/menu/get-menu-for-user'
+import { NavMain, NavSecondary, NavUser, NavFavorites } from '..'
+import { getMenuForUser } from '../../menu/get-menu-for-user'
 import { verifySession } from '@/lib/auth/session'
 import { getCustomerFavoritesSummary } from '@/features/shared/customer-common/api/queries'
 import type { FavoriteItem } from '@/features/shared/portal-shell/types'

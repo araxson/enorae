@@ -1,4 +1,5 @@
 export { AccountInfoForm } from './account-info-form'
+export { AccountSettingsContent } from './account-settings-content'
 export { BillingSubscriptionForm } from './billing-subscription-form'
 export { InvoiceHistoryCard } from './invoice-history-card'
 export { PasswordForm } from './password-form'

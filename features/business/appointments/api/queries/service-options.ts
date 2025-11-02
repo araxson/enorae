@@ -1,7 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export type ServiceOption = {
   id: string

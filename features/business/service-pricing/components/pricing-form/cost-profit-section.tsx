@@ -43,7 +43,7 @@ export function CostProfitSection({ state, profitMargin, onChange }: CostProfitS
                 step="0.01"
                 min="0"
                 value={state.cost}
-                onChange={(event) => onChange('cost', event.target.value)}
+                onChange={(event) => onChange('cost', parseFloat(event.target.value) || 0)}
                 placeholder="0.00"
               />
             </FieldContent>

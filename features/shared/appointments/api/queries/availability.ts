@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 

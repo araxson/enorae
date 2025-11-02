@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
-import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
+import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 
 type ExpiringSoonListProps = {

@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const pricingSchema = z.object({
   serviceId: z.string().regex(UUID_REGEX, 'Invalid service ID'),

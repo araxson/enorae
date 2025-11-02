@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type Profile = Database['public']['Views']['profiles_view']['Row']
 

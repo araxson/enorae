@@ -3,7 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const bookingRulesSchema = z.object({
   booking_lead_time_hours: z.number().int().min(0).max(720).optional(),

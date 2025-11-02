@@ -1,8 +1,9 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { bookingSchema } from '@/lib/validations/booking'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { bookingSchema } from '@/features/customer/booking/api/schema'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { z } from 'zod'
 
 export async function validateBookingData(formData: FormData, userId: string, salonId: string) {
   const logger = createOperationLogger('validateBookingData', {})
@@ -11,8 +12,9 @@ export async function validateBookingData(formData: FormData, userId: string, sa
   const serviceId = formData.get('serviceId') as string
   const staffId = formData.get('staffId') as string
 
-  // Validate input
+  // Validate input with full schema including salonId
   const rawData = {
+    salonId,
     serviceId,
     staffId,
     appointmentDate: formData.get('date') as string,
@@ -23,7 +25,13 @@ export async function validateBookingData(formData: FormData, userId: string, sa
   const validation = bookingSchema.safeParse(rawData)
   if (!validation.success) {
     const errors = validation.error.flatten().fieldErrors
-    const firstError = errors.serviceId?.[0] || errors.staffId?.[0] || errors.appointmentDate?.[0] || errors.appointmentTime?.[0] || 'Validation failed'
+    const firstError =
+      errors.salonId?.[0] ||
+      errors.serviceId?.[0] ||
+      errors.staffId?.[0] ||
+      errors.appointmentDate?.[0] ||
+      errors.appointmentTime?.[0] ||
+      'Validation failed'
     console.error('Booking validation failed', {
       userId,
       salonId,
@@ -33,17 +41,6 @@ export async function validateBookingData(formData: FormData, userId: string, sa
       errors: errors
     })
     return { error: firstError }
-  }
-
-  // Validate salonId with Zod
-  const salonIdValidation = bookingSchema.shape.serviceId.safeParse(salonId)
-  if (!salonIdValidation.success || !salonId) {
-    console.error('Booking salon ID validation failed', {
-      userId,
-      salonId,
-      serviceId
-    })
-    return { error: 'Invalid or missing salon ID' }
   }
 
   return { data: validation.data }

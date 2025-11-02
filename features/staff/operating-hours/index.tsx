@@ -14,3 +14,4 @@ export function OperatingHoursFeature({ hours, todayHours }: OperatingHoursFeatu
     </div>
   )
 }
+export * from './types'

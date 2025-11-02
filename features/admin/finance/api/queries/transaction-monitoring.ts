@@ -2,7 +2,7 @@ import 'server-only'
 
 import type { TransactionMetrics } from '@/features/admin/finance/types'
 import { requireAdminClient } from './client'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getTransactionMonitoring(_limit = 100): Promise<TransactionMetrics> {
   const logger = createOperationLogger('getTransactionMonitoring', {})

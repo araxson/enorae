@@ -19,18 +19,18 @@ import {
 import { ButtonGroup } from '@/components/ui/button-group'
 import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 import { ReviewCard } from './review-card'
-import { useReviewsList } from './use-reviews-list'
+import { useReviewsList, type NormalizedReview } from './use-reviews-list'
 
 interface ReviewsListProps {
   reviews: SalonReviewWithDetails[]
 }
 
 export function ReviewsList({ reviews }: ReviewsListProps) {
-  const { reviews: normalizedReviews, state, actions, handlers } = useReviewsList({ reviews })
+  const { reviews: reviewsData, state, actions, handlers } = useReviewsList({ reviews })
 
   return (
     <>
-      {normalizedReviews.length === 0 ? (
+      {reviewsData.length === 0 ? (
         <Empty>
           <EmptyHeader>
             <EmptyTitle>No reviews yet</EmptyTitle>
@@ -39,11 +39,11 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
         </Empty>
       ) : (
         <ItemGroup className="gap-4">
-          {normalizedReviews.map((review) => (
+          {reviewsData.map((review) => (
             <ReviewCard
               key={review.id}
-              review={review}
-              onRespond={actions.selectReview}
+              review={review as unknown as NormalizedReview}
+              onRespond={(r) => actions.selectReview(review)}
               onFlag={actions.openFlagDialog}
               onToggleFeatured={handlers.handleToggleFeatured}
             />

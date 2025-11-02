@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 export async function getAdminSettingsOverview() {
   const logger = createOperationLogger('getAdminSettingsOverview', {})
   logger.start()

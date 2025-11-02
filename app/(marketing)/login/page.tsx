@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { LoginPage } from '@/features/shared/auth'
+import { LoginPage } from '@/features/auth'
 import { PageLoading } from '@/features/shared/ui-components'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 

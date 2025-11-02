@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { contactSchema } from '@/features/marketing/contact/api/schema'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 /**
  * Contact message submission handler

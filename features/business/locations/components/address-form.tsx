@@ -6,8 +6,8 @@ import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AdditionalInfoSection, CoordinatesSection, LocationDetailsSection, MapIntegrationSection, StreetAddressSection } from './address-form/sections'
 import { AddressValidation } from './address-validation'
-import type { LocationAddress } from './address-form/types'
-import { updateLocationAddress, type AddressInput } from '@/features/business/locations/api/mutations/address'
+import type { LocationAddress } from '../types'
+import { updateLocationAddress, type AddressInput } from '@/features/business/locations/api/mutations'
 import { ButtonGroup } from '@/components/ui/button-group'
 
 type Props = {

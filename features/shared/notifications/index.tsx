@@ -11,3 +11,4 @@ export async function Notifications() {
 }
 
 export { NotificationCenter } from './components'
+export * from './types'

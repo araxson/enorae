@@ -1,6 +1,7 @@
 export { CertificationsEditor } from './certifications-editor'
 export { PortfolioGallery } from './portfolio-gallery'
 export { ProfileClient } from './profile-client'
+export { ProfileUnavailableError, ProfileNotFoundError } from './profile-error-state'
 export { ProfileSidebar } from './profile-sidebar'
 export { ProfileViewTab } from './profile-view-tab'
 export { ProfileEditTab } from './profile-edit-tab'

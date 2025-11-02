@@ -3,7 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSupabaseClient, revalidateNotifications } from './utilities'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const updatePreferencesSchema = z.object({
   preferences: z.object({

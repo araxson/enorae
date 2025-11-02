@@ -6,7 +6,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { basicDetailsSchema, metadataSchema, preferencesSchema } from '../queries/schemas'
 import type { Json } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export interface ActionResponse {
   success: boolean

@@ -15,7 +15,7 @@ import type { Database } from '@/lib/types/database.types'
 import { MessagingHoursSection } from './contact-form/messaging-hours-section'
 import { PhoneEmailSection } from './contact-form/phone-email-section'
 import { SocialLinksSection } from './contact-form/social-links-section'
-import { useContactForm } from './contact-form/use-contact-form'
+import { useContactForm } from '../hooks/use-contact-form'
 import { WebsiteBookingSection } from './contact-form/website-booking-section'
 
 type SalonContactDetails = Database['public']['Views']['salon_contact_details_view']['Row']

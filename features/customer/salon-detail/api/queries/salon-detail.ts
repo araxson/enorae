@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type Salon = Database['public']['Views']['salons_view']['Row']
 type Service = Database['public']['Views']['services_view']['Row']
@@ -214,5 +214,5 @@ export async function checkIsFavorited(salonId: string): Promise<boolean> {
     .maybeSingle()
 
   if (error) throw error
-  return !!data
+  return Boolean(data)
 }

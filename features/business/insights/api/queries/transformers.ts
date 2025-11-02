@@ -5,9 +5,9 @@ import type {
   CustomerAggregate,
   ReviewSummary,
   ServiceAggregation,
-} from './customer-types'
-import { calculateSegment } from '@/lib/utils/insights'
-import { createOperationLogger } from '@/lib/observability/logger'
+} from '../types'
+import { calculateSegment } from '@/features/business/insights/utils/insights'
+import { createOperationLogger } from '@/lib/observability'
 
 export function groupAppointmentsByCustomer(
   appointments: AppointmentWithProfile[],

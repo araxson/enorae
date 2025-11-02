@@ -2,7 +2,7 @@ import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 // Re-export constants from constants.ts
 export { UUID_REGEX, MODERATION_PATHS } from '../../constants'

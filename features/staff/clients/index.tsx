@@ -45,3 +45,4 @@ export async function StaffClients() {
 
   return <ClientsClient clients={clients} staffId={staff.id} />
 }
+export * from './types'

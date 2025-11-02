@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { settingsContactSchema } from '@/features/business/settings-contact/api/schema'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }

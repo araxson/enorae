@@ -1,6 +1,6 @@
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
-import { CouponManagementContent } from './components/coupon-management-content'
+import { CouponManagementContent } from './components'
 
 export async function CouponManagement() {
   const salon = await getUserSalon()
@@ -13,3 +13,4 @@ export async function CouponManagement() {
 
   return <CouponManagementContent salonId={salon.id} analytics={analytics} services={services} />
 }
+export * from './types'

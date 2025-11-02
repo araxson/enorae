@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { PageLoading } from '@/features/shared/ui-components'
 import { getUserPreferences } from './api/queries'
-import { UserPreferencesClient } from './components/user-preferences-client'
+import { UserPreferencesClient } from './components'
 
 export async function UserPreferences() {
   const preferences = await getUserPreferences()
@@ -15,3 +15,4 @@ export function UserPreferencesFeature() {
     </Suspense>
   )
 }
+export * from './types'

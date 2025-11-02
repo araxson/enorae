@@ -1,5 +1,5 @@
 import { getManualTransactions } from './api/queries'
-import { TransactionsClient } from './components/transactions-client'
+import { TransactionsClient } from './components'
 
 export async function ManualTransactions() {
   const transactions = await getManualTransactions()
@@ -17,3 +17,4 @@ export async function ManualTransactions() {
     />
   )
 }
+export * from './types'

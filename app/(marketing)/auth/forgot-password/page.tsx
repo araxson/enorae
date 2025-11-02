@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { PageLoading } from '@/features/shared/ui-components'
-import { ForgotPasswordPage as ForgotPasswordFeature, forgotPasswordPageMetadata } from '@/features/shared/auth'
+import { ForgotPasswordPage as ForgotPasswordFeature, forgotPasswordPageMetadata } from '@/features/auth'
 
 export const metadata = forgotPasswordPageMetadata
 

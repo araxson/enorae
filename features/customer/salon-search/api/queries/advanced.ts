@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { BUSINESS_THRESHOLDS, QUERY_LIMITS } from '@/lib/config/constants'
 import type { SalonSearchResult } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function searchSalonsWithFuzzyMatch(
   searchTerm: string,

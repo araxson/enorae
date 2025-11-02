@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import type { CouponFormState } from './coupon-form.types'
+import type { CouponFormState } from '../types'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CouponBasicSection } from './coupon-form/basic-section'
 import { CouponDiscountSection } from './coupon-form/discount-section'

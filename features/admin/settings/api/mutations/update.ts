@@ -1,6 +1,6 @@
 'use server'
 
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 export async function updateAdminSettings() {
   const logger = createOperationLogger('updateAdminSettings', {})
   logger.start()

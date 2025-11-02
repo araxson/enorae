@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import type { NotificationEntry, NotificationPayload } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type NotificationsPageRow =
   Database['public']['Functions']['get_notifications_page']['Returns'][number]
@@ -43,34 +43,19 @@ export async function getRecentNotifications(limit: number = 20) {
     if (error) throw error
 
     // Map RPC response to NotificationListEntry format with type safety
-    return (data || []).map((row): NotificationListEntry => {
-      // Type guard for row properties
-      const safeRow = row as unknown as Record<string, unknown>
-      const getId = () => typeof safeRow['id'] === 'string' ? safeRow['id'] : ''
-      const getUserId = () => typeof safeRow['user_id'] === 'string' ? safeRow['user_id'] : ''
-      const getChannels = () => Array.isArray(safeRow['channels']) ? safeRow['channels'] as NotificationChannel[] : []
-      const getStatus = () => typeof safeRow['status'] === 'string' ? safeRow['status'] as NotificationStatus : 'pending'
-      const getCreatedAt = () => typeof safeRow['created_at'] === 'string' ? safeRow['created_at'] : new Date().toISOString()
-      const getScheduledFor = () => typeof safeRow['scheduled_for'] === 'string' ? safeRow['scheduled_for'] : null
-      const getSentAt = () => typeof safeRow['sent_at'] === 'string' ? safeRow['sent_at'] : null
-      const getType = () => typeof safeRow['type'] === 'string' ? safeRow['type'] : 'info'
-      const getTitle = () => typeof safeRow['title'] === 'string' ? safeRow['title'] : ''
-      const getMessage = () => typeof safeRow['message'] === 'string' ? safeRow['message'] : ''
-
-      return {
-        id: getId(),
-        user_id: getUserId(),
-        channels: getChannels(),
-        status: getStatus(),
-        created_at: getCreatedAt(),
-        scheduled_for: getScheduledFor(),
-        sent_at: getSentAt(),
-        notification_type: getType(),
-        payload: null,
-        title: getTitle(),
-        message: getMessage(),
-      }
-    })
+    return (data || []).map((row): NotificationListEntry => ({
+      id: row.id ?? '',
+      user_id: user.id,
+      channels: [],
+      status: 'delivered' as NotificationStatus,
+      created_at: row.created_at ?? new Date().toISOString(),
+      scheduled_for: null,
+      sent_at: null,
+      notification_type: row.type ?? 'info',
+      payload: null,
+      title: row.title ?? '',
+      message: row.message ?? '',
+    }))
   } catch {
     // RPC not available, return empty list
     return []

@@ -10,10 +10,8 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { NavMain } from '@/features/shared/portal-shell/components/navigation/nav-main'
-import { NavSecondary } from '@/features/shared/portal-shell/components/navigation/nav-secondary'
-import { NavUser } from '@/features/shared/portal-shell/components/navigation/nav-user'
-import { getMenuForUser } from '@/lib/menu/get-menu-for-user'
+import { NavMain, NavSecondary, NavUser } from '..'
+import { getMenuForUser } from '../../menu/get-menu-for-user'
 import { verifySession } from '@/lib/auth/session'
 import { getUnreadNotificationsCount } from '@/features/shared/notifications/api/queries'
 

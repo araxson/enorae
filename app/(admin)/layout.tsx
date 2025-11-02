@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-import { AdminSidebar } from '@/features/shared/portal-shell/components/sidebars/admin-sidebar'
-import { PortalHeader } from '@/features/shared/portal-shell/components/portal-header'
+import { AdminSidebar, PortalHeader } from '@/features/shared/portal-shell/components'
 import { AdminKeyboardShortcuts } from '@/features/admin/admin-common/components/admin-keyboard-shortcuts'
 
 export const runtime = 'nodejs'

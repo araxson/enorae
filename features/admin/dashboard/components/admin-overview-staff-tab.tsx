@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Users } from 'lucide-react'
-import type { StaffOverview } from './admin-overview-types'
+import type { StaffOverview } from '../types'
 import {
   Empty,
   EmptyContent,

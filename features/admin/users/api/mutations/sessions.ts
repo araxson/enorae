@@ -6,7 +6,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
 import { UUID_REGEX } from '../../constants'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function terminateSession(formData: FormData) {
   const logger = createOperationLogger('terminateSession', {})

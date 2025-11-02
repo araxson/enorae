@@ -7,7 +7,7 @@ import { sanitizeAdminText } from '@/features/admin/admin-common'
 import type { Tables } from '@/lib/types/database.types'
 import { verifyChainSchema } from './schemas'
 import { logChainAudit } from './audit'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 type ChainActionResponse =
   | { success: true; message: string }

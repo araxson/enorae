@@ -1,7 +1,7 @@
 'use server'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function flagTransaction(data: {
   transactionId: string

@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const createRuleSchema = z.object({
   ruleName: z.string().min(1).max(255),

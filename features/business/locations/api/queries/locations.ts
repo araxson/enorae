@@ -3,7 +3,7 @@ import { requireAnyRole, getSalonContext, canAccessSalon, ROLE_GROUPS } from '@/
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import type { SalonLocation, LocationAddress } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getLocationAddress(locationId: string): Promise<LocationAddress | null> {
   const logger = createOperationLogger('getLocationAddress', {})

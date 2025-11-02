@@ -1,4 +1,7 @@
 export { AppointmentDetail } from './appointment-detail'
+export { AppointmentInfoSection } from './appointment-info-section'
+export { AppointmentServiceCard } from './appointment-service-card'
+export { AppointmentActionsSection } from './appointment-actions-section'
 export { AppointmentsList } from './appointments-list'
 export { CancelAppointmentDialog } from './cancel-appointment-dialog'
 export { RescheduleRequestDialog } from './reschedule-request-dialog'

@@ -1,7 +1,7 @@
 'use server'
 
 import { requireAuth } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function generateReferralCode(): Promise<{
   success: boolean; code?: string

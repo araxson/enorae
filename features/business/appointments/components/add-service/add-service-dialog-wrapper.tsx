@@ -1,4 +1,4 @@
-import { getAppointmentServiceOptions } from '@/features/business/appointments/api/queries/service-options'
+import { getAppointmentServiceOptions } from '@/features/business/appointments/api/queries'
 import { AddServiceDialogClient } from './add-service-dialog-client'
 
 interface AddServiceDialogWrapperProps {

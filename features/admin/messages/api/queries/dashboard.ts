@@ -11,7 +11,7 @@ import {
   calculateThreadInsights,
 } from './analytics'
 import { buildThreadMap, groupMessagesByThread } from './helpers'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import type {
   AdminMessageRow,
   Json,

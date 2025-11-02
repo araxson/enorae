@@ -4,7 +4,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
 import type { AdminUser, Profile, UserRole } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getUserById(userId: string): Promise<AdminUser | null> {
   const logger = createOperationLogger('getUserById', {})

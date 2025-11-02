@@ -8,7 +8,32 @@ import {
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffMemberSchedule } from '../api/queries'
 import { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
+import type { Staff } from '../api/types'
 import { StaffScheduleClient } from './schedule-client'
+
+interface StaffProfileData {
+  ['id']: string
+  ['user_id']: string | null
+  ['salon_id']: string
+  ['full_name']: string | null
+  ['email']: string | null
+  ['title']: string | null
+  ['status']: string | null
+}
+
+function isStaffProfileData(value: unknown): value is StaffProfileData {
+  if (typeof value !== 'object' || value === null) return false
+  const obj = value as Record<string, unknown>
+  return (
+    typeof obj['id'] === 'string' &&
+    typeof obj['salon_id'] === 'string' &&
+    (obj['user_id'] === null || typeof obj['user_id'] === 'string') &&
+    (obj['full_name'] === null || typeof obj['full_name'] === 'string') &&
+    (obj['email'] === null || typeof obj['email'] === 'string') &&
+    (obj['title'] === null || typeof obj['title'] === 'string') &&
+    (obj['status'] === null || typeof obj['status'] === 'string')
+  )
+}
 
 export async function ScheduleFeature() {
   let staffProfile
@@ -30,7 +55,7 @@ export async function ScheduleFeature() {
     )
   }
 
-  if (!staffProfile || !staffProfile['id'] || !staffProfile['salon_id']) {
+  if (!isStaffProfileData(staffProfile)) {
     return (
       <section className="mx-auto max-w-4xl px-4 pb-12 pt-6 sm:px-6 lg:px-8">
         <Empty>
@@ -46,9 +71,20 @@ export async function ScheduleFeature() {
   const schedules = await getStaffMemberSchedule(staffProfile['id'])
   const blockedTimes = await getBlockedTimesByStaff(staffProfile['id'])
 
+  // Construct Staff object from profile data
+  const staff: Staff = {
+    id: staffProfile['id'],
+    user_id: staffProfile['user_id'],
+    salon_id: staffProfile['salon_id'],
+    full_name: staffProfile['full_name'],
+    email: staffProfile['email'],
+    title: staffProfile['title'],
+    status: staffProfile['status'],
+  }
+
   return (
     <StaffScheduleClient
-      schedules={schedules.map((schedule) => ({ ...schedule, staff: staffProfile }))}
+      schedules={schedules.map((schedule) => ({ ...schedule, staff }))}
       staffId={staffProfile['id']}
       salonId={staffProfile['salon_id']}
       blockedTimes={blockedTimes}

@@ -1,7 +1,7 @@
 'use server'
 
 import { COUPONS_UNSUPPORTED_MESSAGE } from '../messages'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function createCoupon(..._args: unknown[]): Promise<never> {
   const logger = createOperationLogger('createCoupon', {})

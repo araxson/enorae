@@ -5,7 +5,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { analyzeSentiment } from './sentiment'
 import { calculateQualityScore } from './quality'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']

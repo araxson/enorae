@@ -1,2 +1,3 @@
-export { BusinessDashboardPage as BusinessDashboard } from './components/business-dashboard'
+export { BusinessDashboardPage as BusinessDashboard } from './components'
 export * from './api/queries'
+export * from './types'

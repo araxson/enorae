@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 /**
  * Refresh security monitoring data by revalidating the page

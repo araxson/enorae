@@ -5,7 +5,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Json } from '@/lib/types/database.types'
 import { UUID_REGEX } from '../../constants'
-import { createOperationLogger, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 /**
  * Batch update user status - for bulk operations

@@ -6,10 +6,10 @@ import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import {
   buildSegmentationCounts,
   createEmptyInsightsSummary,
-} from '@/lib/utils/insights'
+} from '@/features/business/insights/utils/insights'
 import type { InsightsSummary } from '../../types'
 import { getCustomerInsights } from './customers'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
 

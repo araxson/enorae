@@ -4,7 +4,7 @@ import {
   StaffServicesNotFoundError,
   getStaffServicesData,
 } from './api/queries'
-import { StaffServicesPanel } from './components/staff-services-panel'
+import { StaffServicesPanel } from './components'
 
 type StaffServicesProps = {
   params: Promise<{ 'staff-id': string }>
@@ -37,3 +37,4 @@ export async function StaffServices({ params }: StaffServicesProps) {
     )
   }
 }
+export * from './types'

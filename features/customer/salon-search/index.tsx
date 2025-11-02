@@ -41,3 +41,4 @@ export async function SalonSearchFeature(props: {
     </Suspense>
   )
 }
+export * from './types'

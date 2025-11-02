@@ -1,5 +1,5 @@
 import { getSalonBusinessInfo } from './api/queries'
-import { SalonInfoForm } from './components/salon-info-form'
+import { SalonInfoForm } from './components'
 
 export async function SalonBusinessInfo() {
   const salon = await getSalonBusinessInfo()
@@ -18,3 +18,4 @@ export async function SalonBusinessInfo() {
     </section>
   )
 }
+export * from './types'

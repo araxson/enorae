@@ -9,7 +9,7 @@ import {
   defaultCouponFormState,
   type CouponFormProps,
   type CouponFormState,
-} from './coupon-form.types'
+} from '../types'
 
 const mapCouponToState = (coupon?: CouponFormProps['coupon']): CouponFormState => {
   if (!coupon) {

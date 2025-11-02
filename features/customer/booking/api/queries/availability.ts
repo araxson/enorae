@@ -1,10 +1,10 @@
 import 'server-only'
 
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import {
   checkAppointmentConflict as sharedCheckAppointmentConflict,
   checkStaffAvailability as sharedCheckStaffAvailability,
-} from '@/features/shared/appointments/api/queries/availability'
+} from '@/features/shared/appointments/api/queries'
 
 export async function checkStaffAvailability(
   staffId: string,

@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
-import { BusinessSidebar } from '@/features/shared/portal-shell/components/sidebars/business-sidebar'
-import { PortalHeader } from '@/features/shared/portal-shell/components/portal-header'
+import { BusinessSidebar, PortalHeader } from '@/features/shared/portal-shell/components'
 
 export const runtime = 'nodejs'
 

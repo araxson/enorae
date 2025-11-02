@@ -15,6 +15,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { AssignRoleFormHeader } from './assign-role-form-header'
 import { AssignRoleFormFields } from './assign-role-form-fields'
 import { AssignRolePermissionsSection } from './assign-role-permissions-section'
+import { hasKeys } from '@/lib/utils/typed-object'
 
 type AssignRoleFormProps = {
   open: boolean
@@ -39,7 +40,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
   const [permissions, setPermissions] = useState<string[]>([])
   const [templateId, setTemplateId] = useState('')
   const [errors, setErrors] = useState<{ userId?: string; role?: string; salonId?: string }>({})
-  const userIdRef = useRef<HTMLInputElement | null>(null)
+  const userIdRef = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
     if (!open) {
@@ -101,7 +102,7 @@ export function AssignRoleForm({ open, onOpenChange, salons }: AssignRoleFormPro
 
     setErrors(nextErrors)
 
-    if (Object.keys(nextErrors).length > 0) {
+    if (hasKeys(nextErrors)) {
       toast.error('Please resolve the highlighted fields before submitting.')
       return
     }

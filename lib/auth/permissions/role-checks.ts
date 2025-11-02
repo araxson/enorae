@@ -2,7 +2,7 @@
 
 import { verifySession } from '@/lib/auth/session'
 import { ROLE_GROUPS, type RoleType } from './roles'
-import { logAuthEvent } from '@/lib/observability/logger'
+import { logAuthEvent } from '@/lib/observability'
 
 export async function hasRole(role: RoleType): Promise<boolean> {
   const session = await verifySession()

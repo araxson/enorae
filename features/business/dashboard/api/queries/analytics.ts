@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type DailyMetric = Database['public']['Views']['daily_metrics_view']['Row']
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']

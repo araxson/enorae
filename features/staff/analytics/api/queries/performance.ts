@@ -1,7 +1,7 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export interface StaffPerformanceMetrics {
   total_appointments: number

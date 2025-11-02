@@ -1,7 +1,7 @@
 'use server'
 import { requireAuth } from '@/lib/auth/guards'
-import { requireStaffId } from '@/lib/staff/staff-helpers'
-import { createMessage, getThread, archiveThread as archiveThreadOp, markMessagesAsRead, revalidateMessagePaths } from '@/lib/messaging/operations'
+import { requireStaffId } from '@/features/shared/staff/utils/staff-helpers'
+import { createMessage, getThread, archiveThread as archiveThreadOp, markMessagesAsRead, revalidateMessagePaths } from '@/features/shared/messaging/api/operations'
 import {
   messageSchema,
   threadMessageSchema,

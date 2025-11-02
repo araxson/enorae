@@ -7,5 +7,10 @@ export async function ProfileMetadata() {
 }
 
 export { getCurrentUserMetadata, getProfileMetadata } from './api/queries'
-export { updateProfileMetadata, uploadAvatar, uploadCoverImage } from './api/mutations'
+export {
+  updateProfileMetadata,
+  uploadAvatarAction as uploadAvatar,
+  uploadCoverImageAction as uploadCoverImage
+} from './api/mutations'
 export { MetadataForm } from './components'
+export * from './types'

@@ -2,9 +2,8 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
-
-import { UUID_REGEX } from '../constants'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { UUID_REGEX } from '@/features/staff/schedule/api/constants'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function getAuthorizedContext(salonId: string) {
   const logger = createOperationLogger('getAuthorizedContext', {})

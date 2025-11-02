@@ -1,1 +1,2 @@
-export { StaffManagement } from './components/staff-management'
+export { StaffManagement } from './components'
+export * from './types'

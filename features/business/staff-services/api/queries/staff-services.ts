@@ -4,7 +4,7 @@ import type { Database } from '@/lib/types/database.types'
 import { getUserSalon } from '@/features/business/business-common/api/queries'
 import { getStaffById, type EnrichedStaffProfile } from '@/features/business/staff/api/queries'
 import { createClient } from '@/lib/supabase/server'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type StaffServiceRow = Database['public']['Views']['staff_services_view']['Row']
 type ServiceRow = Database['public']['Views']['services_view']['Row']

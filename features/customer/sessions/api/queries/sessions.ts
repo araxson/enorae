@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 // FIXED: Use public sessions_view (application sessions metadata)
 type Session = Database['public']['Views']['sessions_view']['Row']

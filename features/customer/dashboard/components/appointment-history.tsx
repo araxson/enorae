@@ -16,7 +16,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries/appointments'
+import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries'
 import {
   Item,
   ItemActions,

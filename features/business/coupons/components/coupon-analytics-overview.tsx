@@ -1,7 +1,7 @@
 'use client'
 
-import type { CouponAnalyticsSnapshot } from '@/features/business/coupons/api/queries/coupon-validation'
-import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
+import type { CouponAnalyticsSnapshot } from '@/features/business/coupons/api/queries'
+import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries'
 import { CouponMetricCards } from './analytics/metric-cards'
 import { RedemptionTrendChart } from './analytics/redemption-trend-chart'
 import { ExpiringSoonList } from './analytics/expiring-soon-list'

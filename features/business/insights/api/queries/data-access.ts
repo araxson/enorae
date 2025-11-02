@@ -1,7 +1,7 @@
 import 'server-only'
 import type { Database } from '@/lib/types/database.types'
 import type { ServerSupabaseClient } from '@/lib/supabase/server'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import type {
   AppointmentServiceRow,
   AppointmentWithProfile,
@@ -9,7 +9,7 @@ import type {
   ReviewSummary,
   ServiceRow,
   StaffProfileRow,
-} from './customer-types'
+} from '../types'
 
 type Client = ServerSupabaseClient
 

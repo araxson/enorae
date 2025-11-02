@@ -44,7 +44,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 min="0"
                 max="100"
                 value={state.taxRate}
-                onChange={(event) => onChange('taxRate', event.target.value)}
+                onChange={(event) => onChange('taxRate', parseFloat(event.target.value) || 0)}
                 placeholder="0.00"
               />
             </FieldContent>
@@ -61,7 +61,7 @@ export function TaxCommissionSection({ state, onChange }: TaxCommissionSectionPr
                 min="0"
                 max="100"
                 value={state.commissionRate}
-                onChange={(event) => onChange('commissionRate', event.target.value)}
+                onChange={(event) => onChange('commissionRate', parseFloat(event.target.value) || 0)}
                 placeholder="0.00"
               />
             </FieldContent>

@@ -31,7 +31,7 @@ import {
   ItemDescription,
   ItemTitle,
 } from '@/components/ui/item'
-import { deleteSalonLocation } from '@/features/business/locations/api/mutations/location'
+import { deleteSalonLocation } from '@/features/business/locations/api/mutations'
 import type { SalonLocation } from '@/features/business/locations'
 
 type LocationListProps = {

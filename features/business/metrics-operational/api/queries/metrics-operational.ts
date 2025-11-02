@@ -1,10 +1,9 @@
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
-import { canAccessSalon } from '@/lib/auth/permissions/salon-access'
+import { requireAnyRole, requireUserSalonId, ROLE_GROUPS, canAccessSalon } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
 

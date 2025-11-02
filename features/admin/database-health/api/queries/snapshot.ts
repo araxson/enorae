@@ -5,7 +5,7 @@ import { getDatabaseHealth } from './database-health'
 import { getSchemaValidation } from './schema-validation'
 import { getOptimizationRecommendations } from './optimization'
 import { getNotificationQueue } from './notification-queue'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export interface DatabaseHealthFullSnapshot {
   queryPerformance: Awaited<ReturnType<typeof getQueryPerformance>>

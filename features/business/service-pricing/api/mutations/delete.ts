@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const CATALOG_SCHEMA = 'catalog'
 const PRICING_TABLE = 'service_pricing'

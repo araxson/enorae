@@ -3,10 +3,10 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { rescheduleSchema } from '@/lib/validations/customer/appointments'
+import { rescheduleSchema } from '@/features/customer/appointments/api/validation'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_HOUR, APPOINTMENT_CANCELLATION_HOURS } from '@/lib/constants/time'
-import { createOperationLogger, logMutation } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }

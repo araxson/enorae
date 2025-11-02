@@ -4,7 +4,8 @@ import 'server-only'
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
 import type { ServerSupabaseClient } from '@/lib/supabase/server'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { safeJsonParseStringArray } from '@/lib/utils/safe-json'
 
 type Client = ServerSupabaseClient
 
@@ -23,13 +24,9 @@ const featuresArraySchema = z.array(z.string())
 
 function parseFeatures(raw: FormDataEntryValue | null): string[] | null {
   if (!raw) return null
-  try {
-    const parsed = JSON.parse(String(raw))
-    const validated = featuresArraySchema.safeParse(parsed)
-    return validated.success ? validated.data : null
-  } catch {
-    return null
-  }
+  const parsed = safeJsonParseStringArray(String(raw), [])
+  const validated = featuresArraySchema.safeParse(parsed)
+  return validated.success ? validated.data : null
 }
 
 async function upsertSalonSettings(
@@ -104,7 +101,7 @@ export async function updateSalonSettings(salonId: string, formData: FormData) {
     revalidateSettings()
 
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
     if (error instanceof z.ZodError) {
       return { error: `Validation failed: ${error.issues[0]?.message}` }
@@ -136,7 +133,7 @@ export async function toggleAcceptingBookings(
 
     revalidateSettings()
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to update booking status' }
   }
@@ -187,7 +184,7 @@ export async function toggleFeature(
 
     revalidateSettings()
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
     return { error: 'Failed to toggle feature' }
   }

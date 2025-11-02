@@ -2,7 +2,7 @@ import 'server-only'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function requireAdminClient() {
   const logger = createOperationLogger('requireAdminClient', {})

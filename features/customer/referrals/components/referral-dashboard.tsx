@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/empty'
 
 type Props = {
-  referralCode: Referral | null
+  referralCode: string | null
   stats: {
     total_referrals: number
     successful_referrals: number
@@ -117,7 +117,7 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="font-mono text-lg font-semibold text-foreground">{referralCode.code}</p>
+          <p className="font-mono text-lg font-semibold text-foreground">{referralCode}</p>
         </CardContent>
       </Card>
 

@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const updateIncidentSchema = z.object({
   incidentId: z.string().uuid(),
@@ -22,12 +22,13 @@ const impactedResourcesSchema = z.preprocess((value) => {
   }
   if (typeof value === 'string') {
     try {
-      return JSON.parse(value)
+      const parsed = JSON.parse(value)
+      return Array.isArray(parsed) ? parsed : []
     } catch {
-      return value
+      return []
     }
   }
-  return value
+  return []
 }, z.array(z.string()))
 
 const logIncidentSchema = z.object({

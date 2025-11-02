@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getAnalyticsSalon() {
   const logger = createOperationLogger('getAnalyticsSalon', {})

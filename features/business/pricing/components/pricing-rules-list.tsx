@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { Trash2 } from 'lucide-react'
-import { togglePricingRuleStatus, deletePricingRule } from '@/features/business/pricing/api/mutations/pricing-rules'
+import { togglePricingRuleStatus, deletePricingRule } from '@/features/business/pricing/api/mutations'
 import { useToast } from '@/lib/hooks/use-toast'
 import {
   Empty,

@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 // UUID validation regex
 const UUID_REGEX =

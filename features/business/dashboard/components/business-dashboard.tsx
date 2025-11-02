@@ -3,10 +3,9 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { ShieldAlert, Store } from 'lucide-react'
 import { getUserRole } from '@/lib/auth'
-import { getDashboardMetrics, getRecentAppointments, getUserSalon, getMultiLocationMetrics } from '../api/queries'
-import { getReviewStats } from '@/features/business/reviews/api/queries'
-import type { AppointmentWithDetails } from '../api/queries'
-import type { BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from '../types'
+import { getDashboardMetrics, getRecentAppointments, getUserSalon, getMultiLocationMetrics } from '../api'
+import { getReviewStats } from '@/features/business/reviews/api'
+import type { AppointmentWithDetails, BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from '../types'
 import { Button } from '@/components/ui/button'
 import {
   Empty,

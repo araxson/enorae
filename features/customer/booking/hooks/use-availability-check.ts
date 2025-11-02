@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useTransition } from 'react'
-import { checkStaffAvailability } from '@/features/shared/appointments/api/queries/availability'
+import { checkStaffAvailability } from '@/features/shared/appointments/api/queries'
 
 type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
 

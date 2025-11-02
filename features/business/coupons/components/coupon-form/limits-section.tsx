@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
+import type { CouponFormState } from '../types'
 import {
   Field,
   FieldContent,

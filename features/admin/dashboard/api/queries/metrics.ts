@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { logSupabaseError } from '@/lib/supabase/errors'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export async function getPlatformMetrics() {

@@ -17,4 +17,4 @@ export type {
   StaffDashboardStats,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from './api/queries/dashboard-core-types'
+} from './api/types'

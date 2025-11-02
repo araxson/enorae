@@ -15,4 +15,11 @@ export { ServiceCompletionCard } from './service-completion-card'
 export { ServiceStatusRow } from './service-status-row'
 export { ServicesTable } from './services-table'
 export { ServicesSummary } from './services-summary'
-export * from './add-service'
+
+// Re-export from subdirectories (components only, types from add-service to avoid duplication)
+export { AddServiceDialogClient, AddServiceDialogWrapper, ServiceSelectField, StaffSelectField, TimeFields, DurationField } from './add-service'
+export * from './add-service/types'
+export { EditServiceFormFields as EditServiceFormFieldsComponent } from './edit-service'
+export * from './appointments-table'
+export * from './manager'
+export * from './shared'

@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
-import { useServiceFormOptions } from './shared/use-service-form-data'
+import { useServiceFormOptions } from '../hooks/use-service-form-data'
 import { Spinner } from '@/components/ui/spinner'
 import { AddServiceFormFields } from './add-service-form-fields'
 

@@ -4,10 +4,11 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { ZodError } from 'zod'
-import { reviewSchema } from '@/lib/validations/customer/reviews'
+import { reviewSchema } from '@/features/customer/reviews/api/validation'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_DAY, REVIEW_EDIT_WINDOW_DAYS } from '@/lib/constants/time'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { getRequiredString, getOptionalString, getRequiredInt, getOptionalInt } from '@/lib/utils/safe-form-data'
 
 type ActionResult = {
   success?: boolean
@@ -23,14 +24,14 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
     const supabase = await createClient()
 
     const data = {
-      salonId: formData.get('salonId') as string,
-      appointmentId: formData.get('appointmentId') as string | undefined,
-      rating: parseInt(formData.get('rating') as string),
-      title: formData.get('title') as string | undefined,
-      comment: formData.get('comment') as string,
-      serviceQualityRating: formData.get('serviceQualityRating') ? parseInt(formData.get('serviceQualityRating') as string) : undefined,
-      cleanlinessRating: formData.get('cleanlinessRating') ? parseInt(formData.get('cleanlinessRating') as string) : undefined,
-      valueRating: formData.get('valueRating') ? parseInt(formData.get('valueRating') as string) : undefined,
+      salonId: getRequiredString(formData, 'salonId'),
+      appointmentId: getOptionalString(formData, 'appointmentId') ?? undefined,
+      rating: getRequiredInt(formData, 'rating'),
+      title: getOptionalString(formData, 'title') ?? undefined,
+      comment: getRequiredString(formData, 'comment'),
+      serviceQualityRating: getOptionalInt(formData, 'serviceQualityRating') ?? undefined,
+      cleanlinessRating: getOptionalInt(formData, 'cleanlinessRating') ?? undefined,
+      valueRating: getOptionalInt(formData, 'valueRating') ?? undefined,
     }
 
     logger.start({ salonId: data.salonId, userId: session.user.id, rating: data.rating })
@@ -72,7 +73,7 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
 
     logger.success({ salonId: validated.salonId, userId: session.user.id, reviewId: review.id })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof ZodError) {
       logger.error(error.issues?.[0]?.message ?? 'Validation failed', 'validation')
       return { error: error.issues?.[0]?.message ?? 'Validation failed' }
@@ -128,18 +129,18 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       return { error: `Reviews can only be edited within ${REVIEW_EDIT_WINDOW_DAYS} days of creation` }
     }
 
-    const data = {
-      salonId: formData.get('salonId') as string,
-      appointmentId: formData.get('appointmentId') as string | undefined,
-      rating: parseInt(formData.get('rating') as string),
-      title: formData.get('title') as string | undefined,
-      comment: formData.get('comment') as string,
-      serviceQualityRating: formData.get('serviceQualityRating') ? parseInt(formData.get('serviceQualityRating') as string) : undefined,
-      cleanlinessRating: formData.get('cleanlinessRating') ? parseInt(formData.get('cleanlinessRating') as string) : undefined,
-      valueRating: formData.get('valueRating') ? parseInt(formData.get('valueRating') as string) : undefined,
+    const updateData = {
+      salonId: getRequiredString(formData, 'salonId'),
+      appointmentId: getOptionalString(formData, 'appointmentId') ?? undefined,
+      rating: getRequiredInt(formData, 'rating'),
+      title: getOptionalString(formData, 'title') ?? undefined,
+      comment: getRequiredString(formData, 'comment'),
+      serviceQualityRating: getOptionalInt(formData, 'serviceQualityRating') ?? undefined,
+      cleanlinessRating: getOptionalInt(formData, 'cleanlinessRating') ?? undefined,
+      valueRating: getOptionalInt(formData, 'valueRating') ?? undefined,
     }
 
-    const validated = reviewSchema.parse(data)
+    const validated = reviewSchema.parse(updateData)
 
     // Note: .schema() required for INSERT/UPDATE/DELETE
     const { error } = await supabase
@@ -158,7 +159,7 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       .eq('customer_id', session.user.id)
 
     if (error) {
-      logger.error(error, 'database', { reviewId: id, salonId: review.salon_id, userId: session.user.id })
+      logger.error(error, 'database', { reviewId: id, salonId: review.salon_id ?? undefined, userId: session.user.id })
       throw error
     }
 
@@ -176,7 +177,7 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
 
     logger.success({ reviewId: id, salonId: review.salon_id, userId: session.user.id })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof ZodError) {
       logger.error(error.issues?.[0]?.message ?? 'Validation failed', 'validation', { reviewId: id })
       return { error: error.issues?.[0]?.message ?? 'Validation failed' }
@@ -245,7 +246,7 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
 
     logger.success({ reviewId: id, salonId, userId: session.user.id })
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system', { reviewId: id, salonId })
     return { error: error instanceof Error ? error.message : 'Failed to delete review' }
   }

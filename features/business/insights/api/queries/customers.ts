@@ -13,9 +13,9 @@ import {
   groupAppointmentsByCustomer,
   groupServicesByCustomer,
 } from './transformers'
-import { selectTopByLifetimeValue } from '@/lib/utils/insights'
+import { selectTopByLifetimeValue } from '@/features/business/insights/utils/insights'
 import type { CustomerMetrics } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getCustomerInsights(
   limit = 50,

@@ -1,7 +1,7 @@
 import { CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import type { AvailabilityStatus } from './use-booking-form'
+import type { AvailabilityStatus } from '../../hooks/use-booking-form'
 import {
   Item,
   ItemContent,

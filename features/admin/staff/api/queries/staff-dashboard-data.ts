@@ -19,7 +19,7 @@ import {
 } from './dashboard-fetchers'
 import { normalizeBackgroundStatus } from './dashboard-metrics'
 import type { StaffDashboardData, StaffWithMetrics } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function getStaffDashboardData(): Promise<StaffDashboardData> {
   const logger = createOperationLogger('getStaffDashboardData', {})

@@ -6,6 +6,9 @@ import type { ParsedModeration, ParsedThreadMetadata } from '../types'
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)
 
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === 'string')
+
 export const parseModeration = (metadata: Json | null): ParsedModeration => {
   if (!isObject(metadata)) {
     return { isFlagged: false, reason: '', severity: 'low', status: 'clean' }
@@ -24,8 +27,8 @@ export const parseModeration = (metadata: Json | null): ParsedModeration => {
       : typeof moderation?.['toxicity'] === 'number'
         ? moderation['toxicity']
         : null
-  const flaggedCategories = Array.isArray(moderation?.['categories'])
-    ? (moderation['categories'] as unknown[]).filter((item) => typeof item === 'string')
+  const flaggedCategories = isStringArray(moderation?.['categories'])
+    ? moderation['categories']
     : undefined
 
   const baseReason =
@@ -77,18 +80,23 @@ export const parseThreadMetadata = (metadata: Json | null): ParsedThreadMetadata
     return { totalReports: 0, openReports: 0, pendingReports: 0 }
   }
 
-  const reports = Array.isArray(metadata['reports']) ? (metadata['reports'] as unknown[]).filter(isObject) : []
+  const reportsRaw = metadata['reports']
+  const reports = Array.isArray(reportsRaw) ? reportsRaw.filter(isObject) : []
 
   const totalReports = reports.length
-  const openReports = reports.filter((report) => {
-    const status = typeof report['status'] === 'string' ? report['status'].toLowerCase() : 'open'
-    return !['resolved', 'closed', 'dismissed'].includes(status)
-  }).length
+  const openReports = reports
+    .filter((report) => {
+      if (!isObject(report)) return false
+      const reportObj = report as Record<string, unknown>
+      const status = typeof reportObj['status'] === 'string' ? reportObj['status'].toLowerCase() : 'open'
+      return !['resolved', 'closed', 'dismissed'].includes(status)
+    }).length
 
   const moderationStatus = (() => {
     if (typeof metadata['moderation_status'] === 'string') return metadata['moderation_status']
-    if (isObject(metadata['moderation']) && typeof metadata['moderation']['status'] === 'string') {
-      return metadata['moderation']['status']
+    const moderation = metadata['moderation']
+    if (isObject(moderation) && typeof moderation['status'] === 'string') {
+      return moderation['status']
     }
     return null
   })()

@@ -3,13 +3,14 @@
 import { revalidatePath } from 'next/cache'
 
 import { enforceAdminBulkRateLimit } from '@/lib/middleware/rate-limit'
+import { safeJsonParse } from '@/lib/utils/safe-json'
 
 import { logRoleAudit } from './audit'
 import { applyRoleAssignment } from './assignments'
 import { requireAdminContext } from './context'
 import { bulkSchema, ROLES_NEEDING_SALON } from './validation'
 import type { RoleActionResponse } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function bulkAssignRoles(
   formData: FormData,
@@ -23,10 +24,8 @@ export async function bulkAssignRoles(
       return { success: false, error: 'Missing bulk payload' }
     }
 
-    let parsed: unknown
-    try {
-      parsed = JSON.parse(payloadRaw)
-    } catch (error) {
+    const parsed = safeJsonParse<unknown>(payloadRaw, null)
+    if (parsed === null) {
       return { success: false, error: 'Invalid bulk payload JSON' }
     }
 
@@ -76,7 +75,7 @@ export async function bulkAssignRoles(
     revalidatePath('/admin/users', 'page')
 
     return { success: true, data: results }
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to process bulk assignment',

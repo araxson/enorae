@@ -72,3 +72,23 @@ export function UserActionsDropdown({
     </DropdownMenu>
   )
 }
+
+export function UserActionsMenuContent({
+  isActive,
+  onOpenSuspend,
+  onOpenReactivate,
+  onOpenTerminate,
+  onOpenDelete,
+  hasDelete,
+}: Props) {
+  return (
+    <UserActionsDropdown
+      isActive={isActive}
+      onOpenSuspend={onOpenSuspend}
+      onOpenReactivate={onOpenReactivate}
+      onOpenTerminate={onOpenTerminate}
+      onOpenDelete={onOpenDelete}
+      hasDelete={hasDelete}
+    />
+  )
+}

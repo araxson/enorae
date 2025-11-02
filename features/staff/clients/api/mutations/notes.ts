@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
 import type { ActionResponse, ThreadMetadata } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 import { STRING_LIMITS } from '@/lib/config/constants'
 
 const clientNoteSchema = z.object({

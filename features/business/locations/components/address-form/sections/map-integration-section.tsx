@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { MapPin, Check, AlertCircle } from 'lucide-react'
 import { EXTERNAL_APIS } from '@/lib/config/env'
-import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
+import type { LocationAddress } from '@/features/business/locations/types'
 import { AddressSearchField } from './address-search-field'
 import { MapDisplay } from './map-display'
 

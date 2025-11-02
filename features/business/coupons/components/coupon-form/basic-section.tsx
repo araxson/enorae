@@ -16,7 +16,7 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
-import type { CouponFormState } from '@/features/business/coupons/components/coupon-form.types'
+import type { CouponFormState } from '../types'
 
 interface CouponBasicSectionProps {
   formData: CouponFormState

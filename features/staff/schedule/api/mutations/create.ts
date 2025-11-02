@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 import { scheduleSchema } from '../constants'
 import { getAuthorizedContext } from './context'
 import type { ActionResult } from '../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function createStaffSchedule(
   salonId: string,
@@ -16,13 +16,13 @@ export async function createStaffSchedule(
 
   try {
     const validation = scheduleSchema.parse(data)
-    const context = await getAuthorizedContext(salonId)
+    const contextResult = await getAuthorizedContext(salonId)
 
-    if ('error' in context) {
-      return context
+    if (!contextResult.success) {
+      return contextResult
     }
 
-    const { supabase, session } = context
+    const { supabase, session } = contextResult.data
 
     const { data: existingSchedule } = await supabase
       .schema('scheduling')
@@ -35,7 +35,7 @@ export async function createStaffSchedule(
       .single()
 
     if (existingSchedule) {
-      return { error: 'Schedule conflict: Staff member already has a schedule for this day' }
+      return { success: false, error: 'Schedule conflict: Staff member already has a schedule for this day' }
     }
 
     const { data: schedule, error } = await supabase
@@ -62,6 +62,6 @@ export async function createStaffSchedule(
     return { success: true, data: schedule }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: error instanceof Error ? error.message : 'Failed to create schedule' }
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to create schedule' }
   }
 }

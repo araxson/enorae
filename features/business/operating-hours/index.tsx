@@ -1,6 +1,5 @@
 import { getOperatingHoursBySalon, getOperatingHoursSalon } from './api/queries'
-import { OperatingHoursContent } from './components/operating-hours-content'
-import { OperatingHoursError } from './components/operating-hours-error'
+import { OperatingHoursContent, OperatingHoursError } from './components'
 
 export async function OperatingHoursManagement() {
   let salon
@@ -14,3 +13,4 @@ export async function OperatingHoursManagement() {
 
   return <OperatingHoursContent salonId={salon.id} operatingHours={operatingHours} />
 }
+export * from './types'

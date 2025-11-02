@@ -1,9 +1,11 @@
 import 'server-only'
 import type { Database } from '@/lib/types/database.types'
-import type { Session } from '@/lib/auth'
-import { deriveBookingDurations, derivePricingMetrics } from '@/lib/services/calculations'
+import type { User } from '@supabase/supabase-js'
+import { deriveBookingDurations, derivePricingMetrics } from '@/features/shared/services/utils/calculations'
 import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
 import type { SupabaseServerClient } from './shared'
+
+type SessionContext = { user: User }
 
 export type ServiceFormData = {
   name: string
@@ -35,15 +37,19 @@ export function buildServiceInsert(
   salonId: string,
   service: ServiceFormData,
   slug: string,
-  session: Session,
+  session: SessionContext,
   timestamp: string,
 ): Database['catalog']['Tables']['services']['Insert'] {
+  if (!service.category_id) {
+    throw new Error('Category ID is required to create a service')
+  }
+
   return {
     salon_id: salonId,
     name: service.name,
     slug,
     description: service.description ?? null,
-    category_id: service.category_id!,
+    category_id: service.category_id,
     is_active: service.is_active,
     is_bookable: service.is_bookable,
     is_featured: service.is_featured,
@@ -57,7 +63,7 @@ export function buildServiceInsert(
 export function buildPricingInsert(
   serviceId: string,
   pricing: ServicePricingData,
-  session: Session,
+  session: SessionContext,
   timestamp: string,
 ) {
   const { currentPrice, salePrice, profitMargin } = derivePricingMetrics(
@@ -87,7 +93,7 @@ export function buildPricingInsert(
 export function buildBookingRulesInsert(
   serviceId: string,
   rules: ServiceBookingRulesData,
-  session: Session,
+  session: SessionContext,
   timestamp: string,
 ) {
   const { durationMinutes, bufferMinutes, totalDurationMinutes } = deriveBookingDurations(
@@ -109,21 +115,96 @@ export function buildBookingRulesInsert(
   }
 }
 
+/**
+ * Rollback service creation by deleting service and optionally pricing
+ *
+ * Error scenarios:
+ * - Pricing deletion fails (constraint violations, permissions)
+ * - Service deletion fails (referenced by other tables)
+ * - Partial rollback (pricing deleted but service deletion fails)
+ *
+ * Recovery: Logs full context for debugging, throws to halt transaction
+ *
+ * @param supabase - Supabase client instance
+ * @param serviceId - ID of service to rollback
+ * @param includePricing - Whether to also delete pricing data
+ */
 export async function rollbackService(
   supabase: SupabaseServerClient,
   serviceId: string,
   includePricing: boolean = false,
 ) {
-  if (includePricing) {
-    const { error: pricingError } = await supabase.schema('catalog').from('service_pricing').delete().eq('service_id', serviceId)
-    if (pricingError) {
-      console.error('Failed to rollback service pricing:', pricingError)
-      throw pricingError
+  console.log('[rollbackService] Starting rollback', {
+    serviceId,
+    includePricing,
+    timestamp: new Date().toISOString(),
+  })
+
+  try {
+    // Step 1: Delete pricing if requested
+    if (includePricing) {
+      console.log('[rollbackService] Attempting to delete service pricing', { serviceId })
+
+      const { error: pricingError } = await supabase
+        .schema('catalog')
+        .from('service_pricing')
+        .delete()
+        .eq('service_id', serviceId)
+
+      if (pricingError) {
+        console.error('[rollbackService] Failed to rollback service pricing', {
+          serviceId,
+          error: pricingError,
+          errorCode: pricingError.code,
+          errorMessage: pricingError.message,
+          errorDetails: pricingError.details,
+          errorHint: pricingError.hint,
+          timestamp: new Date().toISOString(),
+        })
+        throw new Error(`Pricing rollback failed for service ${serviceId}: ${pricingError.message}`)
+      }
+
+      console.log('[rollbackService] Successfully deleted service pricing', { serviceId })
     }
-  }
-  const { error: serviceError } = await supabase.schema('catalog').from('services').delete().eq('id', serviceId)
-  if (serviceError) {
-    console.error('Failed to rollback service:', serviceError)
-    throw serviceError
+
+    // Step 2: Delete service
+    console.log('[rollbackService] Attempting to delete service', { serviceId })
+
+    const { error: serviceError } = await supabase
+      .schema('catalog')
+      .from('services')
+      .delete()
+      .eq('id', serviceId)
+
+    if (serviceError) {
+      console.error('[rollbackService] Failed to rollback service', {
+        serviceId,
+        includePricing,
+        pricingWasDeleted: includePricing, // Critical: pricing may be orphaned
+        error: serviceError,
+        errorCode: serviceError.code,
+        errorMessage: serviceError.message,
+        errorDetails: serviceError.details,
+        errorHint: serviceError.hint,
+        timestamp: new Date().toISOString(),
+      })
+      throw new Error(`Service rollback failed for service ${serviceId}: ${serviceError.message}`)
+    }
+
+    console.log('[rollbackService] Successfully completed rollback', {
+      serviceId,
+      includePricing,
+      timestamp: new Date().toISOString(),
+    })
+  } catch (error) {
+    // Log complete context for debugging partial rollback scenarios
+    console.error('[rollbackService] Rollback operation failed', {
+      serviceId,
+      includePricing,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    })
+    throw error
   }
 }

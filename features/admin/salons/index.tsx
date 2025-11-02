@@ -15,3 +15,4 @@ export async function AdminSalons() {
     </section>
   )
 }
+export * from './types'

@@ -3,7 +3,7 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { CustomerFavoriteView } from '@/features/customer/favorites'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 const FAVORITES_LIMIT = 10
 

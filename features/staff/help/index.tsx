@@ -22,3 +22,4 @@ export async function StaffHelp() {
 }
 
 export * from './api/queries'
+export * from './types'

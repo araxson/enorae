@@ -8,7 +8,7 @@ import {
   MAX_REVIEW_SAMPLE,
 } from './dashboard-constants'
 import type { AppointmentRow, BackgroundRow, MetadataRow, ReviewRow } from '../../types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function fetchBackgroundChecks(
   _supabase: ReturnType<typeof createServiceRoleClient>,

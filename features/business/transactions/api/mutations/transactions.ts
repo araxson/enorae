@@ -4,18 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { z } from 'zod'
-import { createOperationLogger, logMutation, logPayment } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logPayment } from '@/lib/observability'
+import { manualTransactionSchema } from '../schema'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-
-const manualTransactionSchema = z.object({
-  appointment_id: z.string().regex(UUID_REGEX, 'Invalid appointment ID').optional(),
-  customer_id: z.string().regex(UUID_REGEX, 'Invalid customer ID').optional(),
-  staff_id: z.string().regex(UUID_REGEX, 'Invalid staff ID').optional(),
-  transaction_at: z.string().min(1, 'Transaction date is required'),
-  transaction_type: z.enum(['payment', 'refund', 'adjustment', 'fee', 'other']),
-  payment_method: z.string().min(1, 'Payment method is required'),
-})
 
 export type ActionResult = {
   success?: boolean

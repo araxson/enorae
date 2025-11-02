@@ -1,5 +1,5 @@
-export { useDescriptionForm } from './use-description-form'
-export type { ArrayFieldState, DescriptionFieldState } from './use-description-form'
+export { useDescriptionForm } from '../../hooks/use-description-form'
+export type { ArrayFieldState, DescriptionFieldState } from '../../hooks/use-description-form'
 export { DescriptionsSection } from './descriptions-section'
 export { SeoSection } from './seo-section'
 export { ArrayFieldsSection } from './array-fields-section'

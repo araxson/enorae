@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import {
   getAnalyticsSalon,
   getCustomerInsights,
@@ -11,7 +11,7 @@ import {
 import {
   getAtRiskCustomers,
   getReactivationOpportunities,
-} from '@/features/business/insights/api/queries/churn-prediction'
+} from '@/features/business/insights/api/queries'
 
 type CustomerSegmentation = Awaited<ReturnType<typeof getCustomerSegmentation>>
 type CustomerCohorts = Awaited<ReturnType<typeof getCustomerCohorts>>

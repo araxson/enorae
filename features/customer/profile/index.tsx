@@ -33,3 +33,4 @@ export function CustomerProfileFeature() {
     </Suspense>
   )
 }
+export * from './types'

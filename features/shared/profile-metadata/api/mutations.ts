@@ -2,10 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { requireAuthSafe } from '@/lib/auth/guards'
-import { uploadAvatar as uploadAvatarHelper, uploadCoverImage as uploadCoverImageHelper } from '@/lib/storage/upload-helpers'
-
-// Re-export helpers with their original names for backwards compatibility
-export { uploadAvatarHelper as uploadAvatar, uploadCoverImageHelper as uploadCoverImage }
+import { uploadAvatar as uploadAvatarLib, uploadCoverImage as uploadCoverImageLib } from '@/lib/storage'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -57,6 +54,10 @@ export async function updateProfileMetadata(
   }
 }
 
+// SECURITY: Allowed avatar file types and size limits
+const ALLOWED_AVATAR_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024 // 5MB
+
 export async function uploadAvatarAction(formData: FormData): Promise<ActionResponse<{ url: string }>> {
   try {
     const authResult = await requireAuthSafe()
@@ -70,8 +71,24 @@ export async function uploadAvatarAction(formData: FormData): Promise<ActionResp
       return { success: false, error: 'No file provided' }
     }
 
-    const result = await uploadAvatarHelper(file, user.id)
-    if (!result.success || !result.url) {
+    // SECURITY: Validate file type
+    if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
+      return {
+        success: false,
+        error: `Invalid file type. Allowed types: ${ALLOWED_AVATAR_TYPES.join(', ')}`,
+      }
+    }
+
+    // SECURITY: Validate file size
+    if (file.size > MAX_AVATAR_SIZE) {
+      return {
+        success: false,
+        error: `File too large. Maximum size: ${MAX_AVATAR_SIZE / 1024 / 1024}MB`,
+      }
+    }
+
+    const result = await uploadAvatarLib(file, user.id)
+    if (!result.url) {
       return { success: false, error: result.error || 'Upload failed' }
     }
 
@@ -91,6 +108,10 @@ export async function uploadAvatarAction(formData: FormData): Promise<ActionResp
   }
 }
 
+// SECURITY: Allowed cover image file types and size limits
+const ALLOWED_COVER_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_COVER_SIZE = 10 * 1024 * 1024 // 10MB
+
 export async function uploadCoverImageAction(formData: FormData): Promise<ActionResponse<{ url: string }>> {
   try {
     const authResult = await requireAuthSafe()
@@ -104,8 +125,24 @@ export async function uploadCoverImageAction(formData: FormData): Promise<Action
       return { success: false, error: 'No file provided' }
     }
 
-    const result = await uploadCoverImageHelper(file, user.id)
-    if (!result.success || !result.url) {
+    // SECURITY: Validate file type
+    if (!ALLOWED_COVER_TYPES.includes(file.type)) {
+      return {
+        success: false,
+        error: `Invalid file type. Allowed types: ${ALLOWED_COVER_TYPES.join(', ')}`,
+      }
+    }
+
+    // SECURITY: Validate file size
+    if (file.size > MAX_COVER_SIZE) {
+      return {
+        success: false,
+        error: `File too large. Maximum size: ${MAX_COVER_SIZE / 1024 / 1024}MB`,
+      }
+    }
+
+    const result = await uploadCoverImageLib(file, user.id, 'salon')
+    if (!result.url) {
       return { success: false, error: result.error || 'Upload failed' }
     }
 
@@ -124,6 +161,3 @@ export async function uploadCoverImageAction(formData: FormData): Promise<Action
   }
 }
 
-// Export aliases for backwards compatibility
-export { uploadAvatarAction as uploadAvatar }
-export { uploadCoverImageAction as uploadCoverImage }

@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import { MODERATION_THRESHOLDS } from '@/lib/config/constants'
 
 interface QualityScoreInput {

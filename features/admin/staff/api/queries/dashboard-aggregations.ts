@@ -6,7 +6,7 @@ import {
   normalizeBackgroundStatus,
 } from './dashboard-metrics'
 import type { BackgroundStatus } from './dashboard-metrics'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 import type {
   AppointmentRow,
   MetadataRow,

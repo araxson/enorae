@@ -3,7 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/auth/guards-simple'
 import { requireUserSalonId } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 export type CouponServiceOption = {
   id: string

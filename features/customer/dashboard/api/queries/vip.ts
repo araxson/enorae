@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 import { getDateRanges } from '@/lib/utils/dates'
 import { BUSINESS_THRESHOLDS } from '@/lib/config/constants'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type UserRole = Database['public']['Views']['user_roles_view']['Row']
 type AppointmentOverview = Database['public']['Views']['admin_appointments_overview_view']['Row']

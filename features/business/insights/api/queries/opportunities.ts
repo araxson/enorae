@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { verifySession } from '@/lib/auth/session'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 // Type aliases for database views
 type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']

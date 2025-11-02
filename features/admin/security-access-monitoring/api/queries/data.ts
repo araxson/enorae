@@ -3,7 +3,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type SecurityAccessViewRow = Database['public']['Views']['security_access_monitoring_view']['Row']
 

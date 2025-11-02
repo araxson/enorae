@@ -9,7 +9,7 @@ import { requireAdminContext } from './context'
 import type { AssignmentPayload } from './assignments'
 import { assignmentSchema, ROLES_NEEDING_SALON } from './validation'
 import type { RoleActionResponse } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function assignRole(formData: FormData): Promise<RoleActionResponse> {
   const logger = createOperationLogger('assignRole', {})

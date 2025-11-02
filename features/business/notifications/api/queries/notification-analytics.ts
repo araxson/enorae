@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { getNotificationHistory } from './notification-list'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type NotificationStatus = Database['public']['Enums']['notification_status']
 type NotificationChannel = Database['public']['Enums']['notification_channel']

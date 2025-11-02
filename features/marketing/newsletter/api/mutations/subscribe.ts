@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { newsletterSubscriptionSchema } from '../../schema'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const DEFAULT_NEWSLETTER_SOURCE = 'marketing_site'
 

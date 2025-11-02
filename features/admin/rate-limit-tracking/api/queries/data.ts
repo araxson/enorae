@@ -4,7 +4,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database, Json } from '@/lib/types/database.types'
 import type { RateLimitRecord, RateLimitSnapshot, RateLimitRule } from '@/features/admin/rate-limit-tracking/types'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 type TrackingRow = Database['public']['Views']['security_rate_limit_tracking_view']['Row']
 type RuleRow = Database['public']['Views']['security_rate_limit_rules_view']['Row']

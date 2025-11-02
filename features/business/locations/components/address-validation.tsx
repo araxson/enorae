@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
-import type { LocationAddress } from './address-form/types'
+import type { LocationAddress } from '../types'
 import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {

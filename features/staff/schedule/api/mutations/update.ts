@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getAuthorizedContext } from './context'
 import { UUID_REGEX, type DayOfWeek } from '../constants'
 import type { ActionResult } from '../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function updateStaffSchedule(
   scheduleId: string,
@@ -26,13 +26,13 @@ export async function updateStaffSchedule(
 
   try {
     if (!UUID_REGEX.test(scheduleId)) {
-      return { error: 'Invalid schedule ID format' }
+      return { success: false, error: 'Invalid schedule ID format' }
     }
 
     const { supabase, session, schedule } = await getAuthorizedContextForSchedule(scheduleId)
 
     if (!schedule.salon_id) {
-      return { error: 'Schedule not found' }
+      return { success: false, error: 'Schedule not found' }
     }
 
     const targetStaffId = data.staff_id ?? schedule.staff_id
@@ -50,7 +50,7 @@ export async function updateStaffSchedule(
       .single()
 
     if (conflicting) {
-      return { error: 'Schedule already exists for this day' }
+      return { success: false, error: 'Schedule already exists for this day' }
     }
 
     const updates = {
@@ -72,7 +72,7 @@ export async function updateStaffSchedule(
     return { success: true, data: updated }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: error instanceof Error ? error.message : 'Failed to update schedule' }
+    return { success: false, error: error instanceof Error ? error.message : 'Failed to update schedule' }
   }
 }
 
@@ -90,10 +90,10 @@ async function getAuthorizedContextForSchedule(scheduleId: string) {
     throw new Error('Schedule not found')
   }
 
-  const context = await getAuthorizedContext(schedule.salon_id)
-  if ('error' in context) {
-    throw new Error(context.error)
+  const contextResult = await getAuthorizedContext(schedule.salon_id)
+  if (!contextResult.success) {
+    throw new Error(contextResult.error)
   }
 
-  return { ...context, schedule }
+  return { ...contextResult.data, schedule }
 }

@@ -1,6 +1,6 @@
 import 'server-only'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 interface CouponValidationResult {
   is_valid: boolean

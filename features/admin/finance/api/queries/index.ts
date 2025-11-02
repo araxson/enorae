@@ -6,6 +6,9 @@ export { getRevenueBySalon } from './revenue-by-salon'
 export { getRevenueForecast } from './revenue-forecast'
 export { getTransactionMonitoring } from './transaction-monitoring'
 
+// Re-export helpers
+export * from './helpers'
+
 export type {
   AdminRevenueRow,
   ChainRevenueData,

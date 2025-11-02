@@ -8,7 +8,7 @@ import { logSupabaseError } from '@/lib/supabase/errors'
 
 import { logDashboardAudit } from './audit'
 import type { ActionResponse } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function verifyUserEmail(formData: FormData): Promise<ActionResponse> {
   const logger = createOperationLogger('verifyUserEmail', {})

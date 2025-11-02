@@ -8,33 +8,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
 import { Search } from 'lucide-react'
 import { SearchFilters } from './search-filters'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Kbd } from '@/components/ui/kbd'
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '@/components/ui/input-group'
-import {
   Item,
   ItemContent,
   ItemDescription,
   ItemGroup,
   ItemMedia,
-  ItemTitle,
 } from '@/components/ui/item'
+import { SearchInputField } from './search-input-field'
+import { SearchSuggestionsPopover } from './search-suggestions-popover'
 
 interface SearchBarSectionProps {
   searchTerm: string
@@ -98,58 +85,19 @@ export function SearchBarSection({
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
-          <Popover open={suggestionsOpen} onOpenChange={setSuggestionsOpen}>
-            <PopoverTrigger asChild>
-              <InputGroup>
-                <InputGroupAddon>
-                  <Search className="size-4 text-muted-foreground" aria-hidden="true" />
-                </InputGroupAddon>
-                <InputGroupInput
-                  type="search"
-                  placeholder="Search by salon name..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onFocus={() => setSuggestionsOpen(true)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearch()
-                    }
-                  }}
-                  aria-label="Search salons"
-                  autoComplete="off"
-                />
-                <InputGroupAddon align="inline-end">
-                  <InputGroupButton
-                    type="button"
-                    variant="ghost"
-                    size="icon-sm"
-                    onClick={handleSearch}
-                    aria-label="Run search"
-                  >
-                    <Search className="size-4" aria-hidden="true" />
-                  </InputGroupButton>
-                </InputGroupAddon>
-              </InputGroup>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="p-0">
-              <Command>
-                <CommandList>
-                  <CommandEmpty>No matches found.</CommandEmpty>
-                  <CommandGroup heading="Salons">
-                    {suggestions.map((suggestion) => (
-                      <CommandItem
-                        key={suggestion.slug}
-                        value={suggestion.name}
-                        onSelect={() => handleSuggestionSelect(suggestion.slug)}
-                      >
-                        {suggestion.name}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
-          </Popover>
+          <SearchSuggestionsPopover
+            open={suggestionsOpen}
+            setOpen={setSuggestionsOpen}
+            suggestions={suggestions}
+            onSelect={handleSuggestionSelect}
+          >
+            <SearchInputField
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              onFocus={() => setSuggestionsOpen(true)}
+              onSearch={handleSearch}
+            />
+          </SearchSuggestionsPopover>
 
           <ItemGroup>
             <Item variant="muted" size="sm">

@@ -16,8 +16,8 @@ import {
 import { useToast } from '@/lib/hooks/use-toast'
 
 import { ConfirmDialog } from '@/features/shared/ui-components'
-import { removeServiceFromAppointment } from '@/features/business/appointments/api/mutations'
-import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries/appointment-services'
+import { removeServiceFromAppointment } from '@/features/business/appointments/api'
+import type { AppointmentServiceDetails } from '@/features/business/appointments/api'
 import { AddServiceDialog } from './add-service-dialog'
 import { EditServiceDialog } from './edit-service-dialog'
 import { Spinner } from '@/components/ui/spinner'

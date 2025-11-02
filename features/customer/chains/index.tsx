@@ -16,3 +16,4 @@ export async function SalonChainDetailFeature({
 
 export { getSalonChains, getSalonChainById, getChainLocations } from './api/queries'
 export type { SalonChainWithLocations } from './api/queries'
+export * from './types'

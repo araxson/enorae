@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { ruleSchema } from '@/features/business/booking-rules/api/schema'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability/logger'
+import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 // Note: .schema() required for INSERT/UPDATE/DELETE since views are read-only
 

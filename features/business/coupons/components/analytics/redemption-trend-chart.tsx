@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { format } from 'date-fns'
-import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries/coupon-validation'
+import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries'
 
 type RedemptionTrendChartProps = {
   trend: ReturnType<typeof buildCouponEffectiveness>['trend']

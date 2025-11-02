@@ -10,3 +10,4 @@ export async function SessionManagement() {
 export { getUserSessions, getSessionCount } from './api/queries'
 export { revokeSession, revokeAllOtherSessions } from './api/mutations'
 export type { SessionWithDevice } from './api/queries'
+export * from './types'

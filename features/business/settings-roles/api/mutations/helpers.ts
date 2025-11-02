@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Session } from '@/lib/auth'
+import { safeJsonParseStringArray } from '@/lib/utils/safe-json'
 
 export const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -70,11 +71,12 @@ const permissionsSchema = z.array(z.string())
 export function parsePermissions(permissionsRaw: FormDataEntryValue | null): string[] | undefined {
   if (!permissionsRaw) return undefined
 
-  try {
-    const parsed = JSON.parse(String(permissionsRaw))
-    const validated = permissionsSchema.safeParse(parsed)
-    return validated.success ? validated.data : undefined
-  } catch {
+  const parsed = safeJsonParseStringArray(String(permissionsRaw), [])
+  if (parsed.length === 0) return undefined
+
+  const validated = permissionsSchema.safeParse(parsed)
+  if (!validated.success) {
     throw new Error('Invalid permissions format')
   }
+  return validated.data
 }

@@ -2,7 +2,7 @@
 import 'server-only'
 
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger } from '@/lib/observability/logger'
+import { createOperationLogger } from '@/lib/observability'
 
 const warnUnavailable = (fn: string, details?: Record<string, unknown>) => {
   console.warn(`[analytics] RPC "${fn}" is unavailable; returning fallback data.`, details ?? {})

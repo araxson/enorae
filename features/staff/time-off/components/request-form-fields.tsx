@@ -104,7 +104,7 @@ export function RequestFormFields({
             <Checkbox
               id="isAutoReschedule"
               checked={isAutoReschedule}
-              onCheckedChange={(checked) => onAutoRescheduleChange(!!checked)}
+              onCheckedChange={(checked) => onAutoRescheduleChange(Boolean(checked))}
             />
           </FieldContent>
         </Field>
@@ -116,7 +116,7 @@ export function RequestFormFields({
             <Checkbox
               id="isNotifyCustomers"
               checked={isNotifyCustomers}
-              onCheckedChange={(checked) => onNotifyCustomersChange(!!checked)}
+              onCheckedChange={(checked) => onNotifyCustomersChange(Boolean(checked))}
             />
           </FieldContent>
         </Field>

@@ -9,7 +9,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
-import type { LocationAddress } from '@/features/business/locations/components/address-form/types'
+import type { LocationAddress } from '@/features/business/locations/types'
 
 type Props = {
   address: LocationAddress | null
