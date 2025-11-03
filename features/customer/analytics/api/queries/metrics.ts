@@ -1,7 +1,7 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability'
+import { guardQuery } from '@/lib/auth'
+import { logQuery } from '@/lib/observability'
 import { objectEntries } from '@/lib/utils/typed-object'
 
 type Appointment = Database['public']['Views']['admin_appointments_overview_view']['Row']
@@ -19,12 +19,8 @@ export interface CustomerMetrics {
  * Get customer analytics metrics
  */
 export async function getCustomerMetrics(): Promise<CustomerMetrics> {
-  const logger = createOperationLogger('getCustomerMetrics', {})
-  logger.start()
-
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const logger = logQuery('getCustomerMetrics')
+  const { user, supabase } = await guardQuery()
 
   // Get all appointments
   const { data: appointments, error: appointmentsError } = await supabase
@@ -79,9 +75,7 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
  * Get appointment frequency metrics
  */
 export async function getAppointmentFrequency(): Promise<{ month: string; count: number }[]> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { user, supabase } = await guardQuery()
 
   const { data: appointments, error } = await supabase
     .from('admin_appointments_overview_view')

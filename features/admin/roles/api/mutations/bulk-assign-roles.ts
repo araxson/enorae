@@ -9,7 +9,7 @@ import { logRoleAudit } from './audit'
 import { applyRoleAssignment } from './assignments'
 import { requireAdminContext } from './context'
 import { bulkSchema, ROLES_NEEDING_SALON } from './validation'
-import type { RoleActionResponse } from '../../types'
+import type { RoleActionResponse } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function bulkAssignRoles(

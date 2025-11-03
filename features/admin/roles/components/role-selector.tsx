@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/select'
 import type { RoleTemplate } from './role-templates'
 import { ROLE_PERMISSION_TEMPLATES } from './role-templates'
-import type { RoleValue } from './types'
+import type { RoleValue } from '../api/types'
 import {
   Field,
   FieldContent,

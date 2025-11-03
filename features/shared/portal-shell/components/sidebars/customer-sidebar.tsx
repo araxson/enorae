@@ -14,7 +14,7 @@ import { NavMain, NavSecondary, NavUser, NavFavorites } from '..'
 import { getMenuForUser } from '../../menu/get-menu-for-user'
 import { verifySession } from '@/lib/auth/session'
 import { getCustomerFavoritesSummary } from '@/features/shared/customer-common/api/queries'
-import type { FavoriteItem } from '@/features/shared/portal-shell/types'
+import type { FavoriteItem } from '@/features/shared/portal-shell/api/types'
 
 export async function CustomerSidebar() {
   const session = await verifySession()

@@ -10,7 +10,7 @@ import type {
   SecurityEvent,
   SecurityIncident,
   SuspiciousSession,
-} from '@/features/admin/security-monitoring/types'
+} from '@/features/admin/security-monitoring/api/types'
 
 // View types (all fields nullable)
 type AuditLogViewRow = Database['identity']['Views']['audit_logs_view']['Row']

@@ -15,6 +15,7 @@ import { HistoryTab } from './history-tab'
 import { DashboardErrorState } from './error-state'
 import { Calendar, Heart, History } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { logError } from '@/lib/observability'
 
 export async function CustomerDashboardPage() {
   let upcomingAppointments
@@ -34,11 +35,7 @@ export async function CustomerDashboardPage() {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
 
-    console.error('[CustomerDashboard] Error loading data:', {
-      error: errorMessage,
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    })
+    logError('Error loading customer dashboard data', { error: error instanceof Error ? error : new Error(errorMessage), operationName: 'CustomerDashboardPage' })
 
     if (errorMessage.includes('Authentication required') || errorMessage.includes('Unauthorized')) {
       redirect('/login?redirect=/customer')

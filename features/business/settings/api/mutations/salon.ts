@@ -66,7 +66,7 @@ async function upsertSalonSettings(
 }
 
 function extractSalonSettings(formData: FormData) {
-  return salonSettingsSchema.parse({
+  const result = salonSettingsSchema.safeParse({
     is_accepting_bookings: formData.get('is_accepting_bookings') === 'true',
     booking_lead_time_hours: formData.get('booking_lead_time_hours')
       ? Number(formData.get('booking_lead_time_hours'))
@@ -86,6 +86,12 @@ function extractSalonSettings(formData: FormData) {
     subscription_tier: (formData.get('subscription_tier') as string) || null,
     features: parseFeatures(formData.get('features')),
   })
+
+  if (!result.success) {
+    throw new z.ZodError(result.error.issues)
+  }
+
+  return result.data
 }
 
 export async function updateSalonSettings(salonId: string, formData: FormData) {

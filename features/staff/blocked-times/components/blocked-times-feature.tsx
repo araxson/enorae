@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BlockedTimesList } from './blocked-times-list'
 import { BlockedTimesCalendar } from './blocked-times-calendar'
 import { BlockedTimeDialog } from './blocked-time-dialog'
-import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 
 interface BlockedTimesFeatureProps {
   blockedTimes: BlockedTime[]

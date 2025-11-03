@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { revokeSession } from '@/features/staff/sessions/api/mutations'
-import type { StaffSessionDetail } from '@/features/staff/sessions/types'
+import type { StaffSessionDetail } from '@/features/staff/sessions/api/types'
 import { SessionRow } from './session-row'
 import {
   Empty,

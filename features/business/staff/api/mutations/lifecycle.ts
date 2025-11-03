@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 /**
  * Deactivate a staff member (soft delete)
@@ -47,12 +47,6 @@ export async function deactivateStaffMember(staffId: string) {
       logger.error(error, 'database', { staffId, salonId, userId: session.user.id })
       throw error
     }
-
-    logMutation('deactivate', 'staff_member', staffId, {
-      salonId,
-      userId: session.user.id,
-      operationName: 'deactivateStaffMember',
-    })
 
     logger.success({ staffId, salonId, userId: session.user.id })
     revalidatePath('/business/staff', 'page')
@@ -105,12 +99,6 @@ export async function reactivateStaffMember(staffId: string) {
       logger.error(error, 'database', { staffId, salonId, userId: session.user.id })
       throw error
     }
-
-    logMutation('reactivate', 'staff_member', staffId, {
-      salonId,
-      userId: session.user.id,
-      operationName: 'reactivateStaffMember',
-    })
 
     logger.success({ staffId, salonId, userId: session.user.id })
     revalidatePath('/business/staff', 'page')

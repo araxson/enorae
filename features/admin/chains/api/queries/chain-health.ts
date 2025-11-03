@@ -8,7 +8,7 @@ import type {
   AdminRevenueOverviewRow,
   AdminSalonOverviewRow,
   SalonChainRow,
-} from '../../types'
+} from '../../api/types'
 
 interface HealthScoreInput {
   isVerified: boolean

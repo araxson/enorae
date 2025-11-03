@@ -18,4 +18,4 @@ export async function SalonSettings() {
 
   return <SalonSettingsContent salonId={salon.id} settings={settings} />
 }
-export * from './types'
+export * from './api/types'

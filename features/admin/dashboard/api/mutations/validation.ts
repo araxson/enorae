@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 
-import type { AppointmentStatus } from '../../types'
+import type { AppointmentStatus } from '../../api/types'
 
 export const VALID_APPOINTMENT_STATUSES: AppointmentStatus[] = [
   'pending',

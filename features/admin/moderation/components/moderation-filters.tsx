@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { Search, X } from 'lucide-react'
 import {
   Select,
@@ -10,30 +9,15 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import {
-  Item,
-  ItemActions,
-  ItemGroup,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemGroup } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Field,
-  FieldContent,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
+import { Field, FieldContent, FieldGroup, FieldLabel } from '@/components/ui/field'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/components/ui/input-group'
-
-declare global {
-  interface WindowEventMap {
-    'admin:clearFilters': CustomEvent<void>
-  }
-}
 
 type ModerationFiltersProps = {
   searchQuery: string
@@ -46,6 +30,7 @@ type ModerationFiltersProps = {
   onSentimentFilterChange: (sentiment: string) => void
   reputationFilter: string
   onReputationFilterChange: (reputation: string) => void
+  onClearFilters: () => void
 }
 
 export function ModerationFilters({
@@ -59,34 +44,15 @@ export function ModerationFilters({
   onSentimentFilterChange,
   reputationFilter,
   onReputationFilterChange,
+  onClearFilters,
 }: ModerationFiltersProps) {
-  const clearFilters = () => {
-    onSearchChange('')
-    onStatusFilterChange('all')
-    onRiskFilterChange('all')
-    onSentimentFilterChange('all')
-    onReputationFilterChange('all')
-  }
-
-  useEffect(() => {
-    const handleClear = () => clearFilters()
-    window.addEventListener('admin:clearFilters', handleClear)
-    return () => window.removeEventListener('admin:clearFilters', handleClear)
-  }, [
-    onSearchChange,
-    onStatusFilterChange,
-    onRiskFilterChange,
-    onSentimentFilterChange,
-    onReputationFilterChange,
-  ])
-
   return (
     <div className="flex flex-col gap-3">
       <ItemGroup className="justify-end">
         <Item variant="muted">
           <ItemActions>
             <ButtonGroup>
-              <Button variant="ghost" size="sm" onClick={clearFilters}>
+              <Button variant="ghost" size="sm" onClick={onClearFilters}>
                 Clear all filters
               </Button>
             </ButtonGroup>

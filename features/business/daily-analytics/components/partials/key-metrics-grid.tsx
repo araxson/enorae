@@ -6,7 +6,7 @@ import {
   Users,
 } from 'lucide-react'
 import { MetricCard } from './metric-card'
-import type { DailyMetricsDashboardProps } from '../types'
+import type { DailyMetricsDashboardProps } from '../../api/types'
 import { formatCurrency } from '@/features/business/business-common'
 
 type Props = Pick<DailyMetricsDashboardProps, 'aggregated' | 'trends'>

@@ -13,4 +13,4 @@ export async function CouponManagement() {
 
   return <CouponManagementContent salonId={salon.id} analytics={analytics} services={services} />
 }
-export * from './types'
+export * from './api/types'

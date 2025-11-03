@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { Sparkles, SlidersHorizontal } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import { ServicesStats } from './services-stats'
 import { ServicesFilters } from './services-filters'
 import { ServiceCard } from './service-card'

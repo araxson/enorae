@@ -1,6 +1,6 @@
 'use server'
 
-import type { ActionResponse } from '../../types'
+import type { ActionResponse } from '../../api/types'
 import { approveSalon as approveSalonMutation } from '@/features/admin/salons/api/mutations'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 

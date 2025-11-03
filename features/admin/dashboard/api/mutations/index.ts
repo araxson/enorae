@@ -7,4 +7,4 @@ export { updateAppointmentStatus } from './update-appointment-status'
 export { bulkVerifyUsers } from './bulk-verify-users'
 
 // Re-export types
-export type { ActionResponse, AppointmentStatus } from '../../types'
+export type { ActionResponse, AppointmentStatus } from '../../api/types'

@@ -4,4 +4,4 @@
  * Displays coupon details, performance metrics, and management actions
  */
 export { CouponCard } from './coupon-card'
-export type { CouponCardProps } from './types'
+export type { CouponCardProps } from '../../api/types'

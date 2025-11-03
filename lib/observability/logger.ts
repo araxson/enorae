@@ -134,9 +134,19 @@ export function logDebug(message: string, context?: LogContext): void {
 }
 
 /**
+ * Operation Logger type
+ */
+export type OperationLogger = {
+  start: (additionalContext?: Partial<LogContext>) => void
+  success: (result?: unknown, additionalContext?: Partial<LogContext>) => void
+  error: (error: Error | string, errorCategory?: ErrorCategory, additionalContext?: Partial<LogContext>) => void
+  warn: (message: string, additionalContext?: Partial<LogContext>) => void
+}
+
+/**
  * Create an operation logger with pre-filled context
  */
-export function createOperationLogger(operationName: string, baseContext?: Partial<LogContext>) {
+export function createOperationLogger(operationName: string, baseContext?: Partial<LogContext>): OperationLogger {
   const context: LogContext = {
     ...baseContext,
     operationName,

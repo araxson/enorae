@@ -1,7 +1,7 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability'
+import { guardQuery } from '@/lib/auth'
+import { logQuery } from '@/lib/observability'
 
 type ServiceViewRow = Database['public']['Views']['services_view']['Row']
 
@@ -21,12 +21,8 @@ export async function searchServicesFulltext(
   salonId: string,
   searchQuery: string
 ): Promise<ServiceSearchResult[]> {
-  const logger = createOperationLogger('searchServicesFulltext', {})
-  logger.start()
-
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  logQuery('searchServicesFulltext')
+  const { supabase } = await guardQuery()
 
   // Search services using ILIKE pattern matching from public view
   const { data, error } = await supabase
@@ -56,9 +52,7 @@ export async function searchServicesOptimized(
   salonId: string,
   searchQuery: string
 ): Promise<ServiceSearchResult[]> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { supabase } = await guardQuery()
 
   // Optimized search using text similarity from public view
   const { data, error } = await supabase
@@ -86,9 +80,7 @@ export async function searchServicesOptimized(
 }
 
 export async function getServices(salonId: string): Promise<ServiceViewRow[]> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { supabase } = await guardQuery()
 
   const { data, error } = await supabase
     .from('services_view')
@@ -105,9 +97,7 @@ export async function getServices(salonId: string): Promise<ServiceViewRow[]> {
 }
 
 export async function getUserSalon(): Promise<{ id: string } | null> {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { user, supabase } = await guardQuery()
 
   // Get user's salon from staff_profiles_view
   const { data, error } = await supabase

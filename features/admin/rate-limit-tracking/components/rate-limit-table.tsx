@@ -22,7 +22,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { toast } from 'sonner'
 import { MoreHorizontal } from 'lucide-react'
-import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/types'
+import type { RateLimitRecord } from '@/features/admin/rate-limit-tracking/api/types'
 import {
   unblockIdentifier,
   purgeStaleRecords,

@@ -6,11 +6,11 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ItemActions } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
-import type { NormalizedReview } from './use-reviews-list'
+import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 
 interface ReviewCardActionsProps {
-  review: NormalizedReview
-  onRespond: (review: NormalizedReview) => void
+  review: SalonReviewWithDetails
+  onRespond: (review: SalonReviewWithDetails) => void
   onFlag: (reviewId: string) => void
   onToggleFeatured: (reviewId: string, featured: boolean) => Promise<void>
 }
@@ -26,10 +26,12 @@ function ReviewCardActionsComponent({
   }, [onRespond, review])
 
   const handleFlag = useCallback(() => {
+    if (!review.id) return
     onFlag(review.id)
   }, [onFlag, review.id])
 
   const handleToggleFeatured = useCallback(async () => {
+    if (!review.id) return
     await onToggleFeatured(review.id, !review.is_featured)
     toast.success(!review.is_featured ? 'Review featured' : 'Review unfeatured')
   }, [onToggleFeatured, review.id, review.is_featured])

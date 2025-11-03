@@ -15,7 +15,7 @@ import {
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Spinner } from '@/components/ui/spinner'
 import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import { updateProfileBasicsAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 
 interface ProfileBasicsFormProps {

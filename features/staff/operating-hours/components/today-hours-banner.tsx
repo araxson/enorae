@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Clock } from 'lucide-react'
-import type { OperatingHours } from '@/features/staff/operating-hours/types'
+import type { OperatingHours } from '@/features/staff/operating-hours/api/types'
 
 interface TodayHoursBannerProps {
   hours: OperatingHours | null

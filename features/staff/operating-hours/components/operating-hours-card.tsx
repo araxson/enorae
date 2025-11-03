@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Clock } from 'lucide-react'
-import type { OperatingHours } from '@/features/staff/operating-hours/types'
+import type { OperatingHours } from '@/features/staff/operating-hours/api/types'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import {

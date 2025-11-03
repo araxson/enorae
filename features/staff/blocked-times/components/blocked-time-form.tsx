@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { blockedTimeSchema, type BlockedTimeFormData } from '../api/schema'
 import { createBlockedTime, updateBlockedTime } from '../api/mutations'
-import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 import {
   Field,
   FieldContent,
@@ -22,6 +22,7 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { TIME_MS } from '@/lib/config/constants'
 
 interface BlockedTimeFormProps {
   blockedTime?: BlockedTime
@@ -50,7 +51,7 @@ export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTim
       recurrence_pattern: blockedTime['recurrence_pattern'] || null,
     } : {
       start_time: new Date().toISOString().slice(0, 16),
-      end_time: new Date(Date.now() + 3600000).toISOString().slice(0, 16), // Default: 1 hour from now (3600000ms)
+      end_time: new Date(Date.now() + TIME_MS.ONE_HOUR).toISOString().slice(0, 16),
       block_type: 'break',
       reason: '',
       is_recurring: false,

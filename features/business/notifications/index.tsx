@@ -7,4 +7,4 @@ export function BusinessNotificationsFeature() {
 export { BusinessNotificationManagement }
 export * from './api/queries/index'
 export * from './api/mutations/index'
-export * from './types'
+export * from './api/types'

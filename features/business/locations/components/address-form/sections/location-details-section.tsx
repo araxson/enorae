@@ -1,5 +1,7 @@
 'use client'
 
+import { UseFormReturn } from 'react-hook-form'
+import { AddressSchema } from '@/features/business/locations/api/schema'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -9,13 +11,13 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
-import type { LocationAddress } from '@/features/business/locations/types'
 
 type Props = {
-  address: LocationAddress | null
+  form: UseFormReturn<AddressSchema>
 }
 
-export function LocationDetailsSection({ address }: Props) {
+export function LocationDetailsSection({ form }: Props) {
+  // Note: This section doesn't use form fields yet - it's informational only
   return (
     <Card>
       <CardHeader>
@@ -31,8 +33,9 @@ export function LocationDetailsSection({ address }: Props) {
               <Input
                 id="neighborhood"
                 name="neighborhood"
-                defaultValue={address?.neighborhood || ''}
+                defaultValue=""
                 placeholder="Financial District"
+                disabled
               />
             </FieldContent>
           </Field>
@@ -43,8 +46,9 @@ export function LocationDetailsSection({ address }: Props) {
               <Input
                 id="landmark"
                 name="landmark"
-                defaultValue={address?.landmark || ''}
+                defaultValue=""
                 placeholder="Near City Hall"
+                disabled
               />
             </FieldContent>
           </Field>

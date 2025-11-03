@@ -18,6 +18,8 @@ export async function getSalons(categoryFilter?: string) {
 
   const { category } = discoveryFilterSchema.parse({ category: categoryFilter })
 
+  // NOTE: Selecting * to match Salon type expected by components
+  // This is user-facing data so we need full salon info for display
   let query = supabase
     .from('salons_view')
     .select('*')
@@ -51,6 +53,7 @@ export async function getSalonBySlug(slug: string) {
     await requireAuth()
     const supabase = await createClient()
 
+    // NOTE: Selecting * to match Salon type expected by components
     const { data, error } = await supabase
       .from('salons_view')
       .select('*')

@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { RevenueMetrics } from '@/features/admin/finance/types'
+import type { RevenueMetrics } from '@/features/admin/finance/api/types'
 import { requireAdminClient } from './client'
 import { createOperationLogger } from '@/lib/observability'
 

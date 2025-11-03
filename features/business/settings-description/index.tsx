@@ -10,4 +10,4 @@ export async function SalonDescriptionSettings() {
 
   return <DescriptionForm salonId={salonId} description={description} />
 }
-export * from './types'
+export * from './api/types'

@@ -7,7 +7,7 @@ import {
   MAX_APPOINTMENT_SAMPLE,
   MAX_REVIEW_SAMPLE,
 } from './dashboard-constants'
-import type { AppointmentRow, BackgroundRow, MetadataRow, ReviewRow } from '../../types'
+import type { AppointmentRow, BackgroundRow, MetadataRow, ReviewRow } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function fetchBackgroundChecks(

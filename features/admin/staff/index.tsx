@@ -28,4 +28,4 @@ export async function AdminStaff() {
     )
   }
 }
-export * from './types'
+export * from './api/types'

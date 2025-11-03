@@ -1,24 +1,36 @@
+import { memo } from 'react'
 import { TrendingUp } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type ForecastAccuracyCardProps = {
   forecastAccuracy: number
 }
 
-export function ForecastAccuracyCard({ forecastAccuracy }: ForecastAccuracyCardProps) {
+export const ForecastAccuracyCard = memo(function ForecastAccuracyCard({ forecastAccuracy }: ForecastAccuracyCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Forecast Accuracy</CardTitle>
-        <CardDescription>Prediction confidence</CardDescription>
-      </CardHeader>
-      <CardContent className="flex items-start justify-between">
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemContent>
+          <ItemTitle>Forecast Accuracy</ItemTitle>
+          <ItemDescription>Prediction confidence</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <TrendingUp className="size-4 text-primary" aria-hidden="true" />
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent>
         <p className="text-2xl font-semibold leading-none tracking-tight">
           {(forecastAccuracy * 100).toFixed(1)}%
         </p>
-        <TrendingUp className="size-4 text-primary" aria-hidden="true" />
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
-}
+})

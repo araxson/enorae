@@ -8,7 +8,7 @@ import type {
   AdminSalonOverviewRow,
   ChainAnalytics,
   SalonChainRow,
-} from '../../types'
+} from '../../api/types'
 
 export async function getChainAnalytics(chainId?: string): Promise<ChainAnalytics[]> {
   const logger = createOperationLogger('getChainAnalytics', {})

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import {
   Item,
   ItemContent,

@@ -5,4 +5,4 @@
  * with support for multiple variants (default, progress, trend, highlight)
  */
 export { MetricCard } from './metric-card'
-export type { MetricCardProps, MetricCardVariant } from './types'
+export type { MetricCardProps, MetricCardVariant } from '../../api/types'

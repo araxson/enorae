@@ -6,7 +6,7 @@ import { FavoritesList } from './components'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { Spinner } from '@/components/ui/spinner'
 
-export type * from './types'
+export type * from './api/types'
 export const favoritesMetadata = genMeta({
 
   title: 'My Favorites',

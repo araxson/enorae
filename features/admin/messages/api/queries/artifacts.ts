@@ -5,7 +5,7 @@ import type {
   AdminMessageRow,
   MessageRow,
   ModerationQueueItem,
-} from '../types'
+} from '../../api/types'
 
 export interface ActivityEntry {
   inbound: number

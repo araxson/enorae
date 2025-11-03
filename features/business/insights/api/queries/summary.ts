@@ -7,7 +7,7 @@ import {
   buildSegmentationCounts,
   createEmptyInsightsSummary,
 } from '@/features/business/insights/utils/insights'
-import type { InsightsSummary } from '../../types'
+import type { InsightsSummary } from '../../api/types'
 import { getCustomerInsights } from './customers'
 import { createOperationLogger } from '@/lib/observability'
 

@@ -23,7 +23,7 @@ import {
   ItemDescription,
   ItemTitle,
 } from '@/components/ui/item'
-import type { StaffFilter, StaffToggle } from './types'
+import type { StaffFilter, StaffToggle } from '../api/types'
 
 interface StaffFiltersDropdownProps {
   filters?: readonly StaffFilter[]

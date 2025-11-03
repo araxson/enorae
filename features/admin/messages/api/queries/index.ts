@@ -13,4 +13,4 @@ export type {
   MessageThreadWithInsights,
   MessagesDashboardData,
   ModerationQueueItem,
-} from '../types'
+} from '../../api/types'

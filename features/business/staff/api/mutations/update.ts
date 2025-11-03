@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { updateStaffSchema } from '../schema'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger, logError } from '@/lib/observability'
 import type { StaffFormData } from './create'
 
 /**
@@ -83,13 +83,6 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
         throw metadataError
       }
     }
-
-    logMutation('update', 'staff_member', staffId, {
-      salonId,
-      userId: session.user.id,
-      operationName: 'updateStaffMember',
-      changes: staffUpdate,
-    })
 
     logger.success({ staffId, salonId, userId: session.user.id })
     revalidatePath('/business/staff', 'page')

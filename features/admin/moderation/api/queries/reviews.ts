@@ -8,6 +8,7 @@ import { estimateFakeLikelihood, type FakeLikelihoodInput } from './fraud'
 import { calculateQualityScore } from './quality'
 import { computeReviewerReputation, fetchReviewerStats, type ReviewerAggregate } from './reputation'
 import { createOperationLogger } from '@/lib/observability'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type ReviewRow = Database['public']['Views']['admin_reviews_overview_view']['Row']
 
@@ -79,7 +80,7 @@ export async function getReviewsForModeration(
   const reviews = (data || []) as ReviewRow[]
   const reviewerIds = Array.from(
     new Set(reviews.map((review) => review['customer_id']).filter(Boolean) as string[])
-  ).slice(0, 500)
+  ).slice(0, QUERY_LIMITS.MODERATION_SAMPLE)
   const reviewIds = Array.from(
     new Set(reviews.map((review) => review['id']).filter(Boolean) as string[])
   )

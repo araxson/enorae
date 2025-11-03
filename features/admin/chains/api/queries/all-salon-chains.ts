@@ -3,7 +3,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
-import type { SalonChainRow } from '../../types'
+import type { SalonChainRow } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function getAllSalonChains(): Promise<SalonChainRow[]> {

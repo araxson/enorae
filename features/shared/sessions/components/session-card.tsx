@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import type { SessionCardProps } from '@/features/shared/sessions/types'
+import type { SessionCardProps } from '@/features/shared/sessions/api/types'
 import {
   Item,
   ItemActions,

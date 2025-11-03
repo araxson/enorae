@@ -6,7 +6,7 @@ import { requireAuth } from '@/lib/auth'
 import { rescheduleSchema } from '@/features/customer/appointments/api/validation'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_HOUR, APPOINTMENT_CANCELLATION_HOURS } from '@/lib/constants/time'
-import { createOperationLogger, logMutation } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -90,12 +90,6 @@ export async function cancelAppointment(appointmentId: string): Promise<ActionRe
       logger.error(updateError, 'database')
       throw updateError
     }
-
-    logMutation('cancel', 'appointment', appointmentId, {
-      userId: session.user.id,
-      operationName: 'cancelAppointment',
-      changes: { status: 'cancelled' },
-    })
 
     revalidatePath('/customer/appointments', 'page')
     revalidatePath(`/customer/appointments/${appointmentId}`, 'page')
@@ -243,13 +237,6 @@ export async function requestReschedule(
       logger.error(updateError, 'database')
       throw updateError
     }
-
-    logMutation('reschedule_request', 'appointment', appointmentId, {
-      userId: session.user.id,
-      salonId: appointment.salon_id,
-      operationName: 'requestReschedule',
-      changes: { status: 'pending', newTime: newStartTime, reason },
-    })
 
     revalidatePath('/customer/appointments', 'page')
     revalidatePath(`/customer/appointments/${appointmentId}`, 'page')

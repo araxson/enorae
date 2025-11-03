@@ -19,4 +19,4 @@ export async function FinancePageFeature({
 }
 
 export { FinanceDashboard, FinanceDashboardSkeleton, FinancePageContent } from './components'
-export * from './types'
+export * from './api/types'

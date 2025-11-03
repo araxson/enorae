@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { TableCell, TableRow } from '@/components/ui/table'
 import type { Database } from '@/lib/types/database.types'
@@ -19,7 +20,7 @@ interface WebhookListRowProps {
   onClick: () => void
 }
 
-export function WebhookListRow({ webhook, onClick }: WebhookListRowProps) {
+export const WebhookListRow = memo(function WebhookListRow({ webhook, onClick }: WebhookListRowProps) {
   return (
     <TableRow
       className="cursor-pointer hover:bg-muted/50"
@@ -67,4 +68,4 @@ export function WebhookListRow({ webhook, onClick }: WebhookListRowProps) {
       </TableCell>
     </TableRow>
   )
-}
+})

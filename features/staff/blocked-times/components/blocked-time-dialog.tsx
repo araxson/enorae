@@ -2,7 +2,7 @@
 import { Clock } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { BlockedTimeForm } from './blocked-time-form'
-import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 import {
   Item,
   ItemContent,

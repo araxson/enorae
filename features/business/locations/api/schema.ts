@@ -33,16 +33,8 @@ export const addressSchema = z.object({
     .length(2, 'Country must be a 2-letter code (e.g., US, CA, GB)')
     .regex(/^[A-Z]{2}$/i, 'Country must be uppercase 2-letter code')
     .transform((val) => val.toUpperCase()),
-  latitude: z.coerce
-    .number()
-    .min(-90, 'Latitude must be between -90 and 90')
-    .max(90, 'Latitude must be between -90 and 90')
-    .optional(),
-  longitude: z.coerce
-    .number()
-    .min(-180, 'Longitude must be between -180 and 180')
-    .max(180, 'Longitude must be between -180 and 180')
-    .optional(),
+  latitude: z.number().min(-90, 'Latitude must be between -90 and 90').max(90, 'Latitude must be between -90 and 90').optional(),
+  longitude: z.number().min(-180, 'Longitude must be between -180 and 180').max(180, 'Longitude must be between -180 and 180').optional(),
 })
 
 /**
@@ -76,8 +68,8 @@ export const locationSchema = z.object({
     .string()
     .length(2, 'Country must be a 2-letter code')
     .transform((val) => val.toUpperCase()),
-  latitude: z.coerce.number().min(-90).max(90).optional(),
-  longitude: z.coerce.number().min(-180).max(180).optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
 
   // Operational settings
   timezone: z.string().min(1, 'Timezone is required').optional(),
@@ -87,13 +79,13 @@ export const locationSchema = z.object({
   wheelchair_accessible: z.boolean().default(false),
 
   // Staff and capacity
-  max_staff_capacity: z.coerce
+  max_staff_capacity: z
     .number()
     .int('Must be a whole number')
     .min(1, 'Must allow at least 1 staff member')
     .max(100, 'Capacity seems too high')
     .optional(),
-  max_simultaneous_appointments: z.coerce
+  max_simultaneous_appointments: z
     .number()
     .int('Must be a whole number')
     .min(1, 'Must allow at least 1 appointment')
@@ -143,13 +135,9 @@ export const locationSearchSchema = z.object({
   location_type: locationTypeEnum.optional(),
   is_active: z.boolean().optional(),
   accepts_online_bookings: z.boolean().optional(),
-  latitude: z.coerce.number().min(-90).max(90).optional(),
-  longitude: z.coerce.number().min(-180).max(180).optional(),
-  radius_km: z.coerce
-    .number()
-    .min(1, 'Radius must be at least 1 km')
-    .max(100, 'Radius cannot exceed 100 km')
-    .optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
+  radius_km: z.number().min(1, 'Radius must be at least 1 km').max(100, 'Radius cannot exceed 100 km').optional(),
 })
 
 /**

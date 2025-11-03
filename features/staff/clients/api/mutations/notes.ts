@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { z } from 'zod'
-import type { ActionResponse, ThreadMetadata } from '../../types'
+import type { ActionResponse, ThreadMetadata } from '../../api/types'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 import { STRING_LIMITS } from '@/lib/config/constants'
 

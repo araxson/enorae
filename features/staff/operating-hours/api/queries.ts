@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { OperatingHours } from '@/features/staff/operating-hours/types'
+import type { OperatingHours } from '@/features/staff/operating-hours/api/types'
 
 export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
   const supabase = await createClient()

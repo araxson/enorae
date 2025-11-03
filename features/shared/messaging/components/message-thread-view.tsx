@@ -43,10 +43,15 @@ export function MessageThreadView({
   onSendMessage,
 }: MessageThreadViewProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesLengthRef = useRef(messages.length)
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages.length])
+    // Only scroll when new messages are added
+    if (messages.length > messagesLengthRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+    messagesLengthRef.current = messages.length
+  }, [messages])
 
   return (
     <div className="flex h-full flex-col gap-6">

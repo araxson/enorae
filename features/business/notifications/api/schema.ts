@@ -155,7 +155,7 @@ export const sendNotificationSchema = z.object({
       }
     )
     .optional(),
-  metadata: z.record(z.string(), z.any()).optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 /**

@@ -2,7 +2,7 @@ import { getAllSalons } from './api/queries'
 import { SalonsClient } from './components'
 
 // Export types
-export type { AdminSalon } from './types'
+export type { AdminSalon } from './api/types'
 
 export async function AdminSalons() {
   const { salons, stats, insights } = await getAllSalons()
@@ -15,4 +15,4 @@ export async function AdminSalons() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { MessageSquare } from 'lucide-react'
-import type { MessagesOverview } from '../types'
+import type { MessagesOverview } from '../api/types'
 import { safeFormatDate } from './admin-overview-utils'
 import {
   Empty,

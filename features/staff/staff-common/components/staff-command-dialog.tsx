@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/command'
 import { Command as CommandIcon } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
-import type { StaffQuickAction } from './types'
+import type { StaffQuickAction } from '../api/types'
 
 interface StaffCommandDialogProps {
   open: boolean

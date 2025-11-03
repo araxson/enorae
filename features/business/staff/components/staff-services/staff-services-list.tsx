@@ -23,7 +23,7 @@ import {
   EmptyTitle,
 } from '@/components/ui/empty'
 import { SearchInput } from '@/features/shared/ui-components'
-import type { StaffMemberWithServices } from './types'
+import type { StaffMemberWithServices } from '@/features/business/staff/api/types'
 
 type StaffServicesListProps = {
   staff: StaffMemberWithServices[]

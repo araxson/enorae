@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, useMemo } from 'react'
 import { TrendingUp, Calendar, DollarSign } from 'lucide-react'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -34,22 +34,22 @@ interface StaffPerformanceCardProps {
   limit?: number
 }
 
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+})
+
+const formatCurrency = (amount: number) => CURRENCY_FORMATTER.format(amount)
+
 export function StaffPerformanceCard({
   staff,
   title = 'Top Performing Staff',
   description = 'Based on appointments and revenue',
   limit = 5
 }: StaffPerformanceCardProps) {
-  const topStaff = staff.slice(0, limit)
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount)
-  }
+  const topStaff = useMemo(() => staff.slice(0, limit), [staff, limit])
 
   if (topStaff.length === 0) {
     return (

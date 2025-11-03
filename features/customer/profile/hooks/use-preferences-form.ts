@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
 import { profilePreferencesFormSchema } from '@/features/customer/profile/api/schema'
-import type { ProfilePreferences } from './types'
-import { parsePreferences } from './types'
+import type { ProfilePreferences } from '@/features/customer/profile/components/editor/types'
+import { parsePreferences } from '@/features/customer/profile/components/editor/types'
+import { logError } from '@/lib/observability'
 
 export function usePreferencesForm(preferences: ProfilePreferences | null) {
   const [timezone, setTimezone] = useState(preferences?.['timezone'] || 'America/New_York')
@@ -67,7 +68,7 @@ export function usePreferencesForm(preferences: ProfilePreferences | null) {
         toast.success('Preferences updated')
       }
     } catch (error) {
-      console.error('Failed to save preferences:', error)
+      logError('Failed to save preferences', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'usePreferencesForm' })
       toast.error('Failed to save preferences. Please try again.')
     } finally {
       setIsSaving(false)

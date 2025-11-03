@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import type { ChainRevenueData } from '@/features/admin/finance/types'
+import type { ChainRevenueData } from '@/features/admin/finance/api/types'
 import {
   Item,
   ItemContent,

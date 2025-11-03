@@ -8,7 +8,7 @@ import { logSupabaseError } from '@/lib/supabase/errors'
 import { enforceAdminBulkRateLimit } from '@/lib/middleware/rate-limit'
 import { safeJsonParse } from '@/lib/utils/safe-json'
 
-import type { ActionResponse } from '../../types'
+import type { ActionResponse } from '../../api/types'
 import { BULK_USER_IDS_SCHEMA } from './validation'
 import { logDashboardAudit } from './audit'
 import { createOperationLogger } from '@/lib/observability'

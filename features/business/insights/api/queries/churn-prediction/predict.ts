@@ -3,6 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { createOperationLogger } from '@/lib/observability'
+import { TIME_CONVERSIONS, CHURN_RISK_THRESHOLDS } from '@/lib/config/constants'
 
 type AppointmentSummary = {
   id: string
@@ -55,7 +56,7 @@ export async function predictChurnRisk(customerId: string) {
     ? new Date(completedWithDates[0].start_time)
     : null
   const daysSinceLastVisit = lastVisit
-    ? (now.getTime() - lastVisit.getTime()) / (1000 * 60 * 60 * 24)
+    ? (now.getTime() - lastVisit.getTime()) / TIME_CONVERSIONS.MS_PER_DAY
     : Infinity
 
   const cancelledCount = appointmentRecords.filter((a) => a.status === 'cancelled').length
@@ -64,13 +65,13 @@ export async function predictChurnRisk(customerId: string) {
 
   // Calculate average days between visits
   let totalDays = 0
-  for (let i = 1; i < completedWithDates.length; i++) {
-    const prevStartTime = completedWithDates[i]?.start_time
-    const currStartTime = completedWithDates[i - 1]?.start_time
-    if (prevStartTime && currStartTime) {
-      const prev = new Date(prevStartTime)
-      const curr = new Date(currStartTime)
-      totalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
+  for (let appointmentIndex = 1; appointmentIndex < completedWithDates.length; appointmentIndex++) {
+    const previousStartTime = completedWithDates[appointmentIndex]?.start_time
+    const currentStartTime = completedWithDates[appointmentIndex - 1]?.start_time
+    if (previousStartTime && currentStartTime) {
+      const previousDate = new Date(previousStartTime)
+      const currentDate = new Date(currentStartTime)
+      totalDays += (previousDate.getTime() - currentDate.getTime()) / TIME_CONVERSIONS.MS_PER_DAY
     }
   }
   const avgDaysBetweenVisits =
@@ -81,61 +82,61 @@ export async function predictChurnRisk(customerId: string) {
   const factors: string[] = []
 
   // Factor 1: Time since last visit
-  if (daysSinceLastVisit > avgDaysBetweenVisits * 2 && avgDaysBetweenVisits > 0) {
-    riskScore += 30
+  if (daysSinceLastVisit > avgDaysBetweenVisits * CHURN_RISK_THRESHOLDS.OVERDUE_VISIT_MULTIPLIER && avgDaysBetweenVisits > 0) {
+    riskScore += CHURN_RISK_THRESHOLDS.OVERDUE_RETURN_SCORE
     factors.push('Overdue for return visit')
-  } else if (daysSinceLastVisit > avgDaysBetweenVisits * 1.5 && avgDaysBetweenVisits > 0) {
-    riskScore += 20
+  } else if (daysSinceLastVisit > avgDaysBetweenVisits * CHURN_RISK_THRESHOLDS.APPROACHING_RETURN_MULTIPLIER && avgDaysBetweenVisits > 0) {
+    riskScore += CHURN_RISK_THRESHOLDS.APPROACHING_RETURN_SCORE
     factors.push('Approaching typical return window')
-  } else if (daysSinceLastVisit > 90) {
-    riskScore += 25
+  } else if (daysSinceLastVisit > CHURN_RISK_THRESHOLDS.LONG_TIME_SINCE_VISIT_DAYS) {
+    riskScore += CHURN_RISK_THRESHOLDS.LONG_TIME_SCORE
     factors.push('Long time since last visit')
   }
 
   // Factor 2: Cancellation rate
   const cancellationRate = totalVisits > 0 ? cancelledCount / totalVisits : 0
-  if (cancellationRate > 0.3) {
-    riskScore += 25
+  if (cancellationRate > CHURN_RISK_THRESHOLDS.HIGH_CANCELLATION_RATE) {
+    riskScore += CHURN_RISK_THRESHOLDS.HIGH_CANCELLATION_SCORE
     factors.push('High cancellation rate')
-  } else if (cancellationRate > 0.15) {
-    riskScore += 15
+  } else if (cancellationRate > CHURN_RISK_THRESHOLDS.MODERATE_CANCELLATION_RATE) {
+    riskScore += CHURN_RISK_THRESHOLDS.MODERATE_CANCELLATION_SCORE
     factors.push('Moderate cancellation rate')
   }
 
   // Factor 3: No-show rate
   const noShowRate = totalVisits > 0 ? noShowCount / totalVisits : 0
-  if (noShowRate > 0.2) {
-    riskScore += 20
+  if (noShowRate > CHURN_RISK_THRESHOLDS.HIGH_NO_SHOW_RATE) {
+    riskScore += CHURN_RISK_THRESHOLDS.HIGH_NO_SHOW_SCORE
     factors.push('High no-show rate')
-  } else if (noShowRate > 0.1) {
-    riskScore += 10
+  } else if (noShowRate > CHURN_RISK_THRESHOLDS.MODERATE_NO_SHOW_RATE) {
+    riskScore += CHURN_RISK_THRESHOLDS.MODERATE_NO_SHOW_SCORE
     factors.push('Some no-shows')
   }
 
   // Factor 4: Visit frequency declining
-  if (completedWithDates.length >= 3) {
-    const recentVisits = completedWithDates.slice(0, 3)
+  if (completedWithDates.length >= CHURN_RISK_THRESHOLDS.MIN_VISITS_FOR_FREQUENCY) {
+    const recentVisits = completedWithDates.slice(0, CHURN_RISK_THRESHOLDS.MIN_VISITS_FOR_FREQUENCY)
     let recentTotalDays = 0
-    for (let i = 1; i < recentVisits.length; i++) {
-      const prevStartTime = recentVisits[i]?.start_time
-      const currStartTime = recentVisits[i - 1]?.start_time
-      if (prevStartTime && currStartTime) {
-        const prev = new Date(prevStartTime)
-        const curr = new Date(currStartTime)
-        recentTotalDays += (prev.getTime() - curr.getTime()) / (1000 * 60 * 60 * 24)
+    for (let visitIndex = 1; visitIndex < recentVisits.length; visitIndex++) {
+      const previousVisitStartTime = recentVisits[visitIndex]?.start_time
+      const currentVisitStartTime = recentVisits[visitIndex - 1]?.start_time
+      if (previousVisitStartTime && currentVisitStartTime) {
+        const previousVisitDate = new Date(previousVisitStartTime)
+        const currentVisitDate = new Date(currentVisitStartTime)
+        recentTotalDays += (previousVisitDate.getTime() - currentVisitDate.getTime()) / TIME_CONVERSIONS.MS_PER_DAY
       }
     }
     const recentAvg = recentTotalDays / (recentVisits.length - 1)
 
-    if (avgDaysBetweenVisits > 0 && recentAvg > avgDaysBetweenVisits * 1.3) {
-      riskScore += 15
+    if (avgDaysBetweenVisits > 0 && recentAvg > avgDaysBetweenVisits * CHURN_RISK_THRESHOLDS.FREQUENCY_DECLINE_MULTIPLIER) {
+      riskScore += CHURN_RISK_THRESHOLDS.FREQUENCY_DECLINE_SCORE
       factors.push('Decreasing visit frequency')
     }
   }
 
   // Factor 5: Low total visits
-  if (totalVisits < 3) {
-    riskScore += 10
+  if (totalVisits < CHURN_RISK_THRESHOLDS.MIN_VISITS_FOR_FREQUENCY) {
+    riskScore += CHURN_RISK_THRESHOLDS.LOW_VISITS_SCORE
     factors.push('New customer with few visits')
   }
 
@@ -143,14 +144,14 @@ export async function predictChurnRisk(customerId: string) {
   let riskLevel: 'low' | 'medium' | 'high' | 'critical'
   let recommendation: string
 
-  if (riskScore >= 70) {
+  if (riskScore >= CHURN_RISK_THRESHOLDS.CRITICAL_RISK_SCORE) {
     riskLevel = 'critical'
     recommendation =
       'Immediate action required: Reach out with personalized offer or exclusive promotion'
-  } else if (riskScore >= 50) {
+  } else if (riskScore >= CHURN_RISK_THRESHOLDS.HIGH_RISK_SCORE) {
     riskLevel = 'high'
     recommendation = 'High risk: Send re-engagement campaign with special incentive'
-  } else if (riskScore >= 30) {
+  } else if (riskScore >= CHURN_RISK_THRESHOLDS.MEDIUM_RISK_SCORE) {
     riskLevel = 'medium'
     recommendation = 'Medium risk: Send reminder or check-in message'
   } else {

@@ -43,10 +43,10 @@ export function ForgotPasswordForm() {
 
     const result = await requestPasswordReset(formData)
 
-    if (result?.error) {
+    if (!result.success) {
       setError(result.error)
       setLoading(false)
-    } else if (result?.success) {
+    } else {
       setSuccess(true)
       setLoading(false)
     }

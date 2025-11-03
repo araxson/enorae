@@ -32,4 +32,4 @@ export async function BookingRules() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

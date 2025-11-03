@@ -66,7 +66,10 @@ export function SalonsFilters({
     const handleToggle = () => setCollapsed((previous) => !previous)
     const handleClear = (event?: Event) => {
       event?.preventDefault?.()
-      handleClearFilters()
+      onSearchChange('')
+      onTierChange('all')
+      onLicenseChange('all')
+      onComplianceChange('all')
     }
 
     window.addEventListener('admin:toggleFilters', handleToggle)

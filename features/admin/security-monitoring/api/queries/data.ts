@@ -22,7 +22,7 @@ import type {
   RateLimitViolation,
   SecurityMetric,
   SecurityMonitoringSnapshot,
-} from '@/features/admin/security-monitoring/types'
+} from '@/features/admin/security-monitoring/api/types'
 
 interface SnapshotOptions {
   windowInHours?: number

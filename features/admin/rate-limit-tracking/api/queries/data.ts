@@ -3,7 +3,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database, Json } from '@/lib/types/database.types'
-import type { RateLimitRecord, RateLimitSnapshot, RateLimitRule } from '@/features/admin/rate-limit-tracking/types'
+import type { RateLimitRecord, RateLimitSnapshot, RateLimitRule } from '@/features/admin/rate-limit-tracking/api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 type TrackingRow = Database['public']['Views']['security_rate_limit_tracking_view']['Row']
@@ -133,7 +133,7 @@ export async function getRateLimitTracking(
   ])
 
   if (trackingError) {
-    console.error('Failed to fetch rate limit records:', trackingError)
+    logger.error(trackingError, 'database', { query: 'security_rate_limit_tracking_view' })
     return {
       records: [],
       totalCount: 0,

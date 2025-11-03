@@ -1,4 +1,3 @@
-export interface PasswordResetResult {
-  error?: string
-  success?: boolean
-}
+export type PasswordResetResult =
+  | { success: false; error: string }
+  | { success: true }

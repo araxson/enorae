@@ -1,6 +1,6 @@
 import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
 import { AlertCircle } from 'lucide-react'
-import type { UsageQuota } from '../types'
+import type { UsageQuota } from '../api/types'
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'

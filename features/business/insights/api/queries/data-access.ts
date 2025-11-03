@@ -1,5 +1,4 @@
 import 'server-only'
-import type { Database } from '@/lib/types/database.types'
 import type { ServerSupabaseClient } from '@/lib/supabase/server'
 import { createOperationLogger } from '@/lib/observability'
 import type {
@@ -9,7 +8,7 @@ import type {
   ReviewSummary,
   ServiceRow,
   StaffProfileRow,
-} from '../types'
+} from '../../api/types'
 
 type Client = ServerSupabaseClient
 
@@ -48,8 +47,7 @@ export async function fetchAppointments(
 
   if (customerIds.length > 0) {
     const { data: profiles } = await client
-      .schema('identity')
-      .from('profiles')
+      .from('profiles_view')
       .select('id, username')
       .in('id', customerIds)
 
@@ -108,7 +106,7 @@ export async function fetchAppointmentServices(
     return []
   }
 
-  const { data, error } = await client
+  const { data, error} = await client
     .schema('scheduling')
     .from('appointment_services')
     .select('*')

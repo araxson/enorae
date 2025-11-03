@@ -2,7 +2,8 @@ import 'server-only'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability'
+import { logQuery } from '@/lib/observability/query-logger'
+import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 type ManualTransaction = Database['public']['Views']['manual_transactions_view']['Row']
@@ -12,15 +13,13 @@ type Profile = Database['public']['Views']['profiles_view']['Row']
  * Get customer insights and analytics
  */
 export async function getCustomerInsights(salonId: string) {
-  const logger = createOperationLogger('getCustomerInsights', {})
-  logger.start()
-
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
     throw new Error('Unauthorized salon access')
   }
 
+  const logger = logQuery('getCustomerInsights', { salonId })
   const supabase = await createClient()
 
   const [appointmentsResponse, paymentsResponse] = await Promise.all([
@@ -38,30 +37,24 @@ export async function getCustomerInsights(salonId: string) {
       .not('customer_id', 'is', null),
   ])
 
+  const defaultReturn = {
+    totalCustomers: 0,
+    newCustomers: 0,
+    returningCustomers: 0,
+    retentionRate: 0,
+    averageLifetimeValue: 0,
+    averageOrderValue: 0,
+    topCustomers: [],
+  }
+
   if (appointmentsResponse.error) {
-    console.error('[getCustomerInsights] Appointments error:', appointmentsResponse.error)
-    return {
-      totalCustomers: 0,
-      newCustomers: 0,
-      returningCustomers: 0,
-      retentionRate: 0,
-      averageLifetimeValue: 0,
-      averageOrderValue: 0,
-      topCustomers: [],
-    }
+    logger.error(appointmentsResponse.error, 'database', { query: 'appointments' })
+    return defaultReturn
   }
 
   if (paymentsResponse.error) {
-    console.error('[getCustomerInsights] Payments error:', paymentsResponse.error)
-    return {
-      totalCustomers: 0,
-      newCustomers: 0,
-      returningCustomers: 0,
-      retentionRate: 0,
-      averageLifetimeValue: 0,
-      averageOrderValue: 0,
-      topCustomers: [],
-    }
+    logger.error(paymentsResponse.error, 'database', { query: 'payments' })
+    return defaultReturn
   }
 
   const appointments = (appointmentsResponse.data || []) as Appointment[]
@@ -117,18 +110,29 @@ export async function getCustomerInsights(salonId: string) {
     totalRevenue += amount
   }
 
+  // PERFORMANCE FIX: Batch profile fetches in parallel instead of sequential loop
   const customerIds = Array.from(customerMap.keys())
-  const chunkSize = 500
-  for (let i = 0; i < customerIds.length; i += chunkSize) {
-    const slice = customerIds.slice(i, i + chunkSize)
-    const { data, error } = await supabase
-      .from('profiles_view')
-      .select('id, full_name, email')
-      .in('id', slice)
+  const chunkSize = ANALYTICS_CONFIG.PROFILE_FETCH_BATCH_SIZE
+  const chunks: string[][] = []
+  for (let offset = 0; offset < customerIds.length; offset += chunkSize) {
+    chunks.push(customerIds.slice(offset, offset + chunkSize))
+  }
 
+  // Fetch all chunks in parallel for better performance
+  const profileResults = await Promise.all(
+    chunks.map(chunk =>
+      supabase
+        .from('profiles_view')
+        .select('id, full_name, email')
+        .in('id', chunk)
+    )
+  )
+
+  // Process all results
+  profileResults.forEach(({ data, error }) => {
     if (error) {
-      console.error('[getCustomerInsights] Profile fetch error:', error)
-      break
+      logger.error(error, 'database', { query: 'profiles_view' })
+      return
     }
 
     ;((data ?? []) as Profile[]).forEach(profile => {
@@ -138,7 +142,7 @@ export async function getCustomerInsights(salonId: string) {
       entry.name = profile['full_name'] || entry.name
       entry.email = profile['email'] || entry.email
     })
-  }
+  })
 
   const customers = Array.from(customerMap.values())
   const totalCustomers = customers.length
@@ -160,15 +164,15 @@ export async function getCustomerInsights(salonId: string) {
     ? totalRevenue / appointments.length
     : 0
 
-  // Get top 5 customers by total spent
+  // Get top customers by total spent
   const topCustomers = customers
-    .sort((a, b) => b.totalSpent - a.totalSpent)
-    .slice(0, 5)
-    .map(c => ({
-      name: c['name'],
-      email: c['email'] || undefined,
-      totalSpent: c.totalSpent,
-      visitCount: c.visitCount,
+    .sort((customerA, customerB) => customerB.totalSpent - customerA.totalSpent)
+    .slice(0, ANALYTICS_CONFIG.TOP_CUSTOMERS_LIMIT)
+    .map(customer => ({
+      name: customer['name'],
+      email: customer['email'] || undefined,
+      totalSpent: customer.totalSpent,
+      visitCount: customer.visitCount,
     }))
 
   return {

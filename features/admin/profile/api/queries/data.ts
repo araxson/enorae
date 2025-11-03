@@ -14,7 +14,7 @@ import type {
   ProfileRoleSummary,
   ProfileActivityEntry,
   ProfileDetail,
-} from '../../types'
+} from '../../api/types'
 import { sanitizeSearchTerm, toRecord, mapSummary } from './profile-helpers'
 import { createOperationLogger } from '@/lib/observability'
 
@@ -47,7 +47,7 @@ export async function searchProfiles(term: string, limit = 20): Promise<ProfileS
   const { data, error } = await query
 
   if (error) {
-    console.error('[AdminProfile] searchProfiles error', error)
+    logger.error(error, 'database', { query: 'admin_users_overview_view' })
     return []
   }
 
@@ -63,6 +63,9 @@ export async function searchProfiles(term: string, limit = 20): Promise<ProfileS
 }
 
 export async function getProfileDetail(profileId: string): Promise<ProfileDetail | null> {
+  const logger = createOperationLogger('getProfileDetail', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
@@ -102,7 +105,7 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
   ])
 
   if (profileResponse.error) {
-    console.error('[AdminProfile] getProfileDetail profile error', profileResponse.error)
+    logger.error(profileResponse.error, 'database', { query: 'admin_users_overview_view' })
     return null
   }
 

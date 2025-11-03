@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useToast } from '@/lib/hooks/use-toast'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
@@ -9,7 +9,7 @@ import {
   defaultCouponFormState,
   type CouponFormProps,
   type CouponFormState,
-} from '../types'
+} from '../api/types'
 
 const mapCouponToState = (coupon?: CouponFormProps['coupon']): CouponFormState => {
   if (!coupon) {
@@ -39,8 +39,9 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
   const [formData, setFormData] = useState<CouponFormState>(() => mapCouponToState(coupon))
 
   useEffect(() => {
+    // Only reset form when coupon ID changes (switching between different coupons)
     setFormData(mapCouponToState(coupon))
-  }, [coupon])
+  }, [coupon?.id])
 
   const isEditing = Boolean(coupon)
 
@@ -49,12 +50,12 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
     [formData.applicable_services]
   )
 
-  const generateCode = () => {
+  const generateCode = useCallback(() => {
     const code = Math.random().toString(36).substring(2, 10).toUpperCase()
     setFormData((current) => ({ ...current, code }))
-  }
+  }, [])
 
-  const toggleService = (serviceId: string, checked: boolean) => {
+  const toggleService = useCallback((serviceId: string, checked: boolean) => {
     setFormData((current) => {
       if (checked) {
         if (current.applicable_services.includes(serviceId)) return current
@@ -69,9 +70,9 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
         applicable_services: current.applicable_services.filter((id) => id !== serviceId),
       }
     })
-  }
+  }, [])
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsLoading(true)
 
@@ -82,7 +83,7 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
     })
 
     setIsLoading(false)
-  }
+  }, [toast])
 
   return (
     <Card>
@@ -94,7 +95,6 @@ export function CouponForm({ salonId, services, coupon, onSuccess }: CouponFormP
         <CouponFormFields
           formData={formData}
           services={services}
-          selectedServiceIds={selectedServiceIds}
           isLoading={isLoading}
           isEditing={isEditing}
           onSubmit={handleSubmit}

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { MapPin, Phone, Mail, ExternalLink } from 'lucide-react'
-import type { StaffLocationDetail } from '@/features/staff/location/types'
+import type { StaffLocationDetail } from '@/features/staff/location/api/types'
 import { Separator } from '@/components/ui/separator'
 import {
   Item,

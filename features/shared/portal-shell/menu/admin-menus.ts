@@ -1,4 +1,4 @@
-import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/types'
+import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/api/types'
 
 export const ADMIN_MENUS = {
   default: [

@@ -19,7 +19,7 @@ import {
 import { ButtonGroup } from '@/components/ui/button-group'
 import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 import { ReviewCard } from './review-card'
-import { useReviewsList, type NormalizedReview } from './use-reviews-list'
+import { useReviewsList } from './use-reviews-list'
 
 interface ReviewsListProps {
   reviews: SalonReviewWithDetails[]
@@ -42,7 +42,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
           {reviewsData.map((review) => (
             <ReviewCard
               key={review.id}
-              review={review as unknown as NormalizedReview}
+              review={review}
               onRespond={(r) => actions.selectReview(review)}
               onFlag={actions.openFlagDialog}
               onToggleFeatured={handlers.handleToggleFeatured}

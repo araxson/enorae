@@ -9,7 +9,14 @@ import {
   UserX,
 } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { cn } from '@/lib/utils'
 
 import type { InsightsSummary } from '@/features/business/insights/api/queries'
@@ -29,26 +36,30 @@ export function CustomerSegmentationCard({ summary }: CustomerSegmentationCardPr
   ]
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Customer Segmentation</CardTitle>
-        <CardDescription>Customer distribution across different segments</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemContent>
+          <ItemTitle>Customer Segmentation</ItemTitle>
+          <ItemDescription>Customer distribution across different segments</ItemDescription>
+        </ItemContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-6">
           {segmentCards.map(({ label, value, icon: Icon, iconClass }) => (
-            <Card key={label}>
-              <CardHeader>
-                <CardTitle>{label}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center gap-2 pt-0">
-                <Icon className={cn('size-6', iconClass)} aria-hidden="true" />
+            <Item key={label} variant="outline" className="flex-col gap-2">
+              <ItemHeader>
+                <ItemTitle>{label}</ItemTitle>
+                <ItemActions>
+                  <Icon className={cn('size-4', iconClass)} aria-hidden="true" />
+                </ItemActions>
+              </ItemHeader>
+              <ItemContent>
                 <p className="text-2xl font-semibold leading-none tracking-tight">{value}</p>
-              </CardContent>
-            </Card>
+              </ItemContent>
+            </Item>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
 }

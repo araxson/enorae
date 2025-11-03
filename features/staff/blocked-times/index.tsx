@@ -12,4 +12,4 @@ export async function StaffBlockedTimesPage() {
 }
 
 export { BlockedTimesFeature, BlockedTimesCalendar } from './components'
-export * from './types'
+export * from './api/types'

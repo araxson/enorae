@@ -3,6 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { createOperationLogger } from '@/lib/observability'
+import { ANALYTICS_CONFIG, TIME_CONVERSIONS } from '@/lib/config/constants'
 
 type AppointmentSummary = {
   id: string
@@ -92,13 +93,13 @@ export async function calculateCustomerLifetimeValue(customerId: string) {
 
   // Calculate average days between visits
   let totalDays = 0
-  for (let i = 1; i < appointmentRows.length; i++) {
-    const prevStart = appointmentRows[i - 1]?.start_time
-    const currStart = appointmentRows[i]?.start_time
-    if (!prevStart || !currStart) continue
-    const prev = new Date(prevStart)
-    const curr = new Date(currStart)
-    totalDays += (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24)
+  for (let appointmentIndex = 1; appointmentIndex < appointmentRows.length; appointmentIndex++) {
+    const previousAppointmentStart = appointmentRows[appointmentIndex - 1]?.start_time
+    const currentAppointmentStart = appointmentRows[appointmentIndex]?.start_time
+    if (!previousAppointmentStart || !currentAppointmentStart) continue
+    const previousDate = new Date(previousAppointmentStart)
+    const currentDate = new Date(currentAppointmentStart)
+    totalDays += (currentDate.getTime() - previousDate.getTime()) / TIME_CONVERSIONS.MS_PER_DAY
   }
   const avgDaysBetweenVisits =
     appointmentRows.length > 1 ? totalDays / (appointmentRows.length - 1) : 0
@@ -108,11 +109,13 @@ export async function calculateCustomerLifetimeValue(customerId: string) {
   const lastVisitStart = appointmentRows[appointmentRows.length - 1]?.start_time
   const firstVisit = firstVisitStart ? new Date(firstVisitStart) : new Date()
   const lastVisit = lastVisitStart ? new Date(lastVisitStart) : new Date()
-  const tenureDays = (lastVisit.getTime() - firstVisit.getTime()) / (1000 * 60 * 60 * 24)
+  const tenureDays = (lastVisit.getTime() - firstVisit.getTime()) / TIME_CONVERSIONS.MS_PER_DAY
 
-  // Project future value (simple model: visits per year * avg spend * 3 years)
-  const visitsPerYear = avgDaysBetweenVisits > 0 ? 365 / avgDaysBetweenVisits : visitCount
-  const projectedLTV = visitsPerYear * avgSpendPerVisit * 3
+  // Project future value (simple model: visits per year * avg spend * projection years)
+  const visitsPerYear = avgDaysBetweenVisits > 0
+    ? ANALYTICS_CONFIG.DAYS_PER_YEAR / avgDaysBetweenVisits
+    : visitCount
+  const projectedLTV = visitsPerYear * avgSpendPerVisit * ANALYTICS_CONFIG.LTV_PROJECTION_YEARS
 
   return {
     totalRevenue,

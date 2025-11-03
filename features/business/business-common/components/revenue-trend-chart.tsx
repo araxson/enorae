@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo, useCallback } from 'react'
 import { format } from 'date-fns'
 import { DollarSign } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Legend } from 'recharts'
@@ -39,19 +40,21 @@ export function RevenueTrendChart({
   title = 'Revenue Trend',
   showBreakdown = true
 }: RevenueTrendChartProps) {
-  const chartData = data.map(item => ({
+  // PERFORMANCE FIX: Memoize chart data transformation to prevent recalculation on every render
+  const chartData = useMemo(() => data.map(item => ({
     ...item,
     displayDate: format(new Date(item.date), 'MMM dd'),
-  }))
+  })), [data])
 
-  const formatCurrency = (value: number) => {
+  // PERFORMANCE FIX: Memoize currency formatter to prevent recreation on every render
+  const formatCurrency = useCallback((value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value)
-  }
+  }, [])
 
   if (chartData.length === 0) {
     return (

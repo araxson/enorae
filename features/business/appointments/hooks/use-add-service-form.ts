@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
 import { addServiceToAppointment } from '@/features/business/appointments/api/mutations'
 import { ServiceOptionsResponseSchema } from '@/features/business/appointments/api/queries'
-import type { ServiceOption, StaffOption, ServiceFormData } from './types'
+import type { ServiceOption, StaffOption, ServiceFormData } from '../api/types'
 import { TIME_MS } from '@/lib/config/constants'
+import { logError, logDebug } from '@/lib/observability'
 
 export function useAddServiceForm(
   appointmentId: string,
@@ -52,7 +53,12 @@ export function useAddServiceForm(
         // API_INTEGRATION_FIX: Validate response schema
         const validationResult = ServiceOptionsResponseSchema.safeParse(rawData)
         if (!validationResult.success) {
-          console.error('[AddService] Invalid API response:', validationResult.error)
+          logError('Invalid API response in AddService', {
+            operationName: 'loadServiceOptions',
+            appointmentId,
+            error: validationResult.error,
+            errorCategory: 'validation',
+          })
           throw new Error('Invalid API response format')
         }
 
@@ -64,10 +70,18 @@ export function useAddServiceForm(
       } catch (error) {
         // API_INTEGRATION_FIX: Handle AbortError and timeout errors
         if (error instanceof Error && error.name === 'AbortError') {
-          console.log('Service options load request cancelled or timed out')
+          logDebug('Service options load request cancelled or timed out', {
+            operationName: 'loadServiceOptions',
+            appointmentId,
+          })
           return
         }
-        console.error('Failed to load appointment service options:', error)
+        logError('Failed to load appointment service options', {
+          operationName: 'loadServiceOptions',
+          appointmentId,
+          error: error instanceof Error ? error : String(error),
+          errorCategory: 'network',
+        })
         if (isMounted) {
           toast({
             variant: 'destructive',
@@ -145,7 +159,12 @@ export function useAddServiceForm(
       resetForm()
       onSuccess()
     } catch (error) {
-      console.error('Failed to add appointment service:', error)
+      logError('Failed to add appointment service', {
+        operationName: 'addServiceToAppointment',
+        appointmentId,
+        error: error instanceof Error ? error : String(error),
+        errorCategory: 'system',
+      })
       toast({
         variant: 'destructive',
         title: 'Failed to add service',

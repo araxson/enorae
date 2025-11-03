@@ -1,7 +1,7 @@
 'use client'
 
 import { memo, type ReactNode } from 'react'
-import type { BusinessDashboardState } from '@/features/business/dashboard/types'
+import type { BusinessDashboardState } from '@/features/business/dashboard/api/types'
 import { DashboardToolbar } from './dashboard-toolbar'
 import { DashboardFilters } from './dashboard-filters'
 import { DashboardChainOverview } from './dashboard-chain-overview'

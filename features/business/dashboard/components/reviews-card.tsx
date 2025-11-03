@@ -13,7 +13,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/u
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@/components/ui/field'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemHeader, ItemTitle } from '@/components/ui/item'
 
-import type { BusinessReviewStats } from '@/features/business/dashboard/types'
+import type { BusinessReviewStats } from '@/features/business/dashboard/api/types'
 
 type ReviewsCardProps = {
   stats: BusinessReviewStats
@@ -140,7 +140,7 @@ export function ReviewsCard({ stats }: ReviewsCardProps) {
             <FieldLabel>Rating distribution</FieldLabel>
             <div className="space-y-2">
               <ItemGroup>
-                {stats.ratingDistribution.map(({ rating, count }) => {
+                {stats.ratingDistribution.map(({ rating, count }: { rating: number; count: number }) => {
                   const percentage = stats.totalReviews > 0 ? (count / stats.totalReviews) * 100 : 0
                   return (
                     <Item key={rating}>

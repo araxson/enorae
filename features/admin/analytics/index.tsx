@@ -3,7 +3,7 @@ import { getPlatformAnalyticsSnapshot } from './api/queries'
 import { PlatformAnalyticsDashboard } from './components'
 
 // Export types
-export type * from './types'
+export type * from './api/types'
 
 export async function AdminAnalytics() {
   try {

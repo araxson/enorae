@@ -12,6 +12,7 @@ import { Item, ItemContent, ItemGroup, ItemMedia } from '@/components/ui/item'
 import { RegionalPreferencesTab } from './preferences/regional-preferences-tab'
 import { NotificationsPreferencesTab } from './preferences/notifications-preferences-tab'
 import { parsePreferences } from './preferences/helpers'
+import { logError } from '@/lib/observability'
 
 type ProfilePreferences = Database['public']['Views']['profiles_preferences_view']['Row']
 
@@ -59,7 +60,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
 
       await updateProfilePreferences(formData)
     } catch (error) {
-      console.error('Failed to save preferences:', error)
+      logError('Failed to save preferences', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'ProfilePreferencesEditor' })
     } finally {
       setIsSaving(false)
     }

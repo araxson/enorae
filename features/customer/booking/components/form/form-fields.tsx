@@ -14,7 +14,7 @@ import { Combobox } from '@/components/ui/combobox'
 import { FieldDescription } from '@/components/ui/field'
 import { Kbd } from '@/components/ui/kbd'
 
-import type { BookingFormValues, Service, Staff } from '@/features/customer/booking/types'
+import type { BookingFormValues, Service, Staff } from '@/features/customer/booking/api/types'
 
 interface FormFieldsProps {
   services: Service[]

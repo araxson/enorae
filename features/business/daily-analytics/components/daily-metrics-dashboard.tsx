@@ -3,7 +3,7 @@ import { DailyBreakdownList } from './partials/daily-breakdown-list'
 import { KeyMetricsGrid } from './partials/key-metrics-grid'
 import { RevenueBreakdownCards } from './partials/revenue-breakdown-cards'
 import { AppointmentIssuesCard } from './partials/appointment-issues-card'
-import type { DailyMetricsDashboardProps } from './types'
+import type { DailyMetricsDashboardProps } from '../api/types'
 
 type Props = DailyMetricsDashboardProps
 

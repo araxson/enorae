@@ -3,6 +3,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'
+import { QUERY_LIMITS } from '@/lib/config/constants'
 
 type AuditLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
 
@@ -165,8 +166,8 @@ export async function getSecurityOverview(dateFrom: string, dateTo: string) {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const [auditLogs, securityEvents] = await Promise.all([
-    getAuditLogs({ dateFrom, dateTo, limit: 1000 }),
-    getSecurityEvents({ dateFrom, dateTo, limit: 1000 }),
+    getAuditLogs({ dateFrom, dateTo, limit: QUERY_LIMITS.AUDIT_LOGS }),
+    getSecurityEvents({ dateFrom, dateTo, limit: QUERY_LIMITS.AUDIT_LOGS }),
   ])
 
   const failedLogins = securityEvents.filter(

@@ -2,14 +2,14 @@
 
 import { memo, useCallback } from 'react'
 import { Item, ItemHeader } from '@/components/ui/item'
-import type { NormalizedReview } from './use-reviews-list'
+import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 import { ReviewCardHeader } from './review-card-header'
 import { ReviewCardActions } from './review-card-actions'
 import { ReviewCardContent } from './review-card-content'
 
 type ReviewCardProps = {
-  review: NormalizedReview
-  onRespond: (review: NormalizedReview) => void
+  review: SalonReviewWithDetails
+  onRespond: (review: SalonReviewWithDetails) => void
   onFlag: (reviewId: string) => void
   onToggleFeatured: (reviewId: string, featured: boolean) => Promise<void>
 }

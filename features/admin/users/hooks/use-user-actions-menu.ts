@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import type { UserActionsMenuProps, UserActionResult } from './types'
+import type { UserActionsMenuProps, UserActionResult } from '../api/types'
 
 const initialDialogs = {
   suspend: false,

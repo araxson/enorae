@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { CheckCircle2, Circle, Clock, XCircle } from 'lucide-react'
 
 import { Card, CardContent } from '@/components/ui/card'
@@ -14,7 +15,7 @@ type ServiceStatusRowProps = {
   onStatusUpdate: (serviceId: string, newStatus: string) => void
 }
 
-export function ServiceStatusRow({
+export const ServiceStatusRow = memo(function ServiceStatusRow({
   serviceId,
   status,
   updatingId,
@@ -65,7 +66,7 @@ export function ServiceStatusRow({
       </CardContent>
     </Card>
   )
-}
+})
 
 function getStatusIcon(status: string | null) {
   switch (status) {

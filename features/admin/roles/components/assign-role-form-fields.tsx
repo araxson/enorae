@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/field'
 import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
-import type { RoleValue } from './types'
+import type { RoleValue } from '../api/types'
 import type { RoleTemplate } from './role-templates'
 
 type AssignRoleFormFieldsProps = {

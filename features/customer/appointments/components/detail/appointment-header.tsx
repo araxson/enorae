@@ -17,7 +17,7 @@ export function AppointmentHeader({ appointment }: Pick<AppointmentDetailContent
   if (!appointment) return null
   const statusLabel = (appointment['status'] ?? 'pending')
     .replace(/_/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase())
+    .replace(/\b\w/g, (char: string) => char.toUpperCase())
   const scheduledDate = appointment['start_time'] ? new Date(appointment['start_time']) : null
 
   return (

@@ -12,7 +12,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 
-import type { Subscription } from '../types'
+import type { Subscription } from '../api/types'
 
 const tierFeatures: Record<Subscription['tier'], string[]> = {
   basic: [

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { BusinessDashboardMetrics, BusinessReviewStats, AppointmentWithDetails } from '@/features/business/dashboard/types'
+import type { BusinessDashboardMetrics, BusinessReviewStats, AppointmentWithDetails } from '@/features/business/dashboard/api/types'
 import { QuickActions } from '@/features/business/business-common/components/quick-actions'
 import { MetricsCards } from './metrics-cards'
 import { ReviewsCard } from './reviews-card'

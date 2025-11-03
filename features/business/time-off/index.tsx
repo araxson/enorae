@@ -1,2 +1,2 @@
 export { BusinessTimeOff } from './components'
-export * from './types'
+export * from './api/types'

@@ -7,7 +7,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { logSupabaseError } from '@/lib/supabase/errors'
 
 import { logDashboardAudit } from './audit'
-import type { ActionResponse, AppointmentStatus } from '../../types'
+import type { ActionResponse, AppointmentStatus } from '../../api/types'
 import { VALID_APPOINTMENT_STATUSES } from './validation'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 

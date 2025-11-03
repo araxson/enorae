@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { EXTERNAL_APIS } from '@/lib/config/env'
+import { TIME_MS, UI_TIMEOUTS, STRING_LIMITS, QUERY_LIMITS } from '@/lib/config/constants'
 import {
   GoogleMapsAutocompleteResponseSchema,
   GoogleMapsGeocodeResponseSchema,
 } from '@/lib/config/google-maps-schema'
-import type { LocationAddress } from '@/features/business/locations/types'
+import type { LocationAddress } from '@/features/business/locations/api/types'
 
 interface AddressSuggestion {
   description: string
@@ -20,7 +21,7 @@ export function useAddressSearch(onAddressSelect?: (address: Partial<LocationAdd
 
   // Debounce address search with proper cleanup
   useEffect(() => {
-    if (!searchQuery || searchQuery.length < 3) {
+    if (!searchQuery || searchQuery.length < STRING_LIMITS.ADDRESS_SEARCH_MIN) {
       setSuggestions([])
       return
     }
@@ -52,7 +53,7 @@ export function useAddressSearch(onAddressSelect?: (address: Partial<LocationAdd
 
         const data = validationResult.data
         if (data.predictions) {
-          setSuggestions(data.predictions.slice(0, 5))
+          setSuggestions(data.predictions.slice(0, QUERY_LIMITS.ADDRESS_SUGGESTIONS))
         }
       } catch (error) {
         if (error instanceof Error && error.name === 'AbortError') {
@@ -63,7 +64,7 @@ export function useAddressSearch(onAddressSelect?: (address: Partial<LocationAdd
       } finally {
         setIsSearching(false)
       }
-    }, 300)
+    }, UI_TIMEOUTS.SEARCH_DEBOUNCE)
 
     return () => {
       clearTimeout(debounceTimer)
@@ -77,12 +78,17 @@ export function useAddressSearch(onAddressSelect?: (address: Partial<LocationAdd
       return
     }
 
+    const controller = new AbortController()
     setIsSearching(true)
     try {
       const apiKey = EXTERNAL_APIS.GOOGLE_MAPS.getApiKey()
       const url = `${EXTERNAL_APIS.GOOGLE_MAPS.GEOCODE_URL}?address=${encodeURIComponent(fullAddress)}&key=${apiKey}`
 
-      const response = await fetch(url)
+      // SECURITY FIX: Add timeout protection to prevent indefinite hangs
+      const timeoutSignal = AbortSignal.timeout(TIME_MS.API_REQUEST_TIMEOUT)
+      const response = await fetch(url, {
+        signal: AbortSignal.any([controller.signal, timeoutSignal])
+      })
 
       if (!response.ok) {
         throw new Error(`Geocoding request failed: ${response.status}`)
@@ -114,8 +120,13 @@ export function useAddressSearch(onAddressSelect?: (address: Partial<LocationAdd
         onAddressSelect?.(addressData)
       }
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.error('[AddressSearch] Geocoding request timed out')
+        return
+      }
       console.error('[AddressSearch] Geocoding error:', error)
     } finally {
+      controller.abort()
       setIsSearching(false)
     }
   }, [onAddressSelect])

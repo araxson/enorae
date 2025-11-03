@@ -30,4 +30,4 @@ export async function SecurityMonitoring() {
     </div>
   )
 }
-export * from './types'
+export * from './api/types'

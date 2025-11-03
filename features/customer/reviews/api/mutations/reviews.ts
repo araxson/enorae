@@ -7,7 +7,7 @@ import { ZodError } from 'zod'
 import { reviewSchema } from '@/features/customer/reviews/api/validation'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_DAY, REVIEW_EDIT_WINDOW_DAYS } from '@/lib/constants/time'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger, logError } from '@/lib/observability'
 import { getRequiredString, getOptionalString, getRequiredInt, getOptionalInt } from '@/lib/utils/safe-form-data'
 
 type ActionResult = {
@@ -60,13 +60,6 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
       logger.error(error, 'database', { salonId: validated.salonId, userId: session.user.id })
       throw error
     }
-
-    logMutation('create', 'review', review.id, {
-      salonId: validated.salonId,
-      userId: session.user.id,
-      operationName: 'createReview',
-      changes: { rating: validated.rating, appointmentId: validated.appointmentId },
-    })
 
     revalidatePath('/customer/reviews', 'page')
     revalidatePath(`/customer/salons/${validated.salonId}`, 'page')
@@ -163,13 +156,6 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       throw error
     }
 
-    logMutation('update', 'review', id, {
-      salonId: review.salon_id ?? undefined,
-      userId: session.user.id,
-      operationName: 'updateReview',
-      changes: { rating: validated.rating },
-    })
-
     revalidatePath('/customer/reviews', 'page')
     if (review.salon_id) {
       revalidatePath(`/customer/salons/${review.salon_id}`, 'page')
@@ -234,12 +220,6 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
       logger.error(error, 'database', { reviewId: id, salonId, userId: session.user.id })
       throw error
     }
-
-    logMutation('delete', 'review', id, {
-      salonId,
-      userId: session.user.id,
-      operationName: 'deleteReview',
-    })
 
     revalidatePath('/customer/reviews', 'page')
     revalidatePath(`/customer/salons/${salonId}`, 'page')

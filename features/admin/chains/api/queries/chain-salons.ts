@@ -9,7 +9,7 @@ import type {
   ChainSalon,
   LocationAddressRow,
   SalonLocationRow,
-} from '../../types'
+} from '../../api/types'
 
 export async function getChainSalons(chainId: string): Promise<ChainSalon[]> {
   const logger = createOperationLogger('getChainSalons', {})

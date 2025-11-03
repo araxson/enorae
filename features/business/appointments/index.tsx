@@ -1,2 +1,2 @@
-export type * from './types'
+export type * from './api/types'
 export { AppointmentsManagement } from './components'

@@ -51,7 +51,7 @@ export function ResetPasswordForm() {
 
     const result = await resetPassword(formData)
 
-    if (result?.error) {
+    if (!result.success) {
       setError(result.error)
       setLoading(false)
     }

@@ -1,7 +1,7 @@
 import { AlertTriangle } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { CancellationPattern } from '@/features/admin/appointments/types'
+import type { CancellationPattern } from '@/features/admin/appointments/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
   Item,

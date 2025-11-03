@@ -2,7 +2,7 @@
 
 import { PORTAL_MENUS } from './portal-menus'
 import { verifySession, type Session } from '@/lib/auth/session'
-import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/types'
+import type { NavItem, NavSecondaryItem } from '@/features/shared/portal-shell/api/types'
 
 type PortalType = keyof typeof PORTAL_MENUS
 

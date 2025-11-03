@@ -20,7 +20,7 @@ import {
   dismissSecurityAlert,
   suppressSecurityAlert,
 } from '@/features/admin/security-access-monitoring/api/mutations'
-import type { SecurityAccessTableProps } from './types'
+import type { SecurityAccessTableProps, SecurityAccessRecord } from './types'
 
 /**
  * Security access monitoring table
@@ -120,7 +120,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
                 </TableCell>
               </TableRow>
             ) : (
-              records.map((record) => (
+              records.map((record: SecurityAccessRecord) => (
                 <SecurityAccessTableRow
                   key={record.id}
                   record={record}

@@ -60,8 +60,12 @@ export async function exportToExcel<T extends Record<string, unknown>>(
 ): Promise<string> {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
-  // For now, export as CSV (can be opened in Excel)
-  // TODO: Integrate exceljs for proper XLSX with formatting
+  /**
+   * NOTE: Currently exports as CSV format which can be opened in Excel.
+   *
+   * Future enhancement: Integrate exceljs library for native XLSX format
+   * with proper cell formatting, formulas, and styling support.
+   */
   const csv = await exportToCSV(data, filename, columns)
 
   return csv
@@ -122,7 +126,12 @@ export async function exportToPDF<T extends Record<string, unknown>>(
     lines.push(rowData.join(' | '))
   })
 
-  // TODO: Use jsPDF or pdfmake for proper PDF generation with tables
+  /**
+   * NOTE: Currently generates plain text content.
+   *
+   * Future enhancement: Integrate jsPDF or pdfmake library for proper
+   * PDF generation with table formatting, headers, and styling.
+   */
   const content = lines.join('\n')
 
   return content

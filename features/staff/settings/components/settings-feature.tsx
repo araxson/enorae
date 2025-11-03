@@ -4,7 +4,7 @@ import { NotificationPreferences } from './notification-preferences'
 import { PrivacySettings } from './privacy-settings'
 import { DisplayPreferences } from './display-preferences'
 import { getUserPreferences } from '../api/queries'
-import type { UserPreferences } from '../types'
+import type { UserPreferences } from '../api/types'
 
 export async function SettingsFeature() {
   const preferences = await getUserPreferences()

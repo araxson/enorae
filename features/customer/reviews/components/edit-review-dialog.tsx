@@ -15,11 +15,12 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Pencil } from 'lucide-react'
 import { updateReview } from '@/features/customer/reviews/api/mutations'
-import type { Review } from '@/features/customer/reviews/types'
+import type { Review } from '@/features/customer/reviews/api/types'
 import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { EditReviewForm } from './edit-review-form'
 import { EditWindowAlert } from './edit-window-alert'
+import { logError } from '@/lib/observability'
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
 const REVIEW_EDIT_WINDOW_DAYS = 7
@@ -57,7 +58,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
         setError(result.error || 'Failed to update review')
       }
     } catch (error) {
-      console.error('Error updating review:', error)
+      logError('Error updating review', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'EditReviewDialog', reviewId: review?.['id'] })
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -89,6 +90,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <EditReviewForm
+              reviewId={review['id'] || ''}
               salonId={review['salon_id'] || ''}
               defaultComment={review['comment']}
               defaultRating={review['rating']}

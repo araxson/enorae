@@ -48,6 +48,7 @@ export function EditServiceDialog({
   )
 
   useEffect(() => {
+    // Only update form if the service ID has changed
     setFormData({
       staffId: service['staff_id'] || '',
       startTime: service['start_time']
@@ -59,7 +60,7 @@ export function EditServiceDialog({
       durationMinutes: service['duration_minutes']?.toString() || '',
       status: service['status'] || 'pending',
     })
-  }, [service])
+  }, [service['id'], service['staff_id'], service['start_time'], service['end_time'], service['duration_minutes'], service['status']])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()

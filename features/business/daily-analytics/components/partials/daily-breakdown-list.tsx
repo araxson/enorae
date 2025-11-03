@@ -11,7 +11,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import type { DailyMetricsDashboardProps } from '../types'
+import type { DailyMetricsDashboardProps } from '../../api/types'
 import { formatCurrency } from '@/features/business/business-common'
 
 type Props = Pick<DailyMetricsDashboardProps, 'metrics'>
@@ -29,7 +29,7 @@ export function DailyBreakdownList({ metrics }: Props) {
       <ItemContent>
         <ItemGroup className="max-h-96 overflow-y-auto">
           {metrics.map((metric) => (
-            <Item key={metric.id} variant="outline" className="flex-col items-start gap-3">
+            <Item key={metric.id ?? `metric-${Math.random()}`} variant="outline" className="flex-col items-start gap-3">
               <ItemHeader>
                 <ItemTitle>
                   {metric.metric_at

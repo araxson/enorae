@@ -2,7 +2,7 @@ import { AlertTriangle, ShieldCheck } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import type { SecurityIncident } from '@/features/admin/security-monitoring/types'
+import type { SecurityIncident } from '@/features/admin/security-monitoring/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
 

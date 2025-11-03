@@ -3,7 +3,7 @@ import type {
   CustomerSegment,
   CustomerSegmentation,
   InsightsSummary,
-} from '@/features/business/insights/types'
+} from '@/features/business/insights/api/types'
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
 const CHURNED_THRESHOLD_DAYS = 90

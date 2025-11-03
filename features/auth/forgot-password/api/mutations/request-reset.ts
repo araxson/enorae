@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ENV } from '@/lib/config/env'
 import { createOperationLogger } from '@/lib/observability'
 import { passwordResetRequestSchema } from '../schema'
-import type { PasswordResetRequestResult } from './types'
+import type { PasswordResetRequestResult } from '../types'
 
 export async function requestPasswordReset(
   formData: FormData
@@ -20,7 +20,7 @@ export async function requestPasswordReset(
     if (!validation.success) {
       const firstError = validation.error.issues[0]
       logger.error(firstError?.message ?? 'Invalid email', 'validation', { email: rawData.email })
-      return { error: firstError?.message ?? 'Invalid email' }
+      return { success: false, error: firstError?.message ?? 'Invalid email' }
     }
 
     const { email } = validation.data
@@ -35,7 +35,7 @@ export async function requestPasswordReset(
 
     if (error) {
       logger.error(error, 'auth', { email })
-      return { error: error.message }
+      return { success: false, error: error.message }
     }
 
     logger.success({ email })
@@ -45,6 +45,6 @@ export async function requestPasswordReset(
     }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: 'An unexpected error occurred. Please try again.' }
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }

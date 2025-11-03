@@ -43,7 +43,7 @@ export async function getUserSalonIds(): Promise<string[]> {
       .maybeSingle()
 
     if (tenantError) {
-      console.error('[getUserSalonIds] Tenant query error:', tenantError)
+      logger.error(tenantError, 'database', { query: 'salon_chains' })
     }
 
     const chain = tenantData && tenantData.deleted_at === null
@@ -61,7 +61,7 @@ export async function getUserSalonIds(): Promise<string[]> {
         .returns<Pick<SalonRecord, 'id'>[]>()
 
       if (chainError) {
-        console.error('[getUserSalonIds] Chain salons query error:', chainError)
+        logger.error(chainError, 'database', { query: 'salons' })
         return []
       }
 

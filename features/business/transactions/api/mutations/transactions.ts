@@ -53,7 +53,14 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
       payment_method: paymentMethod,
     }
 
-    const validated = manualTransactionSchema.parse(input)
+    const validation = manualTransactionSchema.safeParse(input)
+
+    if (!validation.success) {
+      logger.error(validation.error.issues[0]?.message ?? 'Validation failed', 'validation')
+      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
+    }
+
+    const validated = validation.data
 
     // Create transaction
     const { data, error } = await supabase
@@ -173,10 +180,10 @@ export async function deleteManualTransaction(id: string): Promise<ActionResult>
       return { error: error.message }
     }
 
-    logMutation('delete', 'manual_transaction', id, {
+    logMutation('deleteManualTransaction', {
       userId: session.user.id,
       salonId: staffProfile.salon_id,
-      operationName: 'deleteManualTransaction',
+      transactionId: id,
     })
 
     revalidatePath('/business/analytics/transactions', 'page')

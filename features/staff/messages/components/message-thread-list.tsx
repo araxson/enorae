@@ -9,7 +9,7 @@ import { MessageCircle, Archive } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { archiveThread } from '@/features/staff/messages/api/mutations'
-import type { MessageThread } from '@/features/staff/messages/types'
+import type { MessageThread } from '@/features/staff/messages/api/types'
 import {
   Empty,
   EmptyDescription,

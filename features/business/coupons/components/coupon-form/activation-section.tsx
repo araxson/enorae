@@ -2,7 +2,7 @@
 
 import { Switch } from '@/components/ui/switch'
 import { Item, ItemActions, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'
-import type { CouponFormState } from '../types'
+import type { CouponFormState } from '../../api/types'
 import { FieldLabel } from '@/components/ui/field'
 
 interface CouponActivationSectionProps {

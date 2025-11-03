@@ -58,11 +58,11 @@ export function VerifyOTPForm({
 
     const result = await verifyOTP(formData)
 
-    if (result?.error) {
+    if (!result.success) {
       setError(result.error)
       setLoading(false)
       setOtp('') // Clear OTP on error
-    } else if (result?.success) {
+    } else {
       router.push(redirectTo)
     }
   }

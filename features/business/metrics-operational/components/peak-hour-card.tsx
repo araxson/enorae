@@ -1,22 +1,34 @@
+import { memo } from 'react'
 import { Clock } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type PeakHourCardProps = {
   peakHour: number
 }
 
-export function PeakHourCard({ peakHour }: PeakHourCardProps) {
+export const PeakHourCard = memo(function PeakHourCard({ peakHour }: PeakHourCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Peak Hour</CardTitle>
-        <CardDescription>Busiest time of day</CardDescription>
-      </CardHeader>
-      <CardContent className="flex items-start justify-between">
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemContent>
+          <ItemTitle>Peak Hour</ItemTitle>
+          <ItemDescription>Busiest time of day</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent>
         <p className="text-2xl font-semibold leading-none tracking-tight">{peakHour}:00</p>
-        <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
-}
+})

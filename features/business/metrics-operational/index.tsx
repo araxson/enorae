@@ -9,7 +9,7 @@ export async function OperationalMetrics() {
   } catch (error) {
     return (
       <section className="py-10 mx-auto w-full px-6 max-w-6xl">
-        <Alert>
+        <Alert variant="destructive">
           <AlertTitle>Metrics unavailable</AlertTitle>
           <AlertDescription>
             {error instanceof Error ? error.message : 'Failed to load salon data'}
@@ -19,7 +19,21 @@ export async function OperationalMetrics() {
     )
   }
 
-  const metrics = await getOperationalMetrics(salon.id)
+  let metrics
+  try {
+    metrics = await getOperationalMetrics(salon.id)
+  } catch (error) {
+    return (
+      <section className="py-10 mx-auto w-full px-6 max-w-6xl">
+        <Alert variant="destructive">
+          <AlertTitle>Failed to load metrics</AlertTitle>
+          <AlertDescription>
+            {error instanceof Error ? error.message : 'Unable to fetch operational metrics'}
+          </AlertDescription>
+        </Alert>
+      </section>
+    )
+  }
 
   return (
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
@@ -29,4 +43,4 @@ export async function OperationalMetrics() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

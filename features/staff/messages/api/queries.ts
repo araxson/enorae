@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { MessageThread, Message } from '@/features/staff/messages/types'
+import type { MessageThread, Message } from '@/features/staff/messages/api/types'
 
 async function resolveStaffId(
   supabase: Awaited<ReturnType<typeof createClient>>,

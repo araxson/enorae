@@ -1,2 +1,2 @@
 export { StaffManagement } from './components'
-export * from './types'
+export * from './api/types'

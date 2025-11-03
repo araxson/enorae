@@ -9,7 +9,7 @@ import {
 import { MapPin } from 'lucide-react'
 import { LocationCard } from './location-card'
 import { AllLocationsList } from './all-locations-list'
-import type { StaffLocationDetail } from '../types'
+import type { StaffLocationDetail } from '../api/types'
 
 interface LocationFeatureProps {
   myLocation: StaffLocationDetail | null

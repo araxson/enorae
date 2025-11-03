@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, getSalonContext, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import type { SalonLocation, LocationAddress } from '../../types'
+import type { SalonLocation, LocationAddress } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function getLocationAddress(locationId: string): Promise<LocationAddress | null> {

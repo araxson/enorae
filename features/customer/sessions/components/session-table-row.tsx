@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
@@ -18,7 +19,7 @@ interface SessionTableRowProps {
   getActivityStatus: (lastActivity: string | null) => string
 }
 
-export function SessionTableRow({
+export const SessionTableRow = memo(function SessionTableRow({
   session,
   revokingId,
   onRevoke,
@@ -75,4 +76,4 @@ export function SessionTableRow({
       </TableCell>
     </TableRow>
   )
-}
+})

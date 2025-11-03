@@ -30,6 +30,7 @@ export async function getOptimizationRecommendations(
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 
+  // NOTE: Using SELECT * for admin views since they're not user-facing performance critical
   const [optimizationsRes, statsRes, indexesRes] = await Promise.all([
     supabase.from('low_priority_optimizations_summary_view').select('*').limit(limit),
     supabase

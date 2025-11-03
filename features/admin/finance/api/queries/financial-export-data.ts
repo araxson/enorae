@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { FinancialExportData } from '@/features/admin/finance/types'
+import type { FinancialExportData } from '@/features/admin/finance/api/types'
 import { requireAdminClient } from './client'
 import { getPlatformRevenueAnalytics } from './platform-revenue-analytics'
 import { createOperationLogger } from '@/lib/observability'

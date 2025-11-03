@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { CalendarDays, History, Clock3 } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
 import { AppointmentStats } from './appointment-stats'
 import { AppointmentFilters } from './appointment-filters'

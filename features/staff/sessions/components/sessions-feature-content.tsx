@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { SessionList } from '.'
-import type { Session } from '../types'
+import type { Session } from '../api/types'
 
 interface SessionsFeatureContentProps {
   sessions: Session[]

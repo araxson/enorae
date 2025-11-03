@@ -2,10 +2,13 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
 
-// DATABASE PATTERN NOTE: Currently reading from communication.messages table
-// TODO: Create view view_notifications in communication schema for proper read pattern
-// View should include: message fields + sender info + context details
-// Once view is created, update all queries to use: .from('view_notifications')
+/**
+ * DATABASE PATTERN NOTE: Currently reading from communication.messages table
+ *
+ * Future enhancement: Create view_notifications in communication schema for optimized reads.
+ * The view should include: message fields + sender info + context details.
+ * This would improve query performance and simplify the query interface.
+ */
 
 type Message = Database['communication']['Tables']['messages']['Row']
 

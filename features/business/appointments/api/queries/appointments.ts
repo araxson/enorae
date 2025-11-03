@@ -2,24 +2,18 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS, canAccessSalon } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability'
+import { logQuery } from '@/lib/observability/query-logger'
 
 type Appointment = Database['public']['Views']['appointments_view']['Row']
 
 export type AppointmentWithDetails = Appointment
 
 export async function getAppointments(salonId: string) {
-  const logger = createOperationLogger('getAppointments', {})
-  logger.start()
-
-  console.log('Fetching appointments', { salonId })
-
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const logger = logQuery('getAppointments', { salonId, userId: session.user.id })
+
   if (!(await canAccessSalon(salonId))) {
-    console.error('getAppointments unauthorized access attempt', {
-      salonId,
-      userId: session.user.id
-    })
+    logger.error(new Error('Unauthorized access attempt'), 'permission')
     throw new Error('Unauthorized: Not your salon')
   }
 
@@ -32,33 +26,20 @@ export async function getAppointments(salonId: string) {
     .order('start_time', { ascending: false })
 
   if (error) {
-    console.error('getAppointments query failed', {
-      salonId,
-      userId: session.user.id,
-      error: error.message
-    })
+    logger.error(error, 'database')
     throw error
   }
 
-  console.log('getAppointments completed', {
-    salonId,
-    count: data?.length ?? 0,
-    userId: session.user.id
-  })
-
+  logger.success({ count: data?.length ?? 0 })
   return data as AppointmentWithDetails[]
 }
 
 export async function getAppointmentsByStatus(salonId: string, status: string) {
-  console.log('Fetching appointments by status', { salonId, status })
-
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const logger = logQuery('getAppointmentsByStatus', { salonId, status, userId: session.user.id })
+
   if (!(await canAccessSalon(salonId))) {
-    console.error('getAppointmentsByStatus unauthorized access attempt', {
-      salonId,
-      status,
-      userId: session.user.id
-    })
+    logger.error(new Error('Unauthorized access attempt'), 'permission')
     throw new Error('Unauthorized: Not your salon')
   }
 
@@ -72,21 +53,10 @@ export async function getAppointmentsByStatus(salonId: string, status: string) {
     .order('start_time', { ascending: false })
 
   if (error) {
-    console.error('getAppointmentsByStatus query failed', {
-      salonId,
-      status,
-      userId: session.user.id,
-      error: error.message
-    })
+    logger.error(error, 'database')
     throw error
   }
 
-  console.log('getAppointmentsByStatus completed', {
-    salonId,
-    status,
-    count: data?.length ?? 0,
-    userId: session.user.id
-  })
-
+  logger.success({ count: data?.length ?? 0 })
   return data as AppointmentWithDetails[]
 }

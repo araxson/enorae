@@ -1,7 +1,7 @@
 import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
-import type { Staff } from '../types'
+import type { Staff } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 import type { Database } from '@/lib/types/database.types'
 

@@ -46,4 +46,4 @@ export async function BlockedTimesManagement() {
     )
   }
 }
-export * from './types'
+export * from './api/types'

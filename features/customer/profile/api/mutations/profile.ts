@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Json } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
 import { getOptionalString, getOptionalJsonObject } from '@/lib/utils/safe-form-data'
 
 export async function updateProfileMetadata(formData: FormData) {
@@ -12,9 +12,8 @@ export async function updateProfileMetadata(formData: FormData) {
 
   try {
     const session = await requireAuth()
-    const supabase = await createClient()
-
     logger.start({ userId: session.user.id })
+    const supabase = await createClient()
 
     const interests = getOptionalString(formData, 'interests')
     const tags = getOptionalString(formData, 'tags')
@@ -22,13 +21,6 @@ export async function updateProfileMetadata(formData: FormData) {
     // Parse comma-separated values into arrays
     const interestsArray = interests ? interests.split(',').map(i => i.trim()).filter(Boolean) : []
     const tagsArray = tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : []
-
-    console.log('Updating profile metadata', {
-      userId: session.user.id,
-      interestsCount: interestsArray.length,
-      tagsCount: tagsArray.length,
-      timestamp: new Date().toISOString()
-    })
 
     const { error } = await supabase
       .schema('identity')
@@ -41,22 +33,16 @@ export async function updateProfileMetadata(formData: FormData) {
       })
 
     if (error) {
-      logger.error(error, 'database', { userId: session.user.id })
+      logger.error(error, 'database')
       throw error
     }
 
-    logMutation('update', 'profile_metadata', session.user.id, {
-      userId: session.user.id,
-      operationName: 'updateProfileMetadata',
-      changes: { interestsCount: interestsArray.length, tagsCount: tagsArray.length },
-    })
-
     revalidatePath('/customer/profile', 'page')
 
-    logger.success({ userId: session.user.id, interestsCount: interestsArray.length, tagsCount: tagsArray.length })
+    logger.success({ interestsCount: interestsArray.length, tagsCount: tagsArray.length })
     return { success: true }
   } catch (error: unknown) {
-    logger.error(error instanceof Error ? error : String(error), 'system')
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'system')
     throw error
   }
 }
@@ -66,13 +52,8 @@ export async function updateProfileAvatar(avatarUrl: string) {
 
   try {
     const session = await requireAuth()
-    const supabase = await createClient()
-
     logger.start({ userId: session.user.id })
-    console.log('Updating profile avatar', {
-      userId: session.user.id,
-      timestamp: new Date().toISOString()
-    })
+    const supabase = await createClient()
 
     const { error } = await supabase
       .schema('identity')
@@ -87,11 +68,6 @@ export async function updateProfileAvatar(avatarUrl: string) {
       logger.error(error, 'database', { userId: session.user.id })
       throw error
     }
-
-    logMutation('update', 'profile_avatar', session.user.id, {
-      userId: session.user.id,
-      operationName: 'updateProfileAvatar',
-    })
 
     revalidatePath('/customer/profile', 'page')
 
@@ -121,14 +97,6 @@ export async function updateProfilePreferences(formData: FormData) {
       ? getOptionalJsonObject<Record<string, unknown>>(formData, 'preferences', {})
       : {}
 
-    console.log('Updating profile preferences', {
-      userId: session.user.id,
-      timezone,
-      locale,
-      currencyCode,
-      timestamp: new Date().toISOString()
-    })
-
     // Cast preferences to Json type for database
     const preferencesForDb = preferences as Json
 
@@ -148,12 +116,6 @@ export async function updateProfilePreferences(formData: FormData) {
       logger.error(error, 'database', { userId: session.user.id })
       throw error
     }
-
-    logMutation('update', 'profile_preferences', session.user.id, {
-      userId: session.user.id,
-      operationName: 'updateProfilePreferences',
-      changes: { timezone, locale, currencyCode },
-    })
 
     revalidatePath('/customer/settings/preferences', 'page')
 

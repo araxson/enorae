@@ -23,7 +23,13 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
       permissions: parsePermissions(formData.get('permissions')),
     }
 
-    const validated = userRoleSchema.parse(input)
+    const validation = userRoleSchema.safeParse(input)
+
+    if (!validation.success) {
+      return { error: validation.error.issues[0]?.message || 'Validation failed' }
+    }
+
+    const validated = validation.data
 
     // Verify salon access
     if (validated.salon_id && !accessibleSalonIds.includes(validated.salon_id)) {

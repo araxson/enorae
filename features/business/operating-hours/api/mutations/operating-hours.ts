@@ -13,14 +13,19 @@ const UUID_REGEX =
 // Day of week enum type
 type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 
+// Constants for day name conversion
+const DAYS_IN_WEEK = 7
+const MIN_DAY_INDEX = 0
+const MAX_DAY_INDEX = 6
+
 // Helper to convert number to day name
 const DAY_NAMES: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
-function numberToDayName(day: number): DayOfWeek {
-  if (day < 0 || day > 6) {
-    throw new Error('Day must be between 0 and 6')
+function numberToDayName(dayIndex: number): DayOfWeek {
+  if (dayIndex < MIN_DAY_INDEX || dayIndex > MAX_DAY_INDEX) {
+    throw new Error(`Day index must be between ${MIN_DAY_INDEX} and ${MAX_DAY_INDEX}`)
   }
-  return DAY_NAMES[day] as DayOfWeek
+  return DAY_NAMES[dayIndex] as DayOfWeek
 }
 
 // Validation schemas
@@ -41,7 +46,13 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
 
   try {
     // Validate input
-    const validated = operatingHourSchema.parse(input)
+    const validation = operatingHourSchema.safeParse(input)
+
+    if (!validation.success) {
+      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
+    }
+
+    const validated = validation.data
 
     const supabase = await createClient()
 
@@ -167,6 +178,20 @@ export async function bulkUpdateOperatingHours(
   }
 }
 
-// Note: Special hours functionality uses operating_hours table with effective_from/effective_until fields
-// TODO: Implement special hours using operating_hours.effective_from and operating_hours.effective_until
-// when the UI is ready to support this feature
+/**
+ * Special Hours Feature Documentation
+ *
+ * The operating_hours table supports special hours (e.g., holidays, events) using
+ * effective_from and effective_until timestamp fields. This allows salons to override
+ * regular operating hours for specific date ranges.
+ *
+ * Implementation requires:
+ * - UI components for creating special hours entries
+ * - Date range picker with effective_from and effective_until fields
+ * - Logic to prioritize special hours over regular hours in booking queries
+ * - Validation to prevent overlapping special hour ranges
+ *
+ * Query pattern for special hours:
+ * SELECT * FROM organization.operating_hours
+ * WHERE salon_id = ? AND effective_from <= ? AND effective_until >= ?
+ */

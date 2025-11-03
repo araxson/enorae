@@ -32,16 +32,50 @@ export const mediaCategoryEnum = z.enum([
  * Image MIME types
  */
 const IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'] as const
+type ImageMimeType = typeof IMAGE_MIME_TYPES[number]
 
 /**
  * Video MIME types
  */
 const VIDEO_MIME_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'] as const
+type VideoMimeType = typeof VIDEO_MIME_TYPES[number]
 
 /**
  * Document MIME types
  */
 const DOCUMENT_MIME_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'] as const
+type DocumentMimeType = typeof DOCUMENT_MIME_TYPES[number]
+
+type ValidMimeType = ImageMimeType | VideoMimeType | DocumentMimeType
+
+/**
+ * Type guard to check if a string is a valid MIME type
+ */
+function isValidMimeType(type: string): type is ValidMimeType {
+  const validTypes: readonly string[] = [...IMAGE_MIME_TYPES, ...VIDEO_MIME_TYPES, ...DOCUMENT_MIME_TYPES]
+  return validTypes.includes(type)
+}
+
+/**
+ * Type guard to check if a string is an image MIME type
+ */
+function isImageMimeType(type: string): type is ImageMimeType {
+  return (IMAGE_MIME_TYPES as readonly string[]).includes(type)
+}
+
+/**
+ * Type guard to check if a string is a video MIME type
+ */
+function isVideoMimeType(type: string): type is VideoMimeType {
+  return (VIDEO_MIME_TYPES as readonly string[]).includes(type)
+}
+
+/**
+ * Type guard to check if a string is a document MIME type
+ */
+function isDocumentMimeType(type: string): type is DocumentMimeType {
+  return (DOCUMENT_MIME_TYPES as readonly string[]).includes(type)
+}
 
 /**
  * File size limits (in bytes)
@@ -74,10 +108,7 @@ export const mediaUploadSchema = z.object({
     .min(1, 'File is empty')
     .max(MAX_VIDEO_SIZE, 'File is too large'),
   mime_type: z.string().refine(
-    (type) => {
-      const validTypes = [...IMAGE_MIME_TYPES, ...VIDEO_MIME_TYPES, ...DOCUMENT_MIME_TYPES]
-      return validTypes.includes(type as any)
-    },
+    (type) => isValidMimeType(type),
     {
       message: 'File type not supported',
     }
@@ -96,13 +127,13 @@ export const mediaUploadSchema = z.object({
 }).refine(
   (data) => {
     // Validate file size based on type
-    if (IMAGE_MIME_TYPES.includes(data.mime_type as any)) {
+    if (isImageMimeType(data.mime_type)) {
       return data.file_size <= MAX_IMAGE_SIZE
     }
-    if (VIDEO_MIME_TYPES.includes(data.mime_type as any)) {
+    if (isVideoMimeType(data.mime_type)) {
       return data.file_size <= MAX_VIDEO_SIZE
     }
-    if (DOCUMENT_MIME_TYPES.includes(data.mime_type as any)) {
+    if (isDocumentMimeType(data.mime_type)) {
       return data.file_size <= MAX_DOCUMENT_SIZE
     }
     return true

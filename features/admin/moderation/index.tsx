@@ -16,4 +16,4 @@ export async function AdminModeration() {
     </div>
   )
 }
-export * from './types'
+export * from './api/types'

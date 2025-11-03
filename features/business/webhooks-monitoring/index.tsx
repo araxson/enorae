@@ -32,4 +32,4 @@ export async function WebhookMonitoring() {
     )
   }
 }
-export * from './types'
+export * from './api/types'

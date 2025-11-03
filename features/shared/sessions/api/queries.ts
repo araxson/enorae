@@ -1,10 +1,10 @@
 import 'server-only'
 
 import { requireSessionContext } from './session-context'
-import type { Session, SessionWithMetadata, SessionWithDevice } from '@/features/shared/sessions/types'
+import type { Session, SessionWithMetadata, SessionWithDevice } from '@/features/shared/sessions/api/types'
 
 // Re-export types for components
-export type { SessionWithDevice } from '@/features/shared/sessions/types'
+export type { SessionWithDevice } from '@/features/shared/sessions/api/types'
 
 /**
  * Get all active sessions for the current user

@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 import { Kbd } from '@/components/ui/kbd'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { StaffFiltersDropdown } from './staff-filters-dropdown'
-import type { StaffFilter, StaffToggle } from './types'
+import type { StaffFilter, StaffToggle } from '../api/types'
 
 interface StaffPageToolbarProps {
   filters?: readonly StaffFilter[]

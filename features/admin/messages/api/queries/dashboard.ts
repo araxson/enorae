@@ -18,7 +18,7 @@ import type {
   MessageRow,
   MessageThreadRow,
   MessagesDashboardData,
-} from '../types'
+} from '../../api/types'
 
 export async function getMessagesDashboard(): Promise<MessagesDashboardData> {
   const logger = createOperationLogger('getMessagesDashboard', {})

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
-import type { DisplayPreferences } from '@/features/staff/settings/types'
+import type { DisplayPreferences } from '@/features/staff/settings/api/types'
 import {
   Field,
   FieldContent,

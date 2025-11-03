@@ -13,4 +13,4 @@ export {
   uploadCoverImageAction as uploadCoverImage
 } from './api/mutations'
 export { MetadataForm } from './components'
-export * from './types'
+export * from './api/types'

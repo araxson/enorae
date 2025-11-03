@@ -3,16 +3,14 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
-import type { AdminUser, UserFilters } from '../../types'
+import type { AdminUser, UserFilters } from '../../api/types'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability'
+import { logQuery } from '@/lib/observability/query-logger'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
 export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
-  const logger = createOperationLogger('getAllUsers', {})
-  logger.start()
-
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
+  const logger = logQuery('getAllUsers', { filters })
 
   const supabase = createServiceRoleClient()
 
@@ -36,15 +34,17 @@ export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
   const { data, error } = await query
 
   if (error) {
-    console.error('admin_users_overview error in getAllUsers:', error)
+    logger.error(error, 'database')
     return []
   }
 
+  logger.success({ count: data?.length ?? 0 })
   return data || []
 }
 
 export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
+  const logger = logQuery('searchUsers', { searchTerm })
 
   const supabase = createServiceRoleClient()
 
@@ -57,10 +57,11 @@ export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
     .limit(QUERY_LIMITS.DEFAULT_LIST)
 
   if (error) {
-    console.error('admin_users_overview error in searchUsers:', error)
+    logger.error(error, 'database')
     return []
   }
 
+  logger.success({ count: data?.length ?? 0 })
   return data || []
 }
 
@@ -68,6 +69,7 @@ export async function getUsersByRole(
   role: Database['public']['Enums']['role_type'],
 ): Promise<AdminUser[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
+  const logger = logQuery('getUsersByRole', { role })
 
   const supabase = createServiceRoleClient()
 
@@ -79,15 +81,17 @@ export async function getUsersByRole(
     .order('created_at', { ascending: false })
 
   if (error) {
-    console.error('admin_users_overview error in getUsersByRole:', error)
+    logger.error(error, 'database')
     return []
   }
 
+  logger.success({ count: data?.length ?? 0 })
   return data || []
 }
 
 export async function getUsersWithDetails(): Promise<AdminUser[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
+  const logger = logQuery('getUsersWithDetails', {})
 
   const supabase = createServiceRoleClient()
 
@@ -98,9 +102,10 @@ export async function getUsersWithDetails(): Promise<AdminUser[]> {
     .order('created_at', { ascending: false })
 
   if (error) {
-    console.error('admin_users_overview error in getUsersWithDetails:', error)
+    logger.error(error, 'database')
     return []
   }
 
+  logger.success({ count: data?.length ?? 0 })
   return data || []
 }

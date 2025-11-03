@@ -17,4 +17,4 @@ export async function ManualTransactions() {
     />
   )
 }
-export * from './types'
+export * from './api/types'

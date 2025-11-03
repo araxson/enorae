@@ -111,8 +111,9 @@ export const salonSettingsSchema = bookingRulesSchema
 /**
  * Inferred TypeScript types from schemas
  */
-export type BookingRulesSchema = z.infer<typeof bookingRulesSchema>
-export type CancellationPolicySchema = z.infer<typeof cancellationPolicySchema>
-export type BookingStatusSchema = z.infer<typeof bookingStatusSchema>
-export type AccountLimitsSchema = z.infer<typeof accountLimitsSchema>
-export type SalonSettingsSchema = z.infer<typeof salonSettingsSchema>
+export type BookingRulesSchema = z.output<typeof bookingRulesSchema>
+export type CancellationPolicySchema = z.output<typeof cancellationPolicySchema>
+export type BookingStatusSchema = z.output<typeof bookingStatusSchema>
+export type AccountLimitsSchema = z.output<typeof accountLimitsSchema>
+export type SalonSettingsSchema = z.output<typeof salonSettingsSchema>
+export type SalonSettingsSchemaInput = z.input<typeof salonSettingsSchema>

@@ -3,7 +3,7 @@ import 'server-only'
 
 import { z } from 'zod'
 import { getSalonContext, revalidateSettings } from './helpers'
-import { createOperationLogger, logMutation } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
 import { safeJsonParseStringArray } from '@/lib/utils/safe-json'
 
 const paymentMethodsSchema = z.object({
@@ -31,9 +31,17 @@ export async function updatePaymentMethods(
 
     const methods = parseMethods(formData.get('payment_methods'))
 
-    const validated = paymentMethodsSchema.parse({
+    const validation = paymentMethodsSchema.safeParse({
       payment_methods: methods,
     })
+
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      logger.error(`Validation failed: ${firstError?.message}`, 'validation')
+      return { error: firstError?.message ?? 'Invalid payment methods input' }
+    }
+
+    const validated = validation.data
 
     logger.start({ salonId, methodCount: methods.length })
 
@@ -50,12 +58,6 @@ export async function updatePaymentMethods(
       logger.error(error, 'database')
       throw error
     }
-
-    logMutation('update_payment_methods', 'salon_settings', salonId, {
-      salonId,
-      operationName: 'updatePaymentMethods',
-      changes: { payment_methods: methods },
-    })
 
     revalidateSettings()
 

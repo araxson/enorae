@@ -17,4 +17,4 @@ export { RolesTable } from './roles-table'
 export { SalonSelector } from './salon-selector'
 
 // Export types
-export type { RoleValue } from './types'
+export type { RoleValue } from '../api/types'

@@ -2,7 +2,7 @@ import { getMyStaffProfileDetails } from './api/queries'
 import { ProfileClient } from './components'
 import { ProfileUnavailableError, ProfileNotFoundError } from './components/profile-error-state'
 
-export type * from './types'
+export type * from './api/types'
 
 export async function StaffProfile() {
   let details: Awaited<ReturnType<typeof getMyStaffProfileDetails>>

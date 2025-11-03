@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { RoleSelector } from './role-selector'
 import { SalonSelector } from './salon-selector'
 import type { RoleTemplate } from './role-templates'
-import type { RoleValue } from './types'
+import type { RoleValue } from '../api/types'
 import {
   Field,
   FieldContent,

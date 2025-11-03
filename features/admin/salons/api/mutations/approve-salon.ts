@@ -87,14 +87,26 @@ export async function approveSalon(formData: FormData) {
       logger.error(auditError, 'system')
     }
 
-    // TODO: Send notification to salon owner when notification system is ready
-    // await supabase.rpc('communication.send_notification', {
-    //   p_user_id: salon.owner_id,
-    //   p_type: 'salon_approved',
-    //   p_title: 'Salon Approved',
-    //   p_message: 'Your salon has been verified and is now live',
-    //   p_data: { salon_id: salonId }
-    // })
+    /**
+     * Notification Integration (Pending)
+     *
+     * Once the notification system is fully integrated, automatically notify salon owners
+     * of successful approval via the communication.send_notification RPC function.
+     *
+     * Integration Pattern:
+     * ```typescript
+     * await supabase.rpc('communication.send_notification', {
+     *   p_user_id: salon.owner_id,
+     *   p_type: 'salon_approved',
+     *   p_title: 'Salon Approved',
+     *   p_message: 'Your salon has been verified and is now live',
+     *   p_data: { salon_id: salonId }
+     * })
+     * ```
+     *
+     * This will provide immediate feedback to salon owners about their approval
+     * and inform them that their salon is now visible to customers on the platform.
+     */
 
     revalidatePath('/admin/salons', 'page')
     return { success: true }

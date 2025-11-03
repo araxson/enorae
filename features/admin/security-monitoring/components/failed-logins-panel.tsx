@@ -1,7 +1,7 @@
 import { Users, Fingerprint } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { FailedLoginSummary } from '@/features/admin/security-monitoring/types'
+import type { FailedLoginSummary } from '@/features/admin/security-monitoring/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
   Item,

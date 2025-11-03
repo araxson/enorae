@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { BUSINESS_THRESHOLDS, QUERY_LIMITS } from '@/lib/config/constants'
-import type { SalonSearchResult } from '../../types'
+import type { SalonSearchResult } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function searchSalonsWithFuzzyMatch(
@@ -25,28 +25,30 @@ export async function searchSalonsWithFuzzyMatch(
     is_featured: boolean
   }
 
-  // First, get all salons from public view
+  // PERFORMANCE FIX: Use database-level search instead of client-side fuzzy matching
+  // This leverages PostgreSQL's ilike operator for efficient server-side search
+  const searchPattern = `%${searchTerm}%`
+
   const { data: salons, error } = await supabase
     .from('salons_view')
     .select('id, name, slug, address, rating_average, is_verified, is_featured')
-    .limit(QUERY_LIMITS.MEDIUM_LIST)
+    .ilike('name', searchPattern)
+    .order('is_featured', { ascending: false })
+    .order('rating_average', { ascending: false })
+    .limit(limit)
     .returns<SalonRow[]>()
 
   if (error) throw error
 
-  // Calculate similarity for each salon using simple string matching (character-by-character comparison)
+  // Simple scoring based on match position (prefix matches score higher)
   const salonsWithSimilarity = (salons || []).map((salon: SalonRow) => {
-    const searchLower = searchTerm.toLowerCase()
     const nameLower = (salon.name || '').toLowerCase()
+    const searchLower = searchTerm.toLowerCase()
 
-    // Count matching characters at the same position
-    let characterMatchCount = 0
-    for (let charIndex = 0; charIndex < Math.min(searchLower.length, nameLower.length); charIndex++) {
-      if (searchLower[charIndex] === nameLower[charIndex]) {
-        characterMatchCount++
-      }
-    }
-    const similarityScore = characterMatchCount / Math.max(searchLower.length, nameLower.length)
+    // Calculate similarity based on match position and length
+    const startsWithMatch = nameLower.startsWith(searchLower) ? 1.0 : 0.5
+    const lengthRatio = searchLower.length / nameLower.length
+    const similarityScore = startsWithMatch * lengthRatio
 
     return {
       ...salon,
@@ -54,11 +56,9 @@ export async function searchSalonsWithFuzzyMatch(
     }
   })
 
-  // Filter out low-quality matches and sort by similarity
+  // Sort by similarity score and return
   return salonsWithSimilarity
-    .filter((salon) => salon.similarity_score > BUSINESS_THRESHOLDS.SALON_SEARCH_SIMILARITY_THRESHOLD)
     .sort((salonA, salonB) => (salonB.similarity_score || 0) - (salonA.similarity_score || 0))
-    .slice(0, limit)
 }
 
 type ServiceWithSalon = {

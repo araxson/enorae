@@ -1,7 +1,7 @@
 'use client'
 
 import { Package, Scissors } from 'lucide-react'
-import type { DailyMetricsDashboardProps } from '@/features/business/daily-analytics/types'
+import type { DailyMetricsDashboardProps } from '@/features/business/daily-analytics/api/types'
 import { formatCurrency } from '@/features/business/business-common'
 import { Item, ItemContent, ItemHeader, ItemTitle } from '@/components/ui/item'
 

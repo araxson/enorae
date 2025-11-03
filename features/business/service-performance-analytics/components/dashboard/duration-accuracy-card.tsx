@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge } from '@/components/ui/badge'
-import type { DurationAccuracy } from './types'
+import type { DurationAccuracy } from '../../api/types'
 import {
   Item,
   ItemContent,

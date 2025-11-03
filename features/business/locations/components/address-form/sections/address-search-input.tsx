@@ -8,7 +8,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
-import type { LocationAddress } from '@/features/business/locations/types'
+import type { LocationAddress } from '@/features/business/locations/api/types'
 
 interface AddressSearchInputProps {
   searchQuery: string

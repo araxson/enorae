@@ -31,4 +31,4 @@ export function SalonDiscoveryFeature() {
     </Suspense>
   )
 }
-export * from './types'
+export * from './api/types'

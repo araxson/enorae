@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Check, Copy } from 'lucide-react'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { UI_TIMEOUTS } from '@/lib/config/constants'
 
 export function DigestInfo({ digest, details }: { digest: string; details: string }) {
   const [copied, setCopied] = useState(false)
@@ -12,7 +13,7 @@ export function DigestInfo({ digest, details }: { digest: string; details: strin
   const handleCopy = async () => {
     await navigator.clipboard.writeText(details)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    setTimeout(() => setCopied(false), UI_TIMEOUTS.COPY_FEEDBACK)
   }
 
   return (

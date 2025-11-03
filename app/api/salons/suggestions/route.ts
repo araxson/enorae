@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSalonSearchSuggestions } from '@/features/customer/salon-search/api/queries'
+import { RATE_LIMITS, STRING_LIMITS, CACHE_DURATION } from '@/lib/config/constants'
+import { logApiCall, logError } from '@/lib/observability'
 
 // SECURITY: Rate limit to prevent abuse
-const RATE_LIMIT_WINDOW = 60 * 1000 // 1 minute
-const RATE_LIMIT_MAX_REQUESTS = 30
+const RATE_LIMIT_WINDOW = RATE_LIMITS.IN_MEMORY_API.windowMs
+const RATE_LIMIT_MAX_REQUESTS = RATE_LIMITS.IN_MEMORY_API.limit
 const requestCounts = new Map<string, { count: number; resetTime: number }>()
 
 function getRateLimitKey(request: NextRequest): string {
@@ -34,9 +36,16 @@ function checkRateLimit(key: string): boolean {
 }
 
 export async function GET(request: NextRequest) {
+  const startTime = Date.now()
+
   // SECURITY: Apply rate limiting
   const rateLimitKey = getRateLimitKey(request)
   if (!checkRateLimit(rateLimitKey)) {
+    logApiCall('GET', '/api/salons/suggestions', {
+      operationName: 'salon_search_suggestions',
+      statusCode: 429,
+      duration: Date.now() - startTime,
+    })
     return NextResponse.json(
       { error: 'Rate limit exceeded. Please try again later.' },
       { status: 429 }
@@ -47,12 +56,22 @@ export async function GET(request: NextRequest) {
   const query = searchParams.get('q')
 
   // SECURITY: Validate query length
-  if (!query || query.length < 2) {
+  if (!query || query.length < STRING_LIMITS.MIN_SEARCH) {
+    logApiCall('GET', '/api/salons/suggestions', {
+      operationName: 'salon_search_suggestions',
+      statusCode: 200,
+      duration: Date.now() - startTime,
+    })
     return NextResponse.json([])
   }
 
   // SECURITY: Limit query length to prevent abuse
-  if (query.length > 100) {
+  if (query.length > STRING_LIMITS.SEARCH_QUERY_MAX) {
+    logApiCall('GET', '/api/salons/suggestions', {
+      operationName: 'salon_search_suggestions',
+      statusCode: 400,
+      duration: Date.now() - startTime,
+    })
     return NextResponse.json(
       { error: 'Query too long' },
       { status: 400 }
@@ -62,14 +81,24 @@ export async function GET(request: NextRequest) {
   try {
     const suggestions = await getSalonSearchSuggestions(query)
 
+    logApiCall('GET', '/api/salons/suggestions', {
+      operationName: 'salon_search_suggestions',
+      statusCode: 200,
+      duration: Date.now() - startTime,
+    })
+
     // SECURITY: Add cache headers to reduce load
     return NextResponse.json(suggestions, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+        'Cache-Control': `public, s-maxage=${CACHE_DURATION.METRICS}, stale-while-revalidate=${CACHE_DURATION.METRICS / 2}`,
       },
     })
   } catch (error) {
-    console.error('Error fetching suggestions:', error)
+    logError('Failed to fetch salon suggestions', {
+      operationName: 'salon_search_suggestions',
+      error: error instanceof Error ? error : String(error),
+      errorCategory: 'system',
+    })
     // SECURITY: Don't expose internal error details
     return NextResponse.json(
       { error: 'Failed to fetch suggestions' },

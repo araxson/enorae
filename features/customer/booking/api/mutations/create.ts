@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { generateConfirmationCode } from './utilities'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { logInfo, logError } from '@/lib/observability'
 import {
   validateBookingData,
   validateSalon,
@@ -20,25 +20,23 @@ type AppointmentInsert = Database['scheduling']['Tables']['appointments']['Inser
 type AppointmentServiceInsert = Database['scheduling']['Tables']['appointment_services']['Insert']
 
 export async function createBooking(formData: FormData) {
-  const logger = createOperationLogger('createBooking', {})
-  logger.start()
-
   const salonId = formData.get('salonId') as string
   const serviceId = formData.get('serviceId') as string
   const staffId = formData.get('staffId') as string
 
-  console.log('Starting booking creation', {
+  logInfo('Starting booking creation', {
+    operationName: 'createBooking',
     salonId,
     serviceId,
-    staffId,
-    timestamp: new Date().toISOString()
+    staffId
   })
 
   try {
     const session = await requireAuth()
     const supabase = await createClient()
 
-    console.log('Booking creation - user authenticated', {
+    logInfo('Booking creation - user authenticated', {
+      operationName: 'createBooking',
       userId: session.user.id,
       salonId,
       serviceId
@@ -100,17 +98,20 @@ export async function createBooking(formData: FormData) {
       .single()
 
     if (appointmentError) {
-      console.error('Booking appointment creation failed', {
+      logError('Booking appointment creation failed', {
+        operationName: 'createBooking',
         userId: session.user.id,
         salonId,
         serviceId,
         staffId: validatedData.staffId,
-        error: appointmentError.message
+        error: appointmentError.message,
+        errorCategory: 'database'
       })
       return { error: appointmentError.message }
     }
 
-    console.log('Booking appointment created', {
+    logInfo('Booking appointment created', {
+      operationName: 'createBooking',
       userId: session.user.id,
       appointmentId: appointment.id,
       confirmationCode,
@@ -137,11 +138,13 @@ export async function createBooking(formData: FormData) {
       .insert(appointmentServiceData)
 
     if (serviceInsertError) {
-      console.error('Booking service attachment failed - rolling back', {
+      logError('Booking service attachment failed - rolling back', {
+        operationName: 'createBooking',
         userId: session.user.id,
         appointmentId: appointment.id,
         serviceId: validatedData.serviceId,
-        error: serviceInsertError.message
+        error: serviceInsertError.message,
+        errorCategory: 'database'
       })
 
       // ROLLBACK: Delete the appointment if service attachment fails
@@ -151,7 +154,8 @@ export async function createBooking(formData: FormData) {
         .delete()
         .eq('id', appointment.id)
 
-      console.log('Booking rollback completed', {
+      logInfo('Booking rollback completed', {
+        operationName: 'createBooking',
         userId: session.user.id,
         appointmentId: appointment.id
       })
@@ -159,7 +163,8 @@ export async function createBooking(formData: FormData) {
       return { error: 'Failed to attach service to appointment. Please try again.' }
     }
 
-    console.log('Booking completed successfully', {
+    logInfo('Booking completed successfully', {
+      operationName: 'createBooking',
       userId: session.user.id,
       appointmentId: appointment.id,
       confirmationCode,
@@ -173,12 +178,13 @@ export async function createBooking(formData: FormData) {
     revalidatePath('/customer/profile', 'page')
     redirect('/customer/profile')
   } catch (error) {
-    console.error('Booking unexpected error', {
+    logError('Booking unexpected error', {
+      operationName: 'createBooking',
       salonId,
       serviceId,
       staffId,
       error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
+      errorCategory: 'system'
     })
     return { error: 'An unexpected error occurred. Please try again.' }
   }

@@ -3,7 +3,7 @@
 import { Switch } from '@/components/ui/switch'
 import { FieldLabel } from '@/components/ui/field'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
-import type { BulkFormSectionsProps } from './types'
+import type { BulkFormSectionsProps } from '../../api/types'
 
 export function ActiveToggleSection({ formState, onChange }: BulkFormSectionsProps) {
   return (

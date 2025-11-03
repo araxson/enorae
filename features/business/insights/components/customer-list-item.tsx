@@ -10,7 +10,6 @@ import {
   UserX,
   Star,
 } from 'lucide-react'
-
 import { Badge } from '@/components/ui/badge'
 import {
   Item,
@@ -20,14 +19,12 @@ import {
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
-
-import type { CustomerMetrics } from '@/features/business/insights/api/queries'
+import type { CustomerMetrics } from '@/features/business/insights/types'
+import { useCurrencyFormatter } from '@/features/business/insights/hooks/use-currency-formatter'
 
 interface CustomerListItemProps {
   customer: CustomerMetrics
   isLast: boolean
-  formatCurrency: (amount: number) => string
-  formatPercentage: (value: number) => string
 }
 
 const getSegmentIcon = (segment: string) => {
@@ -49,13 +46,12 @@ const getSegmentIcon = (segment: string) => {
   }
 }
 
-// PERFORMANCE FIX: Wrap in React.memo to prevent unnecessary re-renders in list
 export const CustomerListItem = memo(function CustomerListItem({
   customer,
   isLast,
-  formatCurrency,
-  formatPercentage,
 }: CustomerListItemProps) {
+  const { formatCurrency, formatPercentage } = useCurrencyFormatter()
+
   return (
     <Fragment>
       <Item>

@@ -1,15 +1,16 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import type { PaymentMethodStats } from '@/features/admin/finance/types'
+import type { PaymentMethodStats } from '@/features/admin/finance/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemFooter,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -44,17 +45,13 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
   const totalTransactions = stats.reduce((sum, stat) => sum + stat.count, 0)
 
   return (
-    <Card>
-      <CardHeader>
-        <ItemGroup>
-          <Item variant="muted">
-            <ItemContent>
-              <CardTitle>Payment Method Statistics</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemContent>
+          <ItemTitle>Payment Method Statistics</ItemTitle>
+        </ItemContent>
+      </ItemHeader>
+      <ItemContent>
         <div className="space-y-4">
           <ScrollArea className="px-6 pt-6">
           {stats.length === 0 ? (
@@ -92,15 +89,15 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         </div>
-      </CardContent>
+      </ItemContent>
       {stats.length > 0 ? (
-        <CardFooter>
-          <div className="flex w-full items-center justify-between px-6 pb-6 pt-0 text-sm text-muted-foreground">
+        <ItemFooter>
+          <div className="flex w-full items-center justify-between text-sm text-muted-foreground">
             <span>Total Transactions: {totalTransactions.toLocaleString()}</span>
             <span>Methods Available: {stats.length}</span>
           </div>
-        </CardFooter>
+        </ItemFooter>
       ) : null}
-    </Card>
+    </Item>
   )
 }

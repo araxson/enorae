@@ -156,6 +156,18 @@ export const ANALYTICS_CONFIG = {
   PRICE_DECIMAL_PLACES: 2,
   /** Default chunk size for batch processing */
   DEFAULT_BATCH_CHUNK_SIZE: 100,
+  /** Customer lifetime value projection period in years */
+  LTV_PROJECTION_YEARS: 3,
+  /** Days in a year for frequency calculations */
+  DAYS_PER_YEAR: 365,
+  /** Batch size for profile fetching */
+  PROFILE_FETCH_BATCH_SIZE: 500,
+  /** Top customers to display in insights */
+  TOP_CUSTOMERS_LIMIT: 5,
+  /** Default average service price for lifetime value estimation (USD) */
+  DEFAULT_AVERAGE_SERVICE_PRICE: 75,
+  /** Percentage multiplier for rate calculations */
+  PERCENTAGE_MULTIPLIER: 100,
 } as const
 
 /**
@@ -236,9 +248,24 @@ export const SOCIAL_MEDIA_PLATFORMS = [
 ] as const
 
 /**
- * Time Conversion Utilities
+ * Time Conversion Constants
  */
 export const TIME_CONVERSIONS = {
+  /** Milliseconds in one second */
+  MS_PER_SECOND: 1000,
+  /** Seconds in one minute */
+  SECONDS_PER_MINUTE: 60,
+  /** Minutes in one hour */
+  MINUTES_PER_HOUR: 60,
+  /** Hours in one day */
+  HOURS_PER_DAY: 24,
+  /** Milliseconds in one minute */
+  MS_PER_MINUTE: 60000,
+  /** Milliseconds in one hour */
+  MS_PER_HOUR: 3600000,
+  /** Milliseconds in one day */
+  MS_PER_DAY: 86400000,
+
   /** Convert minutes to milliseconds */
   minutesToMs: (minutes: number) => minutes * 60 * 1000,
   /** Convert seconds to milliseconds */
@@ -263,6 +290,10 @@ export const UI_TIMEOUTS = {
   NAVIGATION_DELAY: 500,
   /** Loading state minimum duration - 300ms */
   MIN_LOADING_DURATION: 300,
+  /** Copy feedback timeout - 2 seconds */
+  COPY_FEEDBACK: 2000,
+  /** Validation simulation delay - 1 second */
+  VALIDATION_SIMULATION: 1000,
 } as const
 
 /**
@@ -286,15 +317,19 @@ export const QUERY_LIMITS = {
   /** Webhook logs */
   WEBHOOK_LOGS: 100,
   /** Audit logs */
-  AUDIT_LOGS: 100,
+  AUDIT_LOGS: 1000,
   /** Staff list for dashboards */
   STAFF_DASHBOARD: 500,
   /** Top performers/items */
   TOP_ITEMS: 5,
   /** Suggested items */
   SUGGESTIONS: 7,
+  /** Address autocomplete suggestions */
+  ADDRESS_SUGGESTIONS: 5,
   /** Recent items for cards */
   RECENT_ITEMS: 20,
+  /** Moderation review sample limit */
+  MODERATION_SAMPLE: 500,
 } as const
 
 /**
@@ -315,6 +350,10 @@ export const STRING_LIMITS = {
   VERY_LONG_TEXT: 5000,
   /** Minimum search term length */
   MIN_SEARCH: 2,
+  /** Maximum search query length */
+  SEARCH_QUERY_MAX: 100,
+  /** Minimum address search length */
+  ADDRESS_SEARCH_MIN: 3,
 } as const
 
 /**
@@ -345,6 +384,76 @@ export const PERFORMANCE_THRESHOLDS = {
   SLOW_QUERY_MS: 500,
   /** Price threshold for revenue scoring */
   REVENUE_SCORE_DIVISOR: 500,
+} as const
+
+/**
+ * Customer Churn Risk Analysis Thresholds
+ */
+export const CHURN_RISK_THRESHOLDS = {
+  /** Days threshold for long time since last visit */
+  LONG_TIME_SINCE_VISIT_DAYS: 90,
+  /** Multiplier for overdue return visit detection */
+  OVERDUE_VISIT_MULTIPLIER: 2,
+  /** Multiplier for approaching return window */
+  APPROACHING_RETURN_MULTIPLIER: 1.5,
+  /** High cancellation rate threshold */
+  HIGH_CANCELLATION_RATE: 0.3,
+  /** Moderate cancellation rate threshold */
+  MODERATE_CANCELLATION_RATE: 0.15,
+  /** High no-show rate threshold */
+  HIGH_NO_SHOW_RATE: 0.2,
+  /** Moderate no-show rate threshold */
+  MODERATE_NO_SHOW_RATE: 0.1,
+  /** Minimum visits for frequency analysis */
+  MIN_VISITS_FOR_FREQUENCY: 3,
+  /** Frequency decline threshold multiplier */
+  FREQUENCY_DECLINE_MULTIPLIER: 1.3,
+  /** Risk score thresholds */
+  CRITICAL_RISK_SCORE: 70,
+  HIGH_RISK_SCORE: 50,
+  MEDIUM_RISK_SCORE: 30,
+  /** Risk score values for factors */
+  OVERDUE_RETURN_SCORE: 30,
+  APPROACHING_RETURN_SCORE: 20,
+  LONG_TIME_SCORE: 25,
+  HIGH_CANCELLATION_SCORE: 25,
+  MODERATE_CANCELLATION_SCORE: 15,
+  HIGH_NO_SHOW_SCORE: 20,
+  MODERATE_NO_SHOW_SCORE: 10,
+  FREQUENCY_DECLINE_SCORE: 15,
+  LOW_VISITS_SCORE: 10,
+} as const
+
+/**
+ * API Retry Configuration
+ */
+export const RETRY_CONFIG = {
+  /** Default number of retry attempts for failed API calls */
+  DEFAULT_ATTEMPTS: 3,
+  /** Base delay between retries in milliseconds */
+  BASE_DELAY_MS: 150,
+  /** Exponential backoff multiplier */
+  BACKOFF_MULTIPLIER: 1,
+} as const
+
+/**
+ * Address Validation Configuration
+ */
+export const ADDRESS_VALIDATION = {
+  /** Minimum score for valid address (0-100) */
+  VALID_THRESHOLD: 70,
+  /** Minimum score for acceptable address (0-100) */
+  ACCEPTABLE_THRESHOLD: 50,
+  /** Score penalties for missing fields */
+  PENALTIES: {
+    MISSING_STREET: 30,
+    MISSING_CITY: 20,
+    MISSING_STATE: 20,
+    MISSING_POSTAL_CODE: 15,
+    MISSING_COORDINATES: 10,
+    MISSING_FORMATTED_ADDRESS: 5,
+    INVALID_POSTAL_CODE: 10,
+  },
 } as const
 
 /**

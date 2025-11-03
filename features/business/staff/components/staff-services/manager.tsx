@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 
-import type { StaffMemberWithServices, ServiceRow } from './types'
+import type { StaffMemberWithServices, ServiceRow } from '@/features/business/staff/api/types'
 import { StaffServicesList } from './staff-services-list'
 import { AssignServicesDialog } from './assign-services-dialog'
 

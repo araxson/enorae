@@ -3,7 +3,7 @@ import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
-import type { AdminUser, Profile, UserRole } from '../../types'
+import type { AdminUser, Profile, UserRole } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function getUserById(userId: string): Promise<AdminUser | null> {
@@ -21,7 +21,7 @@ export async function getUserById(userId: string): Promise<AdminUser | null> {
     .single()
 
   if (error) {
-    console.error('admin_users_overview error in getUserById:', error)
+    logger.error(error, 'database', { query: 'admin_users_overview_view' })
     return null
   }
 

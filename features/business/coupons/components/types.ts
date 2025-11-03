@@ -5,5 +5,5 @@ export type {
   BulkCouponGeneratorProps,
   BulkFormState,
   BulkFormSectionsProps,
-} from '../types'
-export { defaultCouponFormState } from '../types'
+} from '../api/types'
+export { defaultCouponFormState } from '../api/types'

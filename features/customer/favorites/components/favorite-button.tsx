@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/tooltip'
 import { toggleFavorite } from '@/features/customer/favorites/api/mutations'
 import { Spinner } from '@/components/ui/spinner'
+import { logError } from '@/lib/observability'
 
 interface FavoriteButtonProps {
   salonId: string
@@ -50,7 +51,7 @@ export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFav
       }
     } catch (error) {
       if (!isMountedRef.current) return
-      console.error('[FavoriteButton] Error toggling favorite:', error)
+      logError('Error toggling favorite', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'FavoriteButton', salonId })
       toast.error('Failed to update favorite. Please try again.')
     } finally {
       if (isMountedRef.current) {

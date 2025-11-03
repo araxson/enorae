@@ -5,7 +5,7 @@ import { Switch } from '@/components/ui/switch'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
-import type { PrivacySettings } from '@/features/staff/settings/types'
+import type { PrivacySettings } from '@/features/staff/settings/api/types'
 import {
   Field,
   FieldContent,

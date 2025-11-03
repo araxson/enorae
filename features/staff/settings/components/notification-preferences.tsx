@@ -6,7 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
-import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/types'
+import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { ButtonGroup } from '@/components/ui/button-group'
 

@@ -5,7 +5,8 @@ import { ShieldAlert, Store } from 'lucide-react'
 import { getUserRole } from '@/lib/auth'
 import { getDashboardMetrics, getRecentAppointments, getUserSalon, getMultiLocationMetrics } from '../api'
 import { getReviewStats } from '@/features/business/reviews/api'
-import type { AppointmentWithDetails, BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from '../types'
+import type { AppointmentWithDetails, BusinessDashboardMetrics, BusinessMultiLocationMetrics, BusinessReviewStats } from '../api/types'
+import { createOperationLogger } from '@/lib/observability'
 import { Button } from '@/components/ui/button'
 import {
   Empty,
@@ -134,37 +135,49 @@ export async function BusinessDashboardPage() {
 }
 
 async function getMetricsSafe(salonId: string): Promise<BusinessDashboardMetrics> {
+  const logger = createOperationLogger('getMetricsSafe', {})
+  logger.start()
+
   try {
     return await getDashboardMetrics(salonId)
   } catch (error) {
-    console.error('[BusinessDashboard] Error loading metrics:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system', { salonId })
     return EMPTY_METRICS
   }
 }
 
 async function getReviewStatsSafe(salonId: string): Promise<BusinessReviewStats> {
+  const logger = createOperationLogger('getReviewStatsSafe', {})
+  logger.start()
+
   try {
     return await getReviewStats(salonId)
   } catch (error) {
-    console.error('[BusinessDashboard] Error loading review stats:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system', { salonId })
     return EMPTY_REVIEWS
   }
 }
 
 async function getRecentAppointmentsSafe(salonId: string): Promise<AppointmentWithDetails[]> {
+  const logger = createOperationLogger('getRecentAppointmentsSafe', {})
+  logger.start()
+
   try {
     return await getRecentAppointments(salonId)
   } catch (error) {
-    console.error('[BusinessDashboard] Error loading appointments:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system', { salonId })
     return []
   }
 }
 
 async function getMultiLocationMetricsSafe(): Promise<BusinessMultiLocationMetrics | null> {
+  const logger = createOperationLogger('getMultiLocationMetricsSafe', {})
+  logger.start()
+
   try {
     return await getMultiLocationMetrics()
   } catch (error) {
-    console.error('[BusinessDashboard] Error loading multi-location metrics:', error)
+    logger.error(error instanceof Error ? error : String(error), 'system')
     return null
   }
 }

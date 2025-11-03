@@ -11,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDistanceToNow, format } from 'date-fns'
 
-import type { NotificationEntry } from '@/features/business/notifications/types'
+import type { NotificationEntry } from '@/features/business/notifications/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 
 type NotificationHistoryTableProps = {

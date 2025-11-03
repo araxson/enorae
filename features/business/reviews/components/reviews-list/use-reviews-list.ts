@@ -2,29 +2,6 @@ import { useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
 import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 
-export type NormalizedReview = {
-  id: string
-  customer_id: string | null
-  salon_id: string | null
-  rating: number | null
-  comment: string | null
-  created_at: string | null
-  responded_at: string | null
-  responded_by_id: string | null
-  response_text: string | null
-  response: string | null
-  response_date: string | null
-  is_featured: boolean | null
-  is_flagged: boolean | null
-  is_verified: boolean | null
-  title: string | null
-  service_quality_rating: number | null
-  cleanliness_rating: number | null
-  value_rating: number | null
-  customer_name?: string | null
-  responded_by_name?: string | null
-}
-
 interface UseReviewsListParams {
   reviews: SalonReviewWithDetails[]
 }

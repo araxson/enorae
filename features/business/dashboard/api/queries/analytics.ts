@@ -37,18 +37,18 @@ export async function getRevenueTrendData(salonId: string, days: number = 30) {
     .order('metric_at', { ascending: true })
 
   if (error) {
-    console.error('[getRevenueTrendData] Error:', error)
+    logger.error(error, 'database', { query: 'daily_metrics_view' })
     return []
   }
 
   const metrics = (data || []) as DailyMetric[]
   return metrics
-    .filter(m => m['metric_at'] !== null)
-    .map(m => ({
-      date: m['metric_at'] as string,
-      revenue: Number(m['total_revenue']) || 0,
-      serviceRevenue: Number(m['service_revenue']) || 0,
-      productRevenue: Number(m['product_revenue']) || 0,
+    .filter(metric => metric['metric_at'] !== null)
+    .map(metric => ({
+      date: metric['metric_at'] as string,
+      revenue: Number(metric['total_revenue']) || 0,
+      serviceRevenue: Number(metric['service_revenue']) || 0,
+      productRevenue: Number(metric['product_revenue']) || 0,
     }))
 }
 
@@ -56,6 +56,9 @@ export async function getRevenueTrendData(salonId: string, days: number = 30) {
  * Get appointment conversion funnel data
  */
 export async function getAppointmentConversionData(salonId: string) {
+  const logger = createOperationLogger('getAppointmentConversionData', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
@@ -70,7 +73,7 @@ export async function getAppointmentConversionData(salonId: string) {
     .eq('salon_id', salonId)
 
   if (error) {
-    console.error('[getAppointmentConversionData] Error:', error)
+    logger.error(error, 'database', { query: 'appointments_view' })
     return {
       total: 0,
       confirmed: 0,
@@ -84,10 +87,10 @@ export async function getAppointmentConversionData(salonId: string) {
 
   return {
     total: appointments.length,
-    confirmed: appointments.filter(a => a['status'] === 'confirmed').length,
-    completed: appointments.filter(a => a['status'] === 'completed').length,
-    cancelled: appointments.filter(a => a['status'] === 'cancelled').length,
-    noShow: appointments.filter(a => a['status'] === 'no_show').length,
+    confirmed: appointments.filter(appointment => appointment['status'] === 'confirmed').length,
+    completed: appointments.filter(appointment => appointment['status'] === 'completed').length,
+    cancelled: appointments.filter(appointment => appointment['status'] === 'cancelled').length,
+    noShow: appointments.filter(appointment => appointment['status'] === 'no_show').length,
   }
 }
 
@@ -95,6 +98,9 @@ export async function getAppointmentConversionData(salonId: string) {
  * Get top performing staff members
  */
 export async function getStaffPerformanceData(salonId: string, limit: number = 5) {
+  const logger = createOperationLogger('getStaffPerformanceData', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
@@ -123,15 +129,15 @@ export async function getStaffPerformanceData(salonId: string, limit: number = 5
   ])
 
   if (appointmentsResponse.error) {
-    console.error('[getStaffPerformanceData] Appointments error:', appointmentsResponse.error)
+    logger.error(appointmentsResponse.error, 'database', { query: 'appointments_view' })
     return []
   }
   if (paymentsResponse.error) {
-    console.error('[getStaffPerformanceData] Payments error:', paymentsResponse.error)
+    logger.error(paymentsResponse.error, 'database', { query: 'manual_transactions_view' })
     return []
   }
   if (staffProfilesResponse.error) {
-    console.error('[getStaffPerformanceData] Staff profile error:', staffProfilesResponse.error)
+    logger.error(staffProfilesResponse.error, 'database', { query: 'staff_enriched_view' })
     return []
   }
 
@@ -169,7 +175,10 @@ export async function getStaffPerformanceData(salonId: string, limit: number = 5
   }))
 
   return performance
-    .sort((a, b) => b.totalRevenue - a.totalRevenue || b.appointmentCount - a.appointmentCount)
+    .sort((firstStaff, secondStaff) =>
+      secondStaff.totalRevenue - firstStaff.totalRevenue ||
+      secondStaff.appointmentCount - firstStaff.appointmentCount
+    )
     .slice(0, limit)
 }
 
@@ -177,6 +186,9 @@ export async function getStaffPerformanceData(salonId: string, limit: number = 5
  * Get popular services
  */
 export async function getServicePopularityData(salonId: string, limit: number = 8) {
+  const logger = createOperationLogger('getServicePopularityData', {})
+  logger.start()
+
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
@@ -192,7 +204,7 @@ export async function getServicePopularityData(salonId: string, limit: number = 
     .eq('status', 'completed')
 
   if (appointmentsError) {
-    console.error('[getServicePopularityData] Appointments error:', appointmentsError)
+    logger.error(appointmentsError, 'database', { query: 'appointments_view' })
     return []
   }
 
@@ -216,7 +228,7 @@ export async function getServicePopularityData(salonId: string, limit: number = 
       .in('appointment_id', slice)
 
     if (error) {
-      console.error('[getServicePopularityData] Services fetch error:', error)
+      logger.error(error, 'database', { query: 'appointment_services' })
       return []
     }
 
@@ -231,14 +243,14 @@ export async function getServicePopularityData(salonId: string, limit: number = 
   }>()
 
   const serviceIds = new Set<string>()
-  appointmentServices.forEach(aps => {
-    if (!aps['service_id']) return
-    serviceIds.add(aps['service_id'])
-    const existing = serviceMap.get(aps['service_id'])
-    if (existing) {
-      existing.count++
+  appointmentServices.forEach(appointmentService => {
+    if (!appointmentService['service_id']) return
+    serviceIds.add(appointmentService['service_id'])
+    const existingService = serviceMap.get(appointmentService['service_id'])
+    if (existingService) {
+      existingService.count++
     } else {
-      serviceMap.set(aps['service_id'], {
+      serviceMap.set(appointmentService['service_id'], {
         name: 'Unknown',
         count: 1,
         revenue: 0,
@@ -261,7 +273,7 @@ export async function getServicePopularityData(salonId: string, limit: number = 
       .eq('salon_id', salonId)
 
     if (error) {
-      console.error('[getServicePopularityData] Service details error:', error)
+      logger.error(error, 'database', { query: 'services_view' })
       return []
     }
 
@@ -278,6 +290,6 @@ export async function getServicePopularityData(salonId: string, limit: number = 
 
   // Convert to array and sort by count
   return Array.from(serviceMap.values())
-    .sort((a, b) => b.count - a.count)
+    .sort((firstService, secondService) => secondService.count - firstService.count)
     .slice(0, limit)
 }

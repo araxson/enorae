@@ -1,6 +1,6 @@
 'use client'
 
-import type { ServiceProfitability } from './types'
+import type { ServiceProfitability } from '../../api/types'
 import { formatCurrency } from './utils'
 import {
   Item,

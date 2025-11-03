@@ -1,7 +1,7 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import type { SalonSearchResult, SearchFilters } from '../../types'
+import type { SalonSearchResult, SearchFilters } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function searchSalons(filters: SearchFilters): Promise<SalonSearchResult[]> {

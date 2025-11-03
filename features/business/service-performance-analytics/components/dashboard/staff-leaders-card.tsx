@@ -1,7 +1,7 @@
 'use client'
 
 import { Users } from 'lucide-react'
-import type { StaffLeader } from './types'
+import type { StaffLeader } from '../../api/types'
 import { formatCurrency } from './utils'
 import {
   Item,
@@ -26,7 +26,7 @@ export function StaffLeadersCard({ staffPerformance }: { staffPerformance: Staff
                 <ItemTitle>{record.service_name}</ItemTitle>
               </ItemHeader>
               <ItemContent className="space-y-1">
-                {record.staff.slice(0, 3).map((staff) => (
+                {record.staff.slice(0, 3).map((staff: { staff_id: string; staff_name: string; appointmentCount: number; revenue: number }) => (
                   <div key={staff.staff_id} className="flex justify-between">
                     <p className="text-sm text-foreground">{staff.staff_name}</p>
                     <p>

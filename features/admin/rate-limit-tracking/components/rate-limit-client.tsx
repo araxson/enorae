@@ -12,7 +12,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
-import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/types'
+import type { RateLimitSnapshot } from '@/features/admin/rate-limit-tracking/api/types'
 import { AlertTriangle, Gauge, ShieldX } from 'lucide-react'
 import { AdminMetricCard } from '@/features/admin/admin-common/components'
 import { RateLimitTable } from './rate-limit-table'

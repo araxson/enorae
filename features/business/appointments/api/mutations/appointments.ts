@@ -6,7 +6,8 @@ import { z } from 'zod'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger, logMutation } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
+import { logMutation } from '@/lib/observability/logger'
 
 // NOTE: Internal modules './internal/appointment-services', './internal/batch', './internal/bulk-operations'
 // do not exist in database. These features are disabled until the modules are created.

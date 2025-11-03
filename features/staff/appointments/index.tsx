@@ -1,4 +1,4 @@
 import { AppointmentsFeature } from './components'
 
 export { AppointmentsFeature as StaffAppointments }
-export * from './types'
+export * from './api/types'

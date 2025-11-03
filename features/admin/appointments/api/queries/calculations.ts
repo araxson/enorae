@@ -1,10 +1,10 @@
 import 'server-only'
 import { parseISO } from 'date-fns'
-import type { AppointmentRow } from '@/features/admin/appointments/types'
+import type { AppointmentRow } from '@/features/admin/appointments/api/types'
 import type {
   AppointmentStatusTotals,
   AppointmentSnapshot,
-} from '@/features/admin/appointments/types'
+} from '@/features/admin/appointments/api/types'
 
 export const ZERO_TOTALS: AppointmentStatusTotals = {
   total: 0,

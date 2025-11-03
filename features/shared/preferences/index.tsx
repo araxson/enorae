@@ -15,4 +15,4 @@ export function UserPreferencesFeature() {
     </Suspense>
   )
 }
-export * from './types'
+export * from './api/types'

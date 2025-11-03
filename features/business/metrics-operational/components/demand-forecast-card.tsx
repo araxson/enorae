@@ -1,10 +1,11 @@
+import { memo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 type DemandForecastCardProps = {
   predictedDemand: unknown
 }
 
-export function DemandForecastCard({ predictedDemand }: DemandForecastCardProps) {
+export const DemandForecastCard = memo(function DemandForecastCard({ predictedDemand }: DemandForecastCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -18,4 +19,4 @@ export function DemandForecastCard({ predictedDemand }: DemandForecastCardProps)
       </CardContent>
     </Card>
   )
-}
+})

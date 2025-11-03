@@ -1,7 +1,7 @@
 import { Network, CheckCircle2, XCircle } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import type { IpAccessEvent } from '@/features/admin/security-monitoring/types'
+import type { IpAccessEvent } from '@/features/admin/security-monitoring/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
   Item,

@@ -19,7 +19,7 @@ import { ruleLabels } from './constants'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { RuleType } from './constants'
-import type { PricingRuleFormState } from './types'
+import type { PricingRuleFormState } from '../../api/types'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>
 
@@ -39,7 +39,7 @@ export function RuleBasicsFields({ formData, setFormData, services }: RuleBasics
             id="rule_name"
             value={formData.rule_name}
             onChange={(event) =>
-              setFormData((current) => ({ ...current, rule_name: event.target.value }))
+              setFormData((current: PricingRuleFormState) => ({ ...current, rule_name: event.target.value }))
             }
             placeholder="e.g., Peak Hours Premium"
             required
@@ -55,7 +55,7 @@ export function RuleBasicsFields({ formData, setFormData, services }: RuleBasics
             <Select
               value={formData.rule_type}
               onValueChange={(value: RuleType) =>
-                setFormData((current) => ({ ...current, rule_type: value }))
+                setFormData((current: PricingRuleFormState) => ({ ...current, rule_type: value }))
               }
             >
               <SelectTrigger id="rule_type">
@@ -78,7 +78,7 @@ export function RuleBasicsFields({ formData, setFormData, services }: RuleBasics
             <Select
               value={formData.service_id}
               onValueChange={(value) =>
-                setFormData((current) => ({ ...current, service_id: value }))
+                setFormData((current: PricingRuleFormState) => ({ ...current, service_id: value }))
               }
             >
               <SelectTrigger id="service_id">

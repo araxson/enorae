@@ -1,21 +1,19 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertCircle, Mail } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Field, FieldDescription, FieldLabel, FieldSeparator } from '@/components/ui/field'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { Field } from '@/components/ui/field'
+import { Form } from '@/components/ui/form'
 import { Card, CardContent } from '@/components/ui/card'
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
-import { PasswordInput } from '@/features/auth/common/components/password-input'
-import { OAuthButtons } from '@/features/auth/common/components/oauth-buttons'
 import { MarketingPanel } from './marketing-panel'
+import { LoginFormFields } from './login-form-fields'
+import { LoginOAuthSection } from './login-oauth-section'
 import { login } from '../api/mutations'
 import { loginSchema, type LoginSchema } from '../api/schema'
 
@@ -23,6 +21,7 @@ export function LoginForm() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const redirectTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -31,6 +30,14 @@ export function LoginForm() {
       password: '',
     },
   })
+
+  useEffect(() => {
+    return () => {
+      if (redirectTimerRef.current) {
+        clearTimeout(redirectTimerRef.current)
+      }
+    }
+  }, [])
 
   async function handleSubmit(values: LoginSchema) {
     setLoading(true)
@@ -43,15 +50,20 @@ export function LoginForm() {
 
       const result = await login(formData)
 
-      if (result?.error) {
+      if (!result.success) {
         setError(result.error)
 
-        if (result.requiresOTP && result.email) {
-          setTimeout(() => {
-            const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(result.email!)}&type=email`
+        const { requiresOTP, email } = result
+        if (requiresOTP && email) {
+          redirectTimerRef.current = setTimeout(() => {
+            const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(email)}&type=email`
             router.push(redirectUrl)
           }, 2000)
         }
+      } else if (result.requiresOTP) {
+        // Redirect to OTP verification
+        const redirectUrl = `/auth/verify-otp?email=${encodeURIComponent(result.email)}&type=email`
+        router.push(redirectUrl)
       }
     } catch (error) {
       console.error('[LoginForm] unexpected error:', error)
@@ -83,63 +95,7 @@ export function LoginForm() {
                   </Alert>
                 ) : null}
 
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Field>
-                        <FieldLabel htmlFor="email">Email</FieldLabel>
-                        <InputGroup>
-                          <InputGroupAddon>
-                            <Mail className="size-4 text-muted-foreground" aria-hidden="true" />
-                          </InputGroupAddon>
-                          <FormControl>
-                            <InputGroupInput
-                              id="email"
-                              type="email"
-                              placeholder="you@example.com"
-                              autoComplete="email"
-                              autoCorrect="off"
-                              spellCheck={false}
-                              {...field}
-                            />
-                          </FormControl>
-                        </InputGroup>
-                        <FormMessage />
-                      </Field>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Field>
-                        <div className="flex items-center">
-                          <FieldLabel htmlFor="password">Password</FieldLabel>
-                          <Link
-                            href="/auth/forgot-password"
-                            className="ml-auto text-sm underline-offset-2 hover:underline"
-                          >
-                            Forgot your password?
-                          </Link>
-                        </div>
-                        <FormControl>
-                          <PasswordInput
-                            id="password"
-                            autoComplete="current-password"
-                            placeholder="Enter your password"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </Field>
-                    </FormItem>
-                  )}
-                />
+                <LoginFormFields form={form} />
 
                 <Field>
                   <Button type="submit" disabled={loading || form.formState.isSubmitting}>
@@ -154,32 +110,7 @@ export function LoginForm() {
                   </Button>
                 </Field>
 
-                <div className="text-center">
-                  <FieldDescription>
-                    Don&apos;t have an account?{' '}
-                    <Link href="/signup" className="font-medium underline-offset-4 hover:underline">
-                      Sign up
-                    </Link>
-                  </FieldDescription>
-                </div>
-
-                <FieldSeparator>Or continue with</FieldSeparator>
-
-                <OAuthButtons />
-
-                <div className="px-2 text-center">
-                  <FieldDescription>
-                    By clicking continue, you agree to our{' '}
-                    <Link href="/terms" className="underline-offset-4 hover:underline">
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link href="/privacy" className="underline-offset-4 hover:underline">
-                      Privacy Policy
-                    </Link>
-                    .
-                  </FieldDescription>
-                </div>
+                <LoginOAuthSection />
               </form>
             </Form>
             <MarketingPanel />

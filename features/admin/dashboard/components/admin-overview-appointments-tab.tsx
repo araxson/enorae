@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Calendar } from 'lucide-react'
-import type { AppointmentsOverview } from '../types'
+import type { AppointmentsOverview } from '../api/types'
 import { appointmentStatusVariant, safeFormatDate } from './admin-overview-utils'
 import {
   Empty,

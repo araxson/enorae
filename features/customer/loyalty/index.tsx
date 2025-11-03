@@ -40,4 +40,4 @@ export function LoyaltyProgramFeature() {
     </Suspense>
   )
 }
-export * from './types'
+export * from './api/types'

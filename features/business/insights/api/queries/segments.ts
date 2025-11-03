@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { CustomerMetrics, CustomerSegment } from '../../types'
+import type { CustomerMetrics, CustomerSegment } from '../../api/types'
 import { getCustomerInsights } from './customers'
 import { createOperationLogger } from '@/lib/observability'
 

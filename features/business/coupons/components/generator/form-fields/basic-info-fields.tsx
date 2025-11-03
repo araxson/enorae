@@ -9,7 +9,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
-import type { BulkCouponFormState } from '../types'
+import type { BulkCouponFormState } from '../../../api/types'
 
 interface BasicInfoFieldsProps {
   formState: BulkCouponFormState

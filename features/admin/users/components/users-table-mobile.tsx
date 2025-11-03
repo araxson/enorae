@@ -129,7 +129,7 @@ export function UsersMobileTable({
                         onReactivate={onReactivate}
                         onTerminateSessions={onTerminateSessions}
                         onDelete={onDelete}
-                        onLoadingChange={(loading) => onLoadingChange(loading ? user.id : null)}
+                        onLoadingChange={(loading: boolean) => onLoadingChange(loading ? user.id : null)}
                       />
                     </ItemActions>
                   </Item>

@@ -2,7 +2,7 @@ import { Ban, Lock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/types'
+import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
 

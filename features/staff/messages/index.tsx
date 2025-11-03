@@ -12,4 +12,4 @@ export async function StaffMessagesPage() {
 }
 
 export { MessageThreadPage as StaffMessageThreadPage }
-export * from './types'
+export * from './api/types'

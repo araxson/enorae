@@ -14,7 +14,7 @@ import {
   groupServicesByCustomer,
 } from './transformers'
 import { selectTopByLifetimeValue } from '@/features/business/insights/utils/insights'
-import type { CustomerMetrics } from '../../types'
+import type { CustomerMetrics } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function getCustomerInsights(

@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Star } from 'lucide-react'
-import type { ReviewsOverview } from '../types'
+import type { ReviewsOverview } from '../api/types'
 import {
   Empty,
   EmptyDescription,

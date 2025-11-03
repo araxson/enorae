@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'

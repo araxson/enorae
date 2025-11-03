@@ -1,2 +1,2 @@
 export { DatabaseHealth, DatabaseHealthDashboard } from './components'
-export * from './types'
+export * from './api/types'

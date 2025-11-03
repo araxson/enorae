@@ -18,4 +18,4 @@ export type {
   RevenueForecast,
   RevenueMetrics,
   TransactionMetrics,
-} from '../../types'
+} from '../../api/types'

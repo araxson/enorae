@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { RefreshCw, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Spinner } from '@/components/ui/spinner'
-import type { DataRefreshControlsProps } from '@/features/shared/dashboard/types'
+import type { DataRefreshControlsProps } from '@/features/shared/dashboard/api/types'
 import { TIME_MS } from '@/lib/config/constants'
 
 const DEFAULT_LOADING = 'Refreshing...'

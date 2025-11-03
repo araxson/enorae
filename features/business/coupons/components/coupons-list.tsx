@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import { Scissors } from 'lucide-react'
 import {
   Dialog,
@@ -29,35 +29,47 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
   const [editing, setEditing] = useState<CouponWithStats | null>(null)
   const [open, setOpen] = useState(false)
 
-  const handleCopyCode = (code: string) => {
+  // PERFORMANCE FIX: Wrap handlers in useCallback to prevent CouponCard re-renders
+  const handleCopyCode = useCallback((code: string) => {
     navigator.clipboard.writeText(code)
     toast({
       title: 'Copied!',
       description: `Coupon code "${code}" copied to clipboard.`,
     })
-  }
+  }, [toast])
 
-  const handleToggle = async () => {
+  const handleToggle = useCallback(async () => {
     toast({
       title: 'Coupons unavailable',
       description: COUPONS_UNSUPPORTED_MESSAGE,
       variant: 'destructive',
     })
-  }
+  }, [toast])
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     toast({
       title: 'Coupons unavailable',
       description: COUPONS_UNSUPPORTED_MESSAGE,
       variant: 'destructive',
     })
-  }
+  }, [toast])
 
   const serviceNameById = useMemo(() => {
     const map = new Map<string, string>()
     services.forEach((service) => map.set(service.id, service.name))
     return map
   }, [services])
+
+  // PERFORMANCE FIX: Memoize service name resolver to prevent recreation on every render
+  const resolveServiceName = useCallback((serviceId: string) =>
+    serviceNameById.get(serviceId) || 'Unknown service',
+  [serviceNameById])
+
+  // PERFORMANCE FIX: Memoize edit handler to prevent CouponCard re-renders
+  const handleEdit = useCallback((entry: CouponWithStats) => {
+    setEditing(entry)
+    setOpen(true)
+  }, [])
 
   if (coupons.length === 0) {
     return (
@@ -82,14 +94,9 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
             coupon={coupon}
             onCopy={handleCopyCode}
             onToggle={handleToggle}
-            onEdit={(entry) => {
-              setEditing(entry)
-              setOpen(true)
-            }}
+            onEdit={handleEdit}
             onDelete={handleDelete}
-            resolveServiceName={(serviceId) =>
-              serviceNameById.get(serviceId) || 'Unknown service'
-            }
+            resolveServiceName={resolveServiceName}
           />
         ))}
       </div>

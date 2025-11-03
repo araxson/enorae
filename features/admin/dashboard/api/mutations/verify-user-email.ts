@@ -7,7 +7,7 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { logSupabaseError } from '@/lib/supabase/errors'
 
 import { logDashboardAudit } from './audit'
-import type { ActionResponse } from '../../types'
+import type { ActionResponse } from '../../api/types'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function verifyUserEmail(formData: FormData): Promise<ActionResponse> {

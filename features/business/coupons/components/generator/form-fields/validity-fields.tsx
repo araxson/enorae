@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { Field, FieldContent, FieldGroup, FieldLabel } from '@/components/ui/field'
-import type { BulkCouponFormState } from '../types'
+import type { BulkCouponFormState } from '../../../api/types'
 
 interface ValidityFieldsProps {
   formState: BulkCouponFormState

@@ -51,29 +51,44 @@ export async function assignServiceToStaff(formData: FormData): Promise<Mutation
     return { error: 'Service ID must be a string value.' }
   }
 
-  // TODO: STUB IMPLEMENTATION - Requires database schema completion
-  // This mutation is blocked because the required table does not exist in the database schema.
-  //
-  // Implementation requirements:
-  // 1. Create table: organization.staff_services
-  //    - Columns: id (uuid), staff_id (uuid), service_id (uuid), created_at, updated_at, created_by_id
-  //    - Constraints: unique(staff_id, service_id), FK to staff_profiles, FK to services
-  // 2. Add RLS policies for multi-tenant access control
-  // 3. Create view: organization_view.staff_services_view for read operations
-  // 4. Implement mutation logic:
-  //    - Verify staff and service belong to same salon
-  //    - Check for duplicate assignments
-  //    - Create audit log entry
-  //    - Revalidate /business/staff/[staffId] path
-  //
-  // Expected database operation:
-  // await supabase.schema('organization').from('staff_services').insert({
-  //   staff_id: staffId,
-  //   service_id: serviceId,
-  //   created_by_id: user.id,
-  // })
-  //
-  // Error to return: { error: 'Service assignment feature is not yet available. Please contact support.' }
+  /**
+   * STUB IMPLEMENTATION - Awaiting Database Schema
+   *
+   * This mutation requires the organization.staff_services table to be created.
+   * The feature is temporarily unavailable until database migration is complete.
+   *
+   * Database Requirements:
+   * Table: organization.staff_services
+   *   - id: uuid (primary key)
+   *   - staff_id: uuid (foreign key to staff_profiles)
+   *   - service_id: uuid (foreign key to services)
+   *   - created_at: timestamptz
+   *   - updated_at: timestamptz
+   *   - created_by_id: uuid (foreign key to users)
+   *   - Constraint: unique(staff_id, service_id)
+   *
+   * Required Database Objects:
+   *   - RLS policies for multi-tenant access control
+   *   - View: organization_view.staff_services_view (read-only operations)
+   *   - Audit log triggers for staff service assignments
+   *
+   * Implementation Logic:
+   *   1. Authenticate and authorize user access to salon
+   *   2. Verify staff member and service belong to same salon
+   *   3. Check for existing assignment (prevent duplicates)
+   *   4. Insert assignment record with created_by_id
+   *   5. Create audit log entry for traceability
+   *   6. Revalidate /business/staff/[staffId] path
+   *
+   * Expected Supabase Query:
+   * ```typescript
+   * await supabase.schema('organization').from('staff_services').insert({
+   *   staff_id: staffId,
+   *   service_id: serviceId,
+   *   created_by_id: user.id,
+   * })
+   * ```
+   */
   logger.error(new Error('Database mutation not implemented: staff_services table does not exist'), 'system')
   return { error: 'Service assignment feature is not yet available. Please contact support.' }
 }

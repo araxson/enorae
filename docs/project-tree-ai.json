@@ -1749,6 +1749,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "results.ts"
                     },
                     {
@@ -1869,6 +1873,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "types.ts"
                     }
                   ]
@@ -1968,6 +1976,10 @@
                           "name": "validators.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -2109,6 +2121,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "schemas.ts"
                     }
                   ]
@@ -2118,16 +2134,42 @@
                   "name": "components",
                   "children": [
                     {
+                      "type": "directory",
+                      "name": "chain-actions",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "action-dialog.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "actions-dropdown.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "chain-actions.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "utils.ts"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "admin-chains-content.tsx"
                     },
                     {
                       "type": "file",
                       "name": "admin-chains-skeleton.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "chain-actions.tsx"
                     },
                     {
                       "type": "file",
@@ -2236,6 +2278,10 @@
                           "name": "users.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -2273,10 +2319,6 @@
                     },
                     {
                       "type": "file",
-                      "name": "admin-overview-types.ts"
-                    },
-                    {
-                      "type": "file",
                       "name": "admin-overview-utils.ts"
                     },
                     {
@@ -2294,6 +2336,14 @@
                     {
                       "type": "file",
                       "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "platform-metric-card.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "platform-metrics-config.tsx"
                     },
                     {
                       "type": "file",
@@ -2370,6 +2420,10 @@
                           "name": "snapshot.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -2408,6 +2462,36 @@
                       ]
                     },
                     {
+                      "type": "directory",
+                      "name": "optimization-panel",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "indexes-tab.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "optimization-panel.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "recommendations-tab.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "statistics-tab.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "database-health.tsx"
                     },
@@ -2418,10 +2502,6 @@
                     {
                       "type": "file",
                       "name": "index.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "optimization-panel.tsx"
                     },
                     {
                       "type": "file",
@@ -2478,6 +2558,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -2544,6 +2628,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -2654,6 +2742,10 @@
                           "name": "transaction-monitoring.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -2764,6 +2856,10 @@
                     {
                       "type": "file",
                       "name": "constants.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -2913,7 +3009,19 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "moderation-factory.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -2931,11 +3039,11 @@
                         },
                         {
                           "type": "file",
-                          "name": "index.tsx"
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
-                          "name": "use-review-actions.ts"
+                          "name": "reviews-table.tsx"
                         }
                       ]
                     },
@@ -2974,6 +3082,20 @@
                     {
                       "type": "file",
                       "name": "reviews-table-row.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-review-actions.ts"
                     }
                   ]
                 },
@@ -3034,6 +3156,10 @@
                           "name": "schemas.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3041,6 +3167,32 @@
                   "type": "directory",
                   "name": "components",
                   "children": [
+                    {
+                      "type": "directory",
+                      "name": "profile-preferences-form",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "notification-toggles.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "profile-preferences-form.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "regional-fields.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        }
+                      ]
+                    },
                     {
                       "type": "file",
                       "name": "index.ts"
@@ -3063,11 +3215,15 @@
                     },
                     {
                       "type": "file",
+                      "name": "profile-metadata-fields.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "profile-metadata-form.tsx"
                     },
                     {
                       "type": "file",
-                      "name": "profile-preferences-form.tsx"
+                      "name": "profile-metadata-submit.tsx"
                     },
                     {
                       "type": "file",
@@ -3076,6 +3232,32 @@
                     {
                       "type": "file",
                       "name": "profile-summary-card.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "profile-summary-content.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "profile-summary-empty.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "profile-summary-loading.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-preferences-state.ts"
                     }
                   ]
                 },
@@ -3124,6 +3306,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3190,6 +3376,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3248,6 +3438,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -3358,6 +3552,14 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -3397,11 +3599,27 @@
                     },
                     {
                       "type": "file",
+                      "name": "assign-role-form-fields.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "assign-role-form-header.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "assign-role-form.tsx"
                     },
                     {
                       "type": "file",
+                      "name": "assign-role-permissions-section.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "bulk-assign-dialog.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "bulk-assign-row.tsx"
                     },
                     {
                       "type": "file",
@@ -3458,6 +3676,20 @@
                     {
                       "type": "file",
                       "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-role-actions.ts"
                     }
                   ]
                 },
@@ -3555,6 +3787,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     }
                   ]
@@ -3648,6 +3884,10 @@
                           "name": "monitoring.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3718,6 +3958,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3726,16 +3970,42 @@
                   "name": "components",
                   "children": [
                     {
+                      "type": "directory",
+                      "name": "security-access-table",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "actions.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "security-access-table.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "table-row.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "utils.tsx"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "index.ts"
                     },
                     {
                       "type": "file",
                       "name": "security-access-client.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "security-access-table.tsx"
                     }
                   ]
                 },
@@ -3784,6 +4054,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3854,6 +4128,10 @@
                     {
                       "type": "file",
                       "name": "failed-logins.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -3952,6 +4230,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -3960,16 +4242,38 @@
                   "name": "components",
                   "children": [
                     {
+                      "type": "directory",
+                      "name": "session-security-table",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "session-security-table.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "table-row.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "utils.tsx"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "index.ts"
                     },
                     {
                       "type": "file",
                       "name": "session-security-client.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "session-security-table.tsx"
                     }
                   ]
                 },
@@ -4018,6 +4322,10 @@
                           "name": "overview.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -4077,10 +4385,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "dashboard-core-types.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "dashboard-fetchers.ts"
                         },
                         {
@@ -4096,6 +4400,14 @@
                           "name": "staff-dashboard-data.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -4135,7 +4447,19 @@
                     },
                     {
                       "type": "file",
-                      "name": "staff-filters.tsx"
+                      "name": "staff-filters-component.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "staff-filters-types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "staff-filters.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "staff-insight-list.tsx"
                     },
                     {
                       "type": "file",
@@ -4152,6 +4476,28 @@
                     {
                       "type": "file",
                       "name": "staff-table-mobile.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "staff-top-performers.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-staff-filters.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-staff-filters.ts"
                     }
                   ]
                 },
@@ -4200,6 +4546,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -4302,6 +4652,10 @@
                           "name": "stats.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -4315,6 +4669,10 @@
                       "children": [
                         {
                           "type": "file",
+                          "name": "delete-user-dialog.tsx"
+                        },
+                        {
+                          "type": "file",
                           "name": "dialogs.tsx"
                         },
                         {
@@ -4324,6 +4682,18 @@
                         {
                           "type": "file",
                           "name": "menu.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reactivate-user-dialog.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "suspend-user-dialog.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "terminate-sessions-dialog.tsx"
                         },
                         {
                           "type": "file",
@@ -4357,7 +4727,29 @@
                     },
                     {
                       "type": "file",
+                      "name": "users-table-row.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "users-table.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-user-actions-menu.ts"
                     }
                   ]
                 },
@@ -4374,6 +4766,328 @@
                   "name": "types.ts"
                 }
               ]
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "auth",
+          "children": [
+            {
+              "type": "directory",
+              "name": "common",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "components",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "oauth-buttons.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "password-input.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "password-strength-indicator.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.ts"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "forgot-password",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "api",
+                  "children": [
+                    {
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "request-reset.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "components",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "forgot-password-form.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "login",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "api",
+                  "children": [
+                    {
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "login.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "components",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "login-form.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "marketing-panel.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "reset-password",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "api",
+                  "children": [
+                    {
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "reset.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "components",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "reset-password-form.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "signup",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "api",
+                  "children": [
+                    {
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "signup.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "components",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "signup-form-fields.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "signup-form.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                }
+              ]
+            },
+            {
+              "type": "directory",
+              "name": "verify-otp",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "api",
+                  "children": [
+                    {
+                      "type": "directory",
+                      "name": "mutations",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "resend.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "verify.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "components",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "resend-otp.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "verify-otp-form.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "file",
+                  "name": "index.tsx"
+                }
+              ]
+            },
+            {
+              "type": "file",
+              "name": "index.tsx"
+            },
+            {
+              "type": "file",
+              "name": "pages.tsx"
             }
           ]
         },
@@ -4459,11 +5173,15 @@
                     },
                     {
                       "type": "file",
-                      "name": "analytics.types.ts"
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
                       "name": "rpc-functions.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -4580,6 +5298,14 @@
                           "name": "service-options.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -4626,10 +5352,6 @@
                         {
                           "type": "file",
                           "name": "types.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "use-add-service-form.ts"
                         }
                       ]
                     },
@@ -4643,15 +5365,15 @@
                         },
                         {
                           "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "status-config.ts"
                         },
                         {
                           "type": "file",
                           "name": "table-row.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "use-appointments-filter.ts"
                         }
                       ]
                     },
@@ -4665,11 +5387,11 @@
                         },
                         {
                           "type": "file",
-                          "name": "types.ts"
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
-                          "name": "use-edit-service-form.ts"
+                          "name": "types.ts"
                         }
                       ]
                     },
@@ -4677,6 +5399,10 @@
                       "type": "directory",
                       "name": "manager",
                       "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
                         {
                           "type": "file",
                           "name": "services-table.tsx"
@@ -4691,10 +5417,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "use-services-manager.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "utils.ts"
                         }
                       ]
@@ -4705,11 +5427,11 @@
                       "children": [
                         {
                           "type": "file",
-                          "name": "service-form-fields.tsx"
+                          "name": "index.ts"
                         },
                         {
                           "type": "file",
-                          "name": "use-service-form-data.ts"
+                          "name": "service-form-fields.tsx"
                         }
                       ]
                     },
@@ -4788,6 +5510,40 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-add-service-form.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-appointments-filter.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-edit-service-form.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-service-form-data.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-services-manager.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -4832,6 +5588,14 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -4860,10 +5624,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -4917,6 +5677,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "salon-context.ts"
                     }
                   ]
@@ -4948,6 +5712,62 @@
                       ]
                     },
                     {
+                      "type": "directory",
+                      "name": "metric-card",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "metric-card.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "utils.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "variants.tsx"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "directory",
+                      "name": "revenue-card",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "amount-display.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "growth-indicator.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "revenue-card.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "utils.ts"
+                        }
+                      ]
+                    },
+                    {
                       "type": "file",
                       "name": "appointment-conversion-chart.tsx"
                     },
@@ -4973,10 +5793,6 @@
                     },
                     {
                       "type": "file",
-                      "name": "metric-card.tsx"
-                    },
-                    {
-                      "type": "file",
                       "name": "metric-trend.tsx"
                     },
                     {
@@ -4998,10 +5814,6 @@
                     {
                       "type": "file",
                       "name": "revenue-card-breakdown.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "revenue-card.tsx"
                     },
                     {
                       "type": "file",
@@ -5030,7 +5842,13 @@
                     {
                       "type": "file",
                       "name": "stat-badge.tsx"
-                    },
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
                     {
                       "type": "file",
                       "name": "value-formatters.ts"
@@ -5090,6 +5908,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -5199,7 +6021,15 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "messages.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -5222,6 +6052,40 @@
                         {
                           "type": "file",
                           "name": "redemption-trend-chart.tsx"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "directory",
+                      "name": "coupon-card",
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "applicability-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "coupon-card.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "details-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "header-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "performance-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "types.ts"
                         }
                       ]
                     },
@@ -5264,12 +6128,54 @@
                       "name": "generator",
                       "children": [
                         {
+                          "type": "directory",
+                          "name": "form-fields",
+                          "children": [
+                            {
+                              "type": "file",
+                              "name": "activation-field.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "basic-info-fields.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "constraint-fields.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "discount-fields.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "index.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "validity-fields.tsx"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "file",
+                          "name": "active-toggle-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "basic-info-section.tsx"
+                        },
+                        {
                           "type": "file",
                           "name": "bulk-form-sections.tsx"
                         },
                         {
                           "type": "file",
-                          "name": "form-fields.tsx"
+                          "name": "discount-section.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "limits-section.tsx"
                         },
                         {
                           "type": "file",
@@ -5277,7 +6183,7 @@
                         },
                         {
                           "type": "file",
-                          "name": "use-bulk-coupon-form.ts"
+                          "name": "validity-section.tsx"
                         }
                       ]
                     },
@@ -5291,11 +6197,7 @@
                     },
                     {
                       "type": "file",
-                      "name": "coupon-card.helpers.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "coupon-card.tsx"
+                      "name": "coupon-card-helpers.tsx"
                     },
                     {
                       "type": "file",
@@ -5304,10 +6206,6 @@
                     {
                       "type": "file",
                       "name": "coupon-form.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "coupon-form.types.ts"
                     },
                     {
                       "type": "file",
@@ -5320,6 +6218,24 @@
                     {
                       "type": "file",
                       "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-bulk-coupon-form.ts"
                     }
                   ]
                 },
@@ -5368,6 +6284,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -5442,6 +6362,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -5562,6 +6486,10 @@
                           "name": "salon.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -5759,10 +6687,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "customer-types.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "customers.ts"
                         },
                         {
@@ -5798,6 +6722,14 @@
                           "name": "trends.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
                     }
                   ]
                 },
@@ -5882,6 +6814,16 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "insights.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -5934,6 +6876,14 @@
                           "name": "locations.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -5956,6 +6906,14 @@
                             {
                               "type": "file",
                               "name": "address-search-field.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "address-search-input.tsx"
+                            },
+                            {
+                              "type": "file",
+                              "name": "address-suggestions-list.tsx"
                             },
                             {
                               "type": "file",
@@ -5982,10 +6940,6 @@
                               "name": "street-address-section.tsx"
                             }
                           ]
-                        },
-                        {
-                          "type": "file",
-                          "name": "types.ts"
                         }
                       ]
                     },
@@ -6020,6 +6974,20 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-address-search.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -6043,11 +7011,27 @@
                       "children": [
                         {
                           "type": "file",
+                          "name": "add-images.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "helpers.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "index.ts"
                         },
                         {
                           "type": "file",
                           "name": "media.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "remove-images.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "update-media.ts"
                         }
                       ]
                     },
@@ -6064,6 +7048,14 @@
                           "name": "media.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6160,6 +7152,10 @@
                           "name": "metrics.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -6190,6 +7186,16 @@
                     {
                       "type": "file",
                       "name": "salon-metrics.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "metrics.ts"
                     }
                   ]
                 },
@@ -6238,6 +7244,10 @@
                           "name": "metrics-operational.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -6368,6 +7378,14 @@
                           "name": "notification-templates.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6470,6 +7488,14 @@
                           "name": "operating-hours.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6548,6 +7574,14 @@
                     {
                       "type": "file",
                       "name": "analytics.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6660,6 +7694,16 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "pricing.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -6704,6 +7748,10 @@
                           "name": "reviews.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -6718,6 +7766,18 @@
                         {
                           "type": "file",
                           "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "review-card-actions.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "review-card-content.tsx"
+                        },
+                        {
+                          "type": "file",
+                          "name": "review-card-header.tsx"
                         },
                         {
                           "type": "file",
@@ -6740,6 +7800,30 @@
                     {
                       "type": "file",
                       "name": "reviews-stats.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-reviews-list.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "review-access.ts"
                     }
                   ]
                 },
@@ -6788,6 +7872,14 @@
                           "name": "service-categories.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -6820,10 +7912,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -6866,6 +7954,10 @@
                           "name": "service-performance-analytics.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -6922,10 +8014,6 @@
                         {
                           "type": "file",
                           "name": "duration-accuracy-section.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "format-utils.ts"
                         },
                         {
                           "type": "file",
@@ -7020,6 +8108,14 @@
                           "name": "service-pricing.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7111,10 +8207,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "create-service.schemas.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "create-service.ts"
                         },
                         {
@@ -7155,7 +8247,15 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "pricing-functions.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7220,6 +8320,20 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-service-form.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -7280,6 +8394,14 @@
                           "name": "settings.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7354,6 +8476,14 @@
                           "name": "settings-account.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7451,6 +8581,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "types.ts"
                     }
                   ]
@@ -7538,6 +8672,14 @@
                           "name": "settings-contact.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7563,10 +8705,6 @@
                         },
                         {
                           "type": "file",
-                          "name": "use-contact-form.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "website-booking-section.tsx"
                         }
                       ]
@@ -7582,12 +8720,22 @@
                   ]
                 },
                 {
-                  "type": "file",
-                  "name": "index.tsx"
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-contact-form.ts"
+                    }
+                  ]
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
+                  "name": "index.tsx"
                 },
                 {
                   "type": "file",
@@ -7630,6 +8778,14 @@
                           "name": "settings-description.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7672,10 +8828,6 @@
                         {
                           "type": "file",
                           "name": "seo-section.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "use-description-form.ts"
                         }
                       ]
                     },
@@ -7686,6 +8838,20 @@
                     {
                       "type": "file",
                       "name": "index.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-description-form.ts"
                     }
                   ]
                 },
@@ -7750,6 +8916,10 @@
                           "name": "settings-roles.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -7824,6 +8994,14 @@
                           "name": "settings-salon.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -7847,10 +9025,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -7869,11 +9043,19 @@
                       "children": [
                         {
                           "type": "file",
+                          "name": "create.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "index.ts"
                         },
                         {
                           "type": "file",
-                          "name": "staff.ts"
+                          "name": "lifecycle.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "update.ts"
                         }
                       ]
                     },
@@ -7890,6 +9072,10 @@
                           "name": "staff.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -7911,11 +9097,11 @@
                         },
                         {
                           "type": "file",
-                          "name": "staff-form-fields.tsx"
+                          "name": "staff-form-dialog.tsx"
                         },
                         {
                           "type": "file",
-                          "name": "use-staff-form.ts"
+                          "name": "staff-form-fields.tsx"
                         }
                       ]
                     },
@@ -7958,24 +9144,12 @@
                         {
                           "type": "file",
                           "name": "types.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "use-assign-services-dialog.ts"
                         }
                       ]
                     },
                     {
                       "type": "file",
                       "name": "index.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "staff-form-fields.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "staff-form-types.ts"
                     },
                     {
                       "type": "file",
@@ -7996,20 +9170,34 @@
                     {
                       "type": "file",
                       "name": "staff-services-manager.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
-                      "name": "use-staff-form-state.ts"
+                      "name": "types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-assign-services-dialog.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-staff-form.ts"
                     }
                   ]
                 },
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8052,6 +9240,14 @@
                           "name": "staff-schedules.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -8104,6 +9300,24 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schedule-options.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-schedule-form-state.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -8148,6 +9362,10 @@
                           "name": "staff-services.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -8210,6 +9428,10 @@
                           "name": "time-off.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -8276,6 +9498,14 @@
                           "name": "transactions.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -8354,6 +9584,10 @@
                           "name": "webhooks.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -8464,6 +9698,10 @@
                           "name": "webhooks-monitoring.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -8528,6 +9766,10 @@
                           "name": "metrics.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -8590,6 +9832,14 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "validation.ts"
                     }
                   ]
                 },
@@ -8621,7 +9871,19 @@
                     },
                     {
                       "type": "file",
+                      "name": "appointment-actions-section.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "appointment-detail.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "appointment-info-section.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "appointment-service-card.tsx"
                     },
                     {
                       "type": "file",
@@ -8634,6 +9896,14 @@
                     {
                       "type": "file",
                       "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "reschedule-alerts.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "reschedule-form-fields.tsx"
                     },
                     {
                       "type": "file",
@@ -8710,6 +9980,14 @@
                           "name": "salon.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -8743,17 +10021,21 @@
                         },
                         {
                           "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "progress-section.tsx"
                         },
                         {
                           "type": "file",
                           "name": "service-staff-fields.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "use-booking-form.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "booking-feature-content.tsx"
                     },
                     {
                       "type": "file",
@@ -8771,13 +10053,25 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "use-availability-check.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-booking-form.ts"
                     }
                   ]
                 },
                 {
                   "type": "file",
                   "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "metadata.ts"
                 },
                 {
                   "type": "file",
@@ -8816,6 +10110,14 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -8852,10 +10154,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -8910,6 +10208,10 @@
                           "name": "vip.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -8993,13 +10295,37 @@
                       "children": [
                         {
                           "type": "file",
+                          "name": "categories.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "discovery.ts"
                         },
                         {
                           "type": "file",
+                          "name": "filter-salons.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "salon-details.ts"
+                        },
+                        {
+                          "type": "file",
+                          "name": "search-salons.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -9047,10 +10373,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9090,6 +10412,14 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "validation.ts"
                     }
                   ]
                 },
@@ -9156,6 +10486,10 @@
                           "name": "loyalty.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -9276,6 +10610,14 @@
                           "name": "profile.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -9302,10 +10644,6 @@
                         {
                           "type": "file",
                           "name": "types.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "use-preferences-form.ts"
                         }
                       ]
                     },
@@ -9376,12 +10714,26 @@
                   ]
                 },
                 {
-                  "type": "file",
-                  "name": "index.tsx"
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "types.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "use-preferences-form.ts"
+                    }
+                  ]
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
+                  "name": "index.tsx"
                 },
                 {
                   "type": "file",
@@ -9424,6 +10776,10 @@
                           "name": "referrals.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -9490,6 +10846,14 @@
                           "name": "reviews.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "validation.ts"
                     }
                   ]
                 },
@@ -9504,6 +10868,14 @@
                     {
                       "type": "file",
                       "name": "edit-review-dialog.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "edit-review-form.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "edit-window-alert.tsx"
                     },
                     {
                       "type": "file",
@@ -9556,6 +10928,10 @@
                           "name": "salon-detail.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -9588,6 +10964,10 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "metadata.ts"
                 },
                 {
                   "type": "file",
@@ -9635,13 +11015,13 @@
                         },
                         {
                           "type": "file",
-                          "name": "salon-search.ts"
-                        },
-                        {
-                          "type": "file",
                           "name": "suggestions.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -9701,7 +11081,25 @@
                     },
                     {
                       "type": "file",
+                      "name": "search-input-field.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "search-results-section.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "search-suggestions-popover.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -9761,11 +11159,11 @@
                     },
                     {
                       "type": "file",
-                      "name": "schema.ts"
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
-                      "name": "session-context.ts"
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -9811,6 +11209,10 @@
                 },
                 {
                   "type": "file",
+                  "name": "schema.ts"
+                },
+                {
+                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -9846,6 +11248,10 @@
                           "name": "staff-profiles.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -9904,6 +11310,10 @@
                           "name": "transactions.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -10152,6 +11562,14 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -10230,10 +11648,6 @@
                 {
                   "type": "file",
                   "name": "index.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -10462,6 +11876,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -10727,6 +12145,18 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "footer-bottom.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "footer-brand.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "footer-links.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "index.ts"
                     },
                     {
@@ -10796,13 +12226,26 @@
                     {
                       "type": "directory",
                       "name": "queries",
-                      "children": []
+                      "children": [
+                        {
+                          "type": "file",
+                          "name": "index.ts"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
                 {
                   "type": "file",
                   "name": "index.tsx"
+                },
+                {
+                  "type": "file",
+                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -11037,6 +12480,10 @@
                           "name": "stats.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -11261,6 +12708,10 @@
                           "name": "stats.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -11474,6 +12925,22 @@
           "children": [
             {
               "type": "directory",
+              "name": "analytics",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "analytics-calculations.ts"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "directory",
               "name": "appointments",
               "children": [
                 {
@@ -11500,6 +12967,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     }
                   ]
@@ -11521,156 +12992,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "types.ts"
-                }
-              ]
-            },
-            {
-              "type": "directory",
-              "name": "auth",
-              "children": [
-                {
-                  "type": "directory",
-                  "name": "api",
-                  "children": [
-                    {
-                      "type": "directory",
-                      "name": "mutations",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "index.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "login.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "logout.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "otp.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "password-reset.ts"
-                        },
-                        {
-                          "type": "file",
-                          "name": "signup.ts"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "mutations.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "queries.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "types.ts"
-                    }
-                  ]
-                },
-                {
-                  "type": "directory",
-                  "name": "components",
-                  "children": [
-                    {
-                      "type": "directory",
-                      "name": "login-form",
-                      "children": [
-                        {
-                          "type": "file",
-                          "name": "form-fields.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "index.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "marketing-panel.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "oauth-buttons.tsx"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "file",
-                      "name": "auth-centered-page.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "forgot-password-form.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "index.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "login-page.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "otp-input.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "password-input.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "password-strength-indicator.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "resend-otp.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "reset-password-form.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "signup-form-fields.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "signup-form.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "signup-page.tsx"
-                    },
-                    {
-                      "type": "file",
-                      "name": "verify-otp-form.tsx"
-                    }
-                  ]
-                },
-                {
-                  "type": "file",
-                  "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "pages.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -11714,11 +13035,19 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -11770,6 +13099,10 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -11838,6 +13171,10 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
@@ -11896,6 +13233,10 @@
                         },
                         {
                           "type": "file",
+                          "name": "index.ts"
+                        },
+                        {
+                          "type": "file",
                           "name": "read.ts"
                         },
                         {
@@ -11906,11 +13247,23 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
+                      "name": "operations.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -11970,6 +13323,10 @@
                 },
                 {
                   "type": "file",
+                  "name": "metadata.ts"
+                },
+                {
+                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -11982,6 +13339,10 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -12007,6 +13368,26 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "use-notification-action.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "notification-icons.tsx"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -12024,6 +13405,10 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -12045,10 +13430,6 @@
                         {
                           "type": "file",
                           "name": "breadcrumbs.tsx"
-                        },
-                        {
-                          "type": "file",
-                          "name": "icon-map.ts"
                         },
                         {
                           "type": "file",
@@ -12105,6 +13486,50 @@
                   ]
                 },
                 {
+                  "type": "directory",
+                  "name": "constants",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "icon-map.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "menu",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "admin-menus.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "business-menus.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "customer-menus.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "get-menu-for-user.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "portal-menus.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "staff-menus.ts"
+                    }
+                  ]
+                },
+                {
                   "type": "file",
                   "name": "index.tsx"
                 },
@@ -12124,11 +13549,19 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -12194,11 +13627,19 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -12212,7 +13653,19 @@
                     },
                     {
                       "type": "file",
+                      "name": "profile-avatar-upload.tsx"
+                    },
+                    {
+                      "type": "file",
                       "name": "profile-edit-form.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "profile-form-actions.tsx"
+                    },
+                    {
+                      "type": "file",
+                      "name": "profile-name-field.tsx"
                     },
                     {
                       "type": "file",
@@ -12223,10 +13676,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -12244,11 +13693,19 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -12287,6 +13744,16 @@
                     {
                       "type": "file",
                       "name": "social-profiles-section.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "hooks",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -12306,12 +13773,32 @@
             },
             {
               "type": "directory",
+              "name": "reviews",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "review-analytics.ts"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "directory",
               "name": "salons",
               "children": [
                 {
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -12348,12 +13835,32 @@
             },
             {
               "type": "directory",
+              "name": "services",
+              "children": [
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "calculations.ts"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "directory",
               "name": "sessions",
               "children": [
                 {
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -12407,6 +13914,20 @@
                     {
                       "type": "file",
                       "name": "enrich.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "staff-helpers.ts"
                     }
                   ]
                 },
@@ -12644,6 +14165,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "types.ts"
                     }
                   ]
@@ -12724,6 +14249,10 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
@@ -12790,11 +14319,19 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -12835,10 +14372,6 @@
                 {
                   "type": "file",
                   "name": "index.tsx"
-                },
-                {
-                  "type": "file",
-                  "name": "schema.ts"
                 },
                 {
                   "type": "file",
@@ -12901,6 +14434,10 @@
                           "name": "index.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     },
                     {
                       "type": "file",
@@ -12991,6 +14528,10 @@
                           "name": "stats.ts"
                         }
                       ]
+                    },
+                    {
+                      "type": "file",
+                      "name": "index.ts"
                     }
                   ]
                 },
@@ -13017,6 +14558,16 @@
                     {
                       "type": "file",
                       "name": "service-breakdown.tsx"
+                    }
+                  ]
+                },
+                {
+                  "type": "directory",
+                  "name": "utils",
+                  "children": [
+                    {
+                      "type": "file",
+                      "name": "commission.ts"
                     }
                   ]
                 },
@@ -13216,11 +14767,19 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
+                    },
+                    {
+                      "type": "file",
+                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -13320,10 +14879,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13336,6 +14891,10 @@
                   "type": "directory",
                   "name": "api",
                   "children": [
+                    {
+                      "type": "file",
+                      "name": "index.ts"
+                    },
                     {
                       "type": "file",
                       "name": "mutations.ts"
@@ -13484,6 +15043,10 @@
                     },
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "types.ts"
                     }
                   ]
@@ -13520,14 +15083,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "constants.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "types.ts"
-                },
-                {
-                  "type": "file",
                   "name": "index.tsx"
                 }
               ]
@@ -13542,15 +15097,15 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -13608,15 +15163,15 @@
                   "children": [
                     {
                       "type": "file",
+                      "name": "index.ts"
+                    },
+                    {
+                      "type": "file",
                       "name": "mutations.ts"
                     },
                     {
                       "type": "file",
                       "name": "queries.ts"
-                    },
-                    {
-                      "type": "file",
-                      "name": "schema.ts"
                     }
                   ]
                 },
@@ -13941,10 +15496,6 @@
                 },
                 {
                   "type": "file",
-                  "name": "schema.ts"
-                },
-                {
-                  "type": "file",
                   "name": "types.ts"
                 }
               ]
@@ -13957,16 +15508,6 @@
       "type": "directory",
       "name": "lib",
       "children": [
-        {
-          "type": "directory",
-          "name": "admin",
-          "children": [
-            {
-              "type": "file",
-              "name": "moderation-factory.ts"
-            }
-          ]
-        },
         {
           "type": "directory",
           "name": "auth",
@@ -13996,6 +15537,14 @@
                   "name": "salon-access.ts"
                 }
               ]
+            },
+            {
+              "type": "file",
+              "name": "guards-query.ts"
+            },
+            {
+              "type": "file",
+              "name": "guards-simple.ts"
             },
             {
               "type": "file",
@@ -14038,6 +15587,10 @@
                 {
                   "type": "file",
                   "name": "headers.ts"
+                },
+                {
+                  "type": "file",
+                  "name": "index.ts"
                 },
                 {
                   "type": "file",
@@ -14129,6 +15682,20 @@
         },
         {
           "type": "directory",
+          "name": "csrf",
+          "children": [
+            {
+              "type": "file",
+              "name": "index.ts"
+            },
+            {
+              "type": "file",
+              "name": "validate.ts"
+            }
+          ]
+        },
+        {
+          "type": "directory",
           "name": "hooks",
           "children": [
             {
@@ -14142,50 +15709,6 @@
             {
               "type": "file",
               "name": "use-toast.ts"
-            }
-          ]
-        },
-        {
-          "type": "directory",
-          "name": "menu",
-          "children": [
-            {
-              "type": "file",
-              "name": "admin-menus.ts"
-            },
-            {
-              "type": "file",
-              "name": "business-menus.ts"
-            },
-            {
-              "type": "file",
-              "name": "customer-menus.ts"
-            },
-            {
-              "type": "file",
-              "name": "get-menu-for-user.ts"
-            },
-            {
-              "type": "file",
-              "name": "index.ts"
-            },
-            {
-              "type": "file",
-              "name": "portal-menus.ts"
-            },
-            {
-              "type": "file",
-              "name": "staff-menus.ts"
-            }
-          ]
-        },
-        {
-          "type": "directory",
-          "name": "messaging",
-          "children": [
-            {
-              "type": "file",
-              "name": "operations.ts"
             }
           ]
         },
@@ -14245,6 +15768,10 @@
                 },
                 {
                   "type": "file",
+                  "name": "index.ts"
+                },
+                {
+                  "type": "file",
                   "name": "store.ts"
                 },
                 {
@@ -14259,6 +15786,10 @@
             },
             {
               "type": "file",
+              "name": "index.ts"
+            },
+            {
+              "type": "file",
               "name": "rate-limit.ts"
             }
           ]
@@ -14266,20 +15797,7 @@
         {
           "type": "directory",
           "name": "mutations",
-          "children": [
-            {
-              "type": "file",
-              "name": "index.ts"
-            },
-            {
-              "type": "file",
-              "name": "patterns.ts"
-            },
-            {
-              "type": "file",
-              "name": "revalidation.ts"
-            }
-          ]
+          "children": []
         },
         {
           "type": "directory",
@@ -14287,7 +15805,15 @@
           "children": [
             {
               "type": "file",
+              "name": "index.ts"
+            },
+            {
+              "type": "file",
               "name": "logger.ts"
+            },
+            {
+              "type": "file",
+              "name": "query-logger.ts"
             }
           ]
         },
@@ -14343,6 +15869,10 @@
                 },
                 {
                   "type": "file",
+                  "name": "index.ts"
+                },
+                {
+                  "type": "file",
                   "name": "local-business-schema.ts"
                 },
                 {
@@ -14369,27 +15899,21 @@
             },
             {
               "type": "file",
+              "name": "index.ts"
+            },
+            {
+              "type": "file",
               "name": "index.tsx"
             }
           ]
         },
         {
           "type": "directory",
-          "name": "services",
+          "name": "server",
           "children": [
             {
               "type": "file",
-              "name": "calculations.ts"
-            }
-          ]
-        },
-        {
-          "type": "directory",
-          "name": "staff",
-          "children": [
-            {
-              "type": "file",
-              "name": "staff-helpers.ts"
+              "name": "revalidate.ts"
             }
           ]
         },
@@ -14397,6 +15921,10 @@
           "type": "directory",
           "name": "storage",
           "children": [
+            {
+              "type": "file",
+              "name": "index.ts"
+            },
             {
               "type": "file",
               "name": "upload-helpers.ts"
@@ -14444,6 +15972,10 @@
             {
               "type": "file",
               "name": "index.ts"
+            },
+            {
+              "type": "file",
+              "name": "mutations.ts"
             }
           ]
         },
@@ -14487,14 +16019,6 @@
             },
             {
               "type": "file",
-              "name": "analytics-calculations.ts"
-            },
-            {
-              "type": "file",
-              "name": "commission.ts"
-            },
-            {
-              "type": "file",
               "name": "date-time.ts"
             },
             {
@@ -14507,31 +16031,19 @@
             },
             {
               "type": "file",
-              "name": "insights.ts"
+              "name": "safe-form-data.ts"
             },
             {
               "type": "file",
-              "name": "metrics.ts"
-            },
-            {
-              "type": "file",
-              "name": "pricing.ts"
-            },
-            {
-              "type": "file",
-              "name": "profile.ts"
-            },
-            {
-              "type": "file",
-              "name": "review-access.ts"
-            },
-            {
-              "type": "file",
-              "name": "review-analytics.ts"
+              "name": "safe-json.ts"
             },
             {
               "type": "file",
               "name": "status-colors.ts"
+            },
+            {
+              "type": "file",
+              "name": "typed-object.ts"
             },
             {
               "type": "file",
@@ -14545,7 +16057,7 @@
           "children": [
             {
               "type": "file",
-              "name": "helpers.ts"
+              "name": "common-schemas.ts"
             },
             {
               "type": "file",
@@ -14557,32 +16069,6 @@
           "type": "directory",
           "name": "validations",
           "children": [
-            {
-              "type": "directory",
-              "name": "customer",
-              "children": [
-                {
-                  "type": "file",
-                  "name": "appointments.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "favorites.ts"
-                },
-                {
-                  "type": "file",
-                  "name": "reviews.ts"
-                }
-              ]
-            },
-            {
-              "type": "file",
-              "name": "auth.ts"
-            },
-            {
-              "type": "file",
-              "name": "booking.ts"
-            },
             {
               "type": "file",
               "name": "index.ts"
@@ -14667,6 +16153,10 @@
     },
     {
       "type": "file",
+      "name": ".env.example"
+    },
+    {
+      "type": "file",
       "name": ".env.local"
     },
     {
@@ -14683,15 +16173,7 @@
     },
     {
       "type": "file",
-      "name": "ARCHITECTURE_AUDIT_REPORT.md"
-    },
-    {
-      "type": "file",
-      "name": "AUDIT_COMPLETE.txt"
-    },
-    {
-      "type": "file",
-      "name": "AUDIT_EXECUTIVE_SUMMARY.md"
+      "name": "AUDIT_FILE_PLACEMENT_REPORT.md"
     },
     {
       "type": "file",
@@ -14699,27 +16181,7 @@
     },
     {
       "type": "file",
-      "name": "AUDIT_SUMMARY.md"
-    },
-    {
-      "type": "file",
-      "name": "build-output.log"
-    },
-    {
-      "type": "file",
-      "name": "BUSINESS-PORTAL-STANDARDS-AUDIT-COMPREHENSIVE.md"
-    },
-    {
-      "type": "file",
-      "name": "BUSINESS-PORTAL-STANDARDS-AUDIT.md"
-    },
-    {
-      "type": "file",
-      "name": "BUSINESS-PORTAL-VIOLATIONS-FIXED.md"
-    },
-    {
-      "type": "file",
-      "name": "BUSINESS-PORTAL-VIOLATIONS-REMAINING.md"
+      "name": "AUDIT_SUMMARY.txt"
     },
     {
       "type": "file",
@@ -14727,11 +16189,11 @@
     },
     {
       "type": "file",
-      "name": "CODE_DEDUPLICATION_SUMMARY.md"
+      "name": "CODE_DEDUPLICATION_FIXES.md"
     },
     {
       "type": "file",
-      "name": "CODE_QUALITY_AUDIT.md"
+      "name": "CODE_QUALITY_AUDIT_FIXES.md"
     },
     {
       "type": "file",
@@ -14739,7 +16201,7 @@
     },
     {
       "type": "file",
-      "name": "CONFIGURATION_FIXES_SUMMARY.md"
+      "name": "CONFIGURATION_FIXES_APPLIED.md"
     },
     {
       "type": "file",
@@ -14779,19 +16241,15 @@
     },
     {
       "type": "file",
-      "name": "SHADCN_UI_UPGRADE_AUDIT.md"
+      "name": "REMEDIATION_GUIDE.md"
     },
     {
       "type": "file",
-      "name": "SHARED-FEATURES-CHANGES-SUMMARY.md"
+      "name": "SECURITY_FIXES_APPLIED.md"
     },
     {
       "type": "file",
-      "name": "SHARED-FEATURES-COMPLIANCE-REPORT.md"
-    },
-    {
-      "type": "file",
-      "name": "STAFF-PORTAL-FIXES-SUMMARY.md"
+      "name": "SHADCN_UI_COMPREHENSIVE_AUDIT_REPORT.md"
     },
     {
       "type": "file",
@@ -14803,15 +16261,7 @@
     },
     {
       "type": "file",
-      "name": "TURBOPACK_MIGRATION_COMMIT_MESSAGE.md"
-    },
-    {
-      "type": "file",
-      "name": "TURBOPACK_MIGRATION_SUMMARY.md"
-    },
-    {
-      "type": "file",
-      "name": "VIOLATION_DETAILS.md"
+      "name": "VIOLATIONS_QUICK_REFERENCE.md"
     }
   ]
 }

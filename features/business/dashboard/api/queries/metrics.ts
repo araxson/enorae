@@ -4,7 +4,7 @@ import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from 
 import { createClient } from '@/lib/supabase/server'
 import { getUserSalonIds } from './salon'
 import type { Database } from '@/lib/types/database.types'
-import { createOperationLogger } from '@/lib/observability'
+import { logQuery } from '@/lib/observability/query-logger'
 
 type AppointmentWithDetails = Database['public']['Views']['appointments_view']['Row']
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']
@@ -16,15 +16,13 @@ type ServiceRow = Database['public']['Views']['services_view']['Row']
 const getSupabaseClient = () => createClient()
 
 export async function getDashboardMetrics(salonId: string) {
-  const logger = createOperationLogger('getDashboardMetrics', {})
-  logger.start()
-
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!(await canAccessSalon(salonId))) {
     throw new Error('Unauthorized salon access')
   }
 
+  const logger = logQuery('getDashboardMetrics', { salonId })
   const supabase = await getSupabaseClient()
 
   try {
@@ -49,56 +47,20 @@ export async function getDashboardMetrics(salonId: string) {
         .in('transaction_type', ['service_payment', 'product_sale', 'tip', 'fee', 'other']),
     ])
 
-    // Enhanced error logging with detailed context
     if (appointmentsResult.error) {
-      console.error('[getDashboardMetrics] Appointments query failed', {
-        salonId,
-        error: appointmentsResult.error,
-        errorCode: appointmentsResult.error.code,
-        errorMessage: appointmentsResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(appointmentsResult.error, 'database')
+      logger.error(appointmentsResult.error, 'database', { query: 'appointments' })
     }
     if (staffResult.error) {
-      console.error('[getDashboardMetrics] Staff query failed', {
-        salonId,
-        error: staffResult.error,
-        errorCode: staffResult.error.code,
-        errorMessage: staffResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(staffResult.error, 'database')
+      logger.error(staffResult.error, 'database', { query: 'staff' })
     }
     if (servicesResult.error) {
-      console.error('[getDashboardMetrics] Services query failed', {
-        salonId,
-        error: servicesResult.error,
-        errorCode: servicesResult.error.code,
-        errorMessage: servicesResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(servicesResult.error, 'database')
+      logger.error(servicesResult.error, 'database', { query: 'services' })
     }
     if (revenueResult.error) {
-      console.error('[getDashboardMetrics] Revenue query failed', {
-        salonId,
-        error: revenueResult.error,
-        errorCode: revenueResult.error.code,
-        errorMessage: revenueResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(revenueResult.error, 'database')
+      logger.error(revenueResult.error, 'database', { query: 'revenue' })
     }
     if (paymentsResult.error) {
-      console.error('[getDashboardMetrics] Payments query failed', {
-        salonId,
-        error: paymentsResult.error,
-        errorCode: paymentsResult.error.code,
-        errorMessage: paymentsResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(paymentsResult.error, 'database')
+      logger.error(paymentsResult.error, 'database', { query: 'payments' })
     }
 
     const appointments = (appointmentsResult.data || []) as AppointmentRow[]
@@ -124,13 +86,7 @@ export async function getDashboardMetrics(salonId: string) {
     logger.success(metrics)
     return metrics
   } catch (error) {
-    console.error('[getDashboardMetrics] Fatal error calculating metrics', {
-      salonId,
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    })
-    logger.error(error instanceof Error ? error : String(error), 'system')
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'system')
 
     // Return default metrics on fatal error
     return {
@@ -185,11 +141,9 @@ export async function getBusinessDashboardData() {
 }
 
 export async function getMultiLocationMetrics() {
-  const logger = createOperationLogger('getMultiLocationMetrics', {})
-  logger.start()
-
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonIds = await getUserSalonIds()
+  const logger = logQuery('getMultiLocationMetrics', { locationCount: salonIds?.length ?? 0 })
   const supabase = await getSupabaseClient()
 
   try {
@@ -210,39 +164,14 @@ export async function getMultiLocationMetrics() {
       supabase.from('services_view').select('id, salon_id').in('salon_id', salonIds).eq('is_active', true),
     ])
 
-    // Enhanced error logging with detailed context
     if (appointmentsResult.error) {
-      console.error('[getMultiLocationMetrics] Appointments query failed', {
-        salonIds,
-        locationCount: salonIds.length,
-        error: appointmentsResult.error,
-        errorCode: appointmentsResult.error.code,
-        errorMessage: appointmentsResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(appointmentsResult.error, 'database')
+      logger.error(appointmentsResult.error, 'database', { query: 'appointments' })
     }
     if (staffResult.error) {
-      console.error('[getMultiLocationMetrics] Staff query failed', {
-        salonIds,
-        locationCount: salonIds.length,
-        error: staffResult.error,
-        errorCode: staffResult.error.code,
-        errorMessage: staffResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(staffResult.error, 'database')
+      logger.error(staffResult.error, 'database', { query: 'staff' })
     }
     if (servicesResult.error) {
-      console.error('[getMultiLocationMetrics] Services query failed', {
-        salonIds,
-        locationCount: salonIds.length,
-        error: servicesResult.error,
-        errorCode: servicesResult.error.code,
-        errorMessage: servicesResult.error.message,
-        timestamp: new Date().toISOString(),
-      })
-      logger.error(servicesResult.error, 'database')
+      logger.error(servicesResult.error, 'database', { query: 'services' })
     }
 
     const appointments = (appointmentsResult.data || []) as AppointmentRow[]
@@ -259,14 +188,7 @@ export async function getMultiLocationMetrics() {
     logger.success(metrics)
     return metrics
   } catch (error) {
-    console.error('[getMultiLocationMetrics] Fatal error calculating metrics', {
-      salonIds,
-      locationCount: salonIds?.length ?? 0,
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    })
-    logger.error(error instanceof Error ? error : String(error), 'system')
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'system')
 
     // Return default metrics on fatal error
     return {

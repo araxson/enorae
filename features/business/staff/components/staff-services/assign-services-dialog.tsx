@@ -4,7 +4,7 @@ import { Dialog } from '@/components/ui/dialog'
 
 import { AssignServicesDialogContent } from './assign-services-dialog-content'
 import { useAssignServicesDialog } from '../../hooks/use-assign-services-dialog'
-import type { StaffMemberWithServices, ServiceRow } from './types'
+import type { StaffMemberWithServices, ServiceRow } from '@/features/business/staff/api/types'
 
 type AssignServicesDialogProps = {
   staff: StaffMemberWithServices | null

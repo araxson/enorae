@@ -17,10 +17,13 @@ export async function applyDynamicPricing(
 
   await requireUser()
 
-  // NOTE: pricing_rules table doesn't exist in schema
-  // Dynamic pricing functionality is currently not implemented
-  // Return base price as-is
-  // TODO: Implement dynamic pricing when pricing_rules table is added to database
+  /**
+   * NOTE: Dynamic pricing is not yet implemented as pricing_rules table
+   * is not present in the current database schema.
+   *
+   * Future enhancement: Implement dynamic pricing rules when the
+   * pricing_rules table is added to the catalog schema.
+   */
 
   return Math.round(basePrice * 100) / 100
 }
@@ -58,8 +61,11 @@ export async function calculateServicePrice(
 export async function getPricingRules(salonId: string) {
   await requireUser()
 
-  // NOTE: pricing_rules table doesn't exist in schema
-  // Return empty array until table is added
-  // TODO: Query from catalog.pricing_rules when table exists
+  /**
+   * NOTE: pricing_rules table doesn't exist in current schema.
+   * Returns empty array until the table is added to catalog schema.
+   *
+   * Future enhancement: Query from catalog.pricing_rules when available.
+   */
   return []
 }

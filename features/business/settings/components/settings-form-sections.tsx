@@ -1,18 +1,20 @@
 'use client'
 
+import { UseFormReturn } from 'react-hook-form'
+import { SalonSettingsSchema, SalonSettingsSchemaInput } from '@/features/business/settings/api/schema'
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from '@/components/ui/field'
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 import {
@@ -22,167 +24,198 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Database } from '@/lib/types/database.types'
-
-type SalonSettings = Database['public']['Views']['salon_settings_view']['Row']
 
 type BookingStatusSectionProps = {
-  isAcceptingBookings: boolean
-  onToggle: (checked: boolean) => void
+  form: UseFormReturn<SalonSettingsSchemaInput, unknown, SalonSettingsSchema>
 }
 
-export function BookingStatusSection({ isAcceptingBookings, onToggle }: BookingStatusSectionProps) {
+export function BookingStatusSection({ form }: BookingStatusSectionProps) {
   return (
     <AccordionItem value="booking-status">
       <AccordionTrigger>Booking Status</AccordionTrigger>
       <AccordionContent>
-        <FieldSet className="flex flex-col gap-6 pt-4">
-          <Field orientation="responsive">
-            <FieldLabel htmlFor="accept-new-bookings">Accept new bookings</FieldLabel>
-            <FieldContent className="flex flex-col items-start gap-2 @md/field-group:flex-row @md/field-group:items-center @md/field-group:justify-end @md/field-group:gap-4">
-              <Switch
-                id="accept-new-bookings"
-                checked={isAcceptingBookings}
-                onCheckedChange={onToggle}
-                aria-describedby="accept-new-bookings-description"
-              />
-              <FieldDescription id="accept-new-bookings-description">
-                Allow customers to book appointments online.
-              </FieldDescription>
-            </FieldContent>
-          </Field>
-        </FieldSet>
+        <div className="flex flex-col gap-6 pt-4">
+          <FormField
+            control={form.control}
+            name="is_accepting_bookings"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">Accept new bookings</FormLabel>
+                  <FormDescription>
+                    Allow customers to book appointments online.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
       </AccordionContent>
     </AccordionItem>
   )
 }
 
 type BookingRulesSectionProps = {
-  settings: SalonSettings | null
+  form: UseFormReturn<SalonSettingsSchemaInput, unknown, SalonSettingsSchema>
 }
 
-export function BookingRulesSection({ settings }: BookingRulesSectionProps) {
+export function BookingRulesSection({ form }: BookingRulesSectionProps) {
   return (
     <AccordionItem value="booking-rules">
       <AccordionTrigger>Booking Rules</AccordionTrigger>
       <AccordionContent>
-        <FieldSet className="flex flex-col gap-6 pt-4">
-          <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Field>
-              <FieldLabel htmlFor="booking_lead_time_hours">Lead Time (hours)</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="booking_lead_time_hours"
-                  name="booking_lead_time_hours"
-                  type="number"
-                  min="0"
-                  max="720"
-                  defaultValue={settings?.['booking_lead_time_hours'] ?? ''}
-                  placeholder="24"
-                />
-              </FieldContent>
-              <FieldDescription>Minimum hours before appointment.</FieldDescription>
-            </Field>
+        <div className="flex flex-col gap-6 pt-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="booking_lead_time_hours"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Lead Time (hours)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="720"
+                      placeholder="24"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      disabled={field.disabled}
+                      value={(field.value as string | number | undefined) ?? ''}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                    />
+                  </FormControl>
+                  <FormDescription>Minimum hours before appointment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Field>
-              <FieldLabel htmlFor="cancellation_hours">Cancellation Window (hours)</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="cancellation_hours"
-                  name="cancellation_hours"
-                  type="number"
-                  min="0"
-                  max="168"
-                  defaultValue={settings?.['cancellation_hours'] ?? ''}
-                  placeholder="24"
-                />
-              </FieldContent>
-              <FieldDescription>Hours before appointment can be cancelled.</FieldDescription>
-            </Field>
+            <FormField
+              control={form.control}
+              name="cancellation_window_hours"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cancellation Window (hours)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="168"
+                      placeholder="24"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      disabled={field.disabled}
+                      value={(field.value as string | number | undefined) ?? ''}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                    />
+                  </FormControl>
+                  <FormDescription>Hours before appointment can be cancelled.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Field>
-              <FieldLabel htmlFor="max_bookings_per_day">Max Bookings Per Day</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="max_bookings_per_day"
-                  name="max_bookings_per_day"
-                  type="number"
-                  min="1"
-                  max="1000"
-                  defaultValue={settings?.['max_bookings_per_day'] ?? ''}
-                  placeholder="50"
-                />
-              </FieldContent>
-              <FieldDescription>Maximum daily appointments.</FieldDescription>
-            </Field>
-          </FieldGroup>
-        </FieldSet>
+            <FormField
+              control={form.control}
+              name="max_bookings_per_day"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Max Bookings Per Day</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="1000"
+                      placeholder="50"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      disabled={field.disabled}
+                      value={(field.value as string | number | undefined) ?? ''}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                    />
+                  </FormControl>
+                  <FormDescription>Maximum daily appointments.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
       </AccordionContent>
     </AccordionItem>
   )
 }
 
-export function AccountLimitsSection({ settings }: BookingRulesSectionProps) {
+export function AccountLimitsSection({ form }: BookingRulesSectionProps) {
   return (
     <AccordionItem value="account-limits">
       <AccordionTrigger>Account Limits</AccordionTrigger>
       <AccordionContent>
-        <FieldSet className="flex flex-col gap-6 pt-4">
-          <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Field>
-              <FieldLabel htmlFor="max_services">Max Services</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="max_services"
-                  name="max_services"
-                  type="number"
-                  min="1"
-                  max="100"
-                  defaultValue={settings?.['max_services'] ?? ''}
-                  placeholder="Unlimited"
-                />
-              </FieldContent>
-              <FieldDescription>Total services the business can list.</FieldDescription>
-            </Field>
+        <div className="flex flex-col gap-6 pt-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="max_services"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Max Services</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="100"
+                      placeholder="Unlimited"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      disabled={field.disabled}
+                      value={(field.value as string | number | undefined) ?? ''}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                    />
+                  </FormControl>
+                  <FormDescription>Total services the business can list.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Field>
-              <FieldLabel htmlFor="max_staff">Max Staff Members</FieldLabel>
-              <FieldContent>
-                <Input
-                  id="max_staff"
-                  name="max_staff"
-                  type="number"
-                  min="1"
-                  max="500"
-                  defaultValue={settings?.['max_staff'] ?? ''}
-                  placeholder="Unlimited"
-                />
-              </FieldContent>
-              <FieldDescription>Available staff slots across locations.</FieldDescription>
-            </Field>
-
-            <Field>
-              <FieldLabel htmlFor="subscription_tier">Subscription Tier</FieldLabel>
-              <FieldContent>
-                <Select
-                  name="subscription_tier"
-                  defaultValue={settings?.['subscription_tier'] ?? 'free'}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select tier" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="free">Free</SelectItem>
-                    <SelectItem value="basic">Basic</SelectItem>
-                    <SelectItem value="premium">Premium</SelectItem>
-                    <SelectItem value="enterprise">Enterprise</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FieldContent>
-              <FieldDescription>Choose the plan that controls feature access.</FieldDescription>
-            </Field>
-          </FieldGroup>
-        </FieldSet>
+            <FormField
+              control={form.control}
+              name="max_staff_members"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Max Staff Members</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="500"
+                      placeholder="Unlimited"
+                      name={field.name}
+                      ref={field.ref}
+                      onBlur={field.onBlur}
+                      disabled={field.disabled}
+                      value={(field.value as string | number | undefined) ?? ''}
+                      onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : undefined)}
+                    />
+                  </FormControl>
+                  <FormDescription>Available staff slots across locations.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
       </AccordionContent>
     </AccordionItem>
   )

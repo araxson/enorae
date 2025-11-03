@@ -13,7 +13,7 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
-import type { ServiceRow } from './types'
+import type { ServiceRow } from '@/features/business/staff/api/types'
 
 type SingleAssignSectionProps = {
   availableServices: ServiceRow[]

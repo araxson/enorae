@@ -9,7 +9,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import type { PricingRule } from '@/features/business/pricing/types'
+import type { PricingRule } from '@/features/business/pricing/api/types'
 import { formatCurrency } from './pricing-utils'
 import { DollarSign, TrendingUp, Zap } from 'lucide-react'
 

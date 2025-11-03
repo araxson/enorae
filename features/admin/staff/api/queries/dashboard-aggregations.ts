@@ -14,7 +14,7 @@ import type {
   StaffDashboardStats,
   StaffPerformanceBenchmark,
   StaffWithMetrics,
-} from '../../types'
+} from '../../api/types'
 
 export function groupAppointmentsByStaff(rows: AppointmentRow[]) {
   const map = new Map<string, AppointmentRow[]>()

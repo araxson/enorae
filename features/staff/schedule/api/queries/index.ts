@@ -13,4 +13,4 @@ export type {
   Staff,
   StaffScheduleWithStaff,
   ScheduleConflict
-} from '../types'
+} from '../../api/types'

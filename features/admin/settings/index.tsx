@@ -6,4 +6,4 @@ export function AdminSettings() {
 
 export * from './api/queries'
 export * from './api/mutations'
-export * from './types'
+export * from './api/types'

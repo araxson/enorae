@@ -2,7 +2,7 @@
 
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import type { CouponFormState } from '../types'
+import type { CouponFormState } from '../../api/types'
 import {
   Field,
   FieldContent,

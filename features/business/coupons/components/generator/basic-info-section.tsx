@@ -9,7 +9,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from '@/components/ui/field'
-import type { BulkFormSectionsProps } from './types'
+import type { BulkFormSectionsProps } from '../../api/types'
 
 export function BasicInfoSection({ formState, onChange }: BulkFormSectionsProps) {
   return (

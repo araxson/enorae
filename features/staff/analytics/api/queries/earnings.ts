@@ -1,8 +1,7 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
-import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { requireAnyRole, ROLE_GROUPS, guardQueryUser } from '@/lib/auth'
 import { getStaffPerformanceMetrics } from './performance'
-import { createOperationLogger } from '@/lib/observability'
+import { logQuery } from '@/lib/observability'
 
 export interface StaffEarningsSummary {
   total_revenue: number
@@ -19,14 +18,10 @@ export async function getStaffEarningsSummary(
   startDate?: string,
   endDate?: string
 ) {
-  const logger = createOperationLogger('getStaffEarningsSummary', {})
-  logger.start()
+  const logger = logQuery('getStaffEarningsSummary')
 
   await requireAnyRole(ROLE_GROUPS.STAFF_USERS)
-
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const user = await guardQueryUser()
 
   const targetStaffId = staffId || user.id
   const start = startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()

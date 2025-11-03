@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { DollarSign, TrendingUp, Calendar, PieChart } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '@/features/staff/commission/api/queries'
 import { EarningsChart } from './earnings-chart'
@@ -140,7 +140,7 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
         { value: 'services', label: 'Services', icon: PieChart, badge: serviceBreakdown.length ? serviceBreakdown.length.toString() : undefined },
       ]}
       activeTab={activeTab}
-      onTabChange={(value) => setActiveTab(value as typeof activeTab)}
+      onTabChange={(value: string) => setActiveTab(value as typeof activeTab)}
       toggles={[
         { id: 'include-tips', label: 'Include tips', helper: 'Display tip income in totals', defaultOn: true },
       ]}

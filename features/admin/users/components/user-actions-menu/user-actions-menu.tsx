@@ -8,7 +8,7 @@ import {
   DeleteUserDialog,
 } from './dialogs'
 import { useUserActionsMenu } from './use-user-actions-menu'
-import type { UserActionsMenuProps } from './types'
+import type { UserActionsMenuProps } from '../../api/types'
 
 export function UserActionsMenu(props: UserActionsMenuProps) {
   const {

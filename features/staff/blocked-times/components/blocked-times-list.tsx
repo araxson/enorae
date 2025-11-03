@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { deleteBlockedTime } from '@/features/staff/blocked-times/api/mutations'
-import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 import {
   Empty,
   EmptyDescription,

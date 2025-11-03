@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { SalonRevenueRow } from '../../types'
+import type { SalonRevenueRow } from '../../api/types'
 import { requireAdminClient } from './client'
 import { createOperationLogger } from '@/lib/observability'
 

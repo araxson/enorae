@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { authorizeStaffAccess, toDateOnly } from '@/features/staff/commission/utils/commission'
-import type { PayoutSchedule } from '../../types'
+import type { PayoutSchedule } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 const MILLIS_IN_DAY = 24 * 60 * 60 * 1000

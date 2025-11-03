@@ -8,7 +8,7 @@ import {
   bulkAssignServices,
   unassignServiceFromStaff,
 } from '@/features/business/staff-services/api/mutations'
-import type { StaffMemberWithServices } from './types'
+import type { StaffMemberWithServices } from '@/features/business/staff/api/types'
 
 type AssignedService = {
   id: string | null

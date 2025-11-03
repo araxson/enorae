@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
-import type { Service, Staff } from '@/features/customer/booking/types'
+import type { Service, Staff } from '@/features/customer/booking/api/types'
 
 interface ServiceStaffFieldsProps {
   services: Service[]

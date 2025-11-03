@@ -6,7 +6,7 @@ import { HeaderSection } from './header-section'
 import { DetailsSection } from './details-section'
 import { PerformanceSection } from './performance-section'
 import { ApplicabilitySection } from './applicability-section'
-import type { CouponCardProps } from './types'
+import type { CouponCardProps } from '../../api/types'
 
 /**
  * Coupon card component displaying coupon details and performance

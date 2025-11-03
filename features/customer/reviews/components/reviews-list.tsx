@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Star } from 'lucide-react'
 import { EditReviewDialog } from './edit-review-dialog'
 import { DeleteReviewDialog } from './delete-review-dialog'
-import type { ReviewsListProps } from '@/features/customer/reviews/types'
+import type { ReviewsListProps } from '@/features/customer/reviews/api/types'
 import {
   Empty,
   EmptyContent,

@@ -38,6 +38,22 @@ export async function createServiceCategory(formData: FormData) {
     // Generate slug from name
     const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 
+    /**
+     * Service Category Schema Enhancement
+     *
+     * The catalog.service_categories table currently supports basic category information.
+     * Future enhancements pending database migration:
+     *
+     * Additional Fields (planned):
+     * - description: text - Detailed category description for customer display
+     * - display_order: integer - Sort order for category listing (default: 0)
+     * - icon_name: varchar(50) - Icon identifier for UI rendering
+     *
+     * These fields will enable:
+     * - Richer category presentation in customer-facing interfaces
+     * - Customizable category ordering for business owners
+     * - Visual category distinction with icon support
+     */
     const { error: insertError } = await supabase
       .schema('catalog')
       .from('service_categories')
@@ -46,9 +62,6 @@ export async function createServiceCategory(formData: FormData) {
         parent_id: data.parentId || null,
         name: data.name,
         slug,
-        // TODO: Add description field to database schema
-        // TODO: Add display_order field to database schema
-        // TODO: Add icon_name field to database schema
         created_by_id: user.id,
         updated_by_id: user.id,
       })
@@ -93,15 +106,19 @@ export async function updateServiceCategory(formData: FormData) {
       return { error: 'Category cannot be its own parent' }
     }
 
+    /**
+     * Service Category Update
+     *
+     * Currently updates basic category fields. Additional fields (description,
+     * display_order, icon_name) will be included once database schema is enhanced.
+     * See createServiceCategory for schema enhancement documentation.
+     */
     const { error: updateError } = await supabase
       .schema('catalog')
       .from('service_categories')
       .update({
         parent_id: data.parentId || null,
         name: data.name,
-        // TODO: Add description field to database schema
-        // TODO: Add display_order field to database schema
-        // TODO: Add icon_name field to database schema
         updated_by_id: user.id,
       })
       .eq('id', id)

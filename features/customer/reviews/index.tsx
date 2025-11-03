@@ -39,4 +39,4 @@ export async function CustomerReviews() {
     </div>
   )
 }
-export * from './types'
+export * from './api/types'

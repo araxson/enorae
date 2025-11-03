@@ -21,5 +21,5 @@ export { AddServiceDialogClient, AddServiceDialogWrapper, ServiceSelectField, St
 export * from './add-service/types'
 export { EditServiceFormFields as EditServiceFormFieldsComponent } from './edit-service'
 export * from './appointments-table'
-export * from './manager'
+export { ManagerServicesTable, ManagerSummarySection } from './manager'
 export * from './shared'

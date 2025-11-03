@@ -1,11 +1,12 @@
 'use client'
 
+import { memo } from 'react'
 import { format } from 'date-fns'
 import { Monitor, Smartphone, Tablet, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { TableCell, TableRow } from '@/components/ui/table'
-import type { StaffSessionDetail } from '@/features/staff/sessions/types'
+import type { StaffSessionDetail } from '@/features/staff/sessions/api/types'
 
 type SessionRowProps = {
   session: StaffSessionDetail
@@ -26,7 +27,7 @@ function getDeviceIcon(deviceType: string | null | undefined) {
   }
 }
 
-export function SessionRow({
+export const SessionRow = memo(function SessionRow({
   session,
   isCurrent,
   isRevoking,
@@ -71,4 +72,4 @@ export function SessionRow({
       </TableCell>
     </TableRow>
   )
-}
+})

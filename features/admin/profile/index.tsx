@@ -40,4 +40,4 @@ export async function AdminProfile() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

@@ -9,4 +9,4 @@ export async function WebhookQueue() {
 
 export { getWebhookQueue, getWebhookQueueById } from './api/queries'
 export { retryWebhook, deleteWebhook, retryAllFailedWebhooks, clearCompletedWebhooks } from './api/mutations'
-export * from './types'
+export * from './api/types'

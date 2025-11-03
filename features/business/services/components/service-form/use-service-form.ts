@@ -1,16 +1,12 @@
-import { useState, useEffect } from 'react'
-import { useToast } from '@/lib/hooks/use-toast'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { serviceSchema, type ServiceSchema, type ServiceSchemaInput } from '../../api/schema'
+import { createService, updateService } from '../../api/mutations'
 import type { Database } from '@/lib/types/database.types'
 
 type Service = Database['public']['Views']['services_view']['Row']
-
-export type ServiceFormData = {
-  name: string
-  description: string
-  categoryId: string
-  durationMinutes: number
-  price: number
-}
 
 interface UseServiceFormParams {
   salonId: string
@@ -21,117 +17,110 @@ interface UseServiceFormParams {
 }
 
 export function useServiceForm({ salonId, service, open, onClose, onSuccess }: UseServiceFormParams) {
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [basePrice, setBasePrice] = useState(0)
-  const [salePrice, setSalePrice] = useState(0)
-  const [duration, setDuration] = useState(30)
-  const [buffer, setBuffer] = useState(0)
-  const [isTaxable, setIsTaxable] = useState(true)
-  const [taxRate, setTaxRate] = useState(0)
-  const [commissionRate, setCommissionRate] = useState(0)
-  const [isActive, setIsActive] = useState(true)
-  const [isBookable, setIsBookable] = useState(true)
-  const [isFeatured, setIsFeatured] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { toast } = useToast()
+  const isEditMode = !!service
+
+  const form = useForm<ServiceSchemaInput, unknown, ServiceSchema>({
+    resolver: zodResolver(serviceSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      category_id: undefined,
+      duration_minutes: 30,
+      buffer_minutes: 0,
+      base_price: 0,
+      currency: 'USD',
+      status: 'active' as const,
+      requires_deposit: false,
+      deposit_amount: undefined,
+      max_advance_booking_days: undefined,
+      min_advance_booking_hours: undefined,
+      cancellation_notice_hours: undefined,
+      is_online_booking_enabled: true,
+      max_simultaneous_bookings: 1,
+      tags: [],
+      preparation_notes: undefined,
+      aftercare_notes: undefined,
+    },
+  })
 
   // Initialize form when dialog opens with service data
   useEffect(() => {
     if (open && service) {
-      setName(service.name ?? '')
-      setDescription(service.description ?? '')
-      setBasePrice(service.sale_price ?? 0) // using sale_price as base_price doesn't exist
-      setSalePrice(service.sale_price ?? 0)
-      setDuration(service.duration_minutes ?? 30)
-      setBuffer(service.buffer_minutes ?? 0)
-      setIsTaxable(true) // default as property doesn't exist
-      setTaxRate(0) // default as property doesn't exist
-      setCommissionRate(0) // default as property doesn't exist
-      setIsActive(service.is_active ?? true)
-      setIsBookable(service.is_bookable ?? true)
-      setIsFeatured(service.is_featured ?? false)
+      form.reset({
+        name: service.name ?? '',
+        description: service.description ?? undefined,
+        category_id: service.category_id ?? undefined,
+        duration_minutes: service.duration_minutes ?? 30,
+        buffer_minutes: service.buffer_minutes ?? 0,
+        base_price: service.sale_price ?? 0,
+        currency: 'USD',
+        status: (service.is_active ? 'active' : 'inactive') as 'active' | 'inactive',
+        requires_deposit: false,
+        deposit_amount: undefined,
+        is_online_booking_enabled: service.is_bookable ?? true,
+        max_simultaneous_bookings: 1,
+        tags: [],
+      })
       setError(null)
     } else if (!open) {
       // Reset form when dialog closes
-      setName('')
-      setDescription('')
-      setBasePrice(0)
-      setSalePrice(0)
-      setDuration(30)
-      setBuffer(0)
-      setIsTaxable(true)
-      setTaxRate(0)
-      setCommissionRate(0)
-      setIsActive(true)
-      setIsBookable(true)
-      setIsFeatured(false)
+      form.reset()
       setError(null)
     }
-  }, [open, service])
+  }, [open, service, form])
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    setIsSubmitting(true)
+  const handleSubmit = async (data: ServiceSchema) => {
     setError(null)
     try {
-      // Service submission logic would go here
-      toast({
-        title: 'Success',
-        description: 'Service saved successfully',
-      })
+      if (isEditMode && service?.id) {
+        // TODO: Implement updateService - needs proper mapping
+        await updateService(service.id, {
+          name: data.name,
+          description: data.description,
+          category_id: data.category_id,
+          is_active: data.status === 'active',
+          is_bookable: data.is_online_booking_enabled,
+          is_featured: false,
+        })
+      } else {
+        await createService(
+          salonId,
+          {
+            name: data.name,
+            description: data.description,
+            category_id: data.category_id,
+            is_active: data.status === 'active',
+            is_bookable: data.is_online_booking_enabled,
+            is_featured: false,
+          },
+          {
+            base_price: data.base_price,
+            currency_code: data.currency,
+          },
+          {
+            duration_minutes: data.duration_minutes,
+            buffer_minutes: data.buffer_minutes,
+            max_advance_booking_days: data.max_advance_booking_days,
+            min_advance_booking_hours: data.min_advance_booking_hours,
+          }
+        )
+      }
+
+      toast.success(isEditMode ? 'Service updated successfully' : 'Service created successfully')
       onSuccess?.()
       onClose()
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to save service'
       setError(errorMessage)
-      toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
-      })
-    } finally {
-      setIsSubmitting(false)
+      toast.error(errorMessage)
     }
   }
 
   return {
-    state: {
-      name,
-      description,
-      basePrice: basePrice.toString(),
-      salePrice: salePrice.toString(),
-      duration: duration.toString(),
-      buffer: buffer.toString(),
-      isTaxable,
-      taxRate: taxRate.toString(),
-      commissionRate: commissionRate.toString(),
-      isActive,
-      isBookable,
-      isFeatured,
-      isSubmitting,
-      error,
-    },
-    actions: {
-      setName,
-      setDescription,
-      setBasePrice: (value: string) => setBasePrice(parseFloat(value) || 0),
-      setSalePrice: (value: string) => setSalePrice(parseFloat(value) || 0),
-      setDuration: (value: string) => setDuration(parseInt(value, 10) || 0),
-      setBuffer: (value: string) => setBuffer(parseInt(value, 10) || 0),
-      setIsTaxable,
-      setTaxRate: (value: string) => setTaxRate(parseFloat(value) || 0),
-      setCommissionRate: (value: string) => setCommissionRate(parseFloat(value) || 0),
-      setIsActive,
-      setIsBookable,
-      setIsFeatured,
-    },
-    handlers: {
-      handleSubmit,
-      handleClose: onClose,
-    },
+    form,
+    error,
+    isEditMode,
+    handleSubmit,
   }
 }
-
-export type ServiceFormHook = ReturnType<typeof useServiceForm>

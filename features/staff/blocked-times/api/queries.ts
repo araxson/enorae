@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 
 export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
   const supabase = await createClient()

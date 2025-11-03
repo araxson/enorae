@@ -1,4 +1,4 @@
 import { TimeOffFeature } from './components'
 
 export { TimeOffFeature as TimeOffRequests }
-export * from './types'
+export * from './api/types'

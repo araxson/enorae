@@ -6,3 +6,4 @@
  */
 
 export * from './logger'
+export { logQuery, logMutation } from './query-logger'

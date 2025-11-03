@@ -8,7 +8,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import type { InsightsSummary } from './types'
+import type { InsightsSummary } from '../../api/types'
 import { AlertTriangle, Crown, Heart, TrendingUp, UserPlus, UserX, Users } from 'lucide-react'
 
 interface SegmentationCardProps {

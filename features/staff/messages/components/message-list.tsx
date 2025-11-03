@@ -2,7 +2,7 @@
 import { Fragment } from 'react'
 import { format } from 'date-fns'
 import { MessageCircle } from 'lucide-react'
-import type { Message } from '@/features/staff/messages/types'
+import type { Message } from '@/features/staff/messages/api/types'
 import { cn } from '@/lib/utils'
 import {
   Item,

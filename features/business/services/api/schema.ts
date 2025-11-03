@@ -206,7 +206,10 @@ export const bulkServiceUpdateSchema = z.object({
 /**
  * Inferred TypeScript types from schemas
  */
-export type ServiceSchema = z.infer<typeof serviceSchema>
-export type ServiceAvailabilitySchema = z.infer<typeof serviceAvailabilitySchema>
-export type ServiceAddOnSchema = z.infer<typeof serviceAddOnSchema>
-export type BulkServiceUpdateSchema = z.infer<typeof bulkServiceUpdateSchema>
+export type ServiceSchema = z.output<typeof serviceSchema>
+export type ServiceSchemaInput = z.input<typeof serviceSchema>
+export type ServiceAvailabilitySchema = z.output<typeof serviceAvailabilitySchema>
+export type ServiceAvailabilitySchemaInput = z.input<typeof serviceAvailabilitySchema>
+export type ServiceAddOnSchema = z.output<typeof serviceAddOnSchema>
+export type ServiceAddOnSchemaInput = z.input<typeof serviceAddOnSchema>
+export type BulkServiceUpdateSchema = z.output<typeof bulkServiceUpdateSchema>

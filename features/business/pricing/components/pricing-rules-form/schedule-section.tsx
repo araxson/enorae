@@ -14,7 +14,7 @@ import { dayOptions } from './constants'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { RuleType } from './constants'
-import type { PricingRuleFormState } from './types'
+import type { PricingRuleFormState } from '../../api/types'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>
 
@@ -26,10 +26,10 @@ type ScheduleFieldsProps = {
 
 export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFieldsProps) {
   const toggleDay = (day: number) => {
-    setFormData((current) => {
+    setFormData((current: PricingRuleFormState) => {
       const hasDay = current.days_of_week.includes(day)
       if (hasDay) {
-        return { ...current, days_of_week: current.days_of_week.filter((d) => d !== day) }
+        return { ...current, days_of_week: current.days_of_week.filter((d: number) => d !== day) }
       }
       return { ...current, days_of_week: [...current.days_of_week, day] }
     })
@@ -51,7 +51,7 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
                 type="time"
                 value={formData.start_time}
                 onChange={(event) =>
-                  setFormData((current) => ({ ...current, start_time: event.target.value }))
+                  setFormData((current: PricingRuleFormState) => ({ ...current, start_time: event.target.value }))
                 }
               />
             </FieldContent>
@@ -64,7 +64,7 @@ export function ScheduleFields({ formData, setFormData, ruleType }: ScheduleFiel
                 type="time"
                 value={formData.end_time}
                 onChange={(event) =>
-                  setFormData((current) => ({ ...current, end_time: event.target.value }))
+                  setFormData((current: PricingRuleFormState) => ({ ...current, end_time: event.target.value }))
                 }
               />
             </FieldContent>

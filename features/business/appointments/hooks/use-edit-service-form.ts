@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
 import { updateAppointmentService } from '@/features/business/appointments/api/mutations'
 import { ServiceOptionsResponseSchema, type AppointmentServiceDetails } from '@/features/business/appointments/api/queries'
-import type { StaffOption, ServiceFormData } from './types'
+import type { StaffOption, ServiceFormData } from '../api/types'
 import { TIME_MS } from '@/lib/config/constants'
+import { logError, logDebug } from '@/lib/observability'
 
 export function useEditServiceForm(
   service: AppointmentServiceDetails,
@@ -69,7 +70,12 @@ export function useEditServiceForm(
         // API_INTEGRATION_FIX: Validate response schema
         const validationResult = ServiceOptionsResponseSchema.safeParse(rawData)
         if (!validationResult.success) {
-          console.error('[EditService] Invalid API response:', validationResult.error)
+          logError('Invalid API response in EditService', {
+            operationName: 'loadStaffOptions',
+            appointmentId: service['appointment_id'],
+            error: validationResult.error,
+            errorCategory: 'validation',
+          })
           throw new Error('Invalid API response format')
         }
 
@@ -80,10 +86,18 @@ export function useEditServiceForm(
       } catch (error) {
         // API_INTEGRATION_FIX: Handle AbortError and timeout errors
         if (error instanceof Error && error.name === 'AbortError') {
-          console.log('Staff load request cancelled or timed out')
+          logDebug('Staff load request cancelled or timed out', {
+            operationName: 'loadStaffOptions',
+            appointmentId: service['appointment_id'],
+          })
           return
         }
-        console.error('Failed to load staff options:', error)
+        logError('Failed to load staff options', {
+          operationName: 'loadStaffOptions',
+          appointmentId: service['appointment_id'],
+          error: error instanceof Error ? error : String(error),
+          errorCategory: 'network',
+        })
         if (isMounted) {
           toast({
             variant: 'destructive',
@@ -156,7 +170,12 @@ export function useEditServiceForm(
 
       onSuccess()
     } catch (error) {
-      console.error('Failed to update appointment service:', error)
+      logError('Failed to update appointment service', {
+        operationName: 'updateAppointmentService',
+        appointmentId: service['appointment_id'],
+        error: error instanceof Error ? error : String(error),
+        errorCategory: 'system',
+      })
       toast({
         variant: 'destructive',
         title: 'Failed to update service',

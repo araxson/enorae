@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
 import { favoriteSchema } from '@/features/customer/favorites/api/validation'
 import { UUID_REGEX } from '@/lib/validations/shared'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -52,8 +52,6 @@ export async function toggleFavorite(
     if (typedExisting?.id) {
       // If notes provided, update the favorite instead of removing
       if (validatedNotes !== undefined) {
-        console.log('Updating favorite notes', { favoriteId: typedExisting.id, salonId: validatedSalonId, userId: session.user.id })
-
         const { error } = await engagement
           .from('customer_favorites')
           .update({
@@ -68,13 +66,6 @@ export async function toggleFavorite(
           throw error
         }
 
-        logMutation('update', 'favorite', typedExisting.id, {
-          salonId: validatedSalonId,
-          userId: session.user.id,
-          operationName: 'toggleFavorite',
-          changes: { notes: validatedNotes },
-        })
-
         revalidatePath('/customer/favorites', 'page')
         revalidatePath('/customer/salons', 'page')
 
@@ -83,8 +74,6 @@ export async function toggleFavorite(
       }
 
       // Remove favorite - SECURITY: Verify ownership
-      console.log('Removing favorite', { favoriteId: typedExisting.id, salonId: validatedSalonId, userId: session.user.id })
-
       const { error } = await engagement
         .from('customer_favorites')
         .delete()
@@ -96,12 +85,6 @@ export async function toggleFavorite(
         throw error
       }
 
-      logMutation('delete', 'favorite', typedExisting.id, {
-        salonId: validatedSalonId,
-        userId: session.user.id,
-        operationName: 'toggleFavorite',
-      })
-
       revalidatePath('/customer/favorites', 'page')
       revalidatePath('/customer/salons', 'page')
 
@@ -110,8 +93,6 @@ export async function toggleFavorite(
     }
 
     // Add favorite
-    console.log('Adding favorite', { salonId: validatedSalonId, userId: session.user.id })
-
     const { error } = await engagement
       .from('customer_favorites')
       .insert({
@@ -124,12 +105,6 @@ export async function toggleFavorite(
       logger.error(error, 'database', { salonId: validatedSalonId, userId: session.user.id })
       throw error
     }
-
-    logMutation('create', 'favorite', validatedSalonId, {
-      salonId: validatedSalonId,
-      userId: session.user.id,
-      operationName: 'toggleFavorite',
-    })
 
     revalidatePath('/customer/favorites', 'page')
     revalidatePath('/customer/salons', 'page')
@@ -177,8 +152,6 @@ export async function addToFavorites(salonId: string): Promise<ActionResponse> {
       return { success: false, error: 'Salon is already in your favorites' }
     }
 
-    console.log('Adding salon to favorites', { salonId, userId: session.user.id, timestamp: new Date().toISOString() })
-
     // Add to favorites
     const { error } = await supabase
       .schema('engagement')
@@ -194,12 +167,6 @@ export async function addToFavorites(salonId: string): Promise<ActionResponse> {
       logger.error(error, 'database', { salonId, userId: session.user.id })
       throw error
     }
-
-    logMutation('create', 'favorite', salonId, {
-      salonId,
-      userId: session.user.id,
-      operationName: 'addToFavorites',
-    })
 
     revalidatePath('/customer/favorites', 'page')
     revalidatePath('/customer/salons', 'page')
@@ -253,8 +220,6 @@ export async function removeFromFavorites(favoriteId: string): Promise<ActionRes
       return { success: false, error: 'Not authorized to remove this favorite' }
     }
 
-    console.log('Removing favorite', { favoriteId, salonId: favorite.salon_id, userId: session.user.id, timestamp: new Date().toISOString() })
-
     // Remove from favorites
     const { error } = await supabase
       .schema('engagement')
@@ -267,12 +232,6 @@ export async function removeFromFavorites(favoriteId: string): Promise<ActionRes
       logger.error(error, 'database', { favoriteId, salonId: favorite.salon_id ?? undefined, userId: session.user.id })
       throw error
     }
-
-    logMutation('delete', 'favorite', favoriteId, {
-      salonId: favorite.salon_id ?? undefined,
-      userId: session.user.id,
-      operationName: 'removeFromFavorites',
-    })
 
     revalidatePath('/customer/favorites', 'page')
     revalidatePath('/customer/salons', 'page')

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Search, X } from 'lucide-react'
 import {
   InputGroup,
@@ -25,15 +25,21 @@ export function SearchInput({
   debounceMs = 300,
 }: SearchInputProps) {
   const [internalValue, setInternalValue] = useState(controlledValue || '')
+  const onChangeRef = useRef(onChange)
+
+  // Keep onChange ref up to date
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange])
 
   // Debounce the onChange callback
   useEffect(() => {
     const timer = setTimeout(() => {
-      onChange(internalValue)
+      onChangeRef.current(internalValue)
     }, debounceMs)
 
     return () => clearTimeout(timer)
-  }, [internalValue, debounceMs, onChange])
+  }, [internalValue, debounceMs])
 
   // Update internal value when controlled value changes
   useEffect(() => {
@@ -44,7 +50,7 @@ export function SearchInput({
 
   const handleClear = () => {
     setInternalValue('')
-    onChange('')
+    onChangeRef.current('')
   }
 
   return (

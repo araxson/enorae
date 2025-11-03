@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Bell, Check, CheckCheck, Trash2, Mail, MessageSquare, Smartphone } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { markNotificationAsRead, markAllNotificationsAsRead, deleteNotification } from '@/features/shared/notifications/api/mutations'
-import { useToast } from '@/lib/hooks/use-toast'
+import { useNotificationAction } from '../hooks/use-notification-action'
 import type { Database } from '@/lib/types/database.types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
 import {
@@ -22,6 +22,7 @@ import {
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
+import { getChannelIcon } from '../utils/notification-icons'
 
 type Message = Database['communication']['Tables']['messages']['Row']
 
@@ -31,7 +32,6 @@ type Props = {
 
 export function NotificationCenter({ notifications }: Props) {
   const [activeTab, setActiveTab] = useState('all')
-  const { toast } = useToast()
 
   const filteredNotifications = notifications.filter((n) => {
     if (activeTab === 'all') return true
@@ -42,61 +42,26 @@ export function NotificationCenter({ notifications }: Props) {
 
   const unreadCount = notifications.filter((n) => !n.is_read).length
 
-  const handleMarkAsRead = async (id: string) => {
-    try {
-      await markNotificationAsRead(id)
-      toast({
-        title: 'Marked as read',
-        description: 'Notification has been marked as read',
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to mark notification as read',
-        variant: 'destructive',
-      })
-    }
-  }
+  const handleMarkAsRead = useNotificationAction(
+    markNotificationAsRead,
+    'Marked as read',
+    'Notification has been marked as read',
+    'Failed to mark notification as read'
+  )
 
-  const handleMarkAllAsRead = async () => {
-    try {
-      await markAllNotificationsAsRead()
-      toast({
-        title: 'All marked as read',
-        description: `${unreadCount} notification(s) marked as read`,
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to mark all as read',
-        variant: 'destructive',
-      })
-    }
-  }
+  const handleMarkAllAsRead = useNotificationAction(
+    markAllNotificationsAsRead,
+    'All marked as read',
+    `${unreadCount} notification(s) marked as read`,
+    'Failed to mark all as read'
+  )
 
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteNotification(id)
-      toast({
-        title: 'Deleted',
-        description: 'Notification has been deleted',
-      })
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete notification',
-        variant: 'destructive',
-      })
-    }
-  }
-
-  const getChannelIcon = (contextType: string | null) => {
-    if (!contextType) return <Bell className="size-4" aria-hidden="true" />
-    if (contextType === 'email') return <Mail className="size-4" aria-hidden="true" />
-    if (contextType === 'sms') return <MessageSquare className="size-4" aria-hidden="true" />
-    if (contextType === 'push') return <Smartphone className="size-4" aria-hidden="true" />
-    return <Bell className="size-4" aria-hidden="true" />
-  }
+  const handleDelete = useNotificationAction(
+    deleteNotification,
+    'Deleted',
+    'Notification has been deleted',
+    'Failed to delete notification'
+  )
 
   return (
     <Item variant="outline">

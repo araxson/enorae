@@ -11,4 +11,4 @@ export async function BookingFeature({
 }
 
 export { generateBookingMetadata } from './metadata'
-export * from './types'
+export * from './api/types'

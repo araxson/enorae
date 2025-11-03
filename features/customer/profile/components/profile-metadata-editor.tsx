@@ -8,6 +8,7 @@ import type { Database } from '@/lib/types/database.types'
 import { Spinner } from '@/components/ui/spinner'
 import { InterestsSection } from './metadata/interests-section'
 import { TagsSection } from './metadata/tags-section'
+import { logError } from '@/lib/observability'
 
 type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
 
@@ -52,7 +53,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
       formData.append('tags', tags.join(','))
       await updateProfileMetadata(formData)
     } catch (error) {
-      console.error('Failed to save metadata:', error)
+      logError('Failed to save metadata', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'ProfileMetadataEditor' })
     } finally {
       setIsSaving(false)
     }

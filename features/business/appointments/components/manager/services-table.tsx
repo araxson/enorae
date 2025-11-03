@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Edit, Trash2 } from 'lucide-react'
-import type { AppointmentServiceDetails } from './types'
+import type { AppointmentServiceDetails } from '../../api/types'
 import { formatCurrency, formatTime, getStatusColor } from './utils'
 import { ButtonGroup } from '@/components/ui/button-group'
 

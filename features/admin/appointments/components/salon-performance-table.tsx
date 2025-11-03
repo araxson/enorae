@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import type { SalonPerformance } from '@/features/admin/appointments/types'
+import type { SalonPerformance } from '@/features/admin/appointments/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Item, ItemContent, ItemGroup, ItemTitle } from '@/components/ui/item'

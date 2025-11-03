@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Trash2 } from 'lucide-react'
 import { deleteReview } from '@/features/customer/reviews/api/mutations'
-import type { Review } from '@/features/customer/reviews/types'
+import type { Review } from '@/features/customer/reviews/api/types'
 import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
 

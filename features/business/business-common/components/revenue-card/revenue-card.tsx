@@ -13,7 +13,7 @@ import { RevenueCardBreakdown } from '../revenue-card-breakdown'
 import { resolveIconComponent, buildCardClasses, calculateGrowth, ICON_COLOR_CLASS } from './utils'
 import { GrowthIndicator } from './growth-indicator'
 import { AmountDisplay } from './amount-display'
-import type { RevenueCardProps } from './types'
+import type { RevenueCardProps } from '../../api/types'
 
 /**
  * Revenue card component for displaying revenue metrics with growth indicators

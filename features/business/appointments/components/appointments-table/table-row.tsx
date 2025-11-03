@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -17,7 +18,7 @@ type AppointmentRowProps = {
   onCancel: AppointmentAction
 }
 
-export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCancel }: AppointmentRowProps) {
+export const AppointmentsTableRow = memo(function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCancel }: AppointmentRowProps) {
   const config = STATUS_CONFIG[appointment['status'] as keyof typeof STATUS_CONFIG]
   const appointmentDate = appointment['start_time'] ? new Date(appointment['start_time']) : null
 
@@ -72,4 +73,4 @@ export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCan
       </TableCell>
     </TableRow>
   )
-}
+})

@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { Session } from '@/features/staff/sessions/types'
+import type { Session } from '@/features/staff/sessions/api/types'
 
 export async function getMySessions(): Promise<Session[]> {
   const supabase = await createClient()

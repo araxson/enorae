@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
+import { logError } from '@/lib/observability'
 
 type ServiceOption = {
   id: string
@@ -23,6 +24,12 @@ export function useServiceFormOptions(appointmentId: string, isOpen: boolean) {
     staff: [],
   })
   const { toast } = useToast()
+  const toastRef = useRef(toast)
+
+  // Keep toast ref up to date
+  useEffect(() => {
+    toastRef.current = toast
+  }, [toast])
 
   useEffect(() => {
     if (!isOpen || !appointmentId) {
@@ -58,9 +65,13 @@ export function useServiceFormOptions(appointmentId: string, isOpen: boolean) {
         if (error instanceof Error && error.name === 'AbortError') {
           return
         }
-        console.error('Failed to load service options:', error)
+        logError('Failed to load service options', {
+          error: error instanceof Error ? error : String(error),
+          operationName: 'loadServiceOptions',
+          appointmentId,
+        })
         if (isMounted) {
-          toast({
+          toastRef.current({
             variant: 'destructive',
             title: 'Unable to load options',
             description:
@@ -80,7 +91,7 @@ export function useServiceFormOptions(appointmentId: string, isOpen: boolean) {
       isMounted = false
       controller.abort()
     }
-  }, [appointmentId, isOpen, toast])
+  }, [appointmentId, isOpen])
 
   return { options, isLoading }
 }

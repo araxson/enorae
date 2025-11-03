@@ -2,7 +2,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Link2 } from 'lucide-react'
-import type { ServicePairing } from './types'
+import type { ServicePairing } from '../../api/types'
 import {
   Item,
   ItemActions,

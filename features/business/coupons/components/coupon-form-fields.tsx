@@ -1,5 +1,5 @@
-import type { FormEvent } from 'react'
-import type { CouponFormState } from '../types'
+import { memo, type FormEvent } from 'react'
+import type { CouponFormState } from '../api/types'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CouponBasicSection } from './coupon-form/basic-section'
 import { CouponDiscountSection } from './coupon-form/discount-section'
@@ -12,7 +12,6 @@ import { CouponSubmitSection } from './coupon-form/submit-section'
 interface CouponFormFieldsProps {
   formData: CouponFormState
   services: { id: string; name: string }[]
-  selectedServiceIds: Set<string>
   isLoading: boolean
   isEditing: boolean
   onSubmit: (event: FormEvent<HTMLFormElement>) => void
@@ -21,10 +20,9 @@ interface CouponFormFieldsProps {
   onToggleService: (serviceId: string, checked: boolean) => void
 }
 
-export function CouponFormFields({
+export const CouponFormFields = memo(function CouponFormFields({
   formData,
   services,
-  selectedServiceIds,
   isLoading,
   isEditing,
   onSubmit,
@@ -64,7 +62,7 @@ export function CouponFormFields({
           <TabsContent value="services">
             <CouponServicesSection
               services={services}
-              selectedServiceIds={selectedServiceIds}
+              selectedServiceIds={formData.applicable_services}
               onToggleService={onToggleService}
             />
           </TabsContent>
@@ -84,4 +82,4 @@ export function CouponFormFields({
       </Tabs>
     </form>
   )
-}
+})

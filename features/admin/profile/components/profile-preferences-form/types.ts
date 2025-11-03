@@ -1,4 +1,4 @@
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 
 /**
  * Profile preferences form component props

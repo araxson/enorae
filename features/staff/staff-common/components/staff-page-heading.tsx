@@ -5,7 +5,7 @@ import type {
   StaffBreadcrumb,
   StaffFilter,
   StaffToggle,
-} from './types'
+} from '../api/types'
 import {
   Item,
   ItemActions,

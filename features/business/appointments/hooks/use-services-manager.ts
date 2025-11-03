@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useToast } from '@/lib/hooks/use-toast'
 import { removeServiceFromAppointment } from '@/features/business/appointments/api/mutations'
-import type { AppointmentServiceDetails } from './types'
+import type { AppointmentServiceDetails } from '../api/types'
 
 export function useServicesManager(onUpdate: () => void) {
   const [showAddDialog, setShowAddDialog] = useState(false)

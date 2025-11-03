@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Card, CardContent } from '@/components/ui/card'
-import type { ServiceRow } from './types'
+import type { ServiceRow } from '@/features/business/staff/api/types'
 import {
   Field,
   FieldContent,

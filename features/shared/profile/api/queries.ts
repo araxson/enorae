@@ -1,10 +1,8 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
+import { guardQuery } from '@/lib/auth'
 
 export async function getProfileSummary(userId: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { supabase } = await guardQuery()
 
   // Fetch user profile directly
   const { data, error } = await supabase
@@ -18,9 +16,7 @@ export async function getProfileSummary(userId: string) {
 }
 
 export async function getMyProfileSummary() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+  const { user, supabase } = await guardQuery()
 
   // Fetch current user's profile directly
   const { data, error } = await supabase

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
-import type { LocationAddress } from '../types'
+import type { LocationAddress } from '../api/types'
 import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
@@ -15,6 +15,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { UI_TIMEOUTS, ADDRESS_VALIDATION } from '@/lib/config/constants'
 
 type ValidationResult = {
   isValid: boolean
@@ -37,7 +38,7 @@ export function AddressValidation({ address }: Props) {
     setIsValidating(true)
 
     // Simulate validation logic
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, UI_TIMEOUTS.VALIDATION_SIMULATION))
 
     const issues: string[] = []
     const suggestions: string[] = []
@@ -46,34 +47,34 @@ export function AddressValidation({ address }: Props) {
     // Check required fields
     if (!address.street_address) {
       issues.push('Street address is required')
-      score -= 30
+      score -= ADDRESS_VALIDATION.PENALTIES.MISSING_STREET
     }
 
     if (!address.city) {
       issues.push('City is required')
-      score -= 20
+      score -= ADDRESS_VALIDATION.PENALTIES.MISSING_CITY
     }
 
     if (!address.state_province) {
       issues.push('State/Province is required')
-      score -= 20
+      score -= ADDRESS_VALIDATION.PENALTIES.MISSING_STATE
     }
 
     if (!address.postal_code) {
       issues.push('Postal code is required')
-      score -= 15
+      score -= ADDRESS_VALIDATION.PENALTIES.MISSING_POSTAL_CODE
     }
 
     // Check coordinates
     if (!address.latitude || !address.longitude) {
       suggestions.push('Add coordinates for better map accuracy')
-      score -= 10
+      score -= ADDRESS_VALIDATION.PENALTIES.MISSING_COORDINATES
     }
 
     // Check formatted address
     if (!address.formatted_address) {
       suggestions.push('Use address search to get formatted address')
-      score -= 5
+      score -= ADDRESS_VALIDATION.PENALTIES.MISSING_FORMATTED_ADDRESS
     }
 
     // Validate postal code format (basic US check)
@@ -81,12 +82,12 @@ export function AddressValidation({ address }: Props) {
       const usZipRegex = /^\d{5}(-\d{4})?$/
       if (!usZipRegex.test(address.postal_code)) {
         issues.push('Invalid US postal code format (should be 12345 or 12345-6789)')
-        score -= 10
+        score -= ADDRESS_VALIDATION.PENALTIES.INVALID_POSTAL_CODE
       }
     }
 
     setResult({
-      isValid: score >= 70,
+      isValid: score >= ADDRESS_VALIDATION.VALID_THRESHOLD,
       score,
       issues,
       suggestions,
@@ -108,7 +109,7 @@ export function AddressValidation({ address }: Props) {
       )
     }
 
-    if (result.score >= 50) {
+    if (result.score >= ADDRESS_VALIDATION.ACCEPTABLE_THRESHOLD) {
       return (
         <Badge variant="secondary">
           <span className="flex items-center gap-1">

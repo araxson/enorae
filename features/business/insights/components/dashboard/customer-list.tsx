@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { formatCurrency, formatPercentage, getSegmentIcon, getSegmentColor } from './utils'
 
-import type { CustomerMetrics } from './types'
+import type { CustomerMetrics } from '../../api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 
 interface CustomerListProps {

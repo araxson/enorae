@@ -1,10 +1,7 @@
-export interface VerifyOtpResult {
-  error?: string
-  success?: boolean
-}
+export type VerifyOtpResult =
+  | { success: false; error: string }
+  | { success: true }
 
-export interface ResendOtpResult {
-  error?: string
-  success?: boolean
-  message?: string
-}
+export type ResendOtpResult =
+  | { success: false; error: string }
+  | { success: true; message: string }

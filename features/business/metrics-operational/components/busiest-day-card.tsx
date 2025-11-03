@@ -1,6 +1,14 @@
+import { memo } from 'react'
 import { Calendar } from 'lucide-react'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type BusiestDayCardProps = {
   busiestDay: number
@@ -8,19 +16,23 @@ type BusiestDayCardProps = {
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-export function BusiestDayCard({ busiestDay }: BusiestDayCardProps) {
+export const BusiestDayCard = memo(function BusiestDayCard({ busiestDay }: BusiestDayCardProps) {
   const busiestDayName = DAY_NAMES[busiestDay] || 'Unknown'
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Busiest Day</CardTitle>
-        <CardDescription>Highest demand day</CardDescription>
-      </CardHeader>
-      <CardContent className="flex items-start justify-between">
+    <Item variant="outline" className="flex-col gap-3">
+      <ItemHeader>
+        <ItemContent>
+          <ItemTitle>Busiest Day</ItemTitle>
+          <ItemDescription>Highest demand day</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Calendar className="size-4 text-muted-foreground" aria-hidden="true" />
+        </ItemActions>
+      </ItemHeader>
+      <ItemContent>
         <p className="text-2xl font-semibold leading-none tracking-tight">{busiestDayName}</p>
-        <Calendar className="size-4 text-muted-foreground" aria-hidden="true" />
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
-}
+})

@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { verifyStaffOwnership } from '@/lib/auth/staff'
 import type { Database } from '@/lib/types/database.types'
-import type { ScheduleConflict, StaffSchedule } from '../types'
+import type { ScheduleConflict, StaffSchedule } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 type AppointmentRow = Database['public']['Views']['appointments_view']['Row']

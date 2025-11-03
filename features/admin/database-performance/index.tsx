@@ -1,2 +1,2 @@
 export { PerformanceDiagnostics } from './components'
-export * from './types'
+export * from './api/types'

@@ -45,4 +45,4 @@ export function CustomerAnalyticsFeature() {
 
 export { getCustomerMetrics, getAppointmentFrequency } from './api/queries'
 export type { CustomerMetrics } from './api/queries'
-export * from './types'
+export * from './api/types'

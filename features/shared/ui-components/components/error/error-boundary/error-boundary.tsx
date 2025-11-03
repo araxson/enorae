@@ -22,6 +22,14 @@ interface ErrorBoundaryProps {
 const DEFAULT_HOME_LINK = '/'
 const DEFAULT_HOME_LABEL = 'Home'
 
+/**
+ * SECURITY: Determine if we should show error details
+ * Only show in development, never expose in production
+ */
+const isDevelopment = typeof window !== 'undefined'
+  ? window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  : false
+
 export function ErrorBoundary({
   error,
   reset,
@@ -29,7 +37,7 @@ export function ErrorBoundary({
   description,
   homeHref = DEFAULT_HOME_LINK,
   homeLabel = DEFAULT_HOME_LABEL,
-  showErrorDetails = process.env.NODE_ENV === 'development',
+  showErrorDetails = isDevelopment,
 }: ErrorBoundaryProps) {
   const errorType = detectErrorType(error)
 

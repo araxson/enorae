@@ -134,16 +134,21 @@ export async function rollbackService(
   serviceId: string,
   includePricing: boolean = false,
 ) {
-  console.log('[rollbackService] Starting rollback', {
+  const { logInfo, logError: logErrorUtil } = await import('@/lib/observability')
+
+  logInfo('Starting service rollback', {
+    operationName: 'rollbackService',
     serviceId,
     includePricing,
-    timestamp: new Date().toISOString(),
   })
 
   try {
     // Step 1: Delete pricing if requested
     if (includePricing) {
-      console.log('[rollbackService] Attempting to delete service pricing', { serviceId })
+      logInfo('Attempting to delete service pricing during rollback', {
+        operationName: 'rollbackService',
+        serviceId,
+      })
 
       const { error: pricingError } = await supabase
         .schema('catalog')
@@ -152,23 +157,26 @@ export async function rollbackService(
         .eq('service_id', serviceId)
 
       if (pricingError) {
-        console.error('[rollbackService] Failed to rollback service pricing', {
+        logErrorUtil('Failed to rollback service pricing', {
+          operationName: 'rollbackService',
           serviceId,
           error: pricingError,
-          errorCode: pricingError.code,
-          errorMessage: pricingError.message,
-          errorDetails: pricingError.details,
-          errorHint: pricingError.hint,
-          timestamp: new Date().toISOString(),
+          errorCategory: 'database',
         })
         throw new Error(`Pricing rollback failed for service ${serviceId}: ${pricingError.message}`)
       }
 
-      console.log('[rollbackService] Successfully deleted service pricing', { serviceId })
+      logInfo('Successfully deleted service pricing during rollback', {
+        operationName: 'rollbackService',
+        serviceId,
+      })
     }
 
     // Step 2: Delete service
-    console.log('[rollbackService] Attempting to delete service', { serviceId })
+    logInfo('Attempting to delete service during rollback', {
+      operationName: 'rollbackService',
+      serviceId,
+    })
 
     const { error: serviceError } = await supabase
       .schema('catalog')
@@ -177,33 +185,30 @@ export async function rollbackService(
       .eq('id', serviceId)
 
     if (serviceError) {
-      console.error('[rollbackService] Failed to rollback service', {
+      logErrorUtil('Failed to rollback service', {
+        operationName: 'rollbackService',
         serviceId,
         includePricing,
         pricingWasDeleted: includePricing, // Critical: pricing may be orphaned
         error: serviceError,
-        errorCode: serviceError.code,
-        errorMessage: serviceError.message,
-        errorDetails: serviceError.details,
-        errorHint: serviceError.hint,
-        timestamp: new Date().toISOString(),
+        errorCategory: 'database',
       })
       throw new Error(`Service rollback failed for service ${serviceId}: ${serviceError.message}`)
     }
 
-    console.log('[rollbackService] Successfully completed rollback', {
+    logInfo('Successfully completed service rollback', {
+      operationName: 'rollbackService',
       serviceId,
       includePricing,
-      timestamp: new Date().toISOString(),
     })
   } catch (error) {
     // Log complete context for debugging partial rollback scenarios
-    console.error('[rollbackService] Rollback operation failed', {
+    logErrorUtil('Rollback operation failed', {
+      operationName: 'rollbackService',
       serviceId,
       includePricing,
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error : String(error),
+      errorCategory: 'system',
     })
     throw error
   }

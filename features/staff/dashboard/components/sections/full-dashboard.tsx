@@ -3,14 +3,14 @@
 import { useMemo, useState } from 'react'
 import { TrendingUp, Clock, Calendar, Users } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import { RoleBadge } from './role-badge'
 import { CommissionSummary } from './commission-summary'
 import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metrics'
 import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
 import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
 import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
-import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/api/types'
 import type { StaffCommissionSummary, StaffMetricsSummary, ClientRetentionMetrics } from '@/features/staff/dashboard/api/queries'
 
 type Props = {

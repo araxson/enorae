@@ -10,7 +10,7 @@ import type {
   RevenueOverview,
   ReviewsOverview,
   StaffOverview,
-} from '../types'
+} from '../api/types'
 import { AdminOverviewRevenueTab } from './admin-overview-revenue-tab'
 import { AdminOverviewAppointmentsTab } from './admin-overview-appointments-tab'
 import { AdminOverviewReviewsTab } from './admin-overview-reviews-tab'

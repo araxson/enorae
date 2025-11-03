@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { UI_TIMEOUTS, STRING_LIMITS, TIME_MS } from '@/lib/config/constants'
+import { logError } from '@/lib/observability'
 
 type Suggestion = {
   name: string
@@ -41,7 +42,7 @@ export function useSearchSuggestions(searchTerm: string) {
         if (error instanceof Error && error.name === 'AbortError') {
           return
         }
-        console.error('Failed to fetch suggestions:', error)
+        logError('Failed to fetch suggestions', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'useSearchSuggestions', searchTerm })
       } finally {
         if (isMounted) {
           setIsLoading(false)

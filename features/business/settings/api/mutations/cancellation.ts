@@ -21,7 +21,7 @@ export async function updateCancellationPolicy(
   try {
     const supabase = await getSalonContext(salonId)
 
-    const validated = cancellationPolicySchema.parse({
+    const validation = cancellationPolicySchema.safeParse({
       cancellation_hours: Number(formData.get('cancellation_hours')),
       cancellation_fee_percentage: formData.get('cancellation_fee_percentage')
         ? Number(formData.get('cancellation_fee_percentage'))
@@ -30,6 +30,12 @@ export async function updateCancellationPolicy(
         ? Number(formData.get('no_show_fee_percentage'))
         : undefined,
     })
+
+    if (!validation.success) {
+      return { error: `Validation failed: ${validation.error.issues[0]?.message}` }
+    }
+
+    const validated = validation.data
 
     const { error } = await supabase
       .schema('organization')

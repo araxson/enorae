@@ -3,4 +3,4 @@ export type {
   BulkCouponGeneratorProps,
   BulkFormState,
   BulkFormSectionsProps,
-} from '../../types'
+} from '../../api/types'

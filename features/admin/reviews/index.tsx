@@ -1,2 +1,2 @@
 export { AdminReviews } from './components'
-export * from './types'
+export * from './api/types'

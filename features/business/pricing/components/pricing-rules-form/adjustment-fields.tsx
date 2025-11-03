@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { Input } from '@/components/ui/input'
-import type { PricingRuleFormState } from './types'
+import type { PricingRuleFormState } from '../../api/types'
 import {
   Field,
   FieldContent,
@@ -52,7 +52,7 @@ export function AdjustmentFields({
                     max="10"
                     value={formData.multiplier}
                     onChange={(event) =>
-                      setFormData((current) => ({
+                      setFormData((current: PricingRuleFormState) => ({
                         ...current,
                         multiplier: parseFloat(event.target.value),
                       }))
@@ -73,7 +73,7 @@ export function AdjustmentFields({
                     step="0.5"
                     value={formData.fixed_adjustment}
                     onChange={(event) =>
-                      setFormData((current) => ({
+                      setFormData((current: PricingRuleFormState) => ({
                         ...current,
                         fixed_adjustment: Number(event.target.value),
                       }))

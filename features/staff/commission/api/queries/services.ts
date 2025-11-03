@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { AppointmentRow, CommissionRate, ServiceRevenue } from '../../types'
+import type { AppointmentRow, CommissionRate, ServiceRevenue } from '../../api/types'
 import { authorizeStaffAccess } from '@/features/staff/commission/utils/commission'
 import type { Database } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'

@@ -29,4 +29,4 @@ export async function RateLimitConsole() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

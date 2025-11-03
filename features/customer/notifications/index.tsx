@@ -11,4 +11,4 @@ export function NotificationsFeature() {
 }
 
 export { Notifications } from './components'
-export * from './types'
+export * from './api/types'

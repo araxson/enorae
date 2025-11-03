@@ -8,7 +8,7 @@ import { AssignedServicesList } from './assigned-services-list'
 import { BulkAssignSection } from './bulk-assign-section'
 import { SingleAssignSection } from './single-assign-section'
 import type { AssignServicesDialogState } from '../../hooks/use-assign-services-dialog'
-import type { StaffMemberWithServices, ServiceRow } from './types'
+import type { StaffMemberWithServices, ServiceRow } from '@/features/business/staff/api/types'
 
 type AssignedService = {
   id: string | null

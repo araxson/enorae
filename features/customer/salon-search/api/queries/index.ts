@@ -1,4 +1,4 @@
-export type { SalonSearchResult, SearchFilters } from '../../types'
+export type { SalonSearchResult, SearchFilters } from '../../api/types'
 export { searchSalons, getFeaturedSalons } from './basic'
 export { searchSalonsWithFuzzyMatch, getNearbyServices } from './advanced'
 export { getSalonSearchSuggestions } from './suggestions'

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -62,7 +62,6 @@ export function AppointmentDetailDialog({
         console.error('[AppointmentDetail] Failed to load services', error)
         if (isMounted) {
           setServices([])
-          // TODO: Add toast notification for user feedback
         }
       } finally {
         if (isMounted) {
@@ -80,9 +79,9 @@ export function AppointmentDetailDialog({
   }, [isOpen, appointmentId, refreshKey])
 
   // API_INTEGRATION_FIX: Update handler to reload services
-  const handleServicesUpdate = () => {
+  const handleServicesUpdate = useCallback(() => {
     setRefreshKey(prev => prev + 1)
-  }
+  }, [])
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

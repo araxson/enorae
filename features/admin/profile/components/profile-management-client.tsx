@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, useTransition } from 'react'
 
 import { getProfileDetail, searchProfiles } from '@/features/admin/profile/api/queries'
-import type { ProfileDetail, ProfileSearchResult } from '@/features/admin/profile/types'
+import type { ProfileDetail, ProfileSearchResult } from '@/features/admin/profile/api/types'
 import { useDebouncedCallback } from '@/lib/performance'
 import { ProfileSearchPanel } from './profile-search-panel'
 import { ProfileSummaryCard } from './profile-summary-card'

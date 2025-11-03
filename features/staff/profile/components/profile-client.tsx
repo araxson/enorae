@@ -7,7 +7,7 @@ import { ProfileViewTab } from './profile-view-tab'
 import { ProfileEditTab } from './profile-edit-tab'
 import type { Database } from '@/lib/types/database.types'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 
 type StaffProfile = Database['public']['Views']['staff_enriched_view']['Row']
 type ProfileMetadata = Database['identity']['Tables']['profiles_metadata']['Row'] | null

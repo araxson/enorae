@@ -2,16 +2,15 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { signupSchema } from '../schema'
-import type { SignupResult } from './types'
-import { createOperationLogger } from '@/lib/observability'
+import type { SignupResult } from '../types'
+import { createOperationLogger, logAuthEvent } from '@/lib/observability'
 
 export async function signup(formData: FormData): Promise<SignupResult> {
-  const logger = createOperationLogger('signup', {})
-  logger.start()
-
   const emailValue = formData.get('email')
   const email = typeof emailValue === 'string' ? emailValue : ''
-  console.log('Signup attempt started', { email, timestamp: new Date().toISOString() })
+
+  const logger = createOperationLogger('signup', { email })
+  logger.start()
 
   try {
     const rawData = {
@@ -23,11 +22,8 @@ export async function signup(formData: FormData): Promise<SignupResult> {
     const validation = signupSchema.safeParse(rawData)
     if (!validation.success) {
       const firstError = validation.error.issues[0]
-      console.error('Signup validation failed', {
-        email,
-        error: firstError?.message ?? 'Invalid input'
-      })
-      return { error: firstError?.message ?? 'Invalid input' }
+      logger.error(firstError?.message ?? 'Invalid input', 'validation', { email })
+      return { success: false, error: firstError?.message ?? 'Invalid input' }
     }
 
     const { email: validatedEmail, password, full_name } = validation.data
@@ -45,32 +41,32 @@ export async function signup(formData: FormData): Promise<SignupResult> {
     })
 
     if (error) {
-      console.error('Signup creation failed', {
+      logAuthEvent('auth_failure', {
+        operationName: 'signup',
         email: validatedEmail,
-        errorCode: error.code,
-        error: error.message
+        reason: error.message,
+        success: false,
       })
+      logger.error(error.message, 'auth', { email: validatedEmail })
       // SECURITY: Use generic error message to prevent user enumeration attacks
       // Don't reveal if email already exists or other specific error details
-      return { error: 'Unable to create account. Please try again or contact support.' }
+      return { success: false, error: 'Unable to create account. Please try again or contact support.' }
     }
 
-    console.log('Signup successful - confirmation email sent', {
-      email: validatedEmail,
+    logAuthEvent('login', {
+      operationName: 'signup',
       userId: data.user?.id,
-      timestamp: new Date().toISOString()
+      email: validatedEmail,
+      success: true,
     })
+    logger.success({ userId: data.user?.id, email: validatedEmail })
 
     return {
       success: true,
       message: 'Check your email to confirm your account',
     }
   } catch (error) {
-    console.error('Signup unexpected error', {
-      email,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
-    return { error: 'An unexpected error occurred. Please try again.' }
+    logger.error(error instanceof Error ? error : String(error), 'system', { email })
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }

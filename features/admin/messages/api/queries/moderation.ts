@@ -1,7 +1,7 @@
 import 'server-only'
 import { SPAM_THRESHOLD, TOXICITY_THRESHOLD } from '../constants'
-import type { Json } from '../types'
-import type { ParsedModeration, ParsedThreadMetadata } from '../types'
+import type { Json } from '../../api/types'
+import type { ParsedModeration, ParsedThreadMetadata } from '../../api/types'
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value)

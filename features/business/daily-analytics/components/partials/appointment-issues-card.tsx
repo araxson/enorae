@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertCircle } from 'lucide-react'
-import type { DailyMetricsDashboardProps } from '../types'
+import type { DailyMetricsDashboardProps } from '../../api/types'
 import { Field, FieldContent, FieldDescription, FieldLabel, FieldSet } from '@/components/ui/field'
 import {
   Item,

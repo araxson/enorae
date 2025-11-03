@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import type { PreferencesFormState } from '../components/profile-preferences-form/types'
 
 /**

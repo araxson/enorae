@@ -24,6 +24,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
+import { logError } from '@/lib/observability'
 
 interface CancelAppointmentDialogProps {
   appointmentId: string
@@ -65,7 +66,7 @@ export const CancelAppointmentDialog = memo(function CancelAppointmentDialog({
         setError(result.error)
       }
     } catch (error) {
-      console.error('[CancelAppointmentDialog] Error cancelling appointment:', error)
+      logError('Error cancelling appointment', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'CancelAppointmentDialog', appointmentId })
       setError(error instanceof Error ? error.message : 'Failed to cancel appointment. Please try again.')
     } finally {
       setIsLoading(false)

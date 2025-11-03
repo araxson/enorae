@@ -1,15 +1,17 @@
 'use client'
 
+import { UseFormReturn } from 'react-hook-form'
+import { AddressSchema } from '@/features/business/locations/api/schema'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
-import type { LocationAddress } from '@/features/business/locations/types'
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormDescription,
+} from '@/components/ui/form'
 import {
   Item,
   ItemContent,
@@ -18,107 +20,134 @@ import {
 } from '@/components/ui/item'
 
 type Props = {
-  address: LocationAddress | null
+  form: UseFormReturn<AddressSchema>
 }
 
-export function StreetAddressSection({ address }: Props) {
+export function StreetAddressSection({ form }: Props) {
   return (
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader>
         <ItemTitle>Street Address</ItemTitle>
       </ItemHeader>
       <ItemContent>
-        <FieldGroup className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6">
           <Separator />
 
-          <Field>
-            <FieldLabel htmlFor="street_address">
-              Street Address <span className="text-destructive">*</span>
-            </FieldLabel>
-            <FieldContent>
-              <Input
-                id="street_address"
-                name="street_address"
-                required
-                defaultValue={address?.street_address || ''}
-                placeholder="123 Main Street"
-              />
-            </FieldContent>
-          </Field>
+          <FormField
+            control={form.control}
+            name="street_address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Street Address <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="123 Main Street"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          <Field>
-            <FieldLabel htmlFor="street_address_2">Apartment, Suite, etc.</FieldLabel>
-            <FieldContent>
-              <Input
-                id="street_address_2"
-                name="street_address_2"
-                defaultValue={address?.street_address_2 || ''}
-                placeholder="Suite 100"
-              />
-            </FieldContent>
-          </Field>
+          <FormField
+            control={form.control}
+            name="address_line_2"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Apartment, Suite, etc.</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Suite 100"
+                    value={field.value || ''}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-          <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Field>
-              <FieldLabel htmlFor="city">
-                City <span className="text-destructive">*</span>
-              </FieldLabel>
-              <FieldContent>
-                <Input
-                  id="city"
-                  name="city"
-                  required
-                  defaultValue={address?.city || ''}
-                  placeholder="San Francisco"
-                />
-              </FieldContent>
-            </Field>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    City <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="San Francisco"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Field>
-              <FieldLabel htmlFor="state_province">
-                State/Province <span className="text-destructive">*</span>
-              </FieldLabel>
-              <FieldContent>
-                <Input
-                  id="state_province"
-                  name="state_province"
-                  required
-                  defaultValue={address?.state_province || ''}
-                  placeholder="CA"
-                />
-              </FieldContent>
-            </Field>
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    State/Province <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="CA"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Field>
-              <FieldLabel htmlFor="postal_code">
-                Postal Code <span className="text-destructive">*</span>
-              </FieldLabel>
-              <FieldContent>
-                <Input
-                  id="postal_code"
-                  name="postal_code"
-                  required
-                  defaultValue={address?.postal_code || ''}
-                  placeholder="94102"
-                />
-              </FieldContent>
-            </Field>
-          </FieldGroup>
+            <FormField
+              control={form.control}
+              name="postal_code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Postal Code <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="94102"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <Field>
-            <FieldLabel htmlFor="country_code">Country Code</FieldLabel>
-            <FieldContent>
-              <Input
-                id="country_code"
-                name="country_code"
-                defaultValue={address?.country_code || 'US'}
-                placeholder="US"
-                maxLength={2}
-              />
-            </FieldContent>
-            <FieldDescription>2-letter country code (e.g., US, CA, UK).</FieldDescription>
-          </Field>
-        </FieldGroup>
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Country Code</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="US"
+                    maxLength={2}
+                  />
+                </FormControl>
+                <FormDescription>2-letter country code (e.g., US, CA, UK).</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </ItemContent>
     </Item>
   )

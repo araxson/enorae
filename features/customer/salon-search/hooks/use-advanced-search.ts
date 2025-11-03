@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useId } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { UI_TIMEOUTS, STRING_LIMITS, TIME_MS } from '@/lib/config/constants'
+import { logError } from '@/lib/observability'
 
 interface UseAdvancedSearchOptions {
   onSearchStart?: () => void
@@ -47,7 +48,7 @@ export function useAdvancedSearch(options: UseAdvancedSearchOptions = {}) {
         }
       } catch (error) {
         if (!(error instanceof Error) || error.name !== 'AbortError') {
-          console.error('[AdvancedSearch] suggestion fetch failed', error)
+          logError('Advanced search suggestion fetch failed', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'useAdvancedSearch', searchTerm })
         }
       }
     }

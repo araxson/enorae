@@ -1,4 +1,4 @@
 import { CommissionFeature } from './components'
 
 export { CommissionFeature as StaffCommission }
-export * from './types'
+export * from './api/types'

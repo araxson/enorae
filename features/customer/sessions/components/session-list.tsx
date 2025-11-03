@@ -12,7 +12,8 @@ import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTi
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { revokeSession, revokeAllOtherSessions } from '@/features/customer/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/customer/sessions/api/queries'
-import { formatDate, getActivityStatus } from '../utils/session-helpers'
+import { formatDateTime } from '@/lib/utils/date-time'
+import { getActivityStatus } from '../utils/session-helpers'
 import { SessionTableRow } from './session-table-row'
 import { RevokeAllDialog } from './revoke-all-dialog'
 import { UI_TIMEOUTS } from '@/lib/config/constants'
@@ -158,7 +159,7 @@ export function SessionList({ sessions }: SessionListProps) {
                     session={session}
                     revokingId={revokingId}
                     onRevoke={handleRevokeSession}
-                    formatDate={formatDate}
+                    formatDate={formatDateTime}
                     getActivityStatus={getActivityStatus}
                   />
                 ))}

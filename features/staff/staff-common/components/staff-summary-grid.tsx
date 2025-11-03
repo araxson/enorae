@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import type { StaffSummary } from './types'
+import type { StaffSummary } from '../api/types'
 
 const toneClasses: Record<Required<StaffSummary>['tone'], string> = {
   default: 'border-border',

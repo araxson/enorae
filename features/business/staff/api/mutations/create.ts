@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { createStaffSchema } from '../schema'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 export type StaffFormData = {
   email: string
@@ -102,13 +102,6 @@ export async function createStaffMember(data: StaffFormData) {
       logger.error(metadataError, 'database', { salonId, userId: session.user.id, profileId: userId })
       throw metadataError
     }
-
-    logMutation('create', 'staff_member', userId, {
-      salonId,
-      userId: session.user.id,
-      operationName: 'createStaffMember',
-      changes: { email: validatedData.email, full_name: validatedData.full_name },
-    })
 
     logger.success({ salonId, userId: session.user.id, newStaffUserId: userId })
     revalidatePath('/business/staff', 'page')

@@ -11,7 +11,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 
-import type { Invoice } from '../types'
+import type { Invoice } from '../api/types'
 
 export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
   return (

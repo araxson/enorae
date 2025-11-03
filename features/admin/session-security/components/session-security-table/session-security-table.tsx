@@ -19,7 +19,7 @@ import {
   requireMfaForUser,
   evictSession,
 } from '@/features/admin/session-security/api/mutations'
-import type { SessionSecurityTableProps } from './types'
+import type { SessionSecurityTableProps, SessionSecurityRecord } from './types'
 
 /**
  * Session security monitoring table
@@ -112,7 +112,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
                 </TableCell>
               </TableRow>
             ) : (
-              records.map((record) => (
+              records.map((record: SessionSecurityRecord) => (
                 <SessionSecurityTableRow
                   key={record.id}
                   record={record}

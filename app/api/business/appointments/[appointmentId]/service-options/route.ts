@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
 import { getServices } from '@/features/business/services/api/queries'
 import { getStaff } from '@/features/business/staff/api/queries'
+import { logApiCall, logError } from '@/lib/observability'
 
 type ServiceOption = { id: string; name: string }
 type StaffOption = { id: string; name: string }
@@ -18,17 +19,32 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ appointmentId: string }> }
 ) {
+  const startTime = Date.now()
+
   try {
     const { appointmentId } = await params
 
     if (!UUID_REGEX.test(appointmentId)) {
+      logApiCall('GET', `/api/business/appointments/${appointmentId}/service-options`, {
+        operationName: 'get_service_options',
+        appointmentId,
+        statusCode: 400,
+        duration: Date.now() - startTime,
+      })
       return NextResponse.json({ error: 'Invalid appointment id' }, { status: 400 })
     }
 
-    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
     const accessibleSalonIds = await getUserSalonIds()
     if (!accessibleSalonIds.length) {
+      logApiCall('GET', `/api/business/appointments/${appointmentId}/service-options`, {
+        operationName: 'get_service_options',
+        userId: session.user.id,
+        appointmentId,
+        statusCode: 403,
+        duration: Date.now() - startTime,
+      })
       return NextResponse.json({ error: 'No accessible salons' }, { status: 403 })
     }
 
@@ -41,6 +57,13 @@ export async function GET(
       .maybeSingle<{ salon_id: string | null }>()
 
     if (appointmentError) {
+      logError('Failed to fetch appointment for service options', {
+        operationName: 'get_service_options',
+        userId: session.user.id,
+        appointmentId,
+        error: appointmentError,
+        errorCategory: 'database',
+      })
       return NextResponse.json(
         { error: appointmentError.message },
         { status: 500 }
@@ -48,6 +71,13 @@ export async function GET(
     }
 
     if (!appointment?.salon_id) {
+      logApiCall('GET', `/api/business/appointments/${appointmentId}/service-options`, {
+        operationName: 'get_service_options',
+        userId: session.user.id,
+        appointmentId,
+        statusCode: 404,
+        duration: Date.now() - startTime,
+      })
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404 })
     }
 
@@ -72,12 +102,25 @@ export async function GET(
         name: member.full_name ?? 'Team member',
       }))
 
+    logApiCall('GET', `/api/business/appointments/${appointmentId}/service-options`, {
+      operationName: 'get_service_options',
+      userId: session.user.id,
+      salonId,
+      appointmentId,
+      statusCode: 200,
+      duration: Date.now() - startTime,
+    })
+
     return NextResponse.json({
       services: serviceOptions,
       staff: staffOptions,
     })
   } catch (error) {
-    console.error('[service-options] Failed to load options', error)
+    logError('Unexpected error loading appointment service options', {
+      operationName: 'get_service_options',
+      error: error instanceof Error ? error : String(error),
+      errorCategory: 'system',
+    })
     return NextResponse.json(
       {
         error:

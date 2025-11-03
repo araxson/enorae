@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import type { Service, ServicesManagementClientProps } from '@/features/business/services/types'
+import type { Service, ServicesManagementClientProps } from '@/features/business/services/api/types'
 import { ButtonGroup } from '@/components/ui/button-group'
 
 export function ServicesManagementClient({ salon, services }: ServicesManagementClientProps) {

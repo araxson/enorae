@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
@@ -64,8 +64,7 @@ export async function banUser(formData: FormData) {
       .eq('user_id', userId)
 
     if (rolesError) {
-      console.error('[banUser] Failed to deactivate user roles:', rolesError)
-      logger.error(rolesError, 'database')
+      logger.error(rolesError, 'database', { context: 'Failed to deactivate user roles' })
       return { error: 'Failed to deactivate user roles' }
     }
 
@@ -81,8 +80,7 @@ export async function banUser(formData: FormData) {
       .eq('user_id', userId)
 
     if (sessionsError) {
-      console.error('[banUser] Failed to terminate user sessions:', sessionsError)
-      logger.error(sessionsError, 'database')
+      logger.error(sessionsError, 'database', { context: 'Failed to terminate user sessions' })
       return { error: 'Failed to terminate user sessions' }
     }
 
@@ -110,8 +108,7 @@ export async function banUser(formData: FormData) {
 
     if (auditError) {
       // Log but don't fail - audit logging is important but shouldn't block the operation
-      console.error('[banUser] Failed to log audit trail:', auditError)
-      logger.error(auditError, 'database')
+      logger.error(auditError, 'database', { context: 'Failed to log audit trail' })
     }
 
     revalidatePath('/admin/users', 'page')

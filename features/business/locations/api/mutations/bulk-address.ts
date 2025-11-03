@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
 
 export async function bulkUpdateAddresses(
   locationIds: string[],
@@ -23,12 +23,6 @@ export async function bulkUpdateAddresses(
     }
 
     logger.start({ userId: user.id, locationCount: locationIds.length, updates })
-    console.log('Starting bulk address update', {
-      userId: user.id,
-      locationIds,
-      updates,
-      timestamp: new Date().toISOString()
-    })
 
     // PERFORMANCE FIX: Use single batch update instead of N+1
     const { error } = await supabase
@@ -45,18 +39,7 @@ export async function bulkUpdateAddresses(
       throw new Error(`Failed to bulk update locations: ${error.message}`)
     }
 
-    logMutation('bulk_update', 'location_addresses', locationIds.join(','), {
-      userId: user.id,
-      operationName: 'bulkUpdateAddresses',
-      changes: updates,
-      count: locationIds.length,
-    })
-
-    console.log('Bulk address update completed', {
-      userId: user.id,
-      updatedCount: locationIds.length,
-      timestamp: new Date().toISOString()
-    })
+    // Mutation completed successfully - no explicit log needed, logger.success will handle it
 
     revalidatePath('/business/locations', 'page')
 
@@ -81,11 +64,6 @@ export async function geocodeAllAddresses(salonId: string) {
     }
 
     logger.start({ salonId, userId: user.id })
-    console.log('Starting geocoding for salon locations', {
-      salonId,
-      userId: user.id,
-      timestamp: new Date().toISOString()
-    })
 
     // Get all locations for this salon without coordinates
     const { data: locations, error: locationsError } = await supabase
@@ -108,13 +86,6 @@ export async function geocodeAllAddresses(salonId: string) {
     // Note: In production, you'd use Google Geocoding API here
     // For now, we'll just mark them as needing manual geocoding
     const locationRows = (locations ?? []) as Array<{ id: string }>
-
-    console.log('Geocoding operation incomplete - manual geocoding required', {
-      salonId,
-      userId: user.id,
-      locationCount: locationRows.length,
-      timestamp: new Date().toISOString()
-    })
 
     for (const location of locationRows) {
       results.failed++

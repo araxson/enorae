@@ -8,7 +8,7 @@ import { createClient } from '@/lib/supabase/server'
 import { MessageForm } from './message-form'
 import { MessageList } from './message-list'
 import { getThreadById, getThreadMessages } from '../api/queries'
-import type { MessageThread } from '../types'
+import type { MessageThread } from '../api/types'
 
 interface MessageThreadPageProps {
   threadId: string

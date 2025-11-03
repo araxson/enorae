@@ -6,7 +6,7 @@ import { DiscountFields } from './discount-fields'
 import { ValidityFields } from './validity-fields'
 import { ConstraintFields } from './constraint-fields'
 import { ActivationField } from './activation-field'
-import type { BulkCouponFormState } from '../types'
+import type { BulkCouponFormState } from '../../../api/types'
 
 interface FormFieldsProps {
   formState: BulkCouponFormState

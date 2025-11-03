@@ -26,7 +26,7 @@ import {
 import { segmentOptions } from './constants'
 
 import type { Dispatch, SetStateAction } from 'react'
-import type { PricingRuleFormState } from './types'
+import type { PricingRuleFormState } from '../../api/types'
 
 type FormStateSetter = Dispatch<SetStateAction<PricingRuleFormState>>
 
@@ -52,7 +52,7 @@ export function ValidityFields({
               type="date"
               value={formData.valid_from}
               onChange={(event) =>
-                setFormData((current) => ({ ...current, valid_from: event.target.value }))
+                setFormData((current: PricingRuleFormState) => ({ ...current, valid_from: event.target.value }))
               }
             />
           </FieldContent>
@@ -65,7 +65,7 @@ export function ValidityFields({
               type="date"
               value={formData.valid_until}
               onChange={(event) =>
-                setFormData((current) => ({ ...current, valid_until: event.target.value }))
+                setFormData((current: PricingRuleFormState) => ({ ...current, valid_until: event.target.value }))
               }
             />
           </FieldContent>
@@ -78,7 +78,7 @@ export function ValidityFields({
           <Select
             value={formData.customer_segment}
             onValueChange={(value) =>
-              setFormData((current) => ({ ...current, customer_segment: value }))
+              setFormData((current: PricingRuleFormState) => ({ ...current, customer_segment: value }))
             }
           >
             <SelectTrigger id="customer_segment">
@@ -106,7 +106,7 @@ export function ValidityFields({
               max="100"
               value={formData.priority}
               onChange={(event) =>
-                setFormData((current) => ({ ...current, priority: Number(event.target.value) }))
+                setFormData((current: PricingRuleFormState) => ({ ...current, priority: Number(event.target.value) }))
               }
             />
           </FieldContent>
@@ -128,7 +128,7 @@ export function ValidityFields({
                 aria-labelledby="active-rule-title"
                 checked={formData.is_active}
                 onCheckedChange={(checked) =>
-                  setFormData((current) => ({ ...current, is_active: checked }))
+                  setFormData((current: PricingRuleFormState) => ({ ...current, is_active: checked }))
                 }
               />
             </div>

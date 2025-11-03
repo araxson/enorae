@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { UserActionsMenu } from './user-actions-menu'
@@ -29,7 +30,7 @@ interface UserTableRowProps {
   onLoadingChange: (loading: boolean) => void
 }
 
-export function UserTableRow({
+export const UserTableRow = memo(function UserTableRow({
   user,
   isLoading,
   onSuspend,
@@ -121,4 +122,4 @@ export function UserTableRow({
       </TableCell>
     </TableRow>
   )
-}
+})

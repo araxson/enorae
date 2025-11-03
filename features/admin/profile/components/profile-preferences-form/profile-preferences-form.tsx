@@ -11,7 +11,7 @@ import { updateProfilePreferencesAction, type ActionResponse } from '@/features/
 import { RegionalFields } from './regional-fields'
 import { NotificationToggles } from './notification-toggles'
 import { usePreferencesState } from '../../hooks/use-preferences-state'
-import type { ProfilePreferencesFormProps } from './types'
+import type { ProfilePreferencesFormProps } from '../../api/types'
 
 /**
  * Profile preferences form

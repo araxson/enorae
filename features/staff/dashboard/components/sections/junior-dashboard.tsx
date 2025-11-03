@@ -3,13 +3,13 @@
 import { useMemo, useState } from 'react'
 import { Clock, Calendar } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metrics'
 import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
 import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
 import { RoleBadge } from './role-badge'
 import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
-import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/api/types'
 import type { StaffMetricsSummary } from '@/features/staff/dashboard/api/queries'
 
 type Props = {

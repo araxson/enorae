@@ -17,7 +17,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from '@/components/ui/input-group'
-import type { StaffQuickAction, StaffTab } from './types'
+import type { StaffQuickAction, StaffTab } from '../api/types'
 
 interface StaffPageNavigationProps {
   searchPlaceholder: string

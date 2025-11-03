@@ -39,26 +39,18 @@ export function AppointmentServiceProgress({
       formData.append('appointmentServiceId', serviceId)
       formData.append('status', newStatus)
 
-      try {
-        await updateServiceStatus(formData)
+      await updateServiceStatus(formData)
 
-        toast({
-          title: 'Service updated',
-          description: 'The service status was updated successfully.',
-        })
-        onUpdate()
-      } catch (error) {
-        toast({
-          variant: 'destructive',
-          title: 'Unable to update service status',
-          description: error instanceof Error ? error.message : 'An error occurred',
-        })
-      }
+      toast({
+        title: 'Service updated',
+        description: 'The service status was updated successfully.',
+      })
+      onUpdate()
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Failed to update service status',
-        description: error instanceof Error ? error.message : 'Please try again later.',
+        title: 'Unable to update service status',
+        description: error instanceof Error ? error.message : 'An error occurred',
       })
     } finally {
       setUpdatingId(null)

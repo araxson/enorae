@@ -1,2 +1,2 @@
 export { CustomerAnalytics } from './components'
-export * from './types'
+export * from './api/types'

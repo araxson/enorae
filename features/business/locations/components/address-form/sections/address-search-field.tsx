@@ -7,7 +7,7 @@ import {
   FieldDescription,
   FieldLabel,
 } from '@/components/ui/field'
-import type { LocationAddress } from '@/features/business/locations/types'
+import type { LocationAddress } from '@/features/business/locations/api/types'
 import { useAddressSearch } from '@/features/business/locations/hooks/use-address-search'
 import { AddressSearchInput } from './address-search-input'
 import { AddressSuggestionsList } from './address-suggestions-list'

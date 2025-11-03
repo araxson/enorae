@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Plus, CalendarCheck2, CalendarClock, PieChart, Users } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import { Button } from '@/components/ui/button'
 import { CreateRequestDialog } from './create-request-dialog'
 import { BalanceTab } from './balance-tab'
@@ -80,7 +80,7 @@ export function TimeOffRequestsClient({
         { value: 'team', label: 'Team calendar', icon: Users },
       ]}
       activeTab={activeTab}
-      onTabChange={(value) => setActiveTab(value as typeof activeTab)}
+      onTabChange={(value: string) => setActiveTab(value as typeof activeTab)}
       toolbarEnd={
         <Button onClick={() => setIsCreateDialogOpen(true)} className="hidden gap-2 sm:inline-flex">
           <Plus className="size-4" />

@@ -45,4 +45,4 @@ export async function MessageThreadFeature({
 }
 
 export { generateThreadMetadata } from './metadata'
-export * from './types'
+export * from './api/types'

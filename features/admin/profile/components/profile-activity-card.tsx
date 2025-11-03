@@ -12,7 +12,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 
 interface ProfileActivityCardProps {
   profile: ProfileDetail | null

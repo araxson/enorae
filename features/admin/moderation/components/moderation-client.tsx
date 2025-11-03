@@ -32,6 +32,14 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
   const [reputationFilter, setReputationFilter] = useState('all')
   const [viewingReview, setViewingReview] = useState<ModerationReview | null>(null)
 
+  const clearFilters = () => {
+    setSearchQuery('')
+    setStatusFilter('all')
+    setRiskFilter('all')
+    setSentimentFilter('all')
+    setReputationFilter('all')
+  }
+
   const filteredReviews = useMemo(() => {
     const normalizedQuery = searchQuery.toLowerCase()
 
@@ -107,6 +115,7 @@ export function ModerationClient({ reviews, stats }: ModerationClientProps) {
         onSentimentFilterChange={setSentimentFilter}
         reputationFilter={reputationFilter}
         onReputationFilterChange={setReputationFilter}
+        onClearFilters={clearFilters}
       />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

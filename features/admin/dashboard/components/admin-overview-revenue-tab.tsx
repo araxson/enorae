@@ -18,7 +18,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { DollarSign } from 'lucide-react'
-import type { RevenueOverview } from '../types'
+import type { RevenueOverview } from '../api/types'
 import { formatCurrency, safeFormatDate } from './admin-overview-utils'
 
 type RevenueTabProps = {

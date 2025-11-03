@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { MapPin } from 'lucide-react'
-import type { StaffLocationDetail } from '@/features/staff/location/types'
+import type { StaffLocationDetail } from '@/features/staff/location/api/types'
 import {
   Empty,
   EmptyDescription,

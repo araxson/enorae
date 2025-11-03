@@ -1,4 +1,5 @@
 import 'server-only'
+import { RETRY_CONFIG } from '@/lib/config/constants'
 
 const RETRYABLE_CODES = new Set(['40001', '42501', 'ECONNRESET', 'ETIMEDOUT'])
 
@@ -9,7 +10,11 @@ interface RetryOptions {
 }
 
 export async function withSupabaseRetry<T>(fn: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
-  const { attempts = 3, delayMs = 150, isRetryable } = options
+  const {
+    attempts = RETRY_CONFIG.DEFAULT_ATTEMPTS,
+    delayMs = RETRY_CONFIG.BASE_DELAY_MS,
+    isRetryable
+  } = options
 
   let lastError: unknown
 

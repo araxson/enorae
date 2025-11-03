@@ -1,12 +1,12 @@
 import 'server-only'
 import { parseISO } from 'date-fns'
 import { randomUUID } from 'node:crypto'
-import type { AppointmentRow } from '@/features/admin/appointments/types'
+import type { AppointmentRow } from '@/features/admin/appointments/api/types'
 import type {
   AppointmentTrendPoint,
   CancellationPattern,
   SalonPerformance,
-} from '@/features/admin/appointments/types'
+} from '@/features/admin/appointments/api/types'
 
 const getDayLabel = (value: Date) => value.toLocaleDateString('en-US', { weekday: 'long' })
 

@@ -11,4 +11,4 @@ export async function Notifications() {
 }
 
 export { NotificationCenter } from './components'
-export * from './types'
+export * from './api/types'

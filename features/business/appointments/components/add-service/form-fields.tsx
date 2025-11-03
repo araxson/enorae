@@ -1,5 +1,6 @@
 'use client'
 
+import { useCallback } from 'react'
 import {
   Select,
   SelectContent,
@@ -16,7 +17,7 @@ import {
   FieldLabel,
   FieldSet,
 } from '@/components/ui/field'
-import type { ServiceOption, StaffOption, ServiceFormData } from './types'
+import type { ServiceOption, StaffOption, ServiceFormData } from '../../api/types'
 
 interface FormFieldsProps {
   formData: ServiceFormData
@@ -33,6 +34,26 @@ export function FormFields({
   services,
   staff,
 }: FormFieldsProps) {
+  const handleServiceChange = useCallback((value: string) => {
+    setFormData((prev: ServiceFormData) => ({ ...prev, serviceId: value }))
+  }, [setFormData])
+
+  const handleStaffChange = useCallback((value: string) => {
+    setFormData((prev: ServiceFormData) => ({ ...prev, staffId: value }))
+  }, [setFormData])
+
+  const handleStartTimeChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev: ServiceFormData) => ({ ...prev, startTime: event.target.value }))
+  }, [setFormData])
+
+  const handleEndTimeChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev: ServiceFormData) => ({ ...prev, endTime: event.target.value }))
+  }, [setFormData])
+
+  const handleDurationChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev: ServiceFormData) => ({ ...prev, durationMinutes: event.target.value }))
+  }, [setFormData])
+
   return (
     <FieldSet className="space-y-4">
       <Field>
@@ -40,9 +61,7 @@ export function FormFields({
         <FieldContent>
           <Select
             value={formData.serviceId}
-            onValueChange={(value) =>
-              setFormData((prev) => ({ ...prev, serviceId: value }))
-            }
+            onValueChange={handleServiceChange}
             disabled={isLoadingOptions}
           >
             <SelectTrigger>
@@ -72,9 +91,7 @@ export function FormFields({
         <FieldContent>
           <Select
             value={formData.staffId}
-            onValueChange={(value) =>
-              setFormData((prev) => ({ ...prev, staffId: value }))
-            }
+            onValueChange={handleStaffChange}
             disabled={isLoadingOptions}
           >
             <SelectTrigger>
@@ -108,9 +125,7 @@ export function FormFields({
               id="startTime"
               type="time"
               value={formData.startTime}
-              onChange={(event) =>
-                setFormData((prev) => ({ ...prev, startTime: event.target.value }))
-              }
+              onChange={handleStartTimeChange}
             />
           </FieldContent>
         </Field>
@@ -122,9 +137,7 @@ export function FormFields({
               id="endTime"
               type="time"
               value={formData.endTime}
-              onChange={(event) =>
-                setFormData((prev) => ({ ...prev, endTime: event.target.value }))
-              }
+              onChange={handleEndTimeChange}
             />
           </FieldContent>
         </Field>
@@ -138,9 +151,7 @@ export function FormFields({
             type="number"
             min="1"
             value={formData.durationMinutes}
-            onChange={(event) =>
-              setFormData((prev) => ({ ...prev, durationMinutes: event.target.value }))
-            }
+            onChange={handleDurationChange}
             placeholder="e.g., 60"
           />
         </FieldContent>

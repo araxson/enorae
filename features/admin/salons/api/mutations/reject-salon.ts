@@ -91,14 +91,26 @@ export async function rejectSalon(formData: FormData) {
       logger.error(auditError, 'system')
     }
 
-    // TODO: Send notification to salon owner when notification system is ready
-    // await supabase.rpc('communication.send_notification', {
-    //   p_user_id: salon.owner_id,
-    //   p_type: 'salon_rejected',
-    //   p_title: 'Salon Application Rejected',
-    //   p_message: reason,
-    //   p_data: { salon_id: salonId }
-    // })
+    /**
+     * Notification Integration (Pending)
+     *
+     * Once the notification system is fully integrated, automatically notify salon owners
+     * of application rejection via the communication.send_notification RPC function.
+     *
+     * Integration Pattern:
+     * ```typescript
+     * await supabase.rpc('communication.send_notification', {
+     *   p_user_id: salon.owner_id,
+     *   p_type: 'salon_rejected',
+     *   p_title: 'Salon Application Rejected',
+     *   p_message: reason,
+     *   p_data: { salon_id: salonId }
+     * })
+     * ```
+     *
+     * This will provide immediate feedback to salon owners about application status
+     * and next steps they can take to resolve rejection reasons.
+     */
 
     revalidatePath('/admin/salons', 'page')
     return { success: true }

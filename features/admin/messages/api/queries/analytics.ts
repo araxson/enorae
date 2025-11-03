@@ -19,7 +19,7 @@ import type {
   MessageRow,
   MessageStats,
   MessageThreadWithInsights,
-} from '../types'
+} from '../../api/types'
 
 interface ThreadInsightResult {
   threadsWithInsights: MessageThreadWithInsights[]

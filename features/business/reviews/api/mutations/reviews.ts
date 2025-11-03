@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { reviewResponseSchema, flagReviewSchema, toggleFeaturedSchema } from '../schema'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -20,6 +21,16 @@ export async function respondToReview(
   logger.start()
 
   try {
+    // SECURITY: Validate input before processing
+    const validation = reviewResponseSchema.safeParse({ response })
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      logger.error(firstError?.message ?? 'Invalid input', 'validation')
+      return { success: false, error: firstError?.message ?? 'Invalid response' }
+    }
+
+    const validatedResponse = validation.data.response
+
     const { user } = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
@@ -42,7 +53,7 @@ export async function respondToReview(
       .schema('engagement')
       .from('salon_reviews')
       .update({
-        response,
+        response: validatedResponse,
         response_date: new Date().toISOString(),
         responded_by_id: user.id,
       })
@@ -73,6 +84,16 @@ export async function flagReview(
   logger.start()
 
   try {
+    // SECURITY: Validate input before processing
+    const validation = flagReviewSchema.safeParse({ reason })
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      logger.error(firstError?.message ?? 'Invalid input', 'validation')
+      return { success: false, error: firstError?.message ?? 'Invalid reason' }
+    }
+
+    const validatedReason = validation.data.reason
+
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
@@ -96,7 +117,7 @@ export async function flagReview(
       .from('salon_reviews')
       .update({
         is_flagged: true,
-        flagged_reason: reason,
+        flagged_reason: validatedReason,
       })
       .eq('id', reviewId)
       .eq('salon_id', salonId)
@@ -125,6 +146,16 @@ export async function toggleFeaturedReview(
   logger.start()
 
   try {
+    // SECURITY: Validate input before processing
+    const validation = toggleFeaturedSchema.safeParse({ featured })
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      logger.error(firstError?.message ?? 'Invalid input', 'validation')
+      return { success: false, error: 'Invalid featured status' }
+    }
+
+    const validatedFeatured = validation.data.featured
+
     await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
@@ -147,7 +178,7 @@ export async function toggleFeaturedReview(
       .schema('engagement')
       .from('salon_reviews')
       .update({
-        is_featured: featured,
+        is_featured: validatedFeatured,
       })
       .eq('id', reviewId)
       .eq('salon_id', salonId)
@@ -176,6 +207,16 @@ export async function updateReviewResponse(
   logger.start()
 
   try {
+    // SECURITY: Validate input before processing
+    const validation = reviewResponseSchema.safeParse({ response })
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      logger.error(firstError?.message ?? 'Invalid input', 'validation')
+      return { success: false, error: firstError?.message ?? 'Invalid response' }
+    }
+
+    const validatedResponse = validation.data.response
+
     const { user } = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const salonId = await requireUserSalonId()
 
@@ -202,7 +243,7 @@ export async function updateReviewResponse(
       .schema('engagement')
       .from('salon_reviews')
       .update({
-        response,
+        response: validatedResponse,
         response_date: new Date().toISOString(),
         responded_by_id: user.id,
       })

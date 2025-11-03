@@ -1,8 +1,16 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { DollarSign, CalendarClock, Award, Activity } from 'lucide-react'
+import { DollarSign, Award, Activity } from 'lucide-react'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 import { buildCouponEffectiveness } from '@/features/business/coupons/api/queries'
 
 type MetricCardsProps = {
@@ -11,67 +19,71 @@ type MetricCardsProps = {
 }
 
 export function CouponMetricCards({ summary, couponCount }: MetricCardsProps) {
-  const metricValueClass = 'text-3xl font-semibold tracking-tight'
+  const metricValueClass = 'text-2xl font-semibold tracking-tight'
 
   return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Total Discount Issued</CardTitle>
-          <CardDescription>
-            Avg ${summary.totals.averageDiscount.toFixed(2)} per redemption
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-start justify-between">
+    <ItemGroup className="grid gap-4 grid-cols-1 md:grid-cols-4">
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Total Discount Issued</ItemTitle>
+          <ItemActions>
+            <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
           <p className={metricValueClass}>${summary.totals.totalDiscount.toFixed(2)}</p>
-          <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />
-        </CardContent>
-      </Card>
+          <ItemDescription>
+            Avg ${summary.totals.averageDiscount.toFixed(2)} per redemption
+          </ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Total Redemptions</CardTitle>
-          <CardDescription>Across {couponCount} coupons</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-start justify-between">
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Total Redemptions</ItemTitle>
+          <ItemActions>
+            <Activity className="size-4 text-muted-foreground" aria-hidden="true" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
           <p className={metricValueClass}>{summary.totals.totalUses}</p>
-          <Activity className="size-4 text-muted-foreground" aria-hidden="true" />
-        </CardContent>
-      </Card>
+          <ItemDescription>Across {couponCount} coupons</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Active Campaigns</CardTitle>
-          <CardDescription>{summary.expiringSoon.length} expiring soon</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-start justify-between">
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Active Campaigns</ItemTitle>
+          <ItemActions>
+            <Award className="size-4 text-muted-foreground" aria-hidden="true" />
+          </ItemActions>
+        </ItemHeader>
+        <ItemContent>
           <p className={metricValueClass}>{summary.totals.activeCoupons}</p>
-          <Award className="size-4 text-muted-foreground" aria-hidden="true" />
-        </CardContent>
-      </Card>
+          <ItemDescription>{summary.expiringSoon.length} expiring soon</ItemDescription>
+        </ItemContent>
+      </Item>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Best Performer</CardTitle>
+      <Item variant="outline" className="flex-col gap-2">
+        <ItemHeader>
+          <ItemTitle>Best Performer</ItemTitle>
+        </ItemHeader>
+        <ItemContent>
           {summary.topCoupon ? (
-            <CardDescription>{summary.topCoupon.stats.totalUses} uses</CardDescription>
-          ) : (
-            <CardDescription>No leading coupon yet</CardDescription>
-          )}
-        </CardHeader>
-        <CardContent>
-          {summary.topCoupon ? (
-            <div className="flex flex-col gap-2">
+            <>
               <Badge variant="secondary">{summary.topCoupon.code}</Badge>
-              <p className="text-sm text-muted-foreground">
-                ${summary.topCoupon.stats.totalDiscount.toFixed(2)} in discounts
-              </p>
-            </div>
+              <ItemDescription>
+                {summary.topCoupon.stats.totalUses} uses • ${summary.topCoupon.stats.totalDiscount.toFixed(2)} in discounts
+              </ItemDescription>
+            </>
           ) : (
-            <p className="text-sm text-muted-foreground">No redemptions yet</p>
+            <>
+              <p className={metricValueClass}>--</p>
+              <ItemDescription>No redemptions yet</ItemDescription>
+            </>
           )}
-        </CardContent>
-      </Card>
-    </div>
+        </ItemContent>
+      </Item>
+    </ItemGroup>
   )
 }

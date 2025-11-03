@@ -1,2 +1,2 @@
 export { StatsFreshnessMonitor } from './components'
-export * from './types'
+export * from './api/types'

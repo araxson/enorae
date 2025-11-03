@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { UserPreferences } from '@/features/staff/settings/types'
+import type { UserPreferences } from '@/features/staff/settings/api/types'
 
 type ProfilesMetadataWithPreferences = {
   preferences?: UserPreferences | null

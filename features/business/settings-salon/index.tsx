@@ -18,4 +18,4 @@ export async function SalonBusinessInfo() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

@@ -1,5 +1,5 @@
 import { OperatingHoursCard, TodayHoursBanner } from './components'
-import type { OperatingHours } from './types'
+import type { OperatingHours } from './api/types'
 
 interface OperatingHoursFeatureProps {
   hours: OperatingHours[]
@@ -14,4 +14,4 @@ export function OperatingHoursFeature({ hours, todayHours }: OperatingHoursFeatu
     </div>
   )
 }
-export * from './types'
+export * from './api/types'

@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
+import { addressSchema } from '../schema'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -37,6 +38,24 @@ export async function updateLocationAddress(
     // SECURITY: Require business user role
     const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
     const supabase = await createClient()
+
+    // SERVER-SIDE VALIDATION: Validate input with Zod schema
+    const validation = addressSchema.safeParse({
+      street_address: input.street_address,
+      address_line_2: input.street_address_2,
+      city: input.city,
+      state: input.state_province,
+      postal_code: input.postal_code,
+      country: input.country_code || 'US',
+      latitude: input.latitude,
+      longitude: input.longitude,
+    })
+
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]
+      logger.error(firstError?.message ?? 'Invalid input', 'validation')
+      return { success: false, error: firstError?.message ?? 'Invalid address data' }
+    }
 
     // Verify location ownership through salon
     const { data: location } = await supabase

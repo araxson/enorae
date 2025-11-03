@@ -6,7 +6,7 @@ import { logRoleAudit } from './audit'
 import { requireAdminContext } from './context'
 import { parsePermissions } from './assignment-helpers'
 import { UUID_REGEX } from './validation'
-import type { RoleActionResponse } from '../../types'
+import type { RoleActionResponse } from '../../api/types'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 export async function updateRolePermissions(formData: FormData): Promise<RoleActionResponse> {

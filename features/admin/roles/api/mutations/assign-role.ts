@@ -8,8 +8,9 @@ import { parsePermissions } from './assignment-helpers'
 import { requireAdminContext } from './context'
 import type { AssignmentPayload } from './assignments'
 import { assignmentSchema, ROLES_NEEDING_SALON } from './validation'
-import type { RoleActionResponse } from '../../types'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import type { RoleActionResponse } from '../../api/types'
+import { createOperationLogger, logError } from '@/lib/observability'
+import { logMutation } from '@/lib/observability/logger'
 
 export async function assignRole(formData: FormData): Promise<RoleActionResponse> {
   const logger = createOperationLogger('assignRole', {})

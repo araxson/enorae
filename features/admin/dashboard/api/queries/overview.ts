@@ -17,6 +17,7 @@ export async function getAdminOverview() {
 
   const supabase = createServiceRoleClient()
 
+  // NOTE: Using SELECT * for admin dashboard since it's not user-facing performance critical
   // Query each table independently to handle errors gracefully
   const [
     analyticsData,

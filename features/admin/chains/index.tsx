@@ -12,4 +12,4 @@ export async function AdminChains() {
 }
 
 export { AdminChainsSkeleton } from './components/admin-chains-skeleton'
-export * from './types'
+export * from './api/types'

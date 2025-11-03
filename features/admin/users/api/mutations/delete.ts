@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 
@@ -7,15 +7,15 @@ import { requireAnyRole } from '@/lib/auth'
 import { sanitizeAdminText } from '@/features/admin/admin-common'
 
 import { UUID_REGEX } from '../../constants'
-import { createOperationLogger } from '@/lib/observability'
+import { logMutation } from '@/lib/observability/query-logger'
 
 export async function deleteUserPermanently(formData: FormData) {
-  const logger = createOperationLogger('deleteUserPermanently', {})
-  logger.start()
+  const userId = formData.get('userId')?.toString()
+  const logger = logMutation('deleteUserPermanently', { userId })
 
   try {
-    const userId = formData.get('userId')?.toString()
     if (!userId || !UUID_REGEX.test(userId)) {
+      logger.error(new Error('Invalid user ID'), 'validation')
       return { error: 'Invalid user ID' }
     }
 
@@ -62,12 +62,14 @@ export async function deleteUserPermanently(formData: FormData) {
     })
 
     if (auditError) {
-      console.error('[Users] Failed to record audit log for permanent deletion', auditError)
+      logger.warn('Failed to record audit log', { auditError: auditError.message })
     }
 
     revalidatePath('/admin/users', 'page')
+    logger.success({ userId })
     return { success: true, message: 'User deleted permanently' }
   } catch (error) {
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'system')
     return {
       error: error instanceof Error ? error.message : 'Failed to delete user',
     }

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import type { BusinessDashboardMetrics } from '@/features/business/dashboard/types'
+import type { BusinessDashboardMetrics } from '@/features/business/dashboard/api/types'
 import { AppointmentMetricCard, RevenueMetricCard, getAccentStripeClass, type MetricAccent } from './metric-card'
 import {
   Item,
@@ -23,6 +23,15 @@ type MetricsCardsProps = {
   metrics: BusinessDashboardMetrics
 }
 
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+})
+
+const formatCurrency = (amount = 0) => CURRENCY_FORMATTER.format(amount)
+
 export function MetricsCards({ metrics }: MetricsCardsProps) {
   const confirmationRate = useMemo(() => {
     if (metrics.totalAppointments === 0) return 0
@@ -34,15 +43,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
     return Math.round((metrics.pendingAppointments / metrics.totalAppointments) * 100)
   }, [metrics.pendingAppointments, metrics.totalAppointments])
 
-  const formatCurrency = (amount = 0) =>
-    new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount)
-
-  const revenueMetrics = [
+  const revenueMetrics = useMemo(() => [
     metrics.totalRevenue !== undefined && {
       title: 'Total Revenue',
       icon: <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />,
@@ -63,9 +64,9 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
         </div>
       ),
     },
-  ].filter(Boolean)
+  ].filter(Boolean), [metrics.totalRevenue, metrics.last30DaysRevenue])
 
-  const appointmentMetrics = [
+  const appointmentMetrics = useMemo(() => [
     {
       title: 'Total',
       icon: <Calendar className="size-4 text-primary" aria-hidden="true" />,
@@ -90,7 +91,7 @@ export function MetricsCards({ metrics }: MetricsCardsProps) {
       description: 'Awaiting confirmation',
       accent: 'warning' as const,
     },
-  ]
+  ], [metrics.totalAppointments, metrics.confirmedAppointments, metrics.pendingAppointments, confirmationRate, pendingRate])
 
   return (
     <div className="flex flex-col gap-8">

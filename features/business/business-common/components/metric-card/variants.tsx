@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { formatPercentage } from '@/features/business/business-common/utils/value-formatters'
 import { METRIC_VALUE_CLASS } from './utils'
-import type { MetricCardProps } from './types'
+import type { MetricCardProps } from '../../api/types'
 
 /**
  * Default variant content renderer

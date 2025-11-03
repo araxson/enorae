@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import {
   Item,
   ItemActions,
@@ -10,7 +11,7 @@ import {
 import { cn } from '@/lib/utils'
 import { resolveIconComponent, buildCardClasses, ICON_COLOR_CLASS } from './utils'
 import { DefaultVariant, ProgressVariant, TrendVariant, HighlightVariant } from './variants'
-import type { MetricCardProps } from './types'
+import type { MetricCardProps } from '../../api/types'
 
 /**
  * Unified metric card component for business dashboards
@@ -43,7 +44,7 @@ import type { MetricCardProps } from './types'
  * />
  * ```
  */
-export function MetricCard(props: MetricCardProps) {
+export const MetricCard = memo(function MetricCard(props: MetricCardProps) {
   const { title, icon, accent, className } = props
 
   // Resolve icon component
@@ -75,4 +76,4 @@ export function MetricCard(props: MetricCardProps) {
       </ItemContent>
     </Item>
   )
-}
+})

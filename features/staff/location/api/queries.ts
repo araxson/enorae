@@ -1,6 +1,6 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
-import type { StaffLocationDetail } from '@/features/staff/location/types'
+import type { StaffLocationDetail } from '@/features/staff/location/api/types'
 
 export async function getMyLocation(): Promise<StaffLocationDetail | null> {
   const supabase = await createClient()

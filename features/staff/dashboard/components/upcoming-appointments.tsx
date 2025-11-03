@@ -10,7 +10,7 @@ import {
   ItemActions,
   ItemSeparator,
 } from '@/components/ui/item'
-import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/api/types'
 import { formatAppointmentTime } from '@/lib/utils/dates'
 import { getStatusVariant } from '@/lib/constants/appointment-statuses'
 import { format } from 'date-fns'

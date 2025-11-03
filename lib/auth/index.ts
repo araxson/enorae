@@ -64,5 +64,8 @@ export {
   ROLE_GROUPS,
 } from './permissions'
 
+// Query guards (centralized auth checks)
+export { guardQuery, guardQueryUser, guardQueryWithMessage, type GuardedQuery } from './guards-query'
+
 // Legacy exports (marked for deprecation)
 export { hasRole, hasAnyRole } from './permissions'

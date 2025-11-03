@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { createOperationLogger } from '@/lib/observability'
-import type { PasswordResetResult } from './types'
+import type { PasswordResetResult } from '../types'
 
 const newPasswordSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters'),
@@ -28,7 +28,7 @@ export async function resetPassword(
     if (!validation.success) {
       const firstError = validation.error.issues[0]
       logger.error(firstError?.message ?? 'Invalid password', 'validation')
-      return { error: firstError?.message ?? 'Invalid password' }
+      return { success: false, error: firstError?.message ?? 'Invalid password' }
     }
 
     const { password } = validation.data
@@ -39,7 +39,7 @@ export async function resetPassword(
     // SECURITY: Verify user is authenticated during password reset
     if (authError || !user) {
       logger.error('User not authenticated during password reset', 'auth')
-      return { error: 'Authentication required. Please use the password reset link from your email.' }
+      return { success: false, error: 'Authentication required. Please use the password reset link from your email.' }
     }
 
     logger.start({ userId: user.id })
@@ -50,13 +50,13 @@ export async function resetPassword(
 
     if (error) {
       logger.error(error, 'auth', { userId: user.id })
-      return { error: error.message }
+      return { success: false, error: error.message }
     }
 
     logger.success({ userId: user.id })
     return { success: true }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: 'An unexpected error occurred. Please try again.' }
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }

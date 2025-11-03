@@ -43,4 +43,4 @@ export async function SalonReviews() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

@@ -1,8 +1,8 @@
 import 'server-only'
 
-import type { AppointmentRow } from '../../types'
+import type { AppointmentRow } from '../../api/types'
 import { authorizeStaffAccess } from '@/features/staff/commission/utils/commission'
-import type { CommissionData, DailyEarnings } from '../../types'
+import type { CommissionData, DailyEarnings } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 function sumRevenue(appointments: AppointmentRow[] | null | undefined) {

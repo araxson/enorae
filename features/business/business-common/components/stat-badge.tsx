@@ -1,5 +1,6 @@
 'use client'
 
+import { memo } from 'react'
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
@@ -20,7 +21,7 @@ const trendVariant = (value: number) => {
   return 'outline'
 }
 
-export function StatBadge({
+export const StatBadge = memo(function StatBadge({
   value,
   format = 'percentage',
   showTrend = false,
@@ -46,7 +47,7 @@ export function StatBadge({
       </span>
     </Badge>
   )
-}
+})
 
 type ComparisonBadgeProps = {
   current: number
@@ -56,7 +57,7 @@ type ComparisonBadgeProps = {
   className?: string
 }
 
-export function ComparisonBadge({
+export const ComparisonBadge = memo(function ComparisonBadge({
   current,
   previous,
   format = 'number',
@@ -84,4 +85,4 @@ export function ComparisonBadge({
       </span>
     </Badge>
   )
-}
+})

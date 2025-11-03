@@ -1,6 +1,6 @@
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { MessageThreadList } from './message-thread-list'
-import type { MessageThread } from '../types'
+import type { MessageThread } from '../api/types'
 
 interface MessagesFeatureProps {
   threads: MessageThread[]

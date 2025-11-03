@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { FieldGroup } from '@/components/ui/field'
 import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 import { updateProfileMetadataAction, type ActionResponse } from '@/features/admin/profile/api/mutations'
 import { ProfileMetadataFields } from './profile-metadata-fields'
 import { ProfileMetadataSubmit } from './profile-metadata-submit'

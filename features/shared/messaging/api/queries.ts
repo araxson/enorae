@@ -1,12 +1,16 @@
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 
-// DATABASE PATTERN NOTE: Currently reading from communication schema tables
-// TODO: Create views in communication schema for proper read pattern:
-// - view_message_threads (with participant info, last message preview)
-// - view_messages (with sender/recipient info, thread context)
-// - view_unread_counts (aggregated unread counts per user)
-// Once views are created, update all queries to use views instead of tables
+/**
+ * DATABASE PATTERN NOTE: Currently reading from communication schema tables
+ *
+ * Future enhancement: Create optimized views for better performance:
+ * - view_message_threads (with participant info, last message preview)
+ * - view_messages (with sender/recipient info, thread context)
+ * - view_unread_counts (aggregated unread counts per user)
+ *
+ * These views would improve query performance and reduce join complexity.
+ */
 
 interface UnreadCounts {
   messages: number

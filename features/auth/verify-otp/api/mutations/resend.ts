@@ -2,7 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { resendOtpSchema } from '../schema'
-import type { ResendOtpResult } from './types'
+import type { ResendOtpResult } from '../types'
 import { createOperationLogger } from '@/lib/observability'
 
 export async function resendOTP(formData: FormData): Promise<ResendOtpResult> {
@@ -21,13 +21,12 @@ export async function resendOTP(formData: FormData): Promise<ResendOtpResult> {
         error: firstError?.message ?? 'Invalid email'
       })
       logger.error(firstError?.message ?? 'Invalid email', 'validation', { email: rawData.email })
-      return { error: firstError?.message ?? 'Invalid email' }
+      return { success: false, error: firstError?.message ?? 'Invalid email' }
     }
 
     const { email } = validation.data
 
     logger.start({ email })
-    console.log('OTP resend started', { email, timestamp: new Date().toISOString() })
 
     const supabase = await createClient()
 
@@ -43,13 +42,9 @@ export async function resendOTP(formData: FormData): Promise<ResendOtpResult> {
         error: error.message
       })
       logger.error(error, 'auth', { email })
-      return { error: error.message }
+      return { success: false, error: error.message }
     }
 
-    console.log('OTP resent successfully', {
-      email,
-      timestamp: new Date().toISOString()
-    })
     logger.success({ email })
 
     return {
@@ -62,6 +57,6 @@ export async function resendOTP(formData: FormData): Promise<ResendOtpResult> {
       stack: error instanceof Error ? error.stack : undefined
     })
     logger.error(error instanceof Error ? error : String(error), 'system')
-    return { error: 'An unexpected error occurred. Please try again.' }
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }

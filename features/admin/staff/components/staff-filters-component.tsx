@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -26,13 +25,6 @@ import { Search, X } from 'lucide-react'
 import type { BackgroundStatus } from '@/features/admin/staff/api/queries'
 import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
-
-declare global {
-  interface WindowEventMap {
-    'admin:clearFilters': CustomEvent<void>
-  }
-}
-
 import type { RiskFilter } from './staff-filters-types'
 
 const riskFilterValues: readonly RiskFilter[] = ['all', 'low', 'medium', 'high'] as const
@@ -48,6 +40,7 @@ type StaffFiltersProps = {
   backgroundFilter: BackgroundStatus | 'all'
   onBackgroundFilterChange: (value: BackgroundStatus | 'all') => void
   roleOptions: string[]
+  onClearFilters: () => void
 }
 
 export function StaffFilters({
@@ -60,22 +53,8 @@ export function StaffFilters({
   backgroundFilter,
   onBackgroundFilterChange,
   roleOptions,
+  onClearFilters,
 }: StaffFiltersProps) {
-  const clearFilters = () => {
-    onSearchChange('')
-    onRiskFilterChange('all')
-    onRoleFilterChange('all')
-    onBackgroundFilterChange('all')
-  }
-
-  useEffect(() => {
-    const handleClear = () => clearFilters()
-    window.addEventListener('admin:clearFilters', handleClear)
-    return () => {
-      window.removeEventListener('admin:clearFilters', handleClear)
-    }
-  }, [onSearchChange, onRiskFilterChange, onRoleFilterChange, onBackgroundFilterChange])
-
   return (
     <Card>
       <CardHeader>
@@ -88,7 +67,7 @@ export function StaffFilters({
           <Item variant="muted">
             <ItemActions>
               <ButtonGroup>
-                <Button type="button" variant="ghost" size="sm" onClick={clearFilters}>
+                <Button type="button" variant="ghost" size="sm" onClick={onClearFilters}>
                   Clear all filters
                 </Button>
               </ButtonGroup>

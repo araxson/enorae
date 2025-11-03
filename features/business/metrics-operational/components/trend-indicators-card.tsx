@@ -1,10 +1,11 @@
+import { memo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 type TrendIndicatorsCardProps = {
   trendIndicators: unknown
 }
 
-export function TrendIndicatorsCard({ trendIndicators }: TrendIndicatorsCardProps) {
+export const TrendIndicatorsCard = memo(function TrendIndicatorsCard({ trendIndicators }: TrendIndicatorsCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -18,4 +19,4 @@ export function TrendIndicatorsCard({ trendIndicators }: TrendIndicatorsCardProp
       </CardContent>
     </Card>
   )
-}
+})

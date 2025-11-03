@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import type { AppointmentServiceDetails } from '@/features/business/appointments/api/queries'
-import type { StaffOption, ServiceFormData } from './types'
+import type { StaffOption, ServiceFormData } from '../../api/types'
 
 interface FormFieldsProps {
   service: AppointmentServiceDetails

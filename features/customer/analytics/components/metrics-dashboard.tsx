@@ -56,26 +56,24 @@ export function MetricsDashboard({ metrics }: MetricsDashboardProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <ItemGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => {
           const Icon = stat.icon
 
           return (
-            <Card key={stat['title']}>
-              <CardHeader>
-                <CardTitle>{stat['title']}</CardTitle>
-                <CardDescription>{stat['description']}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
-                  <Icon className="size-5 text-muted-foreground" aria-hidden="true" />
-                </div>
-              </CardContent>
-            </Card>
+            <Item key={stat['title']} variant="outline" className="flex-col gap-2">
+              <ItemActions>
+                <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
+              </ItemActions>
+              <ItemContent>
+                <ItemTitle>{stat['title']}</ItemTitle>
+                <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
+                <ItemDescription>{stat['description']}</ItemDescription>
+              </ItemContent>
+            </Item>
           )
         })}
-      </div>
+      </ItemGroup>
 
       <Card>
         <CardHeader>

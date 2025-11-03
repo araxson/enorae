@@ -31,4 +31,4 @@ export async function StaffSchedulesManagement() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

@@ -2,15 +2,14 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { otpSchema } from '../schema'
-import type { VerifyOtpResult } from './types'
-import { createOperationLogger } from '@/lib/observability'
+import type { VerifyOtpResult } from '../types'
+import { createOperationLogger, logAuthEvent } from '@/lib/observability'
 
 export async function verifyOTP(formData: FormData): Promise<VerifyOtpResult> {
-  const logger = createOperationLogger('verifyOTP', {})
-  logger.start()
-
   const email = formData.get('email') as string
-  console.log('OTP verification started', { email, timestamp: new Date().toISOString() })
+
+  const logger = createOperationLogger('verifyOTP', { email })
+  logger.start()
 
   try {
     const otpCode = formData.get('token') as string
@@ -21,11 +20,8 @@ export async function verifyOTP(formData: FormData): Promise<VerifyOtpResult> {
     })
     if (!validation.success) {
       const firstError = validation.error.issues[0]
-      console.error('OTP verification validation failed', {
-        email,
-        error: firstError?.message ?? 'Invalid input'
-      })
-      return { error: firstError?.message ?? 'Invalid input' }
+      logger.error(firstError?.message ?? 'Invalid input', 'validation', { email })
+      return { success: false, error: firstError?.message ?? 'Invalid input' }
     }
 
     const { email: validatedEmail, token: validatedToken } = validation.data
@@ -39,27 +35,27 @@ export async function verifyOTP(formData: FormData): Promise<VerifyOtpResult> {
     })
 
     if (error) {
-      console.error('OTP verification failed', {
+      logAuthEvent('auth_failure', {
+        operationName: 'verifyOTP',
         email: validatedEmail,
-        errorCode: error.code,
-        error: error.message
+        reason: error.message,
+        success: false,
       })
-      return { error: error.message }
+      logger.error(error.message, 'auth', { email: validatedEmail })
+      return { success: false, error: error.message }
     }
 
-    console.log('OTP verification successful', {
-      email: validatedEmail,
+    logAuthEvent('login', {
+      operationName: 'verifyOTP',
       userId: data.user?.id,
-      timestamp: new Date().toISOString()
+      email: validatedEmail,
+      success: true,
     })
+    logger.success({ userId: data.user?.id, email: validatedEmail })
 
     return { success: true }
   } catch (error) {
-    console.error('OTP verification unexpected error', {
-      email,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
-    return { error: 'An unexpected error occurred. Please try again.' }
+    logger.error(error instanceof Error ? error : String(error), 'system', { email })
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }

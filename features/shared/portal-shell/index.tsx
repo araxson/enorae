@@ -8,5 +8,5 @@ export { AdminSidebar } from './components/sidebars/admin-sidebar'
 export { PortalHeader } from './components/portal-header'
 
 // Types
-export type { NavItem, NavSecondaryItem, FavoriteItem } from './types'
-export * from './types'
+export type { NavItem, NavSecondaryItem, FavoriteItem } from './api/types'
+export * from './api/types'

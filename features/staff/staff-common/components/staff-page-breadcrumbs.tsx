@@ -6,7 +6,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import type { StaffBreadcrumb } from './types'
+import type { StaffBreadcrumb } from '../api/types'
 
 interface StaffPageBreadcrumbsProps {
   breadcrumbs: readonly StaffBreadcrumb[]

@@ -27,4 +27,4 @@ export async function StaffServices() {
     </div>
   )
 }
-export * from './types'
+export * from './api/types'

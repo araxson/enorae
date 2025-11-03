@@ -5,4 +5,4 @@ export async function AdminMessages() {
   const dashboard = await getMessagesDashboard()
   return <MessagesClient {...dashboard} />
 }
-export * from './types'
+export * from './api/types'

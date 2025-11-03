@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 import { checkStaffAvailability } from '@/features/shared/appointments/api/queries'
 import { createBooking } from '@/features/customer/booking/api/mutations'
-import type { BookingFormValues, Service } from '@/features/customer/booking/types'
+import type { BookingFormValues, Service } from '@/features/customer/booking/api/types'
 
 export type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
 

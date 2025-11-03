@@ -37,7 +37,14 @@ export async function getOperationalMetrics(salonId: string) {
   ])
 
   if (appointmentsResult.error || staffResult.error) {
-    console.error('[getOperationalMetrics] Error:', appointmentsResult.error || staffResult.error)
+    const error = appointmentsResult.error || staffResult.error
+    if (error) {
+      logger.error(
+        error,
+        'database',
+        { query: appointmentsResult.error ? 'appointments_view' : 'staff_enriched_view' }
+      )
+    }
     return {
       capacityUtilization: 0,
       averageWaitTime: 5,

@@ -1,7 +1,7 @@
 import { getServices, getUserSalon } from './api/queries'
 import { ServicesManagementClient, ServicesAuthError, ServicesNoSalonError } from './components'
 
-export type * from './types'
+export type * from './api/types'
 
 export async function ServicesManagement() {
   let salon

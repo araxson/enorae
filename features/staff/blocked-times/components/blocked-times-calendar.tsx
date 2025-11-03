@@ -5,7 +5,7 @@ import { format, startOfWeek, addDays, isSameDay, parseISO } from 'date-fns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Calendar, Clock, Ban } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
-import type { BlockedTime } from '@/features/staff/blocked-times/types'
+import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 import {
   Item,
   ItemContent,

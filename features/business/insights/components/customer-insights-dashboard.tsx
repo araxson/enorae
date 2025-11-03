@@ -4,12 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Button } from '@/components/ui/button'
-
 import { CustomerInsightsSummaryCards } from './customer-insights-summary-cards'
 import { CustomerSegmentationCard } from './customer-segmentation-card'
 import { CustomerListItem } from './customer-list-item'
-
-import type { CustomerMetrics, InsightsSummary } from '@/features/business/insights/api/queries'
+import type { CustomerMetrics, InsightsSummary } from '@/features/business/insights/types'
 
 interface CustomerInsightsDashboardProps {
   summary: InsightsSummary
@@ -28,25 +26,9 @@ export function CustomerInsightsDashboard({
   summary,
   topCustomers,
 }: CustomerInsightsDashboardProps) {
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount)
-  }
-
-  const formatPercentage = (value: number) => {
-    return `${value.toFixed(1)}%`
-  }
-
   return (
     <div className="flex flex-col gap-6">
-      <CustomerInsightsSummaryCards
-        summary={summary}
-        formatCurrency={formatCurrency}
-        formatPercentage={formatPercentage}
-      />
+      <CustomerInsightsSummaryCards summary={summary} />
 
       <CustomerSegmentationCard summary={summary} />
 
@@ -82,8 +64,6 @@ export function CustomerInsightsDashboard({
                           key={customer.customer_id}
                           customer={customer}
                           isLast={index === customersForSegment.length - 1}
-                          formatCurrency={formatCurrency}
-                          formatPercentage={formatPercentage}
                         />
                       ))
                     ) : (

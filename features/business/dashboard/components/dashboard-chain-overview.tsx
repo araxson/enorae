@@ -9,7 +9,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
-import type { BusinessMultiLocationMetrics } from '@/features/business/dashboard/types'
+import type { BusinessMultiLocationMetrics } from '@/features/business/dashboard/api/types'
 import { cn } from '@/lib/utils'
 import {
   Building2,

@@ -41,4 +41,4 @@ export async function StaffAnalytics() {
     </section>
   )
 }
-export * from './types'
+export * from './api/types'

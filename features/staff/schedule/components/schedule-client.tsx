@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import { CalendarCheck2, CalendarX2 } from 'lucide-react'
 import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common/components/types'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
 import { ScheduleManagementClient } from './schedule-management-client'
 import { BlockedTimeForm } from '@/features/shared/blocked-times/components/blocked-time-form'
 import { BlockedTimesList } from '@/features/shared/blocked-times/components/blocked-times-list'
@@ -81,7 +81,7 @@ export function StaffScheduleClient({
       quickActions={quickActions}
       tabs={tabs}
       activeTab={activeTab}
-      onTabChange={(value) => setActiveTab(value as typeof activeTab)}
+      onTabChange={(value: string) => setActiveTab(value as typeof activeTab)}
       toggles={[
         { id: 'auto-publish', label: 'Auto-publish updates', helper: 'Notify your salon when changes are saved', defaultOn: true },
       ]}

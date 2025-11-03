@@ -1,2 +1,2 @@
 export { IncidentResponseTimeline } from './components'
-export * from './types'
+export * from './api/types'

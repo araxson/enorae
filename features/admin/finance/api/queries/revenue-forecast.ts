@@ -1,6 +1,6 @@
 import 'server-only'
 
-import type { RevenueForecast } from '@/features/admin/finance/types'
+import type { RevenueForecast } from '@/features/admin/finance/api/types'
 import { requireAdminClient } from './client'
 import { createOperationLogger } from '@/lib/observability'
 
@@ -39,16 +39,17 @@ export async function getRevenueForecast(days = DEFAULT_FORECAST_DAYS): Promise<
   const avgDailyRevenue =
     revenues.length > 0 ? revenues.reduce((sum, value) => sum + value, 0) / revenues.length : 0
 
+  const FORECAST_VARIANCE_RANGE = 0.2
+  const FORECAST_VARIANCE_OFFSET = 0.1
+
   const forecast: RevenueForecast[] = []
 
-  for (let i = 0; i < days; i++) {
+  for (let dayOffset = 0; dayOffset < days; dayOffset++) {
     const forecastDate = new Date()
-    forecastDate.setDate(forecastDate.getDate() + i)
+    forecastDate.setDate(forecastDate.getDate() + dayOffset)
     const dateStr = forecastDate.toISOString().split('T')[0]
     if (!dateStr) continue
 
-    const FORECAST_VARIANCE_RANGE = 0.2
-    const FORECAST_VARIANCE_OFFSET = 0.1
     const forecastedAmount = avgDailyRevenue * (1 + (Math.random() * FORECAST_VARIANCE_RANGE - FORECAST_VARIANCE_OFFSET))
 
     forecast.push({

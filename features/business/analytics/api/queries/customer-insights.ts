@@ -5,6 +5,7 @@ import { requireAnyRole, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 
 import type { Appointment, DailyMetric } from '@/features/business/analytics/api/types'
 import { createOperationLogger } from '@/lib/observability'
+import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 
 export type CustomerInsights = {
   totalCustomers: number
@@ -20,7 +21,7 @@ export async function getCustomerInsights(
   salonId: string,
   startDate: string,
   endDate: string,
-  topN: number = 5
+  topCustomersLimit: number = ANALYTICS_CONFIG.TOP_CUSTOMERS_LIMIT
 ): Promise<CustomerInsights> {
   const logger = createOperationLogger('getCustomerInsights', {})
   logger.start()
@@ -51,45 +52,55 @@ export async function getCustomerInsights(
   if (metricsResponse.error) throw metricsResponse.error
 
   const appointments = (appointmentsResponse.data || []) as Appointment[]
-  const completed = appointments.filter(appointment => appointment['status'] === 'completed')
-  // NOTE: total_price column doesn't exist in appointments_view - revenue calculation removed
-  const revenue = 0
+  const completedAppointments = appointments.filter(appointment => appointment['status'] === 'completed')
+  /**
+   * Revenue Calculation Note:
+   * The appointments_view does not include total_price column. Revenue calculations
+   * are currently disabled. To enable, add total_price to the view or join with
+   * pricing data from the catalog schema.
+   */
+  const totalRevenue = 0
   const averageOrderValue = 0
 
-  type CustomerAgg = {
+  type CustomerAggregation = {
     name: string
     email?: string | null
     totalSpent: number
     visitCount: number
   }
 
-  const customers = new Map<string, CustomerAgg>()
-  for (const appointment of completed) {
+  const customerAggregations = new Map<string, CustomerAggregation>()
+  for (const appointment of completedAppointments) {
     if (!appointment['customer_id']) continue
-    const existing = customers.get(appointment['customer_id']) || {
-      name: 'Customer', // customer_name doesn't exist in appointments_view
-      email: null, // customer_email doesn't exist in appointments_view
+    const existingCustomer = customerAggregations.get(appointment['customer_id']) || {
+      /**
+       * Customer Name Note:
+       * appointments_view does not include customer name/email fields.
+       * To display customer details, join with identity.profiles view.
+       */
+      name: 'Customer',
+      email: null,
       totalSpent: 0,
       visitCount: 0,
     }
-    existing.visitCount += 1
-    customers.set(appointment['customer_id'], existing)
+    existingCustomer.visitCount += 1
+    customerAggregations.set(appointment['customer_id'], existingCustomer)
   }
 
-  const totalCustomers = customers.size
-  const averageLifetimeValue = totalCustomers ? revenue / totalCustomers : 0
+  const totalCustomers = customerAggregations.size
+  const averageLifetimeValue = totalCustomers ? totalRevenue / totalCustomers : 0
 
   const dailyMetrics = (metricsResponse.data || []) as DailyMetric[]
-  const newCustomers = dailyMetrics.reduce((sum, metric) => sum + (metric['new_customers'] || 0), 0)
-  const returningCustomers = dailyMetrics.reduce((sum, metric) => sum + (metric['returning_customers'] || 0), 0)
-  const retentionDenominator = newCustomers + returningCustomers
+  const newCustomersTotal = dailyMetrics.reduce((sum, metric) => sum + (metric['new_customers'] || 0), 0)
+  const returningCustomersTotal = dailyMetrics.reduce((sum, metric) => sum + (metric['returning_customers'] || 0), 0)
+  const retentionDenominator = newCustomersTotal + returningCustomersTotal
   const retentionRate = retentionDenominator > 0
-    ? (returningCustomers / retentionDenominator) * 100
+    ? (returningCustomersTotal / retentionDenominator) * ANALYTICS_CONFIG.PERCENTAGE_MULTIPLIER
     : 0
 
-  const topCustomers = Array.from(customers.values())
-    .sort((a, b) => b.totalSpent - a.totalSpent)
-    .slice(0, topN)
+  const topCustomers = Array.from(customerAggregations.values())
+    .sort((firstCustomer, secondCustomer) => secondCustomer.totalSpent - firstCustomer.totalSpent)
+    .slice(0, topCustomersLimit)
     .map(customer => ({
       name: customer['name'],
       email: customer['email'] || undefined,
@@ -99,8 +110,8 @@ export async function getCustomerInsights(
 
   return {
     totalCustomers,
-    newCustomers,
-    returningCustomers,
+    newCustomers: newCustomersTotal,
+    returningCustomers: returningCustomersTotal,
     retentionRate,
     averageLifetimeValue,
     averageOrderValue,

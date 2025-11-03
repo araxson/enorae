@@ -3,7 +3,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import type { NotificationEntry, NotificationPayload } from '../../types'
+import type { NotificationEntry, NotificationPayload } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
 type NotificationsPageRow =

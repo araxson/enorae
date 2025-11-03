@@ -3,7 +3,7 @@ import { SubscriptionOverviewCard } from './subscription-overview-card'
 import { UsageQuotaCard } from './usage-quota-card'
 import { PaymentMethodCard } from './payment-method-card'
 import { InvoiceHistoryCard } from './invoice-history-card'
-import type { Subscription, UsageQuota, Invoice } from '../types'
+import type { Subscription, UsageQuota, Invoice } from '../api/types'
 
 interface BillingSubscriptionFormProps {
   subscription?: Subscription

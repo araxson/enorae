@@ -9,7 +9,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
-import type { ProfileDetail } from '@/features/admin/profile/types'
+import type { ProfileDetail } from '@/features/admin/profile/api/types'
 
 const formatDate = (value: string | null) => {
   if (!value) return '—'

@@ -13,7 +13,7 @@ import { Scissors } from 'lucide-react'
 
 interface CouponServicesSectionProps {
   services: { id: string; name: string }[]
-  selectedServiceIds: Set<string>
+  selectedServiceIds: string[]
   onToggleService: (serviceId: string, checked: boolean) => void
 }
 
@@ -22,6 +22,8 @@ export function CouponServicesSection({
   selectedServiceIds,
   onToggleService,
 }: CouponServicesSectionProps) {
+  const selectedSet = new Set(selectedServiceIds)
+
   return (
     <Card>
       <CardHeader>
@@ -44,7 +46,7 @@ export function CouponServicesSection({
             <ItemGroup className="space-y-2 pr-2">
               {services.map((service) => {
                 const checkboxId = `coupon-service-${service.id}`
-                const isSelected = selectedServiceIds.has(service.id)
+                const isSelected = selectedSet.has(service.id)
                 return (
                   <Item key={service.id} variant={isSelected ? 'muted' : 'outline'}>
                     <ItemContent>

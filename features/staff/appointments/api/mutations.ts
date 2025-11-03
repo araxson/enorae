@@ -5,6 +5,7 @@ import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { STRING_LIMITS } from '@/lib/config/constants'
+import { logMutation } from '@/lib/observability/query-logger'
 
 import type { Database } from '@/lib/types/database.types'
 
@@ -22,44 +23,56 @@ export async function updateAppointmentStatus(
   status: AppointmentStatus
 ) {
   const session = await requireAuth()
+  const logger = logMutation('updateAppointmentStatus', { appointmentId, status, userId: session.user.id })
   const supabase = await createClient()
 
-  // Get the appointment to verify ownership
-  const { data: appointment } = await supabase
-    .from('appointments_view')
-    .select('staff_id')
-    .eq('id', appointmentId)
-    .single()
+  try {
+    // Get the appointment to verify ownership
+    const { data: appointment } = await supabase
+      .from('appointments_view')
+      .select('staff_id')
+      .eq('id', appointmentId)
+      .single()
 
-  if (!appointment) {
-    throw new Error('Appointment not found')
+    if (!appointment) {
+      logger.error(new Error('Appointment not found'), 'not_found')
+      throw new Error('Appointment not found')
+    }
+
+    // Verify the staff member owns this appointment
+    const appt = appointment as { staff_id: string | null }
+    const { data: staffProfile } = await supabase
+      .from('staff_profiles_view')
+      .select('id')
+      .eq('user_id', session.user.id)
+      .eq('id', appt.staff_id!)
+      .single()
+
+    if (!staffProfile) {
+      logger.error(new Error('Unauthorized access attempt'), 'permission')
+      throw new Error('Unauthorized: Cannot update this appointment')
+    }
+
+    // Update status
+    const { error } = await supabase
+      .schema('scheduling')
+      .from('appointments')
+      .update({ status, updated_at: new Date().toISOString() })
+      .eq('id', appointmentId)
+
+    if (error) {
+      logger.error(error, 'database')
+      throw error
+    }
+
+    revalidatePath('/staff/appointments', 'page')
+    revalidatePath('/staff', 'layout')
+    logger.success({ appointmentId, status })
+    return { success: true }
+  } catch (error) {
+    logger.error(error instanceof Error ? error : new Error(String(error)), 'system')
+    throw error
   }
-
-  // Verify the staff member owns this appointment
-  const appt = appointment as { staff_id: string | null }
-  const { data: staffProfile } = await supabase
-    .from('staff_profiles_view')
-    .select('id')
-    .eq('user_id', session.user.id)
-    .eq('id', appt.staff_id!)
-    .single()
-
-  if (!staffProfile) {
-    throw new Error('Unauthorized: Cannot update this appointment')
-  }
-
-  // Update status
-  const { error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
-    .update({ status, updated_at: new Date().toISOString() })
-    .eq('id', appointmentId)
-
-  if (error) throw error
-
-  revalidatePath('/staff/appointments', 'page')
-  revalidatePath('/staff', 'layout')
-  return { success: true }
 }
 
 export async function markAppointmentCompleted(appointmentId: string) {

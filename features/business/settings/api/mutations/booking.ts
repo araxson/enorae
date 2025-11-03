@@ -36,7 +36,7 @@ export async function updateBookingRules(
   try {
     const supabase = await getSalonContext(salonId)
 
-    const validated = bookingRulesSchema.parse({
+    const validation = bookingRulesSchema.safeParse({
       booking_lead_time_hours: extractNumber(formData, 'booking_lead_time_hours'),
       max_bookings_per_day: extractNumber(formData, 'max_bookings_per_day'),
       max_services: extractNumber(formData, 'max_services'),
@@ -44,6 +44,12 @@ export async function updateBookingRules(
       require_deposit: extractBoolean(formData, 'require_deposit'),
       deposit_percentage: extractNumber(formData, 'deposit_percentage'),
     })
+
+    if (!validation.success) {
+      return { error: `Validation failed: ${validation.error.issues[0]?.message}` }
+    }
+
+    const validated = validation.data
 
     const { error } = await supabase
       .schema('organization')

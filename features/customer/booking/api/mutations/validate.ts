@@ -32,13 +32,11 @@ export async function validateBookingData(formData: FormData, userId: string, sa
       errors.appointmentDate?.[0] ||
       errors.appointmentTime?.[0] ||
       'Validation failed'
-    console.error('Booking validation failed', {
+    logger.error(firstError, 'validation', {
       userId,
       salonId,
       serviceId,
       staffId,
-      error: firstError,
-      errors: errors
     })
     return { error: firstError }
   }
@@ -57,19 +55,24 @@ export async function validateSalon(salonId: string, userId: string) {
     .maybeSingle()
 
   if (salonError || !salon) {
-    console.error('Booking salon lookup failed', {
+    logError('Booking salon lookup failed', {
+      operationName: 'validateSalon',
       userId,
       salonId,
-      error: salonError?.message
+      error: salonError?.message || 'Salon not found',
+      errorCategory: 'not_found',
     })
     return { error: 'Salon not found' }
   }
 
   const typedSalon = salon as { id: string | null; is_active: boolean | null } | null
   if (typedSalon?.is_active === false) {
-    console.error('Booking attempted on inactive salon', {
+    logError('Booking attempted on inactive salon', {
+      operationName: 'validateSalon',
       userId,
-      salonId
+      salonId,
+      error: 'Salon is inactive',
+      errorCategory: 'validation',
     })
     return { error: 'This salon is not currently accepting bookings' }
   }
@@ -88,24 +91,19 @@ export async function validateService(serviceId: string, userId: string, salonId
     .maybeSingle()
 
   if (serviceError || !service) {
-    console.error('Booking service lookup failed', {
+    logError('Booking service lookup failed', {
+      operationName: 'validateService',
       userId,
       salonId,
       serviceId,
-      error: serviceError?.message
+      error: serviceError?.message || 'Service not found',
+      errorCategory: 'not_found',
     })
     return { error: 'Service not found' }
   }
 
   type ServiceData = { duration_minutes: number | null; buffer_minutes: number | null; price: number | null }
   const typedService = service as ServiceData
-
-  console.log('Booking service details retrieved', {
-    userId,
-    serviceId,
-    durationMinutes: typedService.duration_minutes,
-    bufferMinutes: typedService.buffer_minutes
-  })
 
   return { data: typedService }
 }
@@ -121,12 +119,14 @@ export async function validateAppointmentTime(
   // Business logic validation: Appointment must be in the future
   const now = new Date()
   if (startTime <= now) {
-    console.error('Booking past time attempted', {
+    logError('Booking past time attempted', {
+      operationName: 'validateAppointmentTime',
       userId,
       salonId,
       serviceId,
+      error: 'Appointment time must be in the future',
+      errorCategory: 'validation',
       requestedTime: startTime.toISOString(),
-      currentTime: now.toISOString()
     })
     return { error: 'Appointment time must be in the future' }
   }
@@ -135,12 +135,14 @@ export async function validateAppointmentTime(
   const maxFutureDate = new Date()
   maxFutureDate.setDate(maxFutureDate.getDate() + 90)
   if (startTime > maxFutureDate) {
-    console.error('Booking too far in future attempted', {
+    logError('Booking too far in future attempted', {
+      operationName: 'validateAppointmentTime',
       userId,
       salonId,
       serviceId,
+      error: 'Appointment too far in future',
+      errorCategory: 'validation',
       requestedTime: startTime.toISOString(),
-      maxAllowed: maxFutureDate.toISOString()
     })
     return { error: 'Appointments can only be booked up to 90 days in advance' }
   }
@@ -156,23 +158,26 @@ export async function validateAppointmentTime(
     .gt('end_time', startTime.toISOString())
 
   if (conflictError) {
-    console.error('Booking availability check failed', {
+    logError('Booking availability check failed', {
+      operationName: 'validateAppointmentTime',
       userId,
       salonId,
       staffId,
-      error: conflictError.message
+      error: conflictError.message,
+      errorCategory: 'database',
     })
     return { error: 'Error checking staff availability' }
   }
 
   if (conflictingAppointments && conflictingAppointments.length > 0) {
-    console.error('Booking conflict detected', {
+    logError('Booking conflict detected', {
+      operationName: 'validateAppointmentTime',
       userId,
       salonId,
       staffId,
-      requestedStart: startTime.toISOString(),
-      requestedEnd: endTime.toISOString(),
-      conflictCount: conflictingAppointments.length
+      error: 'Staff member is not available at the selected time',
+      errorCategory: 'validation',
+      conflictCount: conflictingAppointments.length,
     })
     return { error: 'This staff member is not available at the selected time' }
   }

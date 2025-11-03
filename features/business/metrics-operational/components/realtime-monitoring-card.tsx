@@ -1,22 +1,32 @@
+import { memo } from 'react'
 import { Activity } from 'lucide-react'
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemHeader,
+  ItemTitle,
+} from '@/components/ui/item'
 
 type RealtimeMonitoringCardProps = {
   realtimeUpdates: number
   lastUpdate: string | null
 }
 
-export function RealtimeMonitoringCard({ realtimeUpdates, lastUpdate }: RealtimeMonitoringCardProps) {
+export const RealtimeMonitoringCard = memo(function RealtimeMonitoringCard({ realtimeUpdates, lastUpdate }: RealtimeMonitoringCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Real-Time Monitoring</CardTitle>
-        <CardDescription>Live operational updates</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Item variant="outline" className="flex-col gap-4">
+      <ItemHeader>
+        <ItemContent>
+          <ItemTitle>Real-Time Monitoring</ItemTitle>
+          <ItemDescription>Live operational updates</ItemDescription>
+        </ItemContent>
+      </ItemHeader>
+      <ItemContent>
         <ItemGroup className="flex flex-col gap-4">
           <Item className="items-center gap-3">
             <Activity className="size-5 text-primary" aria-hidden="true" />
@@ -43,7 +53,7 @@ export function RealtimeMonitoringCard({ realtimeUpdates, lastUpdate }: Realtime
             </Item>
           ) : null}
         </ItemGroup>
-      </CardContent>
-    </Card>
+      </ItemContent>
+    </Item>
   )
-}
+})

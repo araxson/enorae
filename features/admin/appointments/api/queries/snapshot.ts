@@ -2,7 +2,7 @@ import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '@/features/admin/appointments/types'
+import type { AppointmentSnapshot, AppointmentRow, AppointmentOverviewRow } from '@/features/admin/appointments/api/types'
 import { createOperationLogger } from '@/lib/observability'
 import {
   buildStatusTotals,

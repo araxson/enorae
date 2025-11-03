@@ -3,15 +3,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { loginSchema } from '../schema'
-import type { LoginResult } from './types'
-import { createOperationLogger } from '@/lib/observability'
+import type { LoginResult } from '../types'
+import { createOperationLogger, logAuthEvent } from '@/lib/observability'
 
 export async function login(formData: FormData): Promise<LoginResult> {
-  const logger = createOperationLogger('login', {})
-  logger.start()
-
   const email = formData.get('email') as string
-  console.log('Login attempt started', { email, timestamp: new Date().toISOString() })
+  const logger = createOperationLogger('login', { email })
+  logger.start()
 
   try {
     const rawData = {
@@ -22,11 +20,9 @@ export async function login(formData: FormData): Promise<LoginResult> {
     const validation = loginSchema.safeParse(rawData)
     if (!validation.success) {
       const firstError = validation.error.issues[0]
-      console.error('Login validation failed', {
-        email,
-        error: firstError?.message ?? 'Invalid input'
-      })
-      return { error: firstError?.message ?? 'Invalid input' }
+      const errorMessage = firstError?.message ?? 'Invalid input'
+      logger.error(errorMessage, 'validation', { email })
+      return { success: false, error: errorMessage }
     }
 
     const { email: validatedEmail, password } = validation.data
@@ -39,28 +35,28 @@ export async function login(formData: FormData): Promise<LoginResult> {
     })
 
     if (error) {
-      console.error('Login authentication failed', {
+      logAuthEvent('auth_failure', {
+        operationName: 'login',
         email: validatedEmail,
-        errorCode: error.code,
-        error: error.message
+        reason: error.message,
+        success: false,
       })
+      logger.error(error.message, 'auth', { email: validatedEmail })
       // SECURITY: Use generic error message to prevent user enumeration attacks
-      return { error: 'Invalid email or password' }
+      return { success: false, error: 'Invalid email or password' }
     }
 
-    console.log('Login successful', {
-      email: validatedEmail,
+    logAuthEvent('login', {
+      operationName: 'login',
       userId: data.user?.id,
-      timestamp: new Date().toISOString()
+      email: validatedEmail,
+      success: true,
     })
+    logger.success({ userId: data.user?.id, email: validatedEmail })
 
     redirect('/dashboard')
   } catch (error) {
-    console.error('Login unexpected error', {
-      email,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
-    return { error: 'An unexpected error occurred. Please try again.' }
+    logger.error(error instanceof Error ? error : String(error), 'system', { email })
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }

@@ -9,4 +9,4 @@ export async function RolesManagement() {
 
   return <RolesClient roles={roles} availableStaff={staff} />
 }
-export * from './types'
+export * from './api/types'

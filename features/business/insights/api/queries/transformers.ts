@@ -1,13 +1,14 @@
 import 'server-only'
-import type { CustomerMetrics } from '../../types'
+import type { CustomerMetrics } from '../../api/types'
 import type {
   AppointmentWithProfile,
   CustomerAggregate,
   ReviewSummary,
   ServiceAggregation,
-} from '../types'
+} from '../../api/types'
 import { calculateSegment } from '@/features/business/insights/utils/insights'
 import { createOperationLogger } from '@/lib/observability'
+import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 
 export function groupAppointmentsByCustomer(
   appointments: AppointmentWithProfile[],
@@ -144,14 +145,14 @@ export function buildMetricsList(
           ) ?? 'N/A'
         : 'N/A'
 
-    const lifetimeValue = totalVisits * 75
+    const lifetimeValue = totalVisits * ANALYTICS_CONFIG.DEFAULT_AVERAGE_SERVICE_PRICE
     const cancellationRate =
       totalAppointments > 0
-        ? (cancelledAppointments.length / totalAppointments) * 100
+        ? (cancelledAppointments.length / totalAppointments) * ANALYTICS_CONFIG.PERCENTAGE_MULTIPLIER
         : 0
     const noShowRate =
       totalAppointments > 0
-        ? (noShowAppointments.length / totalAppointments) * 100
+        ? (noShowAppointments.length / totalAppointments) * ANALYTICS_CONFIG.PERCENTAGE_MULTIPLIER
         : 0
 
     const segment = calculateSegment({

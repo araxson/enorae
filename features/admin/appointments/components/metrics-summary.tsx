@@ -1,6 +1,6 @@
 import { Activity, CalendarCheck, CalendarX, Clock4, DollarSign, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import type { AppointmentSnapshot } from '@/features/admin/appointments/types'
+import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
 import {
   Item,
   ItemActions,

@@ -19,6 +19,13 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
   const [roleFilter, setRoleFilter] = useState('all')
   const [backgroundFilter, setBackgroundFilter] = useState<BackgroundStatus | 'all'>('all')
 
+  const clearFilters = () => {
+    setSearch('')
+    setRiskFilter('all')
+    setRoleFilter('all')
+    setBackgroundFilter('all')
+  }
+
   const roleOptions = useMemo(() => {
     const roles = new Set<string>()
     staff.forEach((member: StaffWithMetrics) => {
@@ -51,6 +58,7 @@ export function StaffClient({ staff, stats, highRiskStaff, verificationQueue, to
         backgroundFilter={backgroundFilter}
         onBackgroundFilterChange={setBackgroundFilter}
         roleOptions={roleOptions}
+        onClearFilters={clearFilters}
       />
 
       <div className="grid gap-4 lg:grid-cols-3">

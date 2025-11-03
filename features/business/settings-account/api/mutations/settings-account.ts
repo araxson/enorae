@@ -3,16 +3,16 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger, logError } from '@/lib/observability'
 
 /**
  * Update user password
  */
 export async function updatePassword(currentPassword: string, newPassword: string) {
-  const logger = createOperationLogger('updatePassword', {})
+  const session = await requireAuth()
+  const logger = createOperationLogger('updatePassword', { userId: session.user.id })
   logger.start()
 
-  const session = await requireAuth()
   const supabase = await createClient()
 
   // Verify current password by re-authenticating
@@ -22,6 +22,13 @@ export async function updatePassword(currentPassword: string, newPassword: strin
   })
 
   if (signInError) {
+    logError('Password verification failed during password update', {
+      operationName: 'updatePassword',
+      userId: session.user.id,
+      error: 'Current password incorrect',
+      errorCategory: 'auth',
+    })
+    logger.error('Current password incorrect', 'auth', { userId: session.user.id })
     throw new Error('Current password is incorrect')
   }
 
@@ -30,7 +37,12 @@ export async function updatePassword(currentPassword: string, newPassword: strin
     password: newPassword,
   })
 
-  if (updateError) throw updateError
+  if (updateError) {
+    logger.error(updateError, 'auth', { userId: session.user.id })
+    throw updateError
+  }
+
+  logger.success({ userId: session.user.id })
 
   return { success: true }
 }
@@ -39,14 +51,25 @@ export async function updatePassword(currentPassword: string, newPassword: strin
  * Update user email
  */
 export async function updateEmail(newEmail: string) {
-  await requireAuth()
+  const session = await requireAuth()
+  const logger = createOperationLogger('updateEmail', {
+    userId: session.user.id,
+    newEmail,
+  })
+  logger.start()
+
   const supabase = await createClient()
 
   const { error } = await supabase.auth.updateUser({
     email: newEmail,
   })
 
-  if (error) throw error
+  if (error) {
+    logger.error(error, 'auth', { userId: session.user.id, newEmail })
+    throw error
+  }
+
+  logger.success({ userId: session.user.id, newEmail })
 
   return { success: true, message: 'Verification email sent to new address' }
 }
@@ -133,6 +156,9 @@ export async function updateTwoFactorAuth(enabled: boolean) {
  */
 export async function deleteAccount() {
   const session = await requireAuth()
+  const logger = createOperationLogger('deleteAccount', { userId: session.user.id })
+  logger.start()
+
   const supabase = await createClient()
 
   // Soft delete by marking profile as deleted
@@ -145,7 +171,12 @@ export async function deleteAccount() {
     })
     .eq('id', session.user.id)
 
-  if (error) throw error
+  if (error) {
+    logger.error(error, 'database', { userId: session.user.id })
+    throw error
+  }
+
+  logger.success({ userId: session.user.id })
 
   // Sign out
   await supabase.auth.signOut()

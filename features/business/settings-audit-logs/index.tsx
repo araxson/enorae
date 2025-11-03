@@ -1,2 +1,2 @@
 export { AuditLogsPage as AuditLogs } from './components'
-export * from './types'
+export * from './api/types'

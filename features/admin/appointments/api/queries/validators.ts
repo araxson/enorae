@@ -1,11 +1,11 @@
 import 'server-only'
 import { differenceInHours, differenceInMinutes, parseISO } from 'date-fns'
 import { randomUUID } from 'node:crypto'
-import type { AppointmentRow } from '@/features/admin/appointments/types'
+import type { AppointmentRow } from '@/features/admin/appointments/api/types'
 import type {
   FraudAlert,
   DisputeCandidate,
-} from '@/features/admin/appointments/types'
+} from '@/features/admin/appointments/api/types'
 
 const HOURS_IN_DAY = 24
 const MINUTES_PER_HOUR = 60

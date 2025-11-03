@@ -1,5 +1,5 @@
 import 'server-only'
-import type { AdminMessageRow, MessageRow } from '../types'
+import type { AdminMessageRow, MessageRow } from '../../api/types'
 import { toTimestamp } from './utils'
 
 export const buildThreadMap = (threads: AdminMessageRow[]): Map<string, AdminMessageRow> => {

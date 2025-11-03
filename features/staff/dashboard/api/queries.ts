@@ -2,7 +2,7 @@ import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import type { StaffView } from '@/features/staff/profile'
-import type { AppointmentWithDetails } from '@/features/shared/appointments/types'
+import type { AppointmentWithDetails } from '@/features/shared/appointments/api/types'
 import { getDateRanges } from '@/lib/utils/dates'
 import { getClientRetentionMetrics, type ClientRetentionMetrics } from '@/features/staff/clients/api/queries'
 
