@@ -1,4 +1,4 @@
-import { memo } from 'react'
+
 import { AlertTriangle } from 'lucide-react'
 
 import {
@@ -14,7 +14,7 @@ type AnomalyScoreCardProps = {
   anomalyScore: number
 }
 
-export const AnomalyScoreCard = memo(function AnomalyScoreCard({ anomalyScore }: AnomalyScoreCardProps) {
+export function AnomalyScoreCard({ anomalyScore }: AnomalyScoreCardProps) {
   const statusMessage = anomalyScore > 0.7 ? 'High anomaly detected' : 'Normal operations'
 
   return (
@@ -35,4 +35,4 @@ export const AnomalyScoreCard = memo(function AnomalyScoreCard({ anomalyScore }:
       </ItemContent>
     </Item>
   )
-})
+}

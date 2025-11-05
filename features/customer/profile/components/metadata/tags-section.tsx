@@ -53,15 +53,13 @@ export function TagsSection({
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Tag className="size-4" aria-hidden="true" />
+                  <Tag className="size-5" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No tags yet</EmptyTitle>
-                <EmptyDescription>
-                  Add quick labels to highlight your preferences.
-                </EmptyDescription>
+                <EmptyDescription>Add quick labels to highlight your preferences.</EmptyDescription>
               </EmptyHeader>
             </Empty>
-          ) : (
+         ) : (
             <ItemGroup className="gap-2">
               {tags.map((tag) => (
                 <Item key={tag} variant="outline" size="sm">

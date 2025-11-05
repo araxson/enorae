@@ -24,7 +24,10 @@ export async function createTimeOffRequest(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: result.error.flatten().fieldErrors
+      }
     }
 
     const data = result.data

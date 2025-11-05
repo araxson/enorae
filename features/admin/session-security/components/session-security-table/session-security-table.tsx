@@ -39,7 +39,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
       formData.append('sessionId', sessionId)
       formData.append('reason', `Quarantine initiated by admin for ${email}`)
       const result = await quarantineSession(formData)
-      if (result.error) {
+      if ('error' in result) {
         toast.error(result.error)
       } else {
         toast.success('Session quarantined')
@@ -56,7 +56,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
       formData.append('userId', userId)
       formData.append('reason', `MFA requirement enforced for ${email}`)
       const result = await requireMfaForUser(formData)
-      if (result.error) {
+      if ('error' in result) {
         toast.error(result.error)
       } else {
         toast.success('MFA requirement set')
@@ -74,7 +74,7 @@ export function SessionSecurityTable({ records }: SessionSecurityTableProps) {
       formData.append('sessionId', sessionId)
       formData.append('reason', `Session evicted by admin for security`)
       const result = await evictSession(formData)
-      if (result.error) {
+      if ('error' in result) {
         toast.error(result.error)
       } else {
         toast.success('Session evicted')

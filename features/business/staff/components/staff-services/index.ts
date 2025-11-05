@@ -1,1 +1,8 @@
 export { StaffServicesManager } from './manager'
+export * from './assign-services-dialog-content'
+export * from './assign-services-dialog'
+export * from './assigned-services-list'
+export * from './bulk-assign-section'
+export * from './single-assign-section'
+export * from './staff-services-list'
+export * from './types'

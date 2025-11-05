@@ -31,9 +31,21 @@ export async function bulkAssignRoles(
 
     const validation = bulkSchema.safeParse(parsed)
     if (!validation.success) {
+      const flattenedErrors = validation.error.flatten().fieldErrors
+      const fieldErrors: Record<string, string[]> = {}
+
+      // Safely build the fieldErrors object
+      for (const [key, value] of Object.entries(flattenedErrors)) {
+        if (Array.isArray(value)) {
+          fieldErrors[key] = value
+        }
+      }
+
+      const firstError = Object.values(fieldErrors)[0]?.[0]
       return {
         success: false,
-        error: validation.error.issues[0]?.message || 'Invalid bulk payload',
+        error: firstError || 'Invalid bulk payload',
+        fieldErrors
       }
     }
 

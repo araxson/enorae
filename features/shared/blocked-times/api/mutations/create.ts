@@ -16,12 +16,22 @@ const blockedTimeSchema = z.object({
   recurrence_pattern: z.string().optional(),
 })
 
-export async function createBlockedTime(input: z.infer<typeof blockedTimeSchema>) {
+type CreateResult<T = unknown> = { data: T; error: null } | { error: string }
+
+export async function createBlockedTime(input: z.infer<typeof blockedTimeSchema>): Promise<CreateResult> {
   const logger = createOperationLogger('createBlockedTime', {})
   logger.start()
 
   try {
-    const validated = blockedTimeSchema.parse(input)
+    const result = blockedTimeSchema.safeParse(input)
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
     const supabase = await resolveClient()
     const session = await resolveSessionRoles()
 

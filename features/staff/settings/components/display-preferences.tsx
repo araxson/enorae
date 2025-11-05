@@ -14,6 +14,8 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { toast } from 'sonner'
 
 interface DisplayPreferencesProps {
   initialPreferences: DisplayPreferences
@@ -22,6 +24,7 @@ interface DisplayPreferencesProps {
 export function DisplayPreferences({ initialPreferences }: DisplayPreferencesProps) {
   const [preferences, setPreferences] = useState(initialPreferences)
   const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (key: keyof DisplayPreferences, value: string) => {
     setPreferences(prev => ({ ...prev, [key]: value }))
@@ -30,9 +33,13 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
   const handleSave = async () => {
     try {
       setIsSaving(true)
+      setError(null)
       await updateUserPreferences({ display_preferences: preferences })
+      toast.success('Display preferences saved')
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to save preferences')
+      const message = error instanceof Error ? error.message : 'Failed to save preferences'
+      setError(message)
+      toast.error(message)
     } finally {
       setIsSaving(false)
     }
@@ -45,6 +52,12 @@ export function DisplayPreferences({ initialPreferences }: DisplayPreferencesPro
         <CardDescription>Customize your interface.</CardDescription>
       </CardHeader>
       <CardContent>
+        {error ? (
+          <Alert variant="destructive" className="mb-4">
+            <AlertTitle>Unable to save preferences</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
         <FieldSet>
           <FieldLegend>Interface options</FieldLegend>
           <Field>

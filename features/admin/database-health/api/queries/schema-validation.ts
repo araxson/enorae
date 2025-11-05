@@ -27,19 +27,19 @@ export async function getSchemaValidation(): Promise<SchemaValidationSnapshot> {
   const [rlsRes, pkRes] = await Promise.all([
     supabase
       .from('public_tables_without_rls_view')
-      .select('*')
+      .select('schemaname, tablename, rls_status')
       .order('schemaname', { ascending: true }),
     supabase
       .from('tables_without_primary_keys_view')
-      .select('*')
+      .select('schema_name, table_name, row_count')
       .order('schema_name', { ascending: true }),
   ])
 
   if (rlsRes.error) throw rlsRes.error
   if (pkRes.error) throw pkRes.error
 
-  const tablesWithoutRLS = (rlsRes.data ?? []) as TableWithoutRLS[]
-  const tablesWithoutPK = (pkRes.data ?? []) as TableWithoutPK[]
+  const tablesWithoutRLS = (rlsRes.data ?? []) as unknown as TableWithoutRLS[]
+  const tablesWithoutPK = (pkRes.data ?? []) as unknown as TableWithoutPK[]
 
   const criticalSecurityIssues = tablesWithoutRLS.filter(
     (t) => t['rls_status'] === 'disabled' || t['rls_status'] === 'missing'

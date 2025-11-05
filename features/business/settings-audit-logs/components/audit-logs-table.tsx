@@ -79,7 +79,7 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
             <ItemTitle>Audit log entries</ItemTitle>
             <ItemDescription>Showing {logs.length} entries</ItemDescription>
           </div>
-          <Button variant="outline" size="sm" onClick={exportLogs} className="gap-2">
+          <Button variant="outline" size="sm" onClick={exportLogs}>
             <Download className="size-4" />
             Export CSV
           </Button>
@@ -146,7 +146,6 @@ export function AuditLogsTable({ logs, onExport }: AuditLogsTableProps) {
                           variant="ghost"
                           size="sm"
                           onClick={() => setSelectedLog(log)}
-                          className="gap-2"
                         >
                           <Eye className="size-4" />
                           View

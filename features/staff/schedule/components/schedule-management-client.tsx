@@ -6,6 +6,16 @@ import { ScheduleFormDialog, type ScheduleFormData } from './schedule-form-dialo
 import { createStaffSchedule, updateStaffSchedule, deleteStaffSchedule } from '@/features/staff/schedule/api/mutations'
 import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 import type { DayOfWeek } from '@/features/staff/schedule/api/constants'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 
 interface ScheduleManagementClientProps {
   schedules: StaffScheduleWithStaff[]
@@ -17,6 +27,7 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
   const [isPending, startTransition] = useTransition()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [editingSchedule, setEditingSchedule] = useState<StaffScheduleWithStaff | null>(null)
+  const [scheduleToDelete, setScheduleToDelete] = useState<StaffScheduleWithStaff | null>(null)
 
   const dayOptions: readonly DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
   const isDayOfWeek = (value: string): value is DayOfWeek => dayOptions.some((option) => option === value)
@@ -32,9 +43,12 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
 
   const [formData, setFormData] = useState<ScheduleFormData>({ ...DEFAULT_FORM_STATE })
 
-  const handleAdd = () => {
+  const handleAdd = (day?: DayOfWeek) => {
     setEditingSchedule(null)
-    setFormData({ ...DEFAULT_FORM_STATE })
+    setFormData({
+      ...DEFAULT_FORM_STATE,
+      day_of_week: day ?? DEFAULT_FORM_STATE.day_of_week,
+    })
     setIsDialogOpen(true)
   }
 
@@ -52,12 +66,18 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
     setIsDialogOpen(true)
   }
 
-  const handleDelete = (scheduleId: string) => {
-    if (confirm('Are you sure you want to delete this schedule?')) {
-      startTransition(async () => {
-        await deleteStaffSchedule(scheduleId)
-      })
-    }
+  const handleDelete = (schedule: StaffScheduleWithStaff) => {
+    setScheduleToDelete(schedule)
+  }
+
+  const formatDayName = (day?: string | null) => {
+    if (!day) return 'selected'
+    return day.charAt(0).toUpperCase() + day.slice(1)
+  }
+
+  const formatTime = (time?: string | null) => {
+    if (!time) return '--:--'
+    return time.slice(0, 5)
   }
 
   const handleSubmit = (data: ScheduleFormData) => {
@@ -103,6 +123,44 @@ export function ScheduleManagementClient({ schedules, staffId, salonId }: Schedu
         isPending={isPending}
         onSubmit={handleSubmit}
       />
+
+      <AlertDialog
+        open={!!scheduleToDelete}
+        onOpenChange={(open) => {
+          if (!open) {
+            setScheduleToDelete(null)
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove this schedule?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {scheduleToDelete
+                ? `This will remove the ${formatDayName(scheduleToDelete.day_of_week)} schedule starting at ${formatTime(scheduleToDelete.start_time)} for ${scheduleToDelete.staff?.profiles?.username ?? 'this staff member'}.`
+                : 'This will remove the selected schedule entry.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Keep schedule</AlertDialogCancel>
+            <AlertDialogAction
+              disabled={isPending}
+              onClick={() => {
+                if (!scheduleToDelete?.id) {
+                  return
+                }
+
+                startTransition(async () => {
+                  await deleteStaffSchedule(scheduleToDelete.id)
+                  setScheduleToDelete(null)
+                })
+              }}
+            >
+              {isPending ? 'Removing…' : 'Delete schedule'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

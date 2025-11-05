@@ -28,13 +28,13 @@ export async function getNotificationQueue(
 
   const { data, error } = await supabase
     .from('communication_notification_queue_view')
-    .select('*')
+    .select('id, notification_type, recipient_id, recipient_email, status, scheduled_for, created_at, payload')
     .order('created_at', { ascending: true })
     .limit(limit)
 
   if (error) throw error
 
-  const queueItems = (data ?? []) as NotificationQueue[]
+  const queueItems = (data ?? []) as unknown as NotificationQueue[]
 
   const notificationsByType: Record<string, number> = {}
   const channelDistribution: Record<string, number> = {}

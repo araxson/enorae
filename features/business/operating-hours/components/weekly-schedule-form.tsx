@@ -1,11 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useActionState, useEffect } from 'react'
 import { toast } from 'sonner'
-import { bulkUpdateOperatingHours } from '@/features/business/operating-hours/api/mutations'
+import { bulkUpdateOperatingHoursAction } from '@/features/business/operating-hours/api/mutations/operating-hours-migrated'
 import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Accordion } from '@/components/ui/accordion'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
@@ -26,13 +24,24 @@ interface WeeklyScheduleFormProps {
   initialHours: OperatingHour[]
 }
 
+interface FormState {
+  message?: string
+  errors?: Record<string, string[]>
+  error?: string
+  success?: boolean
+}
+
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleFormProps) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+function SubmitButton({ disabled }: { disabled: boolean }) {
+  return (
+    <Button type="submit" disabled={disabled}>
+      <span>Save Operating Hours</span>
+    </Button>
+  )
+}
 
+export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleFormProps) {
   // Initialize state with existing hours or defaults
   const [hours, setHours] = useState<
     Array<{
@@ -53,6 +62,20 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
     })
   )
 
+  const [state, formAction, isPending] = useActionState(
+    bulkUpdateOperatingHoursAction,
+    {} as FormState
+  )
+
+  // Show toast notifications based on state
+  useEffect(() => {
+    if (state?.success) {
+      toast.success(state.message || 'Operating hours saved successfully!')
+    } else if (state?.error) {
+      toast.error(state.error)
+    }
+  }, [state])
+
   function updateDay(
     dayIndex: number,
     field: 'open_time' | 'close_time' | 'is_closed',
@@ -63,24 +86,6 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
     )
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
-
-    const result = await bulkUpdateOperatingHours(salonId, hours)
-
-    setIsLoading(false)
-
-    if (result.error) {
-      setError(result.error)
-      toast.error(result.error)
-    } else {
-      toast.success('Operating hours saved successfully!')
-      router.refresh()
-    }
-  }
-
   return (
     <Card>
       <CardHeader>
@@ -89,14 +94,40 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
           Set your salon&apos;s operating hours for each day of the week
         </CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form action={formAction} aria-describedby={state?.error ? 'form-error' : undefined}>
+        {/* Screen reader announcement for form status */}
+        <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+          {isPending && 'Form is submitting, please wait'}
+          {state?.success && 'Operating hours saved successfully'}
+        </div>
+
+        {/* Hidden input for salon ID */}
+        <input type="hidden" name="salonId" value={salonId} />
+
+        {/* Hidden inputs for hours data */}
+        {hours.map((dayHours, index) => (
+          <div key={index}>
+            <input type="hidden" name={`day_${index}_open_time`} value={dayHours.open_time} />
+            <input type="hidden" name={`day_${index}_close_time`} value={dayHours.close_time} />
+            <input type="hidden" name={`day_${index}_is_closed`} value={String(dayHours.is_closed)} />
+          </div>
+        ))}
+
         <CardContent>
           <div className="flex flex-col gap-4">
-            {error && (
-              <Alert variant="destructive">
+            {state?.error && (
+              <Alert variant="destructive" role="alert" id="form-error">
                 <AlertCircle className="size-4" />
                 <AlertTitle>Failed to save hours</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{state.error}</AlertDescription>
+              </Alert>
+            )}
+
+            {state?.message && !state?.success && (
+              <Alert variant="destructive" role="alert">
+                <AlertCircle className="size-4" />
+                <AlertTitle>Validation Error</AlertTitle>
+                <AlertDescription>{state.message}</AlertDescription>
               </Alert>
             )}
 
@@ -110,6 +141,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
                     dayIndex={index}
                     dayHours={dayHours}
                     onUpdate={updateDay}
+                    disabled={isPending}
                   />
                 )
               })}
@@ -118,16 +150,7 @@ export function WeeklyScheduleForm({ salonId, initialHours }: WeeklyScheduleForm
         </CardContent>
         <CardFooter>
           <ButtonGroup aria-label="Form actions">
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Spinner className="size-4" />
-                  <span>Saving...</span>
-                </>
-              ) : (
-                <span>Save Operating Hours</span>
-              )}
-            </Button>
+            <SubmitButton disabled={isPending} />
           </ButtonGroup>
         </CardFooter>
       </form>

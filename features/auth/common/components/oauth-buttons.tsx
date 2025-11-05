@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 
-export function OAuthButtons() {
+export function OAuthButtons(): React.ReactElement {
   return (
     <div className="grid grid-cols-3 gap-4">
       <Button variant="outline" type="button" aria-label="Login with Apple">

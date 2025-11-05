@@ -41,7 +41,7 @@ export async function createRateLimitRule(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = createRuleSchema.parse({
+    const result = createRuleSchema.safeParse({
       ruleName: formData.get('ruleName')?.toString(),
       endpoint: formData.get('endpoint')?.toString(),
       maxRequests: Number(formData.get('maxRequests')),
@@ -49,6 +49,14 @@ export async function createRateLimitRule(formData: FormData) {
       appliesTo: formData.get('appliesTo')?.toString() || 'all',
       description: formData.get('description')?.toString() || '',
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     const { data: newRule, error: insertError} = await supabase
       .schema('security')
@@ -104,7 +112,7 @@ export async function updateRateLimitRule(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = updateRuleSchema.parse({
+    const result = updateRuleSchema.safeParse({
       ruleId: formData.get('ruleId')?.toString(),
       maxRequests: formData.get('maxRequests')
         ? Number(formData.get('maxRequests'))
@@ -114,6 +122,14 @@ export async function updateRateLimitRule(formData: FormData) {
         : undefined,
       description: formData.get('description')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     const updatePayload: Record<string, number | string> = {}
     if (validated.maxRequests) updatePayload['max_requests'] = validated.maxRequests
@@ -162,10 +178,18 @@ export async function toggleRateLimitRule(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = toggleRuleSchema.parse({
+    const result = toggleRuleSchema.safeParse({
       ruleId: formData.get('ruleId')?.toString(),
       isActive: formData.get('isActive') === 'true',
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     const { error: updateError } = await supabase
       .schema('security')
@@ -209,9 +233,17 @@ export async function deleteRateLimitRule(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = deleteRuleSchema.parse({
+    const result = deleteRuleSchema.safeParse({
       ruleId: formData.get('ruleId')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     const { error: deleteError } = await supabase
       .schema('security')

@@ -31,41 +31,13 @@
  * ```
  */
 
-// Secure session verification (primary exports)
-export {
-  verifySession,
-  requireAuth,
-  requireRole,
-  requireAnyRole,
-  getUserId,
-  getUserRole,
-  type Session,
-} from './session'
+// Core authentication
+export * from './session'
 
-// Role-based permissions (secondary exports)
-export {
-  isPlatformAdmin,
-  isBusinessUser,
-  isStaffUser,
-  isSeniorStaff,
-  getStaffRoleLevel,
-  isCustomer,
-  canAccessRoute,
-  getDefaultRoute,
-  canAccessSalon,
-  getSalonContext,
-  getUserSalonIds,
-  getUserSalonId,
-  setActiveSalonId,
-  clearActiveSalonId,
-  requireUserSalonId,
-  ROLE_HIERARCHY,
-  DEFAULT_ROUTES,
-  ROLE_GROUPS,
-} from './permissions'
+// Role-based authorization
+export * from './permissions'
 
-// Query guards (centralized auth checks)
-export { guardQuery, guardQueryUser, guardQueryWithMessage, type GuardedQuery } from './guards-query'
-
-// Legacy exports (marked for deprecation)
-export { hasRole, hasAnyRole } from './permissions'
+// Query guards - NOTE: guards-query.ts uses 'server-only' and should not be
+// exported from this barrel. Import directly from './guards-query' only in server files.
+// Export only the type that client components might need:
+export type { GuardedQuery } from './guards-query'

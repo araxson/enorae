@@ -4,12 +4,15 @@ import { revalidatePath } from 'next/cache'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole } from '@/lib/auth'
-import { sanitizeAdminText } from '@/features/admin/admin-common'
+import { sanitizeAdminText } from '@/features/admin/common'
 
 import { UUID_REGEX } from '../../constants'
 import { logMutation } from '@/lib/observability/query-logger'
 
-export async function deleteUserPermanently(formData: FormData) {
+export async function deleteUserPermanently(formData: FormData): Promise<
+  | { error: string }
+  | { success: true; message: string }
+> {
   const userId = formData.get('userId')?.toString()
   const logger = logMutation('deleteUserPermanently', { userId })
 

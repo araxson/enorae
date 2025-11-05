@@ -1,7 +1,7 @@
 import 'server-only'
 
 import type { Database } from '@/lib/types/database.types'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import { getStaffById, type EnrichedStaffProfile } from '@/features/business/staff/api/queries'
 import { createClient } from '@/lib/supabase/server'
 import { createOperationLogger } from '@/lib/observability'
@@ -39,7 +39,7 @@ async function getStaffServices(staffId: string): Promise<StaffServiceRow[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('staff_services_view')
-    .select('*')
+    .select('id, staff_id, service_id, service_name, is_active, created_at')
     .eq('staff_id', staffId)
     .returns<StaffServiceRow[]>()
 
@@ -51,7 +51,7 @@ async function getAvailableServices(salonId: string): Promise<ServiceRow[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, name, description, salon_id, category_id, duration_minutes, is_active, created_at')
     .eq('salon_id', salonId)
     .returns<ServiceRow[]>()
 

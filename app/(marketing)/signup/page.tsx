@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { SignupPage } from '@/features/auth'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({ title: 'Sign Up', description: 'Create your Enorae account to start booking salon appointments.', noIndex: true })

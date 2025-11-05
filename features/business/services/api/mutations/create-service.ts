@@ -14,11 +14,11 @@ import {
   buildServiceInsert,
   buildPricingInsert,
   buildBookingRulesInsert,
-  rollbackService,
   type ServiceFormData,
   type ServicePricingData,
   type ServiceBookingRulesData,
 } from './create-service-helpers'
+import { rollbackService } from './create-service-rollback' // Server-only function - imported directly
 import type { MutationOptions } from '@/lib/types/mutations'
 
 export type { ServiceFormData, ServicePricingData, ServiceBookingRulesData }
@@ -39,9 +39,29 @@ export async function createService(
     throw new Error('Unauthorized: Not your salon')
   }
 
-  const validatedService = serviceSchema.parse(serviceData)
-  const validatedPricing = pricingSchema.parse(pricingData)
-  const validatedBooking = bookingRulesSchema.parse(bookingRules)
+  const serviceResult = serviceSchema.safeParse(serviceData)
+  if (!serviceResult.success) {
+    const fieldErrors = serviceResult.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    throw new Error(firstError ?? 'Service validation failed')
+  }
+  const validatedService = serviceResult.data
+
+  const pricingResult = pricingSchema.safeParse(pricingData)
+  if (!pricingResult.success) {
+    const fieldErrors = pricingResult.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    throw new Error(firstError ?? 'Pricing validation failed')
+  }
+  const validatedPricing = pricingResult.data
+
+  const bookingResult = bookingRulesSchema.safeParse(bookingRules)
+  if (!bookingResult.success) {
+    const fieldErrors = bookingResult.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    throw new Error(firstError ?? 'Booking rules validation failed')
+  }
+  const validatedBooking = bookingResult.data
 
   if (!validatedService.category_id) {
     logger.error('Missing service category', 'validation')
@@ -54,15 +74,15 @@ export async function createService(
 
   const serviceInsert = buildServiceInsert(salonId, validatedService, slug, session, timestamp)
 
-  const serviceResult = await supabase
+  const serviceDbResult = await supabase
     .schema('catalog')
     .from('services')
     .insert(serviceInsert)
     .select('id')
     .single()
 
-  const serviceError = serviceResult.error
-  const service = serviceResult.data as { id: string } | null
+  const serviceError = serviceDbResult.error
+  const service = serviceDbResult.data as { id: string } | null
 
   if (serviceError || !service) {
     logger.error('Service insert failed', 'database', { error: serviceError })

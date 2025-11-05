@@ -65,13 +65,11 @@ export function RequestCard({ request, isStaffView = false }: RequestCardProps) 
   }
 
   const handleCancel = () => {
-    if (confirm('Are you sure you want to cancel this time-off request?')) {
-      startTransition(async () => {
-        const formData = new FormData()
-        formData.append('id', request['id'] || '')
-        await cancelTimeOffRequest(formData)
-      })
-    }
+    startTransition(async () => {
+      const formData = new FormData()
+      formData.append('id', request['id'] || '')
+      await cancelTimeOffRequest(formData)
+    })
   }
 
   const getStatusVariant = (status: string) => {

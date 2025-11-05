@@ -1,4 +1,4 @@
-import { memo } from 'react'
+
 import { Calendar } from 'lucide-react'
 
 import {
@@ -16,7 +16,7 @@ type BusiestDayCardProps = {
 
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-export const BusiestDayCard = memo(function BusiestDayCard({ busiestDay }: BusiestDayCardProps) {
+export function BusiestDayCard({ busiestDay }: BusiestDayCardProps) {
   const busiestDayName = DAY_NAMES[busiestDay] || 'Unknown'
 
   return (
@@ -35,4 +35,4 @@ export const BusiestDayCard = memo(function BusiestDayCard({ busiestDay }: Busie
       </ItemContent>
     </Item>
   )
-})
+}

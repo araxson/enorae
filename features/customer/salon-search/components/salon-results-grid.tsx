@@ -14,6 +14,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Button } from '@/components/ui/button'
 
 interface SalonResultsGridProps {
   results: SalonSearchResult[]
@@ -53,15 +54,19 @@ function SalonCard({ salon, featured = false }: SalonCardProps) {
           {isFeaturedSalon || salon.is_verified ? (
             <div className="flex flex-wrap items-center gap-2">
               {salon.is_verified ? (
-                <Badge variant="outline" className="inline-flex items-center gap-1">
-                  <Shield className="size-3.5" aria-hidden="true" />
-                  Verified
+                <Badge variant="outline">
+                  <span className="flex items-center gap-1">
+                    <Shield className="size-3.5" aria-hidden="true" />
+                    Verified
+                  </span>
                 </Badge>
               ) : null}
               {isFeaturedSalon ? (
-                <Badge variant="secondary" className="inline-flex items-center gap-1">
-                  <Sparkles className="size-3.5" aria-hidden="true" />
-                  Featured
+                <Badge variant="secondary">
+                  <span className="flex items-center gap-1">
+                    <Sparkles className="size-3.5" aria-hidden="true" />
+                    Featured
+                  </span>
                 </Badge>
               ) : null}
             </div>
@@ -169,17 +174,21 @@ export function SalonResultsGrid({ results, featuredSalons, searchTerm }: SalonR
       {/* No Results */}
       {showNoResults && (
         <Card>
-          <CardContent className="p-6">
+          <CardContent>
             <Empty>
-              <EmptyMedia variant="icon">
-                <Search className="size-6" />
-              </EmptyMedia>
               <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Search className="size-5" aria-hidden="true" />
+                </EmptyMedia>
                 <EmptyTitle>No salons found</EmptyTitle>
-                <EmptyDescription>Nothing matches your current filters.</EmptyDescription>
+                <EmptyDescription>
+                  Nothing matches your current filters.
+                </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
-                Adjust your search term or remove filters to broaden the results.
+                <Button variant="outline" size="sm" asChild>
+                  <Link href="/customer/search">Reset search</Link>
+                </Button>
               </EmptyContent>
             </Empty>
           </CardContent>

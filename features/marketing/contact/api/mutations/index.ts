@@ -1,2 +1,1 @@
-
 export { submitContactMessage } from './submit'

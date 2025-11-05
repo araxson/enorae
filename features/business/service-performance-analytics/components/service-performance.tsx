@@ -5,7 +5,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import {
   getServiceCosts,
   getServiceDurationAccuracy,

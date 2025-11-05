@@ -19,9 +19,17 @@ export async function refreshTableStatistics(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = refreshStatsSchema.parse({
+    const result = refreshStatsSchema.safeParse({
       tableName: formData.get('tableName')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // NOTE: refresh_statistics RPC function does not exist in database
     // This is a database maintenance operation that requires an RPC function to be created

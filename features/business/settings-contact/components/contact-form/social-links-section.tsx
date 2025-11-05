@@ -21,6 +21,8 @@ type SocialLinks = {
 
 type SocialLinksSectionProps = {
   initialValues: SocialLinks
+  errors?: Record<string, string[]>
+  isPending?: boolean
 }
 
 const SOCIAL_FIELDS: Array<{ id: keyof SocialLinks; label: string; placeholder: string }> = [
@@ -32,7 +34,7 @@ const SOCIAL_FIELDS: Array<{ id: keyof SocialLinks; label: string; placeholder: 
   { id: 'youtube_url', label: 'YouTube', placeholder: 'https://youtube.com/@yoursalon' },
 ]
 
-export function SocialLinksSection({ initialValues }: SocialLinksSectionProps) {
+export function SocialLinksSection({ initialValues, errors, isPending }: SocialLinksSectionProps) {
   return (
     <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {SOCIAL_FIELDS.map(({ id, label, placeholder }) => (
@@ -45,7 +47,15 @@ export function SocialLinksSection({ initialValues }: SocialLinksSectionProps) {
               type="url"
               defaultValue={initialValues[id] ?? ''}
               placeholder={placeholder}
+              aria-invalid={!!errors?.[id]}
+              aria-describedby={errors?.[id] ? `${id}-error` : undefined}
+              disabled={isPending}
             />
+            {errors?.[id] && (
+              <p id={`${id}-error`} className="text-sm text-destructive mt-1" role="alert">
+                {errors[id][0]}
+              </p>
+            )}
           </FieldContent>
         </Field>
       ))}

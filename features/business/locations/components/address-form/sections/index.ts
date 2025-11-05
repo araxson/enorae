@@ -1,5 +1,0 @@
-export { StreetAddressSection } from './street-address-section'
-export { LocationDetailsSection } from './location-details-section'
-export { CoordinatesSection } from './coordinates-section'
-export { AdditionalInfoSection } from './additional-info-section'
-export { MapIntegrationSection } from './map-integration-section'

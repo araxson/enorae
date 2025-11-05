@@ -15,7 +15,7 @@ export function ResendOTP({
   onResend,
   cooldownSeconds = 60,
   disabled = false,
-}: ResendOTPProps) {
+}: ResendOTPProps): React.ReactElement {
   const [countdown, setCountdown] = useState(0)
   const [isResending, setIsResending] = useState(false)
   const { toast } = useToast()

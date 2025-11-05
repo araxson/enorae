@@ -79,7 +79,7 @@ export async function getAllSalons(): Promise<SalonsResponse> {
 
   const { data, error } = await supabase
     .from('admin_salons_overview_view')
-    .select('*')
+    .select('id, is_accepting_bookings, total_revenue, total_bookings, rating_average, staff_count, created_at')
     .order('created_at', { ascending: false })
 
   if (error) throw error

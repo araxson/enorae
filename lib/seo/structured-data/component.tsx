@@ -1,4 +1,5 @@
 import type { StructuredDataProps } from './schema-types'
+import type { ReactElement } from 'react'
 
 /**
  * Sanitize JSON-LD data to prevent XSS attacks
@@ -15,7 +16,7 @@ function sanitizeJsonLd(data: unknown): string {
     .replace(/&/g, '\\u0026')
 }
 
-export function StructuredData({ data }: { data: StructuredDataProps | StructuredDataProps[] }) {
+export function StructuredData({ data }: { data: StructuredDataProps | StructuredDataProps[] }): ReactElement[] {
   const jsonLd = Array.isArray(data) ? data : [data]
 
   return jsonLd.map((item, index) => (

@@ -34,9 +34,14 @@ interface ScheduleDayRowProps {
     field: 'open_time' | 'close_time' | 'is_closed',
     value: string | boolean
   ) => void
+  disabled?: boolean
+  errors?: Record<string, string[]>
 }
 
-export function ScheduleDayRow({ day, dayIndex, dayHours, onUpdate }: ScheduleDayRowProps) {
+export function ScheduleDayRow({ day, dayIndex, dayHours, onUpdate, disabled, errors }: ScheduleDayRowProps) {
+  const openTimeError = errors?.[`open_time_${dayIndex}`]
+  const closeTimeError = errors?.[`close_time_${dayIndex}`]
+
   return (
     <AccordionItem value={String(dayIndex)}>
       <AccordionTrigger>
@@ -63,8 +68,15 @@ export function ScheduleDayRow({ day, dayIndex, dayHours, onUpdate }: ScheduleDa
                 type="time"
                 value={dayHours.open_time}
                 onChange={(e) => onUpdate(dayIndex, 'open_time', e.target.value)}
-                disabled={dayHours.is_closed}
+                disabled={dayHours.is_closed || disabled}
+                aria-invalid={!!openTimeError}
+                aria-describedby={openTimeError ? `open-${dayIndex}-error` : undefined}
               />
+              {openTimeError && (
+                <p id={`open-${dayIndex}-error`} className="text-sm text-destructive mt-1" role="alert">
+                  {openTimeError[0]}
+                </p>
+              )}
             </FieldContent>
           </Field>
 
@@ -76,8 +88,15 @@ export function ScheduleDayRow({ day, dayIndex, dayHours, onUpdate }: ScheduleDa
                 type="time"
                 value={dayHours.close_time}
                 onChange={(e) => onUpdate(dayIndex, 'close_time', e.target.value)}
-                disabled={dayHours.is_closed}
+                disabled={dayHours.is_closed || disabled}
+                aria-invalid={!!closeTimeError}
+                aria-describedby={closeTimeError ? `close-${dayIndex}-error` : undefined}
               />
+              {closeTimeError && (
+                <p id={`close-${dayIndex}-error`} className="text-sm text-destructive mt-1" role="alert">
+                  {closeTimeError[0]}
+                </p>
+              )}
             </FieldContent>
           </Field>
 
@@ -95,6 +114,7 @@ export function ScheduleDayRow({ day, dayIndex, dayHours, onUpdate }: ScheduleDa
                   id={`closed-${dayIndex}`}
                   checked={dayHours.is_closed}
                   onCheckedChange={(checked) => onUpdate(dayIndex, 'is_closed', checked)}
+                  disabled={disabled}
                 />
               </ItemActions>
             </Item>

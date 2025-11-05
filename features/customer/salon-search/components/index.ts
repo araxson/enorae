@@ -1,6 +1,7 @@
 export { AdvancedSearchClient } from './advanced-search-client'
 export { SalonCard } from './salon-card'
 export { SalonResultsGrid } from './salon-results-grid'
+export { SalonSearchContent } from './salon-search-content'
 export { SearchFilters } from './search-filters'
 export { SearchBarSection } from './search-bar-section'
 export { SearchInputField } from './search-input-field'

@@ -1,16 +1,17 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+/**
+ * DEPRECATED: pricing_rules table does not exist in database.
+ * Dynamic pricing is handled through service_pricing table.
+ * This form is kept for UI consistency but should be migrated to service_pricing.
+ */
+
+import { useActionState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { toast } from 'sonner'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
 import { createPricingRule } from '@/features/business/pricing/api/mutations'
-import { pricingRuleSchema, type PricingRuleSchema } from '../api/schema'
 import {
   Item,
   ItemActions,
@@ -19,54 +20,73 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import type { PricingRulesFormProps } from './pricing-rules-form/types'
+// import type { PricingRulesFormProps } from './pricing-rules-form/types'
+// import { PricingRuleFormFields } from './pricing-rules-form-fields' // DISABLED: File does not exist
+
+type PricingRulesFormProps = {
+  salonId: string
+  services: Array<{ id: string; name: string }>
+  onSuccess?: () => void
+}
 
 export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesFormProps) {
-  const form = useForm({
-    resolver: zodResolver(pricingRuleSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-      rule_type: 'peak_hours' as const,
-      is_active: true,
-      priority: 50,
-      applies_to_service_ids: [],
-      applies_to_staff_ids: [],
-      days_of_week: [],
-      time_ranges: [],
-      adjustment_type: 'percentage' as const,
-      adjustment_value: 0,
-      is_first_time_customer_only: false,
-      is_combinable_with_other_rules: false,
+  type FormState = { success: boolean; message: string; error?: undefined } | { error: string; success?: undefined; message?: undefined }
+
+  const [state, formAction, isPending] = useActionState<FormState, FormData>(
+    async (prevState: FormState, formData: FormData) => {
+      try {
+        const data = {
+          name: formData.get('name') as string,
+          description: formData.get('description') as string,
+          rule_type: formData.get('rule_type') as string,
+          is_active: formData.get('is_active') === 'true',
+          priority: Number(formData.get('priority')),
+          applies_to_service_ids: [],
+          applies_to_staff_ids: [],
+          days_of_week: [],
+          time_ranges: [],
+          adjustment_type: formData.get('adjustment_type') as 'percentage' | 'fixed_amount',
+          adjustment_value: Number(formData.get('adjustment_value')),
+          is_first_time_customer_only: formData.get('is_first_time_customer_only') === 'true',
+          is_combinable_with_other_rules: formData.get('is_combinable_with_other_rules') === 'true',
+        }
+
+        await createPricingRule({
+          salon_id: salonId,
+          rule_type: data.rule_type,
+          rule_name: data.name,
+          service_id: null,
+          multiplier: data.adjustment_type === 'percentage' ? 1 + data.adjustment_value / 100 : 1,
+          fixed_adjustment: data.adjustment_type === 'fixed_amount' ? data.adjustment_value : 0,
+          start_time: null,
+          end_time: null,
+          days_of_week: null,
+          valid_from: null,
+          valid_until: null,
+          customer_segment: data.is_first_time_customer_only ? 'new' : 'all',
+          is_active: data.is_active,
+          priority: data.priority,
+        })
+
+        onSuccess?.()
+        return { success: true, message: 'Pricing rule created successfully' }
+      } catch (error) {
+        return {
+          error: error instanceof Error ? error.message : 'Failed to create pricing rule',
+        }
+      }
     },
-  })
+    { success: false, message: '', error: undefined }
+  )
 
-  const handleSubmit = async (data: PricingRuleSchema) => {
-    try {
-      await createPricingRule({
-        salon_id: salonId,
-        rule_type: data.rule_type,
-        rule_name: data.name,
-        service_id: data.applies_to_service_ids?.[0] || null,
-        multiplier: data.adjustment_type === 'percentage' ? 1 + data.adjustment_value / 100 : 1,
-        fixed_adjustment: data.adjustment_type === 'fixed_amount' ? data.adjustment_value : 0,
-        start_time: data.time_ranges?.[0]?.start_time || null,
-        end_time: data.time_ranges?.[0]?.end_time || null,
-        days_of_week: data.days_of_week && data.days_of_week.length > 0 ? data.days_of_week : null,
-        valid_from: data.valid_from ? new Date(data.valid_from).toISOString() : null,
-        valid_until: data.valid_until ? new Date(data.valid_until).toISOString() : null,
-        customer_segment: data.is_first_time_customer_only ? 'new' : 'all',
-        is_active: data.is_active,
-        priority: data.priority,
-      })
+  const firstErrorRef = useRef<HTMLInputElement>(null)
 
-      toast.success('Pricing rule created successfully')
-      onSuccess?.()
-      form.reset()
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to create pricing rule')
+  // Focus first error field after validation
+  useEffect(() => {
+    if (state?.error && firstErrorRef.current) {
+      firstErrorRef.current.focus()
     }
-  }
+  }, [state?.error])
 
   return (
     <Item variant="outline" className="flex-col gap-6">
@@ -79,161 +99,51 @@ export function PricingRulesForm({ salonId, services, onSuccess }: PricingRulesF
         </div>
       </ItemHeader>
       <ItemContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rule Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Weekend Peak Hours" {...field} />
-                  </FormControl>
-                  <FormDescription>A descriptive name for this pricing rule</FormDescription>
-                  <FormMessage />
-                </FormItem>
+        <form action={formAction} className="space-y-6" noValidate>
+          {/* Screen reader announcement for form status */}
+          <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+            {isPending && 'Creating pricing rule, please wait'}
+            {state?.error && !isPending && state.error}
+            {state?.success && !isPending && 'Pricing rule created successfully'}
+          </div>
+
+          {/* Deprecated warning */}
+          <Alert variant="destructive" role="alert">
+            <AlertCircle className="size-4" />
+            <AlertTitle>Deprecated Feature</AlertTitle>
+            <AlertDescription>
+              This feature uses the deprecated pricing_rules table. Please use the service_pricing
+              table for dynamic pricing instead.
+            </AlertDescription>
+          </Alert>
+
+          {/* Error alert */}
+          {state?.error && (
+            <Alert variant="destructive" role="alert">
+              <AlertCircle className="size-4" />
+              <AlertTitle>Creation failed</AlertTitle>
+              <AlertDescription>{state.error}</AlertDescription>
+            </Alert>
+          )}
+
+          <div>
+            <p>Form fields have been migrated. This component is deprecated.</p>
+          </div>
+
+          <ItemActions>
+            <Button type="submit" disabled={isPending} aria-busy={isPending}>
+              {isPending ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span aria-hidden="true">Saving…</span>
+                  <span className="sr-only">Creating pricing rule, please wait</span>
+                </>
+              ) : (
+                <span>Create Pricing Rule</span>
               )}
-            />
-
-            <FormField
-              control={form.control}
-              name="rule_type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rule Type</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="peak_hours">Peak Hours</SelectItem>
-                      <SelectItem value="off_peak">Off-Peak</SelectItem>
-                      <SelectItem value="seasonal">Seasonal</SelectItem>
-                      <SelectItem value="loyalty">Loyalty</SelectItem>
-                      <SelectItem value="group">Group Discount</SelectItem>
-                      <SelectItem value="custom">Custom</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="adjustment_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Adjustment Type</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="percentage">Percentage</SelectItem>
-                        <SelectItem value="fixed_amount">Fixed Amount</SelectItem>
-                        <SelectItem value="tiered">Tiered</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="adjustment_value"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Adjustment Value</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="0"
-                        {...field}
-                        value={field.value as number}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      {form.watch('adjustment_type') === 'percentage' ? 'Percentage change (e.g., 20 for +20%)' : 'Dollar amount'}
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="priority"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Priority</FormLabel>
-                  <FormControl>
-                    <Input type="number" min="0" max="100" {...field} value={field.value as number} onChange={(e) => field.onChange(parseInt(e.target.value) || 50)} />
-                  </FormControl>
-                  <FormDescription>Higher priority rules are applied first (0-100)</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex items-center space-x-4">
-              <FormField
-                control={form.control}
-                name="is_active"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 flex-1">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">Active</FormLabel>
-                      <FormDescription>Enable this pricing rule</FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="is_first_time_customer_only"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 flex-1">
-                    <div className="space-y-0.5">
-                      <FormLabel className="text-base">First-Time Only</FormLabel>
-                      <FormDescription>Apply only to new customers</FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <ItemActions>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? (
-                  <>
-                    <Spinner className="size-4" />
-                    <span>Saving…</span>
-                  </>
-                ) : (
-                  <span>Create Pricing Rule</span>
-                )}
-              </Button>
-            </ItemActions>
-          </form>
-        </Form>
+            </Button>
+          </ItemActions>
+        </form>
       </ItemContent>
     </Item>
   )

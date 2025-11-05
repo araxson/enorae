@@ -147,9 +147,9 @@ export function SalonLocationDetail({ locationAddress }: SalonLocationDetailProp
         {googleMapsUrl ? (
           <>
             <Separator />
-            <Button asChild variant="outline" className="w-full">
+            <Button asChild variant="outline">
               <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
-                <Navigation className="mr-2 size-4" aria-hidden="true" />
+                <Navigation className="size-4" aria-hidden="true" />
                 Get directions
               </a>
             </Button>

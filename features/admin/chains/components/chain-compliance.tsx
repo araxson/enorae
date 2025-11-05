@@ -1,5 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Empty, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
@@ -36,8 +45,8 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
         </ItemGroup>
       </CardHeader>
       <CardContent>
-        <div className="-m-6">
-          <Table>
+        <Table>
+          <TableCaption>Compliance overview for each salon chain.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Chain Name</TableHead>
@@ -100,8 +109,16 @@ export function ChainComplianceTable({ compliance }: ChainComplianceTableProps) 
               ))
             )}
           </TableBody>
-          </Table>
-        </div>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={6}>
+                <span className="text-sm text-muted-foreground">
+                  Chains monitored: {compliance.length}
+                </span>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
       </CardContent>
     </Card>
   )

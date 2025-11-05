@@ -41,7 +41,7 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Calendar className="size-6" aria-hidden="true" />
+            <Calendar className="size-5" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No appointments yet</EmptyTitle>
           <EmptyDescription>
@@ -49,7 +49,9 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          Book through the salon search to get started.
+          <p className="text-sm text-muted-foreground">
+            Book through the salon search to get started.
+          </p>
         </EmptyContent>
       </Empty>
     )

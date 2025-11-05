@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, memo } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Dialog,
@@ -24,13 +24,13 @@ interface DeleteReviewDialogProps {
   children?: React.ReactNode
 }
 
-export const DeleteReviewDialog = memo(function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps) {
+export function DeleteReviewDialog({ review, children }: DeleteReviewDialogProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     if (!review['salon_id'] || !review['id']) {
       setError('Review ID or Salon ID not found')
       return
@@ -49,14 +49,14 @@ export const DeleteReviewDialog = memo(function DeleteReviewDialog({ review, chi
     }
 
     setIsLoading(false)
-  }, [review, router])
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || (
-          <Button variant="ghost" size="sm" className="flex-1">
-            <Trash2 className="mr-2 size-4" />
+          <Button variant="ghost" size="sm">
+            <Trash2 className="size-4" />
             Delete
           </Button>
         )}
@@ -112,4 +112,4 @@ export const DeleteReviewDialog = memo(function DeleteReviewDialog({ review, chi
       </DialogContent>
     </Dialog>
   )
-})
+}

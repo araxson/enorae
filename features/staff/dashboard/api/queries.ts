@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
@@ -32,7 +34,7 @@ export async function getStaffProfile(): Promise<StaffView | null> {
 
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, staff_role, title, experience_years, is_active, created_at')
     .eq('user_id', session.user.id)
     .single()
 
@@ -54,7 +56,7 @@ export async function getTodayAppointments(staffId: string): Promise<Appointment
   // IMPROVED: appointments view already includes customer/service data
   const { data, error } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .gte('start_time', today.start)
     .lte('start_time', today.end)
@@ -75,7 +77,7 @@ export async function getUpcomingAppointments(staffId: string): Promise<Appointm
   // IMPROVED: appointments view already includes customer/service data
   const { data, error } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .gte('start_time', now)
     .lte('start_time', oneWeekLater)

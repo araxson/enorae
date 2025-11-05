@@ -1,16 +1,14 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { useActionState, useRef, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Star } from 'lucide-react'
-import { reviewSchema, type ReviewSchema, type ReviewSchemaInput } from '../api/schema'
-import { updateReview } from '../api/mutations/reviews'
-import { toast } from 'sonner'
-import { useState } from 'react'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Star, AlertCircle } from 'lucide-react'
+import { updateReview } from '../api/mutations'
+import { Field, FieldLabel, FieldContent, FieldDescription } from '@/components/ui/field'
+import { Spinner } from '@/components/ui/spinner'
 
 interface EditReviewFormProps {
   reviewId: string
@@ -29,110 +27,149 @@ export function EditReviewForm({
   defaultTitle,
   onSuccess,
 }: EditReviewFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const form = useForm<ReviewSchemaInput, unknown, ReviewSchema>({
-    resolver: zodResolver(reviewSchema),
-    defaultValues: {
-      salonId,
-      rating: defaultRating ?? 3,
-      title: defaultTitle ?? '',
-      comment: defaultComment ?? '',
+  const [state, formAction, isPending] = useActionState(
+    async (prevState: unknown, formData: FormData) => {
+      const result = await updateReview(reviewId, formData)
+      if (result.success) {
+        onSuccess?.()
+      }
+      return result
     },
-  })
+    {}
+  )
 
-  const handleSubmit = async (data: ReviewSchema) => {
-    setIsSubmitting(true)
-    const formData = new FormData()
-    formData.append('salonId', data.salonId)
-    formData.append('rating', String(data.rating))
-    if (data.title) formData.append('title', data.title)
-    formData.append('comment', data.comment)
+  const firstErrorRef = useRef<HTMLTextAreaElement>(null)
 
-    const result = await updateReview(reviewId, formData)
-    setIsSubmitting(false)
-
-    if (result.error) {
-      toast.error(result.error)
-    } else {
-      toast.success('Review updated successfully')
-      onSuccess?.()
+  // Focus first error field after validation
+  useEffect(() => {
+    if (state?.error && firstErrorRef.current) {
+      firstErrorRef.current.focus()
     }
-  }
-
-  const rating = form.watch('rating') as number
+  }, [state?.error])
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="rating"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Overall rating</FormLabel>
-              <FormControl>
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3, 4, 5].map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => field.onChange(value)}
-                      className="size-10 flex items-center justify-center transition-colors hover:bg-muted rounded"
-                      aria-label={`Rate ${value} star${value === 1 ? '' : 's'}`}
-                    >
-                      <Star
-                        className={`size-5 ${value <= rating ? 'fill-primary text-primary' : 'text-muted-foreground'}`}
-                        aria-hidden="true"
-                      />
-                    </button>
-                  ))}
-                </div>
-              </FormControl>
-              <FormDescription>{rating} out of 5 stars</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <form action={formAction} className="space-y-6" noValidate>
+      {/* Screen reader announcement for form status */}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {isPending && 'Updating review, please wait'}
+        {state?.error && !isPending && state.error}
+        {state?.success && !isPending && 'Review updated successfully'}
+      </div>
 
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title (optional)</FormLabel>
-              <FormControl>
-                <Input placeholder="Summarize your experience" maxLength={200} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      {/* Hidden fields */}
+      <input type="hidden" name="salonId" value={salonId} />
 
-        <FormField
-          control={form.control}
-          name="comment"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Your review</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Share your experience..."
-                  rows={5}
-                  maxLength={2000}
-                  {...field}
+      {/* Error alert */}
+      {state?.error && (
+        <Alert variant="destructive" role="alert">
+          <AlertCircle className="size-4" />
+          <AlertTitle>Update failed</AlertTitle>
+          <AlertDescription>{state.error}</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Rating field with star buttons */}
+      <Field>
+        <FieldLabel htmlFor="rating">
+          Overall rating
+          <span className="text-destructive" aria-label="required">
+            {' '}
+            *
+          </span>
+        </FieldLabel>
+        <FieldContent>
+          <div className="flex items-center gap-2">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <label key={value} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="rating"
+                  value={value}
+                  defaultChecked={value === (defaultRating ?? 3)}
+                  required
+                  aria-required="true"
+                  className="sr-only peer"
+                  disabled={isPending}
                 />
-              </FormControl>
-              <FormDescription>Minimum 10 characters, maximum 2000</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <div
+                  className="size-10 flex items-center justify-center motion-safe:transition-colors hover:bg-muted rounded peer-checked:bg-muted"
+                  aria-hidden="true"
+                >
+                  <Star
+                    className="size-5 peer-checked:fill-primary peer-checked:text-primary text-muted-foreground"
+                  />
+                </div>
+                <span className="sr-only">Rate {value} star{value === 1 ? '' : 's'}</span>
+              </label>
+            ))}
+          </div>
+          <FieldDescription>Select your overall rating</FieldDescription>
+        </FieldContent>
+      </Field>
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Updating...' : 'Update Review'}
-        </Button>
-      </form>
-    </Form>
+      {/* Title field */}
+      <Field>
+        <FieldLabel htmlFor="title">Title (optional)</FieldLabel>
+        <FieldContent>
+          <Input
+            id="title"
+            name="title"
+            placeholder="Summarize your experience"
+            maxLength={200}
+            defaultValue={defaultTitle ?? ''}
+            disabled={isPending}
+            aria-describedby="title-hint"
+          />
+          <FieldDescription id="title-hint">Maximum 200 characters</FieldDescription>
+        </FieldContent>
+      </Field>
+
+      {/* Comment field */}
+      <Field>
+        <FieldLabel htmlFor="comment">
+          Your review
+          <span className="text-destructive" aria-label="required">
+            {' '}
+            *
+          </span>
+        </FieldLabel>
+        <FieldContent>
+          <Textarea
+            ref={state?.error ? firstErrorRef : null}
+            id="comment"
+            name="comment"
+            placeholder="Share your experience..."
+            rows={5}
+            maxLength={2000}
+            defaultValue={defaultComment ?? ''}
+            required
+            aria-required="true"
+            aria-invalid={!!state?.error}
+            aria-describedby={state?.error ? 'comment-error comment-hint' : 'comment-hint'}
+            disabled={isPending}
+          />
+          <FieldDescription id="comment-hint">
+            Minimum 10 characters, maximum 2000
+          </FieldDescription>
+          {state?.error && (
+            <p id="comment-error" className="text-sm text-destructive mt-1" role="alert">
+              {state.error}
+            </p>
+          )}
+        </FieldContent>
+      </Field>
+
+      <Button type="submit" disabled={isPending} aria-busy={isPending}>
+        {isPending ? (
+          <>
+            <Spinner className="size-4" />
+            <span aria-hidden="true">Updating...</span>
+            <span className="sr-only">Updating review, please wait</span>
+          </>
+        ) : (
+          'Update Review'
+        )}
+      </Button>
+    </form>
   )
 }

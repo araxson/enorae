@@ -32,15 +32,23 @@ export async function unblockIdentifier(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = unblockIdentifierSchema.parse({
+    const result = unblockIdentifierSchema.safeParse({
       identifier: formData.get('identifier')?.toString(),
       reason: formData.get('reason')?.toString(),
     })
 
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
+
     // Get current record
     const { data: record } = await supabase
       .from('security_rate_limit_tracking_view')
-      .select('*')
+      .select('identifier, endpoint, request_count, blocked_until')
       .eq('identifier', validated.identifier)
       .single()
 
@@ -107,7 +115,7 @@ export async function adjustRateLimit(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = adjustLimitSchema.parse({
+    const result = adjustLimitSchema.safeParse({
       ruleId: formData.get('ruleId')?.toString(),
       newLimit: Number(formData.get('newLimit')),
       duration: formData.get('duration')?.toString() as
@@ -118,10 +126,18 @@ export async function adjustRateLimit(formData: FormData) {
       reason: formData.get('reason')?.toString(),
     })
 
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
+
     // Get current rule
     const { data: rule } = await supabase
       .from('security_rate_limit_rules_view')
-      .select('*')
+      .select('id, endpoint, max_requests, window_seconds, metadata')
       .eq('id', validated.ruleId)
       .single()
 
@@ -217,10 +233,18 @@ export async function purgeStaleRecords(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = purgeStaleSchema.parse({
+    const result = purgeStaleSchema.safeParse({
       identifier: formData.get('identifier')?.toString(),
       endpoint: formData.get('endpoint')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // Delete stale records (older than 30 days)
     const thirtyDaysAgo = new Date()

@@ -16,7 +16,17 @@ const locationSchema = z.object({
   isPrimary: z.boolean().optional(),
 })
 
-export async function createSalonLocation(formData: FormData) {
+type LocationFormState = {
+  success?: boolean
+  error?: string
+  errors?: Record<string, string[]>
+}
+
+// useActionState signature: (prevState, formData) => Promise<state>
+export async function createSalonLocation(
+  prevState: LocationFormState | null,
+  formData: FormData
+): Promise<LocationFormState> {
   const logger = createOperationLogger('createSalonLocation', {})
   logger.start()
 
@@ -27,7 +37,12 @@ export async function createSalonLocation(formData: FormData) {
       isPrimary: formData.get('isPrimary') === 'true',
     })
 
-    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+    if (!result.success) {
+      return {
+        error: 'Validation failed',
+        errors: result.error.flatten().fieldErrors,
+      }
+    }
 
     const data = result.data
     const supabase = await createClient()
@@ -66,7 +81,11 @@ export async function createSalonLocation(formData: FormData) {
   }
 }
 
-export async function updateSalonLocation(formData: FormData) {
+// useActionState signature: (prevState, formData) => Promise<state>
+export async function updateSalonLocation(
+  prevState: LocationFormState | null,
+  formData: FormData
+): Promise<LocationFormState> {
   try {
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) return { error: 'Invalid ID' }
@@ -77,7 +96,12 @@ export async function updateSalonLocation(formData: FormData) {
       isPrimary: formData.get('isPrimary') === 'true',
     })
 
-    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+    if (!result.success) {
+      return {
+        error: 'Validation failed',
+        errors: result.error.flatten().fieldErrors,
+      }
+    }
 
     const data = result.data
     const supabase = await createClient()
@@ -116,7 +140,7 @@ export async function updateSalonLocation(formData: FormData) {
   }
 }
 
-export async function deleteSalonLocation(formData: FormData) {
+export async function deleteSalonLocation(formData: FormData): Promise<LocationFormState> {
   try {
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) return { error: 'Invalid ID' }

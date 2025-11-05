@@ -16,14 +16,14 @@ export async function getBookingRules(): Promise<BookingRuleWithService[]> {
   const { supabase, salonId } = await resolveSalonContext()
   const { data, error } = await supabase
     .from('service_booking_rules_view')
-    .select('*')
+    .select('id, salon_id, service_id, service_name, min_advance_hours, max_advance_days, buffer_before_minutes, buffer_after_minutes, created_at, updated_at, deleted_at')
     .eq('salon_id', salonId)
     .is('deleted_at', null)
 
   if (error) throw error
 
   // Data from view already matches BookingRuleWithService type
-  return (data ?? [])
+  return (data ?? []) as unknown as BookingRuleWithService[]
 }
 
 export type BookingRuleServiceOption = {

@@ -34,17 +34,17 @@ export async function getServiceCategories(): Promise<ServiceCategoryWithCounts[
 
   if (!staffProfile?.['salon_id']) throw new Error('User salon not found')
 
-  // ✅ FIXED: Query view with pre-computed counts (eliminates N+1)
+  // FIXED: Query view with pre-computed counts (eliminates N+1)
   const { data, error } = await supabase
     .from('service_categories_view')
-    .select('*')
+    .select('id, salon_id, name, active_services_count, created_at, updated_at, deleted_at')
     .eq('salon_id', staffProfile['salon_id'])
     .is('deleted_at', null)
     .order('name', { ascending: true })
 
   if (error) throw error
 
-  // ✅ Map view data directly - active_services_count already computed
+  // NOTE: Map view data directly - active_services_count already computed
   const categories = (data || []) as ServiceCategory[]
   return categories.map((category) => ({
     ...category,
@@ -72,10 +72,10 @@ export async function getServiceCategoryById(
 
   if (!staffProfile?.['salon_id']) throw new Error('User salon not found')
 
-  // ✅ FIXED: Query view instead of table
+  // FIXED: Query view instead of table
   const { data, error } = await supabase
     .from('service_categories_view')
-    .select('*')
+    .select('id, salon_id, name, active_services_count, created_at, updated_at, deleted_at')
     .eq('id', id)
     .eq('salon_id', staffProfile['salon_id'])
     .is('deleted_at', null)

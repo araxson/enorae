@@ -140,8 +140,9 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                         variant="ghost"
                         size="icon"
                         onClick={() => onEdit(blockedTime)}
+                        aria-label="Edit blocked time"
                       >
-                        <Pencil className="size-4" />
+                        <Pencil className="size-4" aria-hidden="true" />
                       </Button>
                     )}
                     <Button
@@ -151,7 +152,7 @@ export function BlockedTimesList({ blockedTimes, onEdit }: BlockedTimesListProps
                       disabled={isDeleting && pendingDeleteId === blockedTime['id']}
                       aria-label="Delete blocked time"
                     >
-                      <Trash2 className="size-4" />
+                      <Trash2 className="size-4" aria-hidden="true" />
                     </Button>
                   </ButtonGroup>
                 </TableCell>

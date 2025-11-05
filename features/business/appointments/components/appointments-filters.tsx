@@ -1,11 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  BusinessSearchInput,
-  StatusFilter,
-  DateRangeFilter,
-} from '@/features/business/business-common/components'
+import { BusinessSearchInput } from '@/features/business/common/components'
+import { GenericFilter, DateRangeFilter } from '@/features/shared/ui/components/filters'
 
 interface AppointmentsFiltersProps {
   searchTerm: string
@@ -42,7 +39,7 @@ export function AppointmentsFilters({
         placeholder="Search by customer name or email..."
         className="w-full lg:w-80"
       />
-      <StatusFilter
+      <GenericFilter
         value={statusFilter}
         onChange={onStatusChange}
         options={statusOptions}

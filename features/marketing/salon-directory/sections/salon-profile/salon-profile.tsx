@@ -1,6 +1,13 @@
 import { Separator } from '@/components/ui/separator'
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { MarketingPanel, MarketingSection } from '@/features/marketing/components/common'
 import type { SalonProfileViewProps } from './presentation/types'
 import { buildSalonLocation, groupServicesByCategory } from './presentation/utils'
 import { SalonHero } from './presentation/hero'
@@ -17,13 +24,26 @@ export function SalonProfileView({ salon, services = [] }: SalonProfileViewProps
       containerClassName="max-w-6xl"
       groupClassName="gap-8"
     >
-      <Item variant="muted">
-        <ItemContent>
-          <div className="flex flex-col">
-            <ItemDescription>Overview of {salon['name'] || 'this salon'}, services, and booking details.</ItemDescription>
-          </div>
-        </ItemContent>
-      </Item>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/salons">Salons</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{salon['name'] || 'Details'}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <MarketingPanel
+        variant="muted"
+        description={`Overview of ${salon['name'] || 'this salon'}, services, and booking details.`}
+      />
       <SalonHero salon={salon} />
       <Separator />
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">

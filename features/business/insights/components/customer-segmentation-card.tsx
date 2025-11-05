@@ -25,7 +25,7 @@ interface CustomerSegmentationCardProps {
   summary: InsightsSummary
 }
 
-export function CustomerSegmentationCard({ summary }: CustomerSegmentationCardProps) {
+export function CustomerSegmentationCard({ summary }: CustomerSegmentationCardProps): React.JSX.Element {
   const segmentCards = [
     { label: 'VIP', value: summary.segmentation.vip, icon: Crown, iconClass: 'text-accent' },
     { label: 'Loyal', value: summary.segmentation.loyal, icon: Heart, iconClass: 'text-destructive' },

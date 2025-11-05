@@ -48,7 +48,7 @@ export function Combobox({
   startContent,
   className,
   buttonClassName,
-}: ComboboxProps) {
+}: ComboboxProps): React.ReactElement {
   const [open, setOpen] = React.useState(false)
   const selected = options.find((option) => option.value === value)
 
@@ -77,7 +77,7 @@ export function Combobox({
               {startContent}
               {selected ? selected.label : <span className="text-muted-foreground">{placeholder}</span>}
             </span>
-            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+            <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" aria-hidden="true" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
@@ -93,6 +93,7 @@ export function Combobox({
                         "mr-2 size-4",
                         option.value === value ? "opacity-100" : "opacity-0",
                       )}
+                      aria-hidden="true"
                     />
                     <span className="truncate">{option.label}</span>
                   </CommandItem>

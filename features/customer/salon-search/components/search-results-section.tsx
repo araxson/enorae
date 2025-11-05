@@ -23,17 +23,19 @@ export function SearchResultsSection({ results, searchTerm }: SearchResultsSecti
   if (results.length === 0 && searchTerm) {
     return (
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <Empty>
-            <EmptyMedia variant="icon">
-              <Search className="size-6" />
-            </EmptyMedia>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Search className="size-5" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No salons found</EmptyTitle>
               <EmptyDescription>No salons match your filters right now.</EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              Try searching a nearby city or lowering your rating threshold.
+              <p className="text-sm text-muted-foreground">
+                Try searching a nearby city or lowering your rating threshold.
+              </p>
             </EmptyContent>
           </Empty>
         </CardContent>

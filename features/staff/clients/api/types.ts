@@ -46,7 +46,7 @@ export type ClientRetentionMetrics = {
 
 export type ActionResponse<T = undefined> =
   | { success: true; data: T }
-  | { success: false; error: string }
+  | { success: false; error: string; fieldErrors?: Record<string, string[] | undefined> }
 
 export type ThreadNote = {
   id: string

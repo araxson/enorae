@@ -1,6 +1,6 @@
 'use client'
 
-import { ExportButton } from '@/features/business/business-common/components'
+import { ExportButton } from '@/features/business/common/components'
 import { Building2, TrendingUp } from 'lucide-react'
 import {
   Item,

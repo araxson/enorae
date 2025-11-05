@@ -16,6 +16,7 @@ interface NotificationToggleItemProps {
   description: string
   checked: boolean
   onCheckedChange: (checked: boolean) => void
+  disabled?: boolean
 }
 
 export function NotificationToggleItem({
@@ -25,6 +26,7 @@ export function NotificationToggleItem({
   description,
   checked,
   onCheckedChange,
+  disabled,
 }: NotificationToggleItemProps) {
   return (
     <Item>
@@ -39,6 +41,7 @@ export function NotificationToggleItem({
             aria-labelledby={labelId}
             checked={checked}
             onCheckedChange={onCheckedChange}
+            disabled={disabled}
           />
         </ItemActions>
       </div>

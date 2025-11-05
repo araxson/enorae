@@ -29,7 +29,7 @@ export async function getSalonAppointments(limit = 50): Promise<AppointmentRow[]
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, customer_name, staff_id, staff_name, start_time, end_time, status, total_price, created_at')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: true })
     .limit(limit)
@@ -45,7 +45,7 @@ export async function getSalonAppointmentsByStatus(
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, customer_name, staff_id, staff_name, start_time, end_time, status, total_price, created_at')
     .eq('salon_id', salonId)
     .eq('status', status)
     .order('start_time', { ascending: true })
@@ -61,7 +61,7 @@ export async function getAppointmentDetails(
   const { supabase, salonId } = await getSalonContext()
   const { data, error } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, customer_name, staff_id, staff_name, start_time, end_time, status, total_price, created_at')
     .eq('salon_id', salonId)
     .eq('id', appointmentId)
     .maybeSingle()

@@ -1,5 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { ChainActions } from './chain-actions'
@@ -52,8 +61,8 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
         </CardContent>
       ) : (
         <CardContent>
-          <div className="-m-6">
-            <Table>
+          <Table>
+            <TableCaption>Salon chains with membership, subscription tier, and verification status.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Chain Name</TableHead>
@@ -111,8 +120,16 @@ export function SalonChainsClient({ chains }: SalonChainsClientProps) {
                 </TableRow>
               ))}
             </TableBody>
-            </Table>
-          </div>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <span className="text-sm text-muted-foreground">
+                    Total chains: {chains.length}
+                  </span>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
         </CardContent>
       )}
     </Card>

@@ -1,15 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useActionState, useRef, useEffect } from 'react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle } from 'lucide-react'
-import { updateProfileMetadata } from '@/features/shared/profile-metadata/api/mutations'
-import { profileUpdateSchema, type ProfileUpdateSchema } from '@/features/shared/profile/api/schema'
+import { AlertCircle, CheckCircle } from 'lucide-react'
+import { updateProfileAction } from '@/features/shared/profile/api/actions'
 import type { Database } from '@/lib/types/database.types'
-import { Form } from '@/components/ui/form'
 import {
   Item,
   ItemContent,
@@ -27,30 +22,20 @@ interface ProfileEditFormProps {
   profile: Profile
 }
 
+const initialState: { message?: string; errors?: Record<string, string[]>; success?: boolean } = {}
+
 export function ProfileEditForm({ profile }: ProfileEditFormProps) {
-  const router = useRouter()
-  const [error, setError] = useState<string | null>(null)
+  const [state, formAction, isPending] = useActionState(updateProfileAction, initialState)
+  const firstErrorRef = useRef<HTMLInputElement | null>(null)
 
-  const form = useForm<ProfileUpdateSchema>({
-    resolver: zodResolver(profileUpdateSchema),
-    defaultValues: {
-      full_name: profile['full_name'] || '',
-    },
-  })
-
-  const handleSubmit = async (values: ProfileUpdateSchema) => {
-    setError(null)
-
-    const result = await updateProfileMetadata({
-      full_name: values.full_name || null,
-    })
-
-    if (result.success) {
-      router.refresh()
-    } else {
-      setError(result.error)
+  // Focus first error field after validation
+  useEffect(() => {
+    if (state?.errors && firstErrorRef.current) {
+      firstErrorRef.current.focus()
     }
-  }
+  }, [state?.errors])
+
+  const hasErrors = state?.errors && Object.keys(state.errors).length > 0
 
   return (
     <Item variant="outline">
@@ -59,27 +44,78 @@ export function ProfileEditForm({ profile }: ProfileEditFormProps) {
       </ItemHeader>
       <ItemContent>
         <ItemDescription>Update your personal information and avatar</ItemDescription>
-        <div className="space-y-6">
+
+        {/* Screen reader announcement for form status */}
+        <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+          {isPending && 'Form is submitting, please wait'}
+          {state?.message && !isPending && state.message}
+        </div>
+
+        <div className="space-y-6 mt-6">
           <ProfileAvatarUpload
             avatarUrl={profile['avatar_url']}
-            onError={setError}
+            onError={(error) => {
+              // Avatar upload errors are handled by the component itself
+              console.error('Avatar upload error:', error)
+            }}
           />
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-              <ProfileNameField control={form.control} />
+          {/* Error summary for screen readers and accessibility */}
+          {hasErrors && state.errors && (
+            <Alert variant="destructive" tabIndex={-1}>
+              <AlertCircle className="size-4" />
+              <AlertTitle>
+                There are {Object.keys(state.errors).length} errors in the form
+              </AlertTitle>
+              <AlertDescription>
+                <ul className="list-disc list-inside space-y-1 mt-2">
+                  {Object.entries(state.errors).map(([field, messages]) => (
+                    <li key={field}>
+                      <a
+                        href={`#${field}`}
+                        className="underline hover:no-underline"
+                      >
+                        {field.replace(/_/g, ' ')}: {(messages as string[])[0]}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </AlertDescription>
+            </Alert>
+          )}
 
-              {error && (
-                <Alert variant="destructive">
-                  <AlertCircle className="size-4" />
-                  <AlertTitle>Update failed</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
+          {/* Success message */}
+          {state?.success && (
+            <Alert aria-live="polite">
+              <CheckCircle className="size-4" />
+              <AlertTitle>Profile updated</AlertTitle>
+              <AlertDescription>{state.message}</AlertDescription>
+            </Alert>
+          )}
 
-              <ProfileFormActions isSubmitting={form.formState.isSubmitting} />
-            </form>
-          </Form>
+          {/* General error message (not field-specific) */}
+          {state?.message && !state.success && !hasErrors && (
+            <Alert variant="destructive">
+              <AlertCircle className="size-4" />
+              <AlertTitle>Update failed</AlertTitle>
+              <AlertDescription>{state.message}</AlertDescription>
+            </Alert>
+          )}
+
+          <form
+            action={formAction}
+            className="space-y-4"
+            aria-describedby={hasErrors ? 'form-errors' : undefined}
+          >
+            <ProfileNameField
+              defaultValue={profile['full_name'] || ''}
+              error={state?.errors?.['full_name']?.[0]}
+              disabled={isPending}
+              firstErrorRef={state?.errors?.['full_name'] ? firstErrorRef : undefined}
+            />
+
+            <ProfileFormActions isPending={isPending} />
+          </form>
         </div>
       </ItemContent>
     </Item>

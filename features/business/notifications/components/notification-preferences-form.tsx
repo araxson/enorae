@@ -16,6 +16,12 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 type ChannelPreferences = Record<string, boolean>
 
@@ -108,57 +114,49 @@ export function NotificationPreferencesForm({ preferences }: NotificationPrefere
           </ButtonGroup>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <Accordion type="multiple" defaultValue={Object.keys(state)}>
           {Object.entries(state).map(([channel, events]) => (
-            <Card key={channel} className="border-muted">
-              <CardHeader>
-                <CardTitle>
-                  {channelCopy[channel]?.label || channel.toUpperCase()}
-                </CardTitle>
-                <CardDescription>
-                  {channelCopy[channel]?.description || 'Configure event triggers'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-                  {Object.entries(events).map(([event, value]) => {
-                    const eventLabel = event
-                      .split('_')
-                      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-                      .join(' ')
+            <AccordionItem key={channel} value={channel}>
+              <AccordionTrigger>
+                {channelCopy[channel]?.label || channel.toUpperCase()}
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-3">
+                  <ItemDescription>
+                    {channelCopy[channel]?.description || 'Configure event triggers'}
+                  </ItemDescription>
+                  <ItemGroup className="gap-3">
+                    {Object.entries(events).map(([event, value]) => {
+                      const eventLabel = event
+                        .split('_')
+                        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+                        .join(' ')
 
-                    return (
-                      <Card key={event}>
-                        <CardContent>
-                          <ItemGroup>
-                            <Item>
-                              <ItemContent>
-                                <ItemTitle>{eventLabel}</ItemTitle>
-                                <ItemDescription>
-                                  Trigger when {eventLabel.toLowerCase()} occurs
-                                </ItemDescription>
-                              </ItemContent>
-                              <ItemActions>
-                                <div className="flex-none">
-                                  <Switch
-                                    checked={value}
-                                    onCheckedChange={(checked) =>
-                                      handleToggle(channel as keyof typeof state, event, checked)
-                                    }
-                                  />
-                                </div>
-                              </ItemActions>
-                            </Item>
-                          </ItemGroup>
-                        </CardContent>
-                      </Card>
-                    )
-                  })}
+                      return (
+                        <Item key={event} variant="outline">
+                          <ItemContent>
+                            <ItemTitle>{eventLabel}</ItemTitle>
+                            <ItemDescription>
+                              Trigger when {eventLabel.toLowerCase()} occurs
+                            </ItemDescription>
+                          </ItemContent>
+                          <ItemActions>
+                            <Switch
+                              checked={value}
+                              onCheckedChange={(checked) =>
+                                handleToggle(channel as keyof typeof state, event, checked)
+                              }
+                            />
+                          </ItemActions>
+                        </Item>
+                      )
+                    })}
+                  </ItemGroup>
                 </div>
-              </CardContent>
-            </Card>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </CardContent>
     </Card>
   )

@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/item'
 import { Scissors, Edit, DollarSign, Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
-import { ButtonGroup } from '@/components/ui/button-group'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -97,17 +96,12 @@ export function ServicesGrid({ services, onEditService, isFiltered = false }: Se
 
           {onEditService && (
             <ItemFooter>
-              <ButtonGroup aria-label="Service actions" className="w-full">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full"
-                  onClick={() => onEditService(service)}
-                >
+              <ItemActions>
+                <Button variant="outline" size="sm" onClick={() => onEditService(service)}>
                   <Edit className="mr-2 size-4" />
                   Edit Service
                 </Button>
-              </ButtonGroup>
+              </ItemActions>
             </ItemFooter>
           )}
         </Item>

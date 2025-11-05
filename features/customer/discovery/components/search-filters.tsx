@@ -31,12 +31,18 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card'
 
 interface SearchFiltersProps {
   onSearch: (query: string, priceRange?: [number, number]) => void
+  onAfterSearch?: () => void
 }
 
-export function SearchFilters({ onSearch }: SearchFiltersProps) {
+export function SearchFilters({ onSearch, onAfterSearch }: SearchFiltersProps) {
   const [query, setQuery] = useState('')
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500])
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
@@ -44,6 +50,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     onSearch(query, priceRange)
+    onAfterSearch?.()
   }
 
   return (
@@ -83,7 +90,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                     autoComplete="off"
                   />
                   <InputGroupAddon align="inline-end">
-                    <InputGroupButton type="submit" className="gap-2" aria-label="Submit search">
+                    <InputGroupButton type="submit" aria-label="Submit search">
                       <Search className="size-4" aria-hidden="true" />
                       Search
                     </InputGroupButton>
@@ -95,14 +102,23 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
 
           <Collapsible open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
             <CollapsibleTrigger asChild>
-              <Button variant="outline" className="w-full gap-2">
+              <Button variant="outline">
                 <SlidersHorizontal className="size-4" />
                 {isFiltersOpen ? 'Hide filters' : 'Show filters'}
               </Button>
             </CollapsibleTrigger>
             <CollapsibleContent className="space-y-4 pt-4">
               <Field>
-                <FieldLabel>Price range</FieldLabel>
+                <FieldLabel>
+                  <HoverCard>
+                    <HoverCardTrigger asChild>
+                      <span className="cursor-help">Price range</span>
+                    </HoverCardTrigger>
+                    <HoverCardContent align="start">
+                      Choose the minimum and maximum price you&apos;re willing to pay per service.
+                    </HoverCardContent>
+                  </HoverCard>
+                </FieldLabel>
                 <FieldContent className="space-y-2">
                   <FieldDescription>
                     ${priceRange[0]} - ${priceRange[1]}

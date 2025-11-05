@@ -20,7 +20,7 @@ type MetricsOverviewProps = {
   metrics: SalonMetricsData | null
 }
 
-export function MetricsOverview({ metrics }: MetricsOverviewProps) {
+export function MetricsOverview({ metrics }: MetricsOverviewProps): React.JSX.Element {
   if (!metrics) {
     return (
       <Item variant="outline" className="flex-col gap-4">
@@ -31,7 +31,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
           </div>
         </ItemHeader>
         <ItemContent className="flex flex-col items-center justify-center py-6">
-          <DollarSign className="size-12 text-muted-foreground mb-4" />
+          <DollarSign className="size-12 text-muted-foreground mb-4" aria-hidden="true" />
         </ItemContent>
       </Item>
     )
@@ -54,7 +54,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
           <ItemContent>
             <ItemTitle>Salon Metrics</ItemTitle>
             <ItemDescription>
-              Last updated: {format(new Date(metrics.updated_at!), 'MMMM dd, yyyy')}
+              Last updated: {metrics.updated_at ? format(new Date(metrics.updated_at), 'MMMM dd, yyyy') : 'N/A'}
             </ItemDescription>
           </ItemContent>
         </Item>
@@ -65,7 +65,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
           <ItemHeader>
             <ItemTitle>Total Bookings</ItemTitle>
             <ItemActions>
-              <Calendar className="size-4 text-muted-foreground" />
+              <Calendar className="size-4 text-muted-foreground" aria-hidden="true" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
@@ -78,7 +78,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
           <ItemHeader>
             <ItemTitle>Total Revenue</ItemTitle>
             <ItemActions>
-              <DollarSign className="size-4 text-muted-foreground" />
+              <DollarSign className="size-4 text-muted-foreground" aria-hidden="true" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
@@ -91,7 +91,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
           <ItemHeader>
             <ItemTitle>Average Rating</ItemTitle>
             <ItemActions>
-              <Star className="size-4 text-muted-foreground" />
+              <Star className="size-4 text-muted-foreground" aria-hidden="true" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>
@@ -104,7 +104,7 @@ export function MetricsOverview({ metrics }: MetricsOverviewProps) {
           <ItemHeader>
             <ItemTitle>Employee Count</ItemTitle>
             <ItemActions>
-              <Users className="size-4 text-muted-foreground" />
+              <Users className="size-4 text-muted-foreground" aria-hidden="true" />
             </ItemActions>
           </ItemHeader>
           <ItemContent>

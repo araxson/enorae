@@ -3,6 +3,10 @@ import { getPlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/que
 import { requireAnyRole } from '@/lib/auth/session'
 import { validateCSRFSafe } from '@/lib/csrf'
 
+// Next.js 15+: GET requests are NOT cached by default - must set dynamic explicitly
+// Admin analytics are user-specific and require authentication
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   // CRITICAL SECURITY: Verify admin role before allowing access
   try {

@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback } from 'react'
+import { useCallback, memo } from 'react'
 import { Item, ItemHeader } from '@/components/ui/item'
 import type { SalonReviewWithDetails } from '@/features/business/reviews/api/queries'
 import { ReviewCardHeader } from './review-card-header'
@@ -75,7 +75,7 @@ function ReviewCardComponent({ review, onRespond, onFlag, onToggleFeatured }: Re
   )
 }
 
-export const ReviewCard = memo(ReviewCardComponent)
+export const ReviewCard = ReviewCardComponent
 
 interface StarIconProps {
   filled: boolean

@@ -1,11 +1,14 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { updateSettingsSchema, UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { updateSettingsSchema, UUID_REGEX } from '@/features/admin/salons/api/utils'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
-export async function updateSalonSettings(formData: FormData) {
+export async function updateSalonSettings(formData: FormData): Promise<
+  | { error: string; fieldErrors?: Record<string, string[] | undefined> }
+  | { success: true }
+> {
   const logger = createOperationLogger('updateSalonSettings', {})
   logger.start()
 
@@ -25,7 +28,9 @@ export async function updateSalonSettings(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed', fieldErrors }
     }
 
     await ensurePlatformAdmin()

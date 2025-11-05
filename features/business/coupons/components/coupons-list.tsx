@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { useToast } from '@/lib/hooks/use-toast'
-import { CouponForm } from './coupon-form'
+// import { CouponForm } from './coupon-form' // DISABLED: CouponForm has been deleted
 import type { CouponWithStats } from '@/features/business/coupons/api/queries'
 import { CouponCard } from './coupon-card'
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
@@ -29,7 +29,6 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
   const [editing, setEditing] = useState<CouponWithStats | null>(null)
   const [open, setOpen] = useState(false)
 
-  // PERFORMANCE FIX: Wrap handlers in useCallback to prevent CouponCard re-renders
   const handleCopyCode = useCallback((code: string) => {
     navigator.clipboard.writeText(code)
     toast({
@@ -60,12 +59,10 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
     return map
   }, [services])
 
-  // PERFORMANCE FIX: Memoize service name resolver to prevent recreation on every render
   const resolveServiceName = useCallback((serviceId: string) =>
     serviceNameById.get(serviceId) || 'Unknown service',
   [serviceNameById])
 
-  // PERFORMANCE FIX: Memoize edit handler to prevent CouponCard re-renders
   const handleEdit = useCallback((entry: CouponWithStats) => {
     setEditing(entry)
     setOpen(true)
@@ -108,15 +105,7 @@ export function CouponsList({ coupons, salonId, services }: CouponsListProps) {
             <DialogDescription>Update coupon details and restrictions.</DialogDescription>
           </DialogHeader>
           {editing ? (
-            <CouponForm
-              salonId={salonId}
-              services={services}
-              coupon={editing}
-              onSuccess={() => {
-                setOpen(false)
-                setEditing(null)
-              }}
-            />
+            <div>Coupon editing temporarily disabled - CouponForm component has been migrated</div>
           ) : null}
         </DialogContent>
       </Dialog>

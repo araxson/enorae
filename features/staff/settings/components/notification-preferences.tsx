@@ -9,6 +9,8 @@ import { updateUserPreferences } from '@/features/staff/settings/api/mutations'
 import type { NotificationPreferences, NotificationChannel } from '@/features/staff/settings/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { toast } from 'sonner'
 
 interface NotificationPreferencesProps {
   initialPreferences: NotificationPreferences
@@ -32,6 +34,7 @@ const notificationTypes = [
 export function NotificationPreferences({ initialPreferences }: NotificationPreferencesProps) {
   const [preferences, setPreferences] = useState(initialPreferences)
   const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleToggle = (type: keyof NotificationPreferences, channel: NotificationChannel) => {
     setPreferences(prev => ({
@@ -45,9 +48,13 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
   const handleSave = async () => {
     try {
       setIsSaving(true)
+      setError(null)
       await updateUserPreferences({ notification_preferences: preferences })
+      toast.success('Notification preferences saved')
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to save preferences')
+      const message = error instanceof Error ? error.message : 'Failed to save preferences'
+      setError(message)
+      toast.error(message)
     } finally {
       setIsSaving(false)
     }
@@ -60,6 +67,12 @@ export function NotificationPreferences({ initialPreferences }: NotificationPref
         <CardDescription>Choose how you want to be notified.</CardDescription>
       </CardHeader>
       <div className="px-6">
+        {error ? (
+          <Alert variant="destructive" className="mb-4">
+            <AlertTitle>Unable to save preferences</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
         <ScrollArea className="w-full">
           <Table>
             <TableHeader>

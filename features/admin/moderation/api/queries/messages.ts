@@ -22,10 +22,10 @@ export async function getMessageThreadsForMonitoring(): Promise<MessageThread[]>
 
   const { data, error } = await supabase
     .from('admin_messages_overview_view')
-    .select('*')
+    .select('id, salon_id, salon_name, customer_id, customer_name, staff_id, staff_name, subject, last_message_at, last_message_preview, total_messages, is_archived, created_at')
     .order('last_message_at', { ascending: false })
     .limit(QUERY_LIMITS.MESSAGE_HISTORY)
 
   if (error) throw error
-  return data || []
+  return (data || []) as unknown as MessageThread[]
 }

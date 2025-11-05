@@ -1,3 +1,5 @@
+'use server'
+
 import { revalidatePath } from 'next/cache'
 import { UUID_REGEX } from '@/lib/validations/shared'
 import { requireSessionContext } from './session-context'
@@ -26,13 +28,16 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
       .eq('user_id', user.id)
       .maybeSingle<{ id: string; is_active: boolean | null }>()
 
-    if (targetError) throw targetError
+    if (targetError) {
+      console.error('Database error fetching session:', targetError)
+      return { success: false, error: 'Failed to find session. Please try again.' }
+    }
 
     if (!targetSession) {
       return { success: false, error: 'Session not found' }
     }
 
-    // ✅ FIXED: Update identity.sessions table to mark as inactive
+    // FIXED: Update identity.sessions table to mark as inactive
     const { error } = await supabase
       .schema('identity')
       .from('sessions')
@@ -44,7 +49,10 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
       .eq('id', sessionId)
       .eq('user_id', user.id)
 
-    if (error) throw error
+    if (error) {
+      console.error('Database error revoking session:', error)
+      return { success: false, error: 'Failed to revoke session. Please try again.' }
+    }
 
     revalidatePath('/customer/settings/sessions', 'page')
     revalidatePath('/staff/settings/sessions', 'page')
@@ -54,7 +62,7 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
     console.error('Error revoking session:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to revoke session',
+      error: 'Failed to revoke session. Please try again.',
     }
   }
 }
@@ -78,7 +86,10 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       .order('updated_at', { ascending: false })
       .returns<SessionData[]>()
 
-    if (fetchError) throw fetchError
+    if (fetchError) {
+      console.error('Database error fetching sessions:', fetchError)
+      return { success: false, error: 'Failed to retrieve sessions. Please try again.' }
+    }
 
     if (!activeSessions || activeSessions.length === 0) {
       return { success: false, error: 'No active sessions found' }
@@ -97,7 +108,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       return { success: true, data: { count: 0 } }
     }
 
-    // ✅ FIXED: Update identity.sessions table to revoke all other sessions
+    // FIXED: Update identity.sessions table to revoke all other sessions
     const { data, error } = await supabase
       .schema('identity')
       .from('sessions')
@@ -111,7 +122,10 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       .neq('id', currentSessionId)
       .select('id')
 
-    if (error) throw error
+    if (error) {
+      console.error('Database error revoking sessions:', error)
+      return { success: false, error: 'Failed to revoke sessions. Please try again.' }
+    }
 
     revalidatePath('/customer/settings/sessions', 'page')
     revalidatePath('/staff/settings/sessions', 'page')
@@ -124,7 +138,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
     console.error('Error revoking sessions:', error)
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to revoke sessions',
+      error: 'Failed to revoke sessions. Please try again.',
     }
   }
 }

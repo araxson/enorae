@@ -10,6 +10,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import { Check, CheckCheck } from 'lucide-react'
 
 interface MessageBubbleProps {
   content: string
@@ -67,9 +68,11 @@ export function MessageBubble({
                 {format(new Date(timestamp), 'MMM dd, HH:mm')}
               </time>
               {isOwn ? (
-                <span aria-label={isRead ? 'Message delivered and read' : 'Message sent'} aria-hidden="true">
-                  {isRead ? '✓✓' : '✓'}
-                </span>
+                isRead ? (
+                  <CheckCheck className="size-4" aria-label="Message delivered and read" />
+                ) : (
+                  <Check className="size-4" aria-label="Message sent" />
+                )
               ) : null}
             </div>
           </ItemFooter>

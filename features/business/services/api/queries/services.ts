@@ -1,6 +1,6 @@
 import 'server-only'
 import type { Database } from '@/lib/types/database.types'
-import { guardQuery } from '@/lib/auth'
+import { guardQuery } from '@/lib/auth/guards-query'
 import { logQuery } from '@/lib/observability'
 
 type ServiceViewRow = Database['public']['Views']['services_view']['Row']
@@ -84,7 +84,7 @@ export async function getServices(salonId: string): Promise<ServiceViewRow[]> {
 
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, name, description, slug, category_name, price, duration_minutes, is_active, created_at, updated_at, deleted_at')
     .eq('salon_id', salonId)
     .eq('is_active', true)
     .is('deleted_at', null)

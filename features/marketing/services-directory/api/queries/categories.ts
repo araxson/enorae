@@ -28,8 +28,9 @@ export async function getPublicServiceCategories(): Promise<
     .not('category_slug', 'is', null)
 
   if (error) throw error
+  if (!data) return []
 
-  const categoryRows = (data ?? []) as Array<Pick<Service, 'category_name' | 'category_slug'>>
+  const categoryRows = data
 
   // Count occurrences of each category
   const categoryMap: Record<string, { name: string; slug: string; count: number }> = {}
@@ -69,8 +70,9 @@ export async function getPublicCategoryBySlug(
     .ilike('category_slug', slug)
 
   if (error) throw error
+  if (!data) return null
 
-  const services = (data ?? []) as Array<Pick<Service, 'category_name' | 'category_slug'>>
+  const services = data
 
   if (services.length === 0) return null
 
@@ -100,22 +102,25 @@ export async function getSalonsOfferingCategory(categorySlug: string): Promise<S
     .ilike('category_slug', categorySlug)
 
   if (servicesError) throw servicesError
+  if (!services || services.length === 0) return []
 
-  const serviceRows = (services ?? []) as Array<Pick<Service, 'salon_id'>>
+  const serviceRows = services
 
-  if (serviceRows.length === 0) return []
+  // Get unique salon IDs - filter out null/undefined salon_ids
+  const salonIds = [...new Set(serviceRows.map((s) => s.salon_id).filter((id): id is string => Boolean(id)))]
 
-  // Get unique salon IDs
-  const salonIds = [...new Set(serviceRows.map((s) => s.salon_id).filter(Boolean) as string[])]
+  if (salonIds.length === 0) return []
 
   // Get full salon details
   const { data: salons, error: salonsError } = await supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, slug, short_description, city, state_province, rating_average, rating_count, is_verified, is_active, created_at')
     .in('id', salonIds)
     .eq('is_active', true)
     .order('rating_average', { ascending: false, nullsFirst: false })
 
   if (salonsError) throw salonsError
-  return (salons ?? []) as Salon[]
+  if (!salons) return []
+
+  return salons
 }

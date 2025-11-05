@@ -1,9 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import type { ChainAnalytics } from '@/features/admin/chains/api/queries'
 import { Item, ItemContent, ItemGroup } from '@/components/ui/item'
+import { Star } from 'lucide-react'
 
 interface ChainAnalyticsTableProps {
   analytics: ChainAnalytics[]
@@ -35,8 +45,8 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
         </ItemGroup>
       </CardHeader>
       <CardContent>
-        <div className="-m-6">
-          <Table>
+        <Table>
+          <TableCaption>Analytics summary for each salon chain.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Chain Name</TableHead>
@@ -73,7 +83,10 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
                   <TableCell className="text-right">{chain.totalAppointments}</TableCell>
                   <TableCell className="text-right">
                     {chain.avgRating > 0 ? (
-                      <span className="font-medium">⭐ {formatRating(chain.avgRating)}</span>
+                      <span className="inline-flex items-center gap-1 font-medium">
+                        <Star className="size-4 fill-accent text-accent" aria-hidden="true" />
+                        {formatRating(chain.avgRating)}
+                      </span>
                     ) : (
                       <span className="text-muted-foreground">N/A</span>
                     )}
@@ -92,8 +105,16 @@ export function ChainAnalyticsTable({ analytics }: ChainAnalyticsTableProps) {
               ))
             )}
           </TableBody>
-          </Table>
-        </div>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={8}>
+                <span className="text-sm text-muted-foreground">
+                  Chains analysed: {analytics.length}
+                </span>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
       </CardContent>
     </Card>
   )

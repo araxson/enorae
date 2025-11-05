@@ -3,6 +3,10 @@ import { getAppointmentSnapshot } from '@/features/admin/appointments/api/querie
 import { requireAnyRole } from '@/lib/auth/session'
 import { validateCSRFSafe } from '@/lib/csrf'
 
+// Next.js 15+: GET requests are NOT cached by default - must set dynamic explicitly
+// Admin appointment oversight is user-specific and requires authentication
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   // CRITICAL SECURITY: Verify admin role before allowing access
   try {

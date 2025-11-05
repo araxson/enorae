@@ -24,7 +24,7 @@ export async function getProfileMetadata(profileId: string): Promise<ProfileMeta
   const { data, error } = await supabase
     .schema('identity')
     .from('profiles_metadata')
-    .select('*')
+    .select('profile_id, full_name, avatar_url, bio, phone_number, created_at, updated_at')
     .eq('profile_id', profileId)
     .single()
 

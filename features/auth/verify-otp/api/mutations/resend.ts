@@ -15,13 +15,16 @@ export async function resendOTP(formData: FormData): Promise<ResendOtpResult> {
 
     const validation = resendOtpSchema.safeParse(rawData)
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
       console.error('OTP resend validation failed', {
         email: rawData.email,
-        error: firstError?.message ?? 'Invalid email'
+        error: 'Validation failed'
       })
-      logger.error(firstError?.message ?? 'Invalid email', 'validation', { email: rawData.email })
-      return { success: false, error: firstError?.message ?? 'Invalid email' }
+      logger.error('Validation failed', 'validation', { email: rawData.email })
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const { email } = validation.data

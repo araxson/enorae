@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { FieldDescription, FieldSeparator } from '@/components/ui/field'
-import { OAuthButtons } from '@/features/auth/common/components/oauth-buttons'
+import { OAuthButtons } from '@/features/auth/common/components'
 
-export function LoginOAuthSection() {
+export function LoginOAuthSection(): React.ReactElement {
   return (
     <>
       <FieldSeparator>Or continue with</FieldSeparator>

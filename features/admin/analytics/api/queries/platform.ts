@@ -15,7 +15,12 @@ type ReviewRow = Database['public']['Views']['salon_reviews_view']['Row']
  * Get platform-wide metrics overview
  * Aggregates key statistics across all salons
  */
-export async function getPlatformMetrics() {
+export async function getPlatformMetrics(): Promise<{
+  total_users: number
+  total_salons: number
+  total_appointments: number
+  total_reviews: number
+}> {
   const logger = createOperationLogger('getPlatformMetrics', {})
   logger.start()
 
@@ -41,7 +46,10 @@ export async function getPlatformMetrics() {
 /**
  * Get user growth metrics over time
  */
-export async function getUserGrowthMetrics(startDate: string, endDate: string) {
+export async function getUserGrowthMetrics(
+  startDate: string,
+  endDate: string
+): Promise<Array<{ date: string; new_users: number }>> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 
@@ -72,7 +80,15 @@ export async function getUserGrowthMetrics(startDate: string, endDate: string) {
 /**
  * Get revenue metrics from manual transactions
  */
-export async function getRevenueMetrics(startDate: string, endDate: string) {
+export async function getRevenueMetrics(
+  startDate: string,
+  endDate: string
+): Promise<{
+  total_revenue: number
+  transaction_count: number
+  by_salon: Record<string, { amount: number; count: number }>
+  by_payment_method: Record<string, never>
+}> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 
@@ -129,7 +145,7 @@ export async function getRevenueMetrics(startDate: string, endDate: string) {
 /**
  * Get salon performance rankings
  */
-export async function getSalonPerformanceMetrics() {
+export async function getSalonPerformanceMetrics(): Promise<AdminSalonRow[]> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 
@@ -148,7 +164,14 @@ export async function getSalonPerformanceMetrics() {
 /**
  * Get appointment metrics by status
  */
-export async function getAppointmentMetrics(startDate: string, endDate: string) {
+export async function getAppointmentMetrics(
+  startDate: string,
+  endDate: string
+): Promise<{
+  total_appointments: number
+  by_status: Record<string, number>
+  by_salon: Record<string, number>
+}> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 
@@ -192,13 +215,22 @@ export async function getAppointmentMetrics(startDate: string, endDate: string) 
 /**
  * Get review metrics and moderation stats
  */
-export async function getReviewMetrics(startDate: string, endDate: string) {
+export async function getReviewMetrics(
+  startDate: string,
+  endDate: string
+): Promise<{
+  total_reviews: number
+  flagged_reviews: number
+  hidden_reviews: number
+  average_rating: number
+  flagged_percentage: number
+}> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('salon_reviews_view')
-    .select('*')
+    .select('id, rating, is_flagged, created_at')
     .gte('created_at', startDate)
     .lte('created_at', endDate)
     .returns<ReviewRow[]>()
@@ -231,7 +263,12 @@ export async function getReviewMetrics(startDate: string, endDate: string) {
 /**
  * Get active user metrics (users with recent activity)
  */
-export async function getActiveUserMetrics(daysBack: number = 30) {
+export async function getActiveUserMetrics(
+  daysBack: number = 30
+): Promise<{
+  active_users_count: number
+  period_days: number
+}> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = await createClient()
 

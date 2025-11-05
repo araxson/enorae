@@ -22,7 +22,9 @@ export async function flagReview(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed', fieldErrors }
     }
 
     const session = await resolveAdminSession()

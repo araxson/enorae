@@ -10,11 +10,14 @@ import {
 import { Badge } from '@/components/ui/badge'
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import {
   Item,
   ItemContent,
@@ -52,11 +55,18 @@ export function HistoryTab({ pastAppointments }: HistoryTabProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <History className="size-6" aria-hidden="true" />
+                <History className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No past appointments</EmptyTitle>
-              <EmptyDescription>Your appointment history will appear here.</EmptyDescription>
+              <EmptyDescription>
+                Your appointment history will appear here.
+              </EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/customer/appointments">Book your first visit</Link>
+              </Button>
+            </EmptyContent>
           </Empty>
         </CardContent>
       </Card>

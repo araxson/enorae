@@ -33,11 +33,11 @@ export function StaffGrid({ staff }: StaffGridProps) {
   if (staff.length === 0) {
     return (
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Calendar className="size-6" aria-hidden="true" />
+                <Calendar className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No staff members available</EmptyTitle>
               <EmptyDescription>
@@ -69,27 +69,29 @@ export function StaffGrid({ staff }: StaffGridProps) {
           {staff.map((member) => (
             <HoverCard key={member['id'] || ''}>
               <HoverCardTrigger asChild>
-                <Card className="transition-colors hover:bg-muted/50">
+                <Card className="motion-safe:transition-colors hover:bg-muted/50">
                   <CardHeader>
-                    <ItemGroup className="items-center gap-3">
-                      <Item>
-                        <ItemMedia>
-                          <Avatar>
-                            <AvatarFallback>
-                              {member.title?.slice(0, 2).toUpperCase() || 'ST'}
-                            </AvatarFallback>
-                          </Avatar>
-                        </ItemMedia>
-                        <ItemContent>
-                          <CardTitle>{member['title'] || 'Staff member'}</CardTitle>
-                          {member['bio'] ? (
-                            <div className="line-clamp-2">
-                              <CardDescription>{member['bio']}</CardDescription>
-                            </div>
-                          ) : null}
-                        </ItemContent>
-                      </Item>
-                    </ItemGroup>
+                    <div className="flex items-center gap-3">
+                      <ItemGroup>
+                        <Item>
+                          <ItemMedia>
+                            <Avatar>
+                              <AvatarFallback>
+                                {member.title?.slice(0, 2).toUpperCase() || 'ST'}
+                              </AvatarFallback>
+                            </Avatar>
+                          </ItemMedia>
+                          <ItemContent>
+                            <CardTitle>{member['title'] || 'Staff member'}</CardTitle>
+                            {member['bio'] ? (
+                              <div className="line-clamp-2">
+                                <CardDescription>{member['bio']}</CardDescription>
+                              </div>
+                            ) : null}
+                          </ItemContent>
+                        </Item>
+                      </ItemGroup>
+                    </div>
                   </CardHeader>
                   <CardContent />
                 </Card>

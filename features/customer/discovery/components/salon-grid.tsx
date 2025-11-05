@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, memo, useCallback } from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { SalonCard } from '@/features/shared/salons'
-import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
+import { FavoriteButton } from '@/features/customer/favorites/components'
 import { Card, CardContent } from '@/components/ui/card'
 import { Search } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -40,7 +41,7 @@ interface SalonGridProps {
   itemsPerPage?: number
 }
 
-export const SalonGrid = memo(function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
+export function SalonGrid({ salons, itemsPerPage = 9 }: SalonGridProps) {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -49,32 +50,33 @@ export const SalonGrid = memo(function SalonGrid({ salons, itemsPerPage = 9 }: S
   const endIndex = startIndex + itemsPerPage
   const currentSalons = salons.slice(startIndex, endIndex)
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
+  }
 
-  // PERFORMANCE FIX: Memoize navigation handler to prevent recreating on every render
-  const handleNavigate = useCallback((slug: string | null) => {
+  const handleNavigate = (slug: string | null) => {
     if (slug) {
       router.push(`/salons/${slug}`)
     }
-  }, [router])
+  }
 
   if (salons.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <Search className="size-10" aria-hidden="true" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <Search className="size-5" aria-hidden="true" />
+          </EmptyMedia>
           <EmptyTitle>No salons found</EmptyTitle>
           <EmptyDescription>
             Try adjusting your search filters or check back later for new salons.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          Tip: update your filters or expand your search area.
+          <Button variant="outline" asChild>
+            <Link href="/customer/search">Reset filters</Link>
+          </Button>
         </EmptyContent>
       </Empty>
     )
@@ -143,51 +145,47 @@ export const SalonGrid = memo(function SalonGrid({ salons, itemsPerPage = 9 }: S
       {totalPages > 1 && (
         <Pagination>
           <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
+            {currentPage > 1 && (
+              <PaginationItem>
+                <PaginationPrevious
+                  href={`?page=${currentPage - 1}`}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    handlePageChange(currentPage - 1)
+                  }}
+                />
+              </PaginationItem>
+            )}
 
-            {[...Array(totalPages)].map((_, i) => {
-              const page = i + 1
-              if (
-                page === 1 ||
-                page === totalPages ||
-                (page >= currentPage - 1 && page <= currentPage + 1)
-              ) {
-                return (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      onClick={() => handlePageChange(page)}
-                      isActive={currentPage === page}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              } else if (page === currentPage - 2 || page === currentPage + 2) {
-                return (
-                  <PaginationItem key={page}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )
-              }
-              return null
-            })}
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  href={`?page=${page}`}
+                  isActive={currentPage === page}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    handlePageChange(page)
+                  }}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
 
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-                className={
-                  currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
-                }
-              />
-            </PaginationItem>
+            {currentPage < totalPages && (
+              <PaginationItem>
+                <PaginationNext
+                  href={`?page=${currentPage + 1}`}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    handlePageChange(currentPage + 1)
+                  }}
+                />
+              </PaginationItem>
+            )}
           </PaginationContent>
         </Pagination>
       )}
     </div>
   )
-})
+}

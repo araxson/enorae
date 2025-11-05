@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users } from 'lucide-react'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
-import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
+import { COMPLIANCE_BADGE_VARIANT, LICENSE_BADGE_VARIANT } from '@/features/admin/common/constants/badge-variants'
 import type { AdminSalon } from '@/features/admin/salons/api/queries'
 import { formatCreatedDate, formatRevenue } from './table-utilities'
 

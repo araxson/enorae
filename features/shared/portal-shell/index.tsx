@@ -1,12 +1,9 @@
 // Portal-specific sidebars
-export { BusinessSidebar } from './components/sidebars/business-sidebar'
-export { CustomerSidebar } from './components/sidebars/customer-sidebar'
-export { StaffSidebar } from './components/sidebars/staff-sidebar'
-export { AdminSidebar } from './components/sidebars/admin-sidebar'
+export { BusinessSidebar, CustomerSidebar, StaffSidebar, AdminSidebar } from './components'
 
 // Shared components
-export { PortalHeader } from './components/portal-header'
+export { PortalHeader } from './components'
 
 // Types
 export type { NavItem, NavSecondaryItem, FavoriteItem } from './api/types'
-export * from './api/types'
+export type * from './api/types'

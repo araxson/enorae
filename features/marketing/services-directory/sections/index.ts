@@ -1,4 +1,5 @@
 export * from './directory-header'
-export * from './category-navigation'
-export * from './services-grid'
-export * from './category-salons'
+export { CategoryNavigation, PopularServicesWidget } from './category-navigation'
+export { ServicesGrid, ServiceCard } from './services-grid'
+export { CategorySalons } from './category-salons'
+export { EmptyState } from './services-grid/empty-state'

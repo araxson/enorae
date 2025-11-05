@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { getUserPreferences } from './api/queries'
 import { UserPreferencesClient } from './components'
 
@@ -15,4 +15,4 @@ export function UserPreferencesFeature() {
     </Suspense>
   )
 }
-export * from './api/types'
+export type * from './api/types'

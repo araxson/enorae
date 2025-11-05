@@ -23,7 +23,7 @@ export async function getUserPreferences(): Promise<ProfilePreference[]> {
   const { data, error } = await supabase
     .schema('identity')
     .from('profiles_preferences')
-    .select('*')
+    .select('profile_id, notification_preferences, privacy_settings, theme, language, created_at, updated_at')
     .eq('profile_id', session.user.id)
 
   if (error) throw error
@@ -43,7 +43,7 @@ export async function getUserPreference(): Promise<ProfilePreference | null> {
   const { data, error } = await supabase
     .schema('identity')
     .from('profiles_preferences')
-    .select('*')
+    .select('profile_id, notification_preferences, privacy_settings, theme, language, created_at, updated_at')
     .eq('profile_id', session.user.id)
     .single()
 

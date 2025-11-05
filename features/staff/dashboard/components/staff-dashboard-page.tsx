@@ -8,9 +8,12 @@ import {
   getClientRetentionMetrics,
 } from '@/features/staff/dashboard/api/queries'
 import { getStaffRoleLevel } from '@/lib/auth'
-import { JuniorDashboard } from './sections/junior-dashboard'
-import { FullDashboard } from './sections/full-dashboard'
-import { ErrorState, MissingProfileState } from './sections/error-state'
+import {
+  JuniorDashboard,
+  FullDashboard,
+  ErrorState,
+  MissingProfileState,
+} from './sections'
 
 export async function StaffDashboardPage() {
   let staffProfile

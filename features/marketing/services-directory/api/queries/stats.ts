@@ -26,10 +26,15 @@ export async function getPublicServiceStats(): Promise<{
     .is('deleted_at', null)
 
   if (error) throw error
+  if (!data) {
+    return {
+      totalServices: 0,
+      totalCategories: 0,
+      avgPrice: null,
+    }
+  }
 
-  const rows = (data ?? []) as Array<
-    Pick<Service, 'category_name'> & { current_price: number | null }
-  >
+  const rows = data
 
   const categories = new Set(rows.map((s) => s.category_name).filter(Boolean))
   const prices = rows.map((s) => s.current_price).filter((value): value is number => value != null)

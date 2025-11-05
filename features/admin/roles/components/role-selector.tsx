@@ -10,12 +10,7 @@ import {
 import type { RoleTemplate } from './role-templates'
 import { ROLE_PERMISSION_TEMPLATES } from './role-templates'
 import type { RoleValue } from '../api/types'
-import {
-  Field,
-  FieldContent,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 
 interface RoleSelectorProps {
   role: RoleValue | ''
@@ -31,7 +26,7 @@ export function RoleSelector({ role, onRoleChange, templateId, onTemplateChange 
   }
 
   return (
-    <FieldGroup className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-4 md:grid-cols-2">
       <Field>
         <FieldLabel htmlFor="role">Role *</FieldLabel>
         <FieldContent>
@@ -67,7 +62,7 @@ export function RoleSelector({ role, onRoleChange, templateId, onTemplateChange 
           </Select>
         </FieldContent>
       </Field>
-    </FieldGroup>
+    </div>
   )
 }
 

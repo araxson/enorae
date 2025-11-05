@@ -106,35 +106,41 @@ export function ExportFinancialData() {
             </Field>
           </FieldGroup>
 
-          <ItemGroup className="space-y-3">
-            <Item variant="muted">
-              <ItemContent>
-                <ItemTitle>Include in Export</ItemTitle>
-              </ItemContent>
-            </Item>
+          <div className="space-y-3">
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <ItemTitle>Include in Export</ItemTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
             <FieldGroup className="space-y-2">
-              <Field orientation="horizontal" className="flex-row-reverse items-center justify-end gap-2">
+              <Field orientation="horizontal">
                 <FieldLabel htmlFor="include-transactions">Transaction details</FieldLabel>
-                <FieldContent className="flex-none">
-                  <Checkbox
-                    id="include-transactions"
-                    checked={includeTransactions}
-                    onCheckedChange={(checked) => setIncludeTransactions(checked as boolean)}
-                  />
+                <FieldContent>
+                  <div className="flex justify-end">
+                    <Checkbox
+                      id="include-transactions"
+                      checked={includeTransactions}
+                      onCheckedChange={(checked) => setIncludeTransactions(checked as boolean)}
+                    />
+                  </div>
                 </FieldContent>
               </Field>
-              <Field orientation="horizontal" className="flex-row-reverse items-center justify-end gap-2">
+              <Field orientation="horizontal">
                 <FieldLabel htmlFor="include-summary">Revenue summary</FieldLabel>
-                <FieldContent className="flex-none">
-                  <Checkbox
-                    id="include-summary"
-                    checked={includeRevenueSummary}
-                    onCheckedChange={(checked) => setIncludeRevenueSummary(checked as boolean)}
-                  />
+                <FieldContent>
+                  <div className="flex justify-end">
+                    <Checkbox
+                      id="include-summary"
+                      checked={includeRevenueSummary}
+                      onCheckedChange={(checked) => setIncludeRevenueSummary(checked as boolean)}
+                    />
+                  </div>
                 </FieldContent>
               </Field>
             </FieldGroup>
-          </ItemGroup>
+          </div>
 
           <ButtonGroup aria-label="Actions">
             <Button

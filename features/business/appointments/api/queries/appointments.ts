@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS, canAccessSalon } from '@/lib/auth'
@@ -21,7 +23,7 @@ export async function getAppointments(salonId: string) {
 
   const { data, error } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, service_id, start_time, end_time, status, price, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: false })
 
@@ -31,7 +33,7 @@ export async function getAppointments(salonId: string) {
   }
 
   logger.success({ count: data?.length ?? 0 })
-  return data as AppointmentWithDetails[]
+  return data as unknown as AppointmentWithDetails[]
 }
 
 export async function getAppointmentsByStatus(salonId: string, status: string) {
@@ -47,7 +49,7 @@ export async function getAppointmentsByStatus(salonId: string, status: string) {
 
   const { data, error } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, service_id, start_time, end_time, status, price, created_at, updated_at')
     .eq('salon_id', salonId)
     .eq('status', status as 'draft' | 'pending' | 'confirmed' | 'checked_in' | 'in_progress' | 'completed' | 'cancelled' | 'no_show' | 'rescheduled')
     .order('start_time', { ascending: false })
@@ -58,5 +60,5 @@ export async function getAppointmentsByStatus(salonId: string, status: string) {
   }
 
   logger.success({ count: data?.length ?? 0 })
-  return data as AppointmentWithDetails[]
+  return data as unknown as AppointmentWithDetails[]
 }

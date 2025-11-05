@@ -12,7 +12,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import type { DailyMetricsDashboardProps } from '../../api/types'
-import { formatCurrency } from '@/features/business/business-common'
+import { formatCurrency } from '@/features/business/common'
 
 type Props = Pick<DailyMetricsDashboardProps, 'metrics'>
 

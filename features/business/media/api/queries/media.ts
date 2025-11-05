@@ -21,12 +21,12 @@ export async function getSalonMedia(salonId: string): Promise<SalonMedia | null>
 
   const { data, error } = await supabase
     .from('salon_media_view')
-    .select('*')
+    .select('salon_id, logo_url, cover_image_url, gallery_images, created_at, updated_at')
     .eq('salon_id', salonId)
     .single()
 
   if (error && error.code !== 'PGRST116') throw error // Ignore "not found" errors
-  return data
+  return data as unknown as SalonMedia | null
 }
 
 export async function getUserSalonMedia(): Promise<SalonMedia | null> {

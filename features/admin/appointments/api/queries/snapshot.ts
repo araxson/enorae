@@ -54,20 +54,20 @@ export async function getAppointmentSnapshot(
   const [appointmentsRes, overviewRes, analyticsRes] = await Promise.all([
     supabase
       .from('admin_appointments_overview_view')
-      .select('*')
+      .select('id, salon_id, salon_name, customer_id, customer_name, staff_id, staff_name, service_id, service_name, start_time, end_time, status, total_price, duration_minutes, created_at')
       .gte('start_time', startIso)
       .order('start_time', { ascending: false })
       .limit(settings.appointmentLimit)
       .returns<AppointmentRow[]>(),
     supabase
       .from('admin_appointments_overview_view')
-      .select('*')
+      .select('id, salon_id, salon_name, customer_id, customer_name, start_time, status, total_price')
       .order('start_time', { ascending: false })
       .limit(settings.recentLimit)
       .returns<AppointmentOverviewRow[]>(),
     supabase
       .from('admin_analytics_overview_view')
-      .select('*')
+      .select('date, platform_appointments, platform_cancelled_appointments, platform_no_shows, platform_completed_appointments')
       .gte('date', startIso)
       .order('date', { ascending: false })
       .limit(settings.windowInDays)

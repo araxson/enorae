@@ -8,8 +8,8 @@ interface ToastProps {
   variant?: 'default' | 'destructive'
 }
 
-export function useToast() {
-  const toast = ({ title, description, variant }: ToastProps) => {
+export function useToast(): { toast: (props: ToastProps) => void } {
+  const toast = ({ title, description, variant }: ToastProps): void => {
     if (variant === 'destructive') {
       sonnerToast.error(title, { description })
     } else {

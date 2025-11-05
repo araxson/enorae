@@ -43,8 +43,8 @@ export function SalonsClient({ salons, stats, insights }: SalonsClientProps) {
       const matchesSearch =
         !normalizedQuery ||
         [salon['name'], salon.business_name, salon.slug]
-          .filter(Boolean)
-          .some((value) => value!.toLowerCase().includes(normalizedQuery))
+          .filter((value): value is string => Boolean(value))
+          .some((value) => value.toLowerCase().includes(normalizedQuery))
 
       const subscriptionTier = salon.subscriptionTier?.toLowerCase() ?? 'unassigned'
       const normalizedTierFilter = tierFilter.toLowerCase()

@@ -10,7 +10,10 @@ import { createOperationLogger, logError } from '@/lib/observability'
 /**
  * Batch update user status - for bulk operations
  */
-export async function batchUpdateUserStatus(formData: FormData) {
+export async function batchUpdateUserStatus(formData: FormData): Promise<
+  | { error: string }
+  | { success: true; count: number }
+> {
   const logger = createOperationLogger('batchUpdateUserStatus', {})
   logger.start()
 

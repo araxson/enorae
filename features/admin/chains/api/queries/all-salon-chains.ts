@@ -15,7 +15,7 @@ export async function getAllSalonChains(): Promise<SalonChainRow[]> {
 
   const { data, error } = await supabase
     .from('salon_chains_view')
-    .select('*')
+    .select('id, name, description, owner_id, total_salons, is_active, created_at, updated_at')
     .is('deleted_at', null)
     .order('name', { ascending: true })
     .returns<SalonChainRow[]>()

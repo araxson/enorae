@@ -22,8 +22,8 @@ import {
 import { Field, FieldContent, FieldDescription, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field'
 import { DateRangePicker } from './filters/date-range-picker'
 import { TeamFocusFilter } from './filters/team-focus-filter'
-import { ServiceTierFilter } from './filters/service-tier-filter'
 import { StaffAssignmentsFilter } from './filters/staff-assignments-filter'
+import { GenericFilter } from '@/features/shared/ui/components/filters'
 
 const STYLIST_OPTIONS = ['Any stylist', 'Color specialists', 'Front desk', 'Senior stylists']
 
@@ -98,19 +98,17 @@ export function DashboardFilters() {
               </InputGroupAddon>
             </InputGroup>
 
-            <Select
+            <GenericFilter
               value={serviceTier}
-              onValueChange={(value: 'all' | 'premium' | 'standard') => setServiceTier(value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Service tier" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All services</SelectItem>
-                <SelectItem value="premium">Premium only</SelectItem>
-                <SelectItem value="standard">Standard</SelectItem>
-              </SelectContent>
-            </Select>
+              onChange={(value: 'all' | 'premium' | 'standard') => setServiceTier(value)}
+              options={[
+                { label: 'Premium only', value: 'premium' },
+                { label: 'Standard', value: 'standard' },
+              ]}
+              placeholder="Service tier"
+              showAll={true}
+              allLabel="All services"
+            />
           </div>
 
           <Separator />
@@ -119,7 +117,17 @@ export function DashboardFilters() {
             <TeamFocusFilter selectedStylist={selectedStylist} onSelect={setSelectedStylist} />
 
             <FieldGroup className="flex flex-wrap items-start gap-6">
-              <ServiceTierFilter value={serviceTier} onChange={setServiceTier} />
+              <GenericFilter
+                value={serviceTier}
+                onChange={setServiceTier}
+                options={[
+                  { label: 'Premium services', value: 'premium' },
+                  { label: 'Standard services', value: 'standard' },
+                ]}
+                label="Service mix"
+                showAll={true}
+                allLabel="All services"
+              />
 
               <Field className="w-full max-w-xs">
                 <FieldLabel>Booking load threshold</FieldLabel>

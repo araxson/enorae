@@ -1,163 +1,70 @@
 /**
- * Session Refresh Strategy
- * Automatically refreshes Supabase sessions to prevent expiration
- * during long-running dashboard sessions
+ * Session Management Utilities
+ *
+ * IMPORTANT: Automatic session refresh is handled by middleware (lib/supabase/middleware.ts)
+ * This file provides utilities for session monitoring and auth state changes only.
+ *
+ * DO NOT manually call refreshSession() - middleware handles token rotation automatically.
+ * Manual refresh calls break token rotation security (GOTRUE_SECURITY_REFRESH_TOKEN_ROTATION_ENABLED).
+ *
+ * See docs/rules/09-auth.md for details.
  */
 
 import * as React from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
 
 /**
- * Session refresh configuration
- */
-const SESSION_CONFIG = {
-  /** Check session every 5 minutes */
-  CHECK_INTERVAL_MS: 5 * 60 * 1000,
-
-  /** Refresh if session expires in less than 10 minutes */
-  REFRESH_THRESHOLD_MS: 10 * 60 * 1000,
-} as const
-
-let refreshTimer: NodeJS.Timeout | null = null
-let isRefreshing = false
-
-/**
- * Start automatic session refresh
- * Call this in client-side layout components
- */
-export function startSessionRefresh() {
-  // Prevent multiple timers
-  if (refreshTimer) {
-    return
-  }
-
-  const checkAndRefresh = async () => {
-    // Prevent concurrent refresh attempts (synchronization lock)
-    if (isRefreshing) {
-      return
-    }
-
-    try {
-      const supabase = createClient()
-      // SECURITY: Use getUser() instead of getSession() for server-validated auth
-      // getSession() only reads from cookies (spoofable), getUser() validates with Supabase
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        stopSessionRefresh()
-        return
-      }
-
-      // Get session for expiry check
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-
-      if (!session) {
-        stopSessionRefresh()
-        return
-      }
-
-      // Check if session is about to expire
-      const expiresAt = new Date(session.expires_at || 0).getTime()
-      const now = Date.now()
-      const timeUntilExpiry = expiresAt - now
-
-      if (timeUntilExpiry < SESSION_CONFIG.REFRESH_THRESHOLD_MS) {
-        console.log('[Session] Refreshing session (expires in', Math.round(timeUntilExpiry / 1000), 'seconds)')
-
-        isRefreshing = true
-        try {
-          const { error } = await supabase.auth.refreshSession()
-
-          if (error) {
-            console.error('[Session] Failed to refresh:', error)
-            stopSessionRefresh()
-          } else {
-            console.log('[Session] Successfully refreshed')
-          }
-        } finally {
-          isRefreshing = false
-        }
-      }
-    } catch (error) {
-      isRefreshing = false
-      console.error('[Session] Error checking session:', error)
-    }
-  }
-
-  // Initial check
-  checkAndRefresh()
-
-  // Set up periodic checks
-  refreshTimer = setInterval(checkAndRefresh, SESSION_CONFIG.CHECK_INTERVAL_MS)
-
-  // Clean up on page unload
-  if (typeof window !== 'undefined') {
-    window.addEventListener('beforeunload', stopSessionRefresh)
-  }
-}
-
-/**
- * Stop automatic session refresh
- */
-export function stopSessionRefresh() {
-  if (refreshTimer) {
-    clearInterval(refreshTimer)
-    refreshTimer = null
-  }
-
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('beforeunload', stopSessionRefresh)
-  }
-}
-
-/**
- * Manually trigger a session refresh
- */
-export async function refreshSession() {
-  try {
-    const supabase = createClient()
-    const { data, error } = await supabase.auth.refreshSession()
-
-    if (error) {
-      console.error('[Session] Manual refresh failed:', error)
-      return { success: false, error }
-    }
-
-    console.log('[Session] Manual refresh successful')
-    return { success: true, session: data.session }
-  } catch (error) {
-    console.error('[Session] Manual refresh error:', error)
-    return { success: false, error }
-  }
-}
-
-/**
- * React hook for session refresh
- * Use in client components that need session management
+ * React hook for auth state monitoring
+ * Listens for auth state changes and redirects to login on sign-out
  *
  * @example
  * ```tsx
  * 'use client'
- * import { useSessionRefresh } from '@/lib/auth/session-refresh'
+ * import { useAuthStateMonitor } from '@/lib/auth/session-refresh'
  *
  * export function Dashboard() {
- *   useSessionRefresh()
+ *   useAuthStateMonitor()
  *   // ... rest of component
  * }
  * ```
  */
-export function useSessionRefresh() {
-  // Start refresh on mount
+export function useAuthStateMonitor(): void {
+  const router = useRouter()
+
   React.useEffect(() => {
     if (typeof window === 'undefined') {
       return
     }
 
-    startSessionRefresh()
-    return () => stopSessionRefresh()
-  }, [])
+    // Client-side usage: createClient() is synchronous for browser
+    const supabase = createClient()
+
+    // Listen for auth state changes (sign out, token refresh, etc.)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        // User signed out - redirect to login
+        router.push('/login')
+      } else if (event === 'TOKEN_REFRESHED') {
+        console.log('[Session] Token refreshed by middleware')
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [router])
+}
+
+/**
+ * @deprecated Use useAuthStateMonitor instead
+ * Middleware handles session refresh automatically
+ */
+export function useSessionRefresh(): void {
+  console.warn(
+    '[Session] useSessionRefresh is deprecated. Middleware handles session refresh automatically. Use useAuthStateMonitor for auth state monitoring only.'
+  )
+  useAuthStateMonitor()
 }

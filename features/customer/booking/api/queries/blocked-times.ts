@@ -24,7 +24,7 @@ export async function getSalonBlockedTimes(
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, staff_id, salon_id, start_time, end_time, reason, is_active, created_at, updated_at')
     .eq('salon_id', salonId)
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -51,7 +51,7 @@ export async function getStaffBlockedTimes(
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, staff_id, salon_id, start_time, end_time, reason, is_active, created_at, updated_at')
     .eq('staff_id', staffId)
     .eq('is_active', true)
     .is('deleted_at', null)

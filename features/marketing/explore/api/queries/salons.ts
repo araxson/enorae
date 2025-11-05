@@ -25,8 +25,12 @@ export const getPublicSalons = cache(async function getPublicSalons(
 
   if (error) {
     console.error('Failed to load public salons', error)
-    return []
+    throw new Error('Failed to load public salons', { cause: error })
   }
 
-  return (data ?? []) as Salon[]
+  if (!data) {
+    throw new Error('Received empty response while loading public salons')
+  }
+
+  return data as Salon[]
 })

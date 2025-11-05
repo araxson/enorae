@@ -47,4 +47,4 @@ export function ReferralProgramFeature() {
     </Suspense>
   )
 }
-export * from './api/types'
+export type * from './api/types'

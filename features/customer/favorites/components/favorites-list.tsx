@@ -1,4 +1,4 @@
-import { memo } from 'react'
+
 import Link from 'next/link'
 import { MapPin, StickyNote } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -31,14 +31,14 @@ interface FavoritesListProps {
   favorites: FavoriteWithSalon[]
 }
 
-export const FavoritesList = memo(function FavoritesList({ favorites }: FavoritesListProps) {
+export function FavoritesList({ favorites }: FavoritesListProps) {
   if (favorites.length === 0) {
     return (
       <Empty>
-        <EmptyMedia variant="icon">
-          <MapPin className="size-6" aria-hidden="true" />
-        </EmptyMedia>
         <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <MapPin className="size-5" aria-hidden="true" />
+          </EmptyMedia>
           <EmptyTitle>No favorite salons yet</EmptyTitle>
           <EmptyDescription>
             Start exploring salons and save your favorites for quick access.
@@ -61,8 +61,8 @@ export const FavoritesList = memo(function FavoritesList({ favorites }: Favorite
         if (!salon) return null
 
         return (
-          <Item key={favorite['id']} variant="outline" className="flex h-full flex-col gap-4">
-            <ItemHeader className="items-start gap-3">
+          <Item key={favorite['id']} variant="outline">
+            <ItemHeader>
               {salon['formatted_address'] ? (
                 <ItemMedia variant="icon">
                   <MapPin className="size-4" aria-hidden="true" />
@@ -75,29 +75,31 @@ export const FavoritesList = memo(function FavoritesList({ favorites }: Favorite
                 ) : null}
               </ItemContent>
             </ItemHeader>
-            <ItemContent className="gap-4">
-              {favorite['notes'] ? (
-                <Alert>
-                  <StickyNote className="size-4" aria-hidden="true" />
-                  <AlertTitle>My notes</AlertTitle>
-                  <AlertDescription>{favorite['notes']}</AlertDescription>
-                </Alert>
-              ) : null}
+            <ItemContent>
+              <div className="flex flex-col gap-4">
+                {favorite['notes'] ? (
+                  <Alert>
+                    <StickyNote className="size-4" aria-hidden="true" />
+                    <AlertTitle>My notes</AlertTitle>
+                    <AlertDescription>{favorite['notes']}</AlertDescription>
+                  </Alert>
+                ) : null}
 
-              <Item variant="muted" size="sm">
-                <ItemContent>
-                  <ItemDescription>Booking status</ItemDescription>
-                </ItemContent>
-                <ItemActions className="flex-none">
-                  <Badge variant="secondary">
-                    {salon['is_accepting_bookings'] ? 'Accepting bookings' : 'Not accepting bookings'}
-                  </Badge>
-                </ItemActions>
-              </Item>
+                <Item variant="muted" size="sm">
+                  <ItemContent>
+                    <ItemDescription>Booking status</ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Badge variant="secondary">
+                      {salon['is_accepting_bookings'] ? 'Accepting bookings' : 'Not accepting bookings'}
+                    </Badge>
+                  </ItemActions>
+                </Item>
+              </div>
             </ItemContent>
             <ItemFooter>
               <ButtonGroup aria-label="Favorite actions" orientation="horizontal">
-                <Button asChild className="flex-1 min-w-36">
+                <Button asChild>
                   <Link href={`/customer/salons/${salon['slug']}`}>View details</Link>
                 </Button>
                 <FavoriteNotesButton
@@ -113,4 +115,4 @@ export const FavoritesList = memo(function FavoritesList({ favorites }: Favorite
       })}
     </div>
   )
-})
+}

@@ -496,7 +496,7 @@ jest.mock('@/lib/config', () => ({
 - **`constants.ts`** - Application constants
 - **`env.ts`** - Environment variable validation
 - **`google-maps-schema.ts`** - External API schemas
-- **`README.md`** - This documentation
+- **`readme.md`** - This documentation
 
 ---
 

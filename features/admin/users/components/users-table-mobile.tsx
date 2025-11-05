@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Spinner } from '@/components/ui/spinner'
 import { Shield } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
-import { STATUS_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
+import { STATUS_BADGE_VARIANT } from '@/features/admin/common/constants/badge-variants'
 import {
   Item,
   ItemActions,

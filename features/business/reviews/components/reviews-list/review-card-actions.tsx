@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Flag, MessageSquare, TrendingUp } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -71,4 +71,4 @@ function ReviewCardActionsComponent({
   )
 }
 
-export const ReviewCardActions = memo(ReviewCardActionsComponent)
+export const ReviewCardActions = ReviewCardActionsComponent

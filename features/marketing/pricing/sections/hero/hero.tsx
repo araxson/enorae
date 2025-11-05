@@ -1,18 +1,16 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingHero } from '@/features/marketing/common-components'
+import { ItemDescription } from '@/components/ui/item'
+import { MarketingHero } from '@/features/marketing/components/common'
 import { heroData } from './hero.data'
 
 export function Hero() {
   return (
     <MarketingHero {...heroData} variant="simple">
-      <Item variant="muted">
-        <ItemContent>
-          <ItemDescription>Transparent plans with no hidden fees—choose what fits your salon.</ItemDescription>
-        </ItemContent>
-      </Item>
+      <ItemDescription>
+        Transparent plans with no hidden fees—choose what fits your salon.
+      </ItemDescription>
       <ButtonGroup aria-label="Pricing hero actions">
         <Button asChild size="lg">
           <Link href="/signup">Start free trial</Link>

@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { Plus, CalendarCheck2, CalendarClock, PieChart, Users } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
 import { Button } from '@/components/ui/button'
 import { CreateRequestDialog } from './create-request-dialog'
 import { BalanceTab } from './balance-tab'
@@ -27,10 +27,6 @@ export function TimeOffRequestsClient({
   teamCalendar,
 }: TimeOffRequestsClientProps) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'balance' | 'team'>('all')
-
-  const usagePercent = (balance.used_days / balance.total_days) * 100
-  const pendingPercent = (balance.pending_days / balance.total_days) * 100
 
   const summaries: StaffSummary[] = [
     {
@@ -61,7 +57,49 @@ export function TimeOffRequestsClient({
     { id: 'support', label: 'Contact support', href: '/staff/support', icon: CalendarCheck2 },
   ]
 
-  const displayedRequests = activeTab === 'pending' ? pendingRequests : allRequests
+  const mobileCreateButton = (
+    <div className="flex justify-end sm:hidden">
+      <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2 w-full sm:w-auto">
+        <Plus className="size-4" />
+        New request
+      </Button>
+    </div>
+  )
+
+  const tabContent = {
+    all: (
+      <div className="space-y-6">
+        {mobileCreateButton}
+        <RequestsListTab
+          displayedRequests={allRequests}
+          pendingRequests={pendingRequests}
+          showPendingAlert
+          onCreateClick={() => setIsCreateDialogOpen(true)}
+        />
+      </div>
+    ),
+    pending: (
+      <div className="space-y-6">
+        {mobileCreateButton}
+        <RequestsListTab
+          displayedRequests={pendingRequests}
+          pendingRequests={pendingRequests}
+          showPendingAlert={false}
+          onCreateClick={() => setIsCreateDialogOpen(true)}
+        />
+      </div>
+    ),
+    balance: (
+      <div className="space-y-6">
+        <BalanceTab balance={balance} />
+      </div>
+    ),
+    team: (
+      <div className="space-y-6">
+        <TeamCalendarTab teamCalendar={teamCalendar} />
+      </div>
+    ),
+  }
 
   return (
     <StaffPageShell
@@ -79,8 +117,8 @@ export function TimeOffRequestsClient({
         { value: 'balance', label: 'Balance', icon: PieChart },
         { value: 'team', label: 'Team calendar', icon: Users },
       ]}
-      activeTab={activeTab}
-      onTabChange={(value: string) => setActiveTab(value as typeof activeTab)}
+      defaultTab="all"
+      tabContent={tabContent}
       toolbarEnd={
         <Button onClick={() => setIsCreateDialogOpen(true)} className="hidden gap-2 sm:inline-flex">
           <Plus className="size-4" />
@@ -88,28 +126,6 @@ export function TimeOffRequestsClient({
         </Button>
       }
     >
-      <div className="space-y-6">
-        <div className="flex justify-end sm:hidden">
-          <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2 w-full sm:w-auto">
-            <Plus className="size-4" />
-            New request
-          </Button>
-        </div>
-
-        {activeTab === 'balance' && <BalanceTab balance={balance} />}
-
-        {activeTab === 'team' && <TeamCalendarTab teamCalendar={teamCalendar} />}
-
-        {(activeTab === 'all' || activeTab === 'pending') && (
-          <RequestsListTab
-            displayedRequests={displayedRequests}
-            pendingRequests={pendingRequests}
-            showPendingAlert={activeTab === 'all'}
-            onCreateClick={() => setIsCreateDialogOpen(true)}
-          />
-        )}
-      </div>
-
       <CreateRequestDialog
         open={isCreateDialogOpen}
         onOpenChange={setIsCreateDialogOpen}

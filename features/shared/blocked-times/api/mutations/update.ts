@@ -15,7 +15,9 @@ const updateSchema = z.object({
   recurrence_pattern: z.string().optional(),
 })
 
-export async function updateBlockedTime(id: string, input: Partial<z.infer<typeof updateSchema>>) {
+type UpdateResult<T = unknown> = { data: T; error: null } | { error: string; fieldErrors?: Record<string, string[]> }
+
+export async function updateBlockedTime(id: string, input: Partial<z.infer<typeof updateSchema>>): Promise<UpdateResult> {
   const logger = createOperationLogger('updateBlockedTime', {})
   logger.start()
 
@@ -41,7 +43,10 @@ export async function updateBlockedTime(id: string, input: Partial<z.infer<typeo
 
     const parsed = updateSchema.safeParse(input)
     if (!parsed.success) {
-      return { error: parsed.error.issues[0]?.message ?? 'Invalid block data' }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: parsed.error.flatten().fieldErrors
+      }
     }
 
     if (parsed.data.start_time && parsed.data.end_time) {

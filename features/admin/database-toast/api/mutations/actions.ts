@@ -21,11 +21,19 @@ export async function optimizeToastUsage(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = optimizeColumnSchema.parse({
+    const result = optimizeColumnSchema.safeParse({
       tableName: formData.get('tableName')?.toString(),
       columnName: formData.get('columnName')?.toString(),
       compressionType: (formData.get('compressionType')?.toString() || 'pglz') as 'pglz' | 'lz4',
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // NOTE: optimize_distinct_column RPC function does not exist in database
     // This is a database maintenance operation that requires an RPC function to be created

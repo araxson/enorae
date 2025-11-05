@@ -37,4 +37,4 @@ export async function StaffServices({ params }: StaffServicesProps) {
     )
   }
 }
-export * from './api/types'
+export type * from './api/types'

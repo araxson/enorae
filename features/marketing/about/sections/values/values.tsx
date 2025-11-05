@@ -8,7 +8,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 import { valuesData } from './values.data'
 
 const iconMap = {

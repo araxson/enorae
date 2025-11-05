@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { ContactPage, contactMetadata } from '@/features/marketing/contact'
 
 export const metadata = contactMetadata

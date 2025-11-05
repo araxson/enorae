@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { SecurityAccessMonitoring } from '@/features/admin/security-access-monitoring'
 export const metadata = { title: 'Security Access Monitoring | Admin' }
 export default function SecurityAccessMonitoringPage() {

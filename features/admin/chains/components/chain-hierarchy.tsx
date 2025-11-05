@@ -1,5 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import { Building2, MapPin, Star } from 'lucide-react'
@@ -36,8 +45,8 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
         </ItemGroup>
       </CardHeader>
       <CardContent>
-        <div className="-m-6">
-          <Table>
+        <Table>
+          <TableCaption>Salons linked to the chain with current status and rating.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Salon Name</TableHead>
@@ -105,8 +114,16 @@ export function ChainHierarchy({ chainName, salons }: ChainHierarchyProps) {
               ))
             )}
           </TableBody>
-          </Table>
-        </div>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={6}>
+                <span className="text-sm text-muted-foreground">
+                  Chain members: {salons.length}
+                </span>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
       </CardContent>
     </Card>
   )

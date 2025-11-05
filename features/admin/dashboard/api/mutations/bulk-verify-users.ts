@@ -32,9 +32,12 @@ export async function bulkVerifyUsers(
 
     const validation = BULK_USER_IDS_SCHEMA.safeParse(parsed)
     if (!validation.success) {
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const errorValues = Object.values(fieldErrors) as Array<string[] | undefined>
+      const firstError = errorValues[0]?.[0]
       return {
         success: false,
-        error: validation.error.issues[0]?.message ?? 'Invalid user IDs',
+        error: firstError ?? 'Invalid user IDs',
       }
     }
     const ids = validation.data

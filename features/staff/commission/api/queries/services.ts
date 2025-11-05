@@ -1,7 +1,7 @@
 import 'server-only'
 
 import type { AppointmentRow, CommissionRate, ServiceRevenue } from '../../api/types'
-import { authorizeStaffAccess } from '@/features/staff/commission/utils/commission'
+import { authorizeStaffAccess } from '@/features/staff/commission/utils'
 import type { Database } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'
 
@@ -42,7 +42,7 @@ export async function getServiceBreakdown(
 
   const { data, error } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', dateFrom)
@@ -86,7 +86,7 @@ export async function getServiceCommissionBreakdown(
 
   const { data, error } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', dateFrom)

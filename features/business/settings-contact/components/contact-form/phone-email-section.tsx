@@ -17,9 +17,11 @@ type PhoneEmailSectionProps = {
     primary_email: PrimitiveValue
     booking_email: PrimitiveValue
   }
+  errors?: Record<string, string[]>
+  isPending?: boolean
 }
 
-export function PhoneEmailSection({ initialValues }: PhoneEmailSectionProps) {
+export function PhoneEmailSection({ initialValues, errors, isPending }: PhoneEmailSectionProps) {
   return (
     <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <Field>
@@ -31,7 +33,15 @@ export function PhoneEmailSection({ initialValues }: PhoneEmailSectionProps) {
             type="tel"
             defaultValue={initialValues.primary_phone ?? ''}
             placeholder="+1 (555) 123-4567"
+            aria-invalid={!!errors?.primary_phone}
+            aria-describedby={errors?.primary_phone ? 'primary_phone-error' : undefined}
+            disabled={isPending}
           />
+          {errors?.primary_phone && (
+            <p id="primary_phone-error" className="text-sm text-destructive mt-1" role="alert">
+              {errors.primary_phone[0]}
+            </p>
+          )}
         </FieldContent>
       </Field>
 
@@ -44,7 +54,15 @@ export function PhoneEmailSection({ initialValues }: PhoneEmailSectionProps) {
             type="tel"
             defaultValue={initialValues.secondary_phone ?? ''}
             placeholder="+1 (555) 987-6543"
+            aria-invalid={!!errors?.secondary_phone}
+            aria-describedby={errors?.secondary_phone ? 'secondary_phone-error' : undefined}
+            disabled={isPending}
           />
+          {errors?.secondary_phone && (
+            <p id="secondary_phone-error" className="text-sm text-destructive mt-1" role="alert">
+              {errors.secondary_phone[0]}
+            </p>
+          )}
         </FieldContent>
       </Field>
 
@@ -57,7 +75,15 @@ export function PhoneEmailSection({ initialValues }: PhoneEmailSectionProps) {
             type="email"
             defaultValue={initialValues.primary_email ?? ''}
             placeholder="contact@salon.com"
+            aria-invalid={!!errors?.primary_email}
+            aria-describedby={errors?.primary_email ? 'primary_email-error' : undefined}
+            disabled={isPending}
           />
+          {errors?.primary_email && (
+            <p id="primary_email-error" className="text-sm text-destructive mt-1" role="alert">
+              {errors.primary_email[0]}
+            </p>
+          )}
         </FieldContent>
       </Field>
 
@@ -70,7 +96,15 @@ export function PhoneEmailSection({ initialValues }: PhoneEmailSectionProps) {
             type="email"
             defaultValue={initialValues.booking_email ?? ''}
             placeholder="bookings@salon.com"
+            aria-invalid={!!errors?.booking_email}
+            aria-describedby={errors?.booking_email ? 'booking_email-error' : undefined}
+            disabled={isPending}
           />
+          {errors?.booking_email && (
+            <p id="booking_email-error" className="text-sm text-destructive mt-1" role="alert">
+              {errors.booking_email[0]}
+            </p>
+          )}
         </FieldContent>
       </Field>
     </FieldGroup>

@@ -1,4 +1,4 @@
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import { getCouponAnalytics, getCouponServiceOptions } from './api/queries'
 import { CouponManagementContent } from './components'
 
@@ -13,4 +13,4 @@ export async function CouponManagement() {
 
   return <CouponManagementContent salonId={salon.id} analytics={analytics} services={services} />
 }
-export * from './api/types'
+export type * from './api/types'

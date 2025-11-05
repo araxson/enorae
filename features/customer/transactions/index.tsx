@@ -1,8 +1,7 @@
-import { Spinner } from '@/components/ui/spinner'
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { Suspense } from 'react'
 import { getCustomerTransactions } from './api/queries'
-import { TransactionsList } from './components'
+import { TransactionsList, TransactionsSkeleton } from './components'
 
 export async function CustomerTransactions() {
   const transactions = await getCustomerTransactions()
@@ -15,7 +14,7 @@ export function CustomerTransactionsPage() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <ItemGroup className="gap-2">
-          <Item variant="muted" className="flex-col items-start gap-2">
+          <Item variant="muted" size="sm">
             <ItemContent>
               <ItemTitle>Transaction History</ItemTitle>
               <ItemDescription>
@@ -26,11 +25,7 @@ export function CustomerTransactionsPage() {
         </ItemGroup>
 
         <Suspense
-          fallback={
-            <div className="flex justify-center py-12">
-              <Spinner />
-            </div>
-          }
+          fallback={<TransactionsSkeleton />}
         >
           <CustomerTransactions />
         </Suspense>
@@ -41,4 +36,4 @@ export function CustomerTransactionsPage() {
 
 export { getCustomerTransactions, getCustomerTransactionById } from './api/queries'
 export type { CustomerTransactionWithDetails } from './api/queries'
-export * from './api/types'
+export type * from './api/types'

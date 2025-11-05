@@ -1,5 +1,5 @@
 'use client'
-import { SearchInput } from '@/features/shared/ui-components'
+import { SearchInput } from '@/features/shared/ui'
 import {
   Select,
   SelectContent,

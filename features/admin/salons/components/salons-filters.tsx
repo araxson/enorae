@@ -5,12 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
-import {
-  Field,
-  FieldContent,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
+import { Field, FieldContent, FieldLabel } from '@/components/ui/field'
 import {
   InputGroup,
   InputGroupAddon,
@@ -98,7 +93,7 @@ export function SalonsFilters({
         </Button>
       </ButtonGroup>
 
-      <FieldGroup className={`gap-6 lg:flex lg:items-end ${collapsed ? 'hidden md:flex' : ''}`}>
+      <div className={`grid gap-6 lg:flex lg:items-end ${collapsed ? 'hidden md:flex' : ''}`}>
         <Field className="flex-1">
           <FieldLabel htmlFor="salons-search">Search salons</FieldLabel>
           <FieldContent>
@@ -183,7 +178,7 @@ export function SalonsFilters({
             </Select>
           </FieldContent>
         </Field>
-      </FieldGroup>
+      </div>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { AdminSection } from '@/features/admin/common/components'
 import { getAllSalons } from './api/queries'
 import { SalonsClient } from './components'
 
@@ -8,11 +9,9 @@ export async function AdminSalons() {
   const { salons, stats, insights } = await getAllSalons()
 
   return (
-    <section className="py-16 md:py-24 lg:py-32">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <SalonsClient salons={salons} stats={stats} insights={insights} />
-      </div>
-    </section>
+    <AdminSection>
+      <SalonsClient salons={salons} stats={stats} insights={insights} />
+    </AdminSection>
   )
 }
-export * from './api/types'
+export type * from './api/types'

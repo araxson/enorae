@@ -18,3 +18,6 @@ export { SalonSelector } from './salon-selector'
 
 // Export types
 export type { RoleValue } from '../api/types'
+// Export role-permission-presets only (role-templates is duplicate)
+export type { RoleTemplate } from './role-permission-presets'
+export { ROLE_PERMISSION_TEMPLATES } from './role-permission-presets'

@@ -27,7 +27,7 @@ export async function getSalonReviews(): Promise<SalonReviewWithDetails[]> {
   const { data, error } = await supabase
     .schema('engagement')
     .from('salon_reviews_with_counts_view')
-    .select('*')
+    .select('id, salon_id, customer_id, rating, comment, response, responded_by_id, is_flagged, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
 
@@ -135,7 +135,7 @@ export async function getReviewById(id: string): Promise<SalonReviewWithDetails 
   const { data, error } = await supabase
     .schema('engagement')
     .from('salon_reviews_with_counts_view')
-    .select('*')
+    .select('id, salon_id, customer_id, rating, comment, response, responded_by_id, is_flagged, created_at, updated_at')
     .eq('id', id)
     .eq('salon_id', salonId)
     .single()

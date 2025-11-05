@@ -1,15 +1,20 @@
-import { memo, useMemo } from 'react'
 import Link from 'next/link'
 import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemFooter,
   ItemGroup,
-  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { Database } from '@/lib/types/database.types'
@@ -21,15 +26,14 @@ interface ServiceCardProps {
   service: Service
 }
 
-export const ServiceCard = memo(function ServiceCard({ service }: ServiceCardProps) {
-  const { hasPrice, hasSalePrice } = useMemo(() => ({
-    hasPrice: service['current_price'] !== null,
-    hasSalePrice: service['sale_price'] !== null && service['sale_price'] < (service['current_price'] || 0),
-  }), [service])
+export function ServiceCard({ service }: ServiceCardProps) {
+  // React Compiler automatically memoizes simple calculations - no useMemo needed
+  const hasPrice = service['current_price'] !== null
+  const hasSalePrice = service['sale_price'] !== null && service['sale_price'] < (service['current_price'] || 0)
 
   return (
-    <Item variant="outline" className="flex h-full flex-col gap-6">
-      <ItemHeader className="flex flex-col gap-4">
+    <Card>
+      <CardHeader>
         <div className="flex flex-wrap items-center gap-4">
           {service['category_name'] && (
             <Badge variant="secondary">
@@ -39,21 +43,21 @@ export const ServiceCard = memo(function ServiceCard({ service }: ServiceCardPro
             </Badge>
           )}
           {service['is_featured'] && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 text-sm text-primary">
               <Sparkles className="size-3" aria-hidden="true" />
-              <Badge variant="default">Featured</Badge>
+              <span>Featured</span>
             </div>
           )}
         </div>
-        <ItemTitle>
-          <h3 className="text-lg font-semibold tracking-tight">{service['name']}</h3>
-        </ItemTitle>
+        <CardTitle>{service['name']}</CardTitle>
         {service['description'] ? (
-          <ItemDescription className="line-clamp-3">{service['description']}</ItemDescription>
+          <CardDescription>
+            <span className="line-clamp-3">{service['description']}</span>
+          </CardDescription>
         ) : null}
-      </ItemHeader>
+      </CardHeader>
 
-      <ItemContent className="flex-1">
+      <CardContent>
         <ItemGroup className="gap-3">
           {service['duration_minutes'] && (
             <Item variant="muted">
@@ -86,13 +90,15 @@ export const ServiceCard = memo(function ServiceCard({ service }: ServiceCardPro
             </Item>
           )}
         </ItemGroup>
-      </ItemContent>
+      </CardContent>
 
-      <ItemFooter>
-        <Button className="w-full" asChild>
-          <Link href={`/services/${service['category_slug']}`}>View Salons</Link>
-        </Button>
-      </ItemFooter>
-    </Item>
+      <CardFooter>
+        <div className="flex w-full justify-end">
+          <Button asChild>
+            <Link href={`/services/${service['category_slug']}`}>View salons</Link>
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
   )
-})
+}

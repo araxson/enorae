@@ -8,7 +8,14 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components
 import { Card, CardContent } from '@/components/ui/card'
 import { AlertCircle, CheckCircle2, Info } from 'lucide-react'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { revokeSession, revokeAllOtherSessions } from '@/features/customer/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/customer/sessions/api/queries'
@@ -88,40 +95,52 @@ export function SessionList({ sessions }: SessionListProps) {
 
   if (sessions.length === 0) {
     return (
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <Info className="size-6" aria-hidden="true" />
-          </EmptyMedia>
-          <EmptyTitle>No active sessions</EmptyTitle>
-          <EmptyDescription>
-            You&apos;re not signed in on any other devices right now.
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          Keep this page open to monitor new sign-ins in real time.
-        </EmptyContent>
-      </Empty>
+      <div className="flex flex-col gap-8">
+        <Card>
+          <CardContent>
+            <Empty>
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <Info className="size-5" aria-hidden="true" />
+                </EmptyMedia>
+                <EmptyTitle>No active sessions</EmptyTitle>
+                <EmptyDescription>
+                  You’re not signed in on any other devices right now.
+                </EmptyDescription>
+              </EmptyHeader>
+              <EmptyContent>
+                <p className="text-sm text-muted-foreground">
+                  Keep this page open to monitor new sign-ins in real time.
+                </p>
+              </EmptyContent>
+            </Empty>
+          </CardContent>
+        </Card>
+      </div>
     )
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <ItemGroup className="gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Item className="flex-1" variant="muted">
-          <ItemContent>
-            <ItemTitle>Active Sessions</ItemTitle>
-            <ItemDescription>
-              You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
-            </ItemDescription>
-          </ItemContent>
-        </Item>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex-1">
+          <ItemGroup>
+            <Item variant="muted" size="sm">
+              <ItemContent>
+                <ItemTitle>Active Sessions</ItemTitle>
+                <ItemDescription>
+                  You have {sessions.length} active session{sessions.length !== 1 ? 's' : ''} across your devices
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
         <RevokeAllDialog
           otherSessionsCount={otherSessions.length}
           revokingAll={revokingAll}
           onRevokeAll={handleRevokeAll}
         />
-      </ItemGroup>
+      </div>
 
       {error && (
         <Alert variant="destructive">
@@ -155,7 +174,7 @@ export function SessionList({ sessions }: SessionListProps) {
               <TableBody>
                 {sessions.map((session) => (
                   <SessionTableRow
-                    key={session['id']}
+                    key={session.id}
                     session={session}
                     revokingId={revokingId}
                     onRevoke={handleRevokeSession}

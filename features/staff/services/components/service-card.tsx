@@ -95,7 +95,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
   }
 
   return (
-    <Card className={service.is_available === false ? 'opacity-60' : ''}>
+    <Card>
       <CardHeader>
         <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">

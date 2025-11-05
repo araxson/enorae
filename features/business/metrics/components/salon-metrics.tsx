@@ -3,14 +3,14 @@ import { ComparativeMetrics } from './comparative-metrics'
 import { MetricsOverview } from './metrics-overview'
 import { RevenueChart } from './revenue-chart'
 import { RevenueForecastCard } from './revenue-forecast-card'
-import { StaffPerformanceCard, ServicePopularityChart } from '@/features/business/business-common/components'
+import { StaffPerformanceCard, ServicePopularityChart } from '@/features/business/common/components'
 import { getTopStaff, getTopServices } from '@/features/business/analytics/api/queries'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
-import { buildPeriodComparisons, buildRevenueForecast } from '@/features/business/metrics/utils/metrics'
-import { OperationalDashboard } from '@/features/business/metrics-operational/components/operational-dashboard'
+import { getUserSalon } from '@/features/business/common/api/queries'
+import { buildPeriodComparisons, buildRevenueForecast } from '@/features/business/metrics/utils'
+import { OperationalDashboard } from '@/features/business/metrics-operational/components'
 import { getOperationalMetrics } from '@/features/business/metrics-operational/api/queries'
 
-export async function SalonMetrics() {
+export async function SalonMetrics(): Promise<React.JSX.Element> {
   const salon = await getUserSalon()
 
   if (!salon?.id) {
@@ -47,7 +47,8 @@ export async function SalonMetrics() {
   const forecast = buildRevenueForecast(dailyMetrics)
   const recentMetrics = dailyMetrics.slice(-30)
 
-  const staffLeaderboard = topStaff.map((staff: { name: string; title: string | null; count: number; revenue: number }, index: number) => ({
+  type TopStaffEntry = { name: string; title: string | null; count: number; revenue: number }
+  const staffLeaderboard = topStaff.map((staff: TopStaffEntry, index: number) => ({
     id: `staff-${index}-${staff.name}`,
     name: staff.name,
     title: staff.title,
@@ -56,7 +57,8 @@ export async function SalonMetrics() {
     totalRevenue: staff.revenue,
   }))
 
-  const popularServices = topServices.map((service: { name: string; count: number; revenue: number }) => ({
+  type TopServiceEntry = { name: string; count: number; revenue: number }
+  const popularServices = topServices.map((service: TopServiceEntry) => ({
     name: service.name,
     count: service.count,
     revenue: service.revenue,

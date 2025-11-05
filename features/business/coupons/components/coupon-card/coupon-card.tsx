@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { HeaderSection } from './header-section'
 import { DetailsSection } from './details-section'
@@ -18,7 +18,7 @@ import type { CouponCardProps } from '../../api/types'
  * - Performance metrics (uses, discount given)
  * - Service and customer applicability
  */
-export const CouponCard = memo(function CouponCard({
+export function CouponCard({
   coupon,
   onCopy,
   onToggle,
@@ -49,4 +49,4 @@ export const CouponCard = memo(function CouponCard({
       </CardContent>
     </Card>
   )
-})
+}

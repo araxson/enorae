@@ -9,7 +9,17 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-export async function createServiceCategory(formData: FormData) {
+type CategoryFormState = {
+  success?: boolean
+  error?: string
+  errors?: Record<string, string[]>
+}
+
+// useActionState signature: (prevState, formData) => Promise<state>
+export async function createServiceCategory(
+  prevState: CategoryFormState | null,
+  formData: FormData
+): Promise<CategoryFormState> {
   const logger = createOperationLogger('createServiceCategory', {})
   logger.start()
 
@@ -20,7 +30,12 @@ export async function createServiceCategory(formData: FormData) {
       parentId: parentIdValue && parentIdValue !== '' ? parentIdValue : null,
     })
 
-    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+    if (!result.success) {
+      return {
+        error: 'Validation failed',
+        errors: result.error.flatten().fieldErrors,
+      }
+    }
 
     const data = result.data
     const supabase = await createClient()
@@ -69,13 +84,18 @@ export async function createServiceCategory(formData: FormData) {
     if (insertError) return { error: insertError.message }
 
     revalidatePath('/business/services/categories', 'page')
+    revalidatePath('/business/service-categories')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to create category' }
   }
 }
 
-export async function updateServiceCategory(formData: FormData) {
+// useActionState signature: (prevState, formData) => Promise<state>
+export async function updateServiceCategory(
+  prevState: CategoryFormState | null,
+  formData: FormData
+): Promise<CategoryFormState> {
   try {
     const id = formData.get('id')?.toString()
     if (!id || !UUID_REGEX.test(id)) return { error: 'Invalid ID' }
@@ -86,7 +106,12 @@ export async function updateServiceCategory(formData: FormData) {
       parentId: parentIdValue && parentIdValue !== '' ? parentIdValue : null,
     })
 
-    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+    if (!result.success) {
+      return {
+        error: 'Validation failed',
+        errors: result.error.flatten().fieldErrors,
+      }
+    }
 
     const data = result.data
     const supabase = await createClient()
@@ -127,6 +152,7 @@ export async function updateServiceCategory(formData: FormData) {
     if (updateError) return { error: updateError.message }
 
     revalidatePath('/business/services/categories', 'page')
+    revalidatePath('/business/service-categories')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to update category' }

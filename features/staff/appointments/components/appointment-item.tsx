@@ -1,10 +1,10 @@
 'use client'
 
-import { memo, useCallback } from 'react'
 import { format } from 'date-fns'
 import { Calendar, Clock, CheckCircle, XCircle, Play, User } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { ActionButton } from '@/features/shared/ui-components'
+import { Button } from '@/components/ui/button'
+import { ActionButton } from '@/features/shared/ui'
 import {
   markAppointmentCompleted,
   markAppointmentNoShow,
@@ -22,6 +22,17 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 type AppointmentItemProps = {
   appointment: StaffAppointment
@@ -41,8 +52,7 @@ const statusConfig: Record<AppointmentStatus, { label: string; variant: 'default
   rescheduled: { label: 'Rescheduled', variant: 'outline' },
 }
 
-// PERFORMANCE FIX: Wrap in React.memo to prevent unnecessary re-renders in list
-export const AppointmentItem = memo(function AppointmentItem({
+export function AppointmentItem({
   appointment,
   showActions = true,
   onSelect,
@@ -54,13 +64,12 @@ export const AppointmentItem = memo(function AppointmentItem({
   const customerId = appointment.customer_id
   const confirmationCode = appointment.confirmation_code
 
-  // PERFORMANCE FIX: Memoize keyboard handler
-  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
       onSelect()
     }
-  }, [onSelect])
+  }
 
   return (
     <Item
@@ -138,19 +147,39 @@ export const AppointmentItem = memo(function AppointmentItem({
                   <CheckCircle className="mr-1 size-4" />
                   Complete
                 </ActionButton>
-                <ActionButton
-                  size="sm"
-                  variant="destructive"
-                  onAction={async () => {
-                    await markAppointmentNoShow(appointment.id!)
-                    router.refresh()
-                  }}
-                  successMessage="Marked as no-show"
-                  loadingText="Updating..."
-                >
-                  <XCircle className="mr-1 size-4" />
-                  No Show
-                </ActionButton>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button size="sm" variant="destructive">
+                      <XCircle className="mr-1 size-4" />
+                      No Show
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Mark as no-show?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will mark the appointment as a no-show and notify the client record. You can still add notes afterwards.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Keep appointment</AlertDialogCancel>
+                      <AlertDialogAction asChild>
+                        <ActionButton
+                          size="sm"
+                          variant="destructive"
+                          onAction={async () => {
+                            await markAppointmentNoShow(appointment.id!)
+                            router.refresh()
+                          }}
+                          successMessage="Marked as no-show"
+                          loadingText="Updating..."
+                        >
+                          Confirm no-show
+                        </ActionButton>
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </>
             ) : null}
           </ButtonGroup>
@@ -158,4 +187,4 @@ export const AppointmentItem = memo(function AppointmentItem({
       ) : null}
     </Item>
   )
-})
+}

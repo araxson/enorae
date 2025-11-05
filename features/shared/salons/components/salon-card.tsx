@@ -1,4 +1,6 @@
-import { memo, type ReactNode } from 'react'
+'use client'
+
+import { type ReactNode } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -48,8 +50,7 @@ export interface SalonCardProps {
   favoriteAction?: ReactNode
 }
 
-// PERFORMANCE FIX: Wrap in React.memo to prevent unnecessary re-renders in list views
-export const SalonCard = memo(function SalonCard({
+export function SalonCard({
   salonId,
   name,
   description,
@@ -180,4 +181,4 @@ export const SalonCard = memo(function SalonCard({
       </ContextMenuContent>
     </ContextMenu>
   )
-})
+}

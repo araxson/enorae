@@ -22,25 +22,25 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
     {
       name: 'Total',
       value: stats.totalReviews,
-      fill: 'hsl(var(--primary))',
+      fill: 'var(--primary)',
       icon: MessageSquare
     },
     {
       name: 'Flagged',
       value: stats.flaggedReviews,
-      fill: 'hsl(var(--destructive))',
+      fill: 'var(--destructive)',
       icon: AlertTriangle
     },
     {
       name: 'Pending',
       value: stats.pendingReviews,
-      fill: 'hsl(var(--accent))',
+      fill: 'var(--accent)',
       icon: Clock
     },
     {
       name: 'High Risk',
       value: stats.highRiskReviews,
-      fill: 'hsl(var(--destructive))',
+      fill: 'var(--destructive)',
       icon: ShieldAlert
     },
   ]
@@ -50,13 +50,13 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
       name: 'Sentiment',
       value: parseFloat(stats.averageSentiment.toFixed(2)),
       displayValue: stats.averageSentiment.toFixed(2),
-      fill: 'hsl(var(--secondary))'
+      fill: 'var(--secondary)'
     },
     {
       name: 'Quality',
       value: stats.averageQuality,
       displayValue: `${stats.averageQuality}%`,
-      fill: 'hsl(var(--primary))'
+      fill: 'var(--primary)'
     },
   ]
 
@@ -78,7 +78,7 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
             config={{
               value: {
                 label: 'Reviews',
-                color: 'hsl(var(--primary))'
+                color: 'var(--primary)'
               }
             }}
             className="h-[280px]"
@@ -123,7 +123,7 @@ export function ModerationStats({ stats }: ModerationStatsProps) {
             config={{
               value: {
                 label: 'Score',
-                color: 'hsl(var(--primary))'
+                color: 'var(--primary)'
               }
             }}
             className="h-[280px]"

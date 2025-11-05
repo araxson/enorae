@@ -1,9 +1,8 @@
-
 /**
  * Marketing Home Mutations
  *
  * NOTE: Newsletter subscription has been moved to @/features/marketing/newsletter/api/mutations
- * to break circular dependency between common-components and home feature.
+ * to break circular dependency between components/common and home feature.
  */
 
 // Re-export newsletter subscription for backward compatibility

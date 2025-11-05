@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { createService, updateService } from '@/features/business/services/api/mutations'
 import type { Database } from '@/lib/types/database.types'
+import { useServiceFormState } from './use-service-form-state'
 
 type Service = Database['public']['Views']['services_view']['Row']
 
@@ -19,54 +20,27 @@ export function useServiceForm({ salonId, service, open, onClose, onSuccess }: U
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [basePrice, setBasePrice] = useState('')
-  const [salePrice, setSalePrice] = useState('')
-  const [duration, setDuration] = useState('')
-  const [buffer, setBuffer] = useState('0')
-  const [isTaxable, setIsTaxable] = useState(true)
-  const [taxRate, setTaxRate] = useState('')
-  const [commissionRate, setCommissionRate] = useState('')
-  const [isActive, setIsActive] = useState(true)
-  const [isBookable, setIsBookable] = useState(true)
-  const [isFeatured, setIsFeatured] = useState(false)
-
-  useEffect(() => {
-    if (service) {
-      setName(service['name'] || '')
-      setDescription(service['description'] || '')
-      setBasePrice(service['price']?.toString() || '')
-      setSalePrice(service['sale_price']?.toString() || '')
-      setDuration(service['duration_minutes']?.toString() || '')
-      setBuffer(service['buffer_minutes']?.toString() || '0')
-      setIsTaxable(true)
-      setTaxRate('')
-      setCommissionRate('')
-      setIsActive(service['is_active'] ?? true)
-      setIsBookable(service['is_bookable'] ?? true)
-      setIsFeatured(service['is_featured'] ?? false)
-    } else {
-      setName('')
-      setDescription('')
-      setBasePrice('')
-      setSalePrice('')
-      setDuration('')
-      setBuffer('0')
-      setIsTaxable(true)
-      setTaxRate('')
-      setCommissionRate('')
-      setIsActive(true)
-      setIsBookable(true)
-      setIsFeatured(false)
-    }
-    setError(null)
-  }, [service, open])
+  const formState = useServiceFormState({ service, open })
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsSubmitting(true)
     setError(null)
+
+    const {
+      name,
+      description,
+      basePrice,
+      salePrice,
+      duration,
+      buffer,
+      isTaxable,
+      taxRate,
+      commissionRate,
+      isActive,
+      isBookable,
+      isFeatured,
+    } = formState.state
 
     try {
       if (service) {
@@ -128,35 +102,11 @@ export function useServiceForm({ salonId, service, open, onClose, onSuccess }: U
 
   return {
     state: {
-      name,
-      description,
-      basePrice,
-      salePrice,
-      duration,
-      buffer,
-      isTaxable,
-      taxRate,
-      commissionRate,
-      isActive,
-      isBookable,
-      isFeatured,
+      ...formState.state,
       isSubmitting,
       error,
     },
-    actions: {
-      setName,
-      setDescription,
-      setBasePrice,
-      setSalePrice,
-      setDuration,
-      setBuffer,
-      setIsTaxable,
-      setTaxRate,
-      setCommissionRate,
-      setIsActive,
-      setIsBookable,
-      setIsFeatured,
-    },
+    actions: formState.actions,
     handlers: {
       handleSubmit,
       handleClose: onClose,

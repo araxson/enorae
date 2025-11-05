@@ -22,7 +22,9 @@ export async function updateProfileBasicsAction(payload: unknown): Promise<Actio
 
   const parsed = basicDetailsSchema.safeParse(payload)
   if (!parsed.success) {
-    return failure(parsed.error.issues[0]?.message ?? 'Invalid profile details')
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    return failure(firstError ?? 'Invalid profile details')
   }
 
   const { profileId, fullName, username } = parsed.data
@@ -73,7 +75,9 @@ export async function updateProfileBasicsAction(payload: unknown): Promise<Actio
 export async function updateProfileMetadataAction(payload: unknown): Promise<ActionResponse> {
   const parsed = metadataSchema.safeParse(payload)
   if (!parsed.success) {
-    return failure(parsed.error.issues[0]?.message ?? 'Invalid metadata payload')
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    return failure(firstError ?? 'Invalid metadata payload')
   }
 
   const { profileId, tags, interests, socialProfiles } = parsed.data
@@ -106,7 +110,9 @@ export async function updateProfileMetadataAction(payload: unknown): Promise<Act
 export async function updateProfilePreferencesAction(payload: unknown): Promise<ActionResponse> {
   const parsed = preferencesSchema.safeParse(payload)
   if (!parsed.success) {
-    return failure(parsed.error.issues[0]?.message ?? 'Invalid preferences payload')
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    return failure(firstError ?? 'Invalid preferences payload')
   }
 
   const { profileId, timezone, locale, countryCode, marketingEmails, smsAlerts } = parsed.data

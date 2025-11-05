@@ -19,27 +19,29 @@ export async function getTrendInsights(salonId: string): Promise<TrendInsight[]>
   const logger = createOperationLogger('getTrendInsights', {})
   logger.start()
 
-  const session = await verifySession()
-  if (!session) throw new Error('Unauthorized')
+  try {
+    const session = await verifySession()
+    if (!session) throw new Error('Unauthorized')
 
-  const supabase = await createClient()
+    const supabase = await createClient()
 
-  // Get last 30 days of metrics
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    // Get last 30 days of metrics
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-  const { data: metrics, error } = await supabase
-    .from('daily_metrics_view')
-    .select('*')
-    .eq('salon_id', salonId)
-    .gte('metric_at', thirtyDaysAgo.toISOString().split('T')[0])
-    .order('metric_at', { ascending: true })
+    const { data: metrics, error } = await supabase
+      .from('daily_metrics_view')
+      .select('salon_id, metric_at, total_revenue, service_revenue, total_appointments, completed_appointments, cancelled_appointments, new_customers, returning_customers, active_staff_count, created_at')
+      .eq('salon_id', salonId)
+      .gte('metric_at', thirtyDaysAgo.toISOString().split('T')[0])
+      .order('metric_at', { ascending: true })
 
-  if (error) throw error
+    if (error) throw error
 
-  if (!metrics || metrics.length < 7) {
-    return []
-  }
+    if (!metrics || metrics.length < 7) {
+      logger.success({ salonId, trendCount: 0 })
+      return []
+    }
 
   // Explicitly type the metrics array
   const typedMetrics = metrics as DailyMetric[]
@@ -93,5 +95,10 @@ export async function getTrendInsights(salonId: string): Promise<TrendInsight[]>
     message: `${retentionRate.toFixed(1)}% returning customers`
   })
 
-  return trends
+    logger.success({ salonId, trendCount: trends.length })
+    return trends
+  } catch (error) {
+    logger.error(error instanceof Error ? error : String(error), 'system', { salonId })
+    return []
+  }
 }

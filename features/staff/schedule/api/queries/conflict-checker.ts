@@ -67,7 +67,7 @@ export async function checkScheduleConflict(
 
   const { data, error } = await supabase
     .from('staff_schedules_view')
-    .select('*')
+    .select('id, staff_id, salon_id, day_of_week, start_time, end_time, is_available, created_at')
     .eq('staff_id', authorizedStaffId)
     .eq('day_of_week', dayOfWeek)
     .eq('is_active', true)
@@ -114,7 +114,7 @@ export async function getScheduleConflicts(
 
   const { data: schedules, error: scheduleError } = await supabase
     .from('staff_schedules_view')
-    .select('*')
+    .select('id, staff_id, salon_id, day_of_week, start_time, end_time, is_available, created_at')
     .eq('staff_id', authorizedStaffId)
     .eq('day_of_week', dayOfWeek)
     .eq('is_active', true)

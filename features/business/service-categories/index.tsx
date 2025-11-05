@@ -5,4 +5,4 @@ export async function ServiceCategories() {
   const categories = await getServiceCategories()
   return <ServiceCategoriesClient initialCategories={categories} />
 }
-export * from './api/types'
+export type * from './api/types'

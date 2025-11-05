@@ -2,8 +2,10 @@
 
 import * as React from 'react'
 import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
 
 type BookingCalendarProps = {
   dateValue: string
@@ -62,9 +64,9 @@ export function BookingCalendar({
   }, [])
 
   return (
-    <Card className="overflow-hidden p-0">
-      <CardContent className="relative grid gap-0 p-0 md:grid-cols-[auto_14rem]">
-        <div className="p-4 md:p-6">
+    <Card>
+      <CardContent className="grid gap-6 md:grid-cols-[minmax(0,1fr)_14rem]">
+        <div>
           <Calendar
             mode="single"
             selected={selectedDate}
@@ -74,29 +76,34 @@ export function BookingCalendar({
             showOutsideDays={false}
             className="bg-transparent p-0 [--cell-size:--spacing(10)] md:[--cell-size:--spacing(12)]"
             formatters={{
-              formatWeekdayName: (date) => date.toLocaleString('en-US', { weekday: 'short' }),
+              formatWeekdayName: (date) =>
+                date.toLocaleString('en-US', { weekday: 'short' }),
             }}
           />
         </div>
 
-        <div className="no-scrollbar flex max-h-72 flex-col gap-3 overflow-y-auto border-t p-4 md:max-h-none md:border-l md:border-t-0 md:p-6">
-          <div className="grid gap-2">
+        <div className="flex flex-col gap-3">
+          <span className="text-sm font-medium text-muted-foreground">
+            Available times
+          </span>
+          <ButtonGroup orientation="vertical" className="w-full">
             {TIME_SLOTS.map((slot) => (
               <Button
                 key={slot}
                 type="button"
                 variant={timeValue === slot ? 'default' : 'outline'}
+                size="sm"
                 onClick={() => onTimeChange(slot)}
-                className="w-full shadow-none"
+                aria-pressed={timeValue === slot}
               >
                 {slot}
               </Button>
             ))}
-          </div>
+          </ButtonGroup>
         </div>
       </CardContent>
-
-      <CardFooter className="flex flex-col gap-3 border-t px-4 py-5 text-sm md:flex-row md:items-center">
+      <Separator />
+      <CardFooter className="flex flex-col gap-3 text-sm md:flex-row md:items-center">
         <p className="flex-1 text-center md:text-left">
           {selectedDate && timeValue ? (
             <>
@@ -118,9 +125,8 @@ export function BookingCalendar({
         <input type="hidden" name="time" value={timeValue} />
         <Button
           type="button"
-          className="w-full md:w-auto"
-          disabled={!selectedDate || !timeValue}
           variant="outline"
+          disabled={!selectedDate || !timeValue}
         >
           {selectedDate && timeValue ? 'Looks good' : 'Pick a slot'}
         </Button>

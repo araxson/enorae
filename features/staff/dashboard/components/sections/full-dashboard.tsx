@@ -1,15 +1,13 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { TrendingUp, Clock, Calendar, Users } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
 import { RoleBadge } from './role-badge'
 import { CommissionSummary } from './commission-summary'
-import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metrics'
-import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
-import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
-import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
+import { StaffMetrics, TodaySchedule, UpcomingAppointments } from '@/features/staff/dashboard/components'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui'
 import type { AppointmentWithDetails } from '@/features/shared/appointments/api/types'
 import type { StaffCommissionSummary, StaffMetricsSummary, ClientRetentionMetrics } from '@/features/staff/dashboard/api/queries'
 
@@ -30,8 +28,6 @@ export function FullDashboard({
   commission,
   retentionMetrics,
 }: Props) {
-  const [activeTab, setActiveTab] = useState('overview')
-
   const summaries: StaffSummary[] = useMemo(() => {
     const upcomingCount = upcomingAppointments.length
     return [
@@ -79,6 +75,32 @@ export function FullDashboard({
   ]
 
   const roleDescription = roleLevel ? `Role: ${roleLevel.replace('_', ' ')}` : undefined
+  const renderCommissionSummary = () => (commission ? <CommissionSummary commission={commission} /> : null)
+
+  const tabContent = {
+    overview: (
+      <div className="space-y-6">
+        {renderCommissionSummary()}
+        <StaffMetrics metrics={metrics} />
+        <div className="grid gap-6 lg:grid-cols-2">
+          <TodaySchedule appointments={todayAppointments} />
+          <UpcomingAppointments appointments={upcomingAppointments} />
+        </div>
+      </div>
+    ),
+    today: (
+      <div className="space-y-6">
+        {renderCommissionSummary()}
+        <TodaySchedule appointments={todayAppointments} />
+      </div>
+    ),
+    upcoming: (
+      <div className="space-y-6">
+        {renderCommissionSummary()}
+        <UpcomingAppointments appointments={upcomingAppointments} />
+      </div>
+    ),
+  }
 
   return (
     <StaffPageShell
@@ -91,8 +113,8 @@ export function FullDashboard({
       summaries={summaries}
       quickActions={quickActions}
       tabs={tabs}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
+      defaultTab="overview"
+      tabContent={tabContent}
       toolbarEnd={
         <div className="hidden items-center gap-2 sm:flex">
           <RoleBadge roleLevel={roleLevel} />
@@ -100,32 +122,6 @@ export function FullDashboard({
           <RefreshButton />
         </div>
       }
-    >
-      <div className="space-y-6">
-        {commission ? <CommissionSummary commission={commission} /> : null}
-
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            <StaffMetrics metrics={metrics} />
-            <div className="grid gap-6 lg:grid-cols-2">
-              <TodaySchedule appointments={todayAppointments} />
-              <UpcomingAppointments appointments={upcomingAppointments} />
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'today' && (
-          <div className="space-y-6">
-            <TodaySchedule appointments={todayAppointments} />
-          </div>
-        )}
-
-        {activeTab === 'upcoming' && (
-          <div className="space-y-6">
-            <UpcomingAppointments appointments={upcomingAppointments} />
-          </div>
-        )}
-      </div>
-    </StaffPageShell>
+    />
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
-import { Trash2, Power, PowerOff } from 'lucide-react'
+import { Trash2, Power, PowerOff, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -13,9 +13,25 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { ItemDescription } from '@/components/ui/item'
 import {
-  ItemDescription,
-} from '@/components/ui/item'
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import type { StaffScheduleWithDetails } from '@/features/business/staff-schedules/api/queries'
 
 const DAY_NAMES: Record<string, string> = {
@@ -69,10 +85,31 @@ export function StaffScheduleTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {schedules
-          .sort((a: StaffScheduleWithDetails, b: StaffScheduleWithDetails) => (DAY_ORDER[a['day_of_week'] || 'monday'] || 0) - (DAY_ORDER[b['day_of_week'] || 'monday'] || 0))
-          .map((schedule: StaffScheduleWithDetails) => (
-            <TableRow key={schedule['id']}>
+        {schedules.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={6}>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <Calendar className="size-5" aria-hidden="true" />
+                  </EmptyMedia>
+                  <EmptyTitle>No schedules configured</EmptyTitle>
+                  <EmptyDescription>
+                    Add working hours for this staff member to see them listed here.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            </TableCell>
+          </TableRow>
+        ) : (
+          schedules
+            .sort(
+              (a: StaffScheduleWithDetails, b: StaffScheduleWithDetails) =>
+                (DAY_ORDER[a['day_of_week'] || 'monday'] || 0) -
+                (DAY_ORDER[b['day_of_week'] || 'monday'] || 0),
+            )
+            .map((schedule: StaffScheduleWithDetails) => (
+              <TableRow key={schedule['id']}>
               <TableCell className="font-medium">
                 {DAY_NAMES[schedule['day_of_week'] || 'monday'] || schedule['day_of_week']}
               </TableCell>
@@ -109,18 +146,39 @@ export function StaffScheduleTable({
                       <Power className="size-4" />
                     )}
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => schedule['id'] && onDelete(schedule['id'])}
-                    disabled={deletingId === schedule['id']}
-                  >
-                    <Trash2 className="size-4" />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={deletingId === schedule['id']}
+                        aria-label="Delete schedule"
+                      >
+                        <Trash2 className="size-4" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Remove schedule?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will delete the selected schedule slot for the staff member.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => schedule['id'] && onDelete(schedule['id'])}
+                        >
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </ButtonGroup>
               </TableCell>
-            </TableRow>
-          ))}
+              </TableRow>
+            ))
+        )}
       </TableBody>
     </Table>
   )

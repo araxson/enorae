@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { getAvailableStates, getFeaturedSalons, getPopularCities, searchSalons } from './api/queries'
-import { SalonSearchContent } from './components/salon-search-content'
+import { SalonSearchContent } from './components'
 
 interface SalonSearchProps {
   searchParams: { q?: string; city?: string; state?: string; verified?: string; rating?: string }
@@ -41,4 +41,4 @@ export async function SalonSearchFeature(props: {
     </Suspense>
   )
 }
-export * from './api/types'
+export type * from './api/types'

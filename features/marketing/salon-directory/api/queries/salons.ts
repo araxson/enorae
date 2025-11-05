@@ -52,6 +52,8 @@ export async function getPublicSalons(params?: SalonSearchParams): Promise<Salon
   const { data, error } = await query
 
   if (error) throw error
+  if (!data) return []
+
   return data as Salon[]
 }
 
@@ -70,6 +72,7 @@ export async function getPublicSalonBySlug(slug: string): Promise<Salon | null> 
     .maybeSingle()
 
   if (error) throw error
+
   return data as Salon | null
 }
 
@@ -82,7 +85,7 @@ export async function getPublicSalonsByCity(city: string, state?: string): Promi
 
   let query = supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, slug, short_description, city, state_province, rating_average, rating_count, is_verified, is_active, created_at')
     .eq('is_active', true)
     .ilike('city', city)
 
@@ -95,7 +98,9 @@ export async function getPublicSalonsByCity(city: string, state?: string): Promi
   const { data, error } = await query
 
   if (error) throw error
-  return data as Salon[]
+  if (!data) return []
+
+  return data
 }
 
 /**
@@ -120,19 +125,23 @@ export async function getPublicSalonsByService(serviceCategory: string): Promise
     return []
   }
 
-  // Get unique salon IDs
-  const salonIds = [...new Set(services.map((s: ServiceRow) => s.salon_id).filter(Boolean) as string[])]
+  // Get unique salon IDs - filter ensures only string values
+  const salonIds = [...new Set(services.map((s) => s.salon_id).filter((id): id is string => Boolean(id)))]
+
+  if (salonIds.length === 0) return []
 
   // Get full salon details
   const { data, error } = await supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, slug, short_description, city, state_province, rating_average, rating_count, is_verified, is_active, created_at')
     .in('id', salonIds)
     .eq('is_active', true)
     .order('rating_average', { ascending: false, nullsFirst: false })
 
   if (error) throw error
-  return data as Salon[]
+  if (!data) return []
+
+  return data
 }
 
 /**
@@ -152,11 +161,12 @@ export async function getPublicSalonCities(): Promise<{ city: string; state: str
     .not('state_province', 'is', null)
 
   if (error) throw error
+  if (!data) return []
 
   // Group by city and state
   const cityMap: Record<string, { city: string; state: string; count: number }> = {}
 
-  ;(data || []).forEach((salon: SalonRow) => {
+  data.forEach((salon) => {
     if (salon.city && salon.state_province) {
       const key = `${salon.city}-${salon.state_province}`
       if (!cityMap[key]) {

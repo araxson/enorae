@@ -6,7 +6,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { Separator } from '@/components/ui/separator'
-import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
+import { MetadataForm } from '@/features/shared/profile-metadata/components'
 import { BillingSubscriptionForm, AccountInfoForm, PasswordForm } from '.'
 import type { getUserProfile } from '../api/queries'
 import type { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'

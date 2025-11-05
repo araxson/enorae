@@ -20,6 +20,8 @@ import {
   ItemContent,
   ItemGroup,
 } from '@/components/ui/item'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { toast } from 'sonner'
 
 interface PrivacySettingsProps {
   initialSettings: PrivacySettings
@@ -28,6 +30,7 @@ interface PrivacySettingsProps {
 export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   const [settings, setSettings] = useState(initialSettings)
   const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleToggle = (key: keyof PrivacySettings) => {
     setSettings(prev => ({ ...prev, [key]: !prev[key] }))
@@ -36,9 +39,13 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   const handleSave = async () => {
     try {
       setIsSaving(true)
+      setError(null)
       await updateUserPreferences({ privacy_settings: settings })
+      toast.success('Privacy settings saved')
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to save settings')
+      const message = error instanceof Error ? error.message : 'Failed to save settings'
+      setError(message)
+      toast.error(message)
     } finally {
       setIsSaving(false)
     }
@@ -51,6 +58,12 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
         <CardDescription>Control who can see your information.</CardDescription>
       </CardHeader>
       <CardContent>
+        {error ? (
+          <Alert variant="destructive" className="mb-4">
+            <AlertTitle>Unable to save settings</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : null}
         <FieldSet>
           <Field orientation="horizontal">
             <FieldLabel htmlFor="profile_visible">Profile visible to clients</FieldLabel>

@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+
 import { format } from 'date-fns'
 import {
   MoreVertical,
@@ -55,7 +55,7 @@ function reputationVariant(label: ModerationReview['reviewerReputation']['label'
   return 'destructive' as const
 }
 
-export const ReviewsTableRow = memo(function ReviewsTableRow({
+export function ReviewsTableRow({
   review,
   loadingId,
   onFlag,
@@ -182,4 +182,4 @@ export const ReviewsTableRow = memo(function ReviewsTableRow({
       </TableCell>
     </TableRow>
   )
-})
+}

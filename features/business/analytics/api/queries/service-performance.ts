@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireUser } from '@/lib/auth/guards-simple'

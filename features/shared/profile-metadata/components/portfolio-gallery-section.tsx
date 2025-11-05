@@ -138,6 +138,7 @@ export function PortfolioGallerySection({ images, onAdd, onRemove }: Props) {
                       <img
                         src={image.url}
                         alt={image.caption || 'Portfolio image'}
+                        loading="lazy"
                         className="rounded-md object-cover"
                       />
                     ) : (

@@ -57,7 +57,7 @@ export type BadgeVariant = typeof APPOINTMENT_STATUS_CONFIG[AppointmentStatusKey
  * Get status configuration for a given status
  * Falls back to 'pending' if status is null/undefined or unknown
  */
-export function getStatusConfig(status: string | null | undefined) {
+export function getStatusConfig(status: string | null | undefined): typeof APPOINTMENT_STATUS_CONFIG[AppointmentStatusKey] {
   if (!status) {
     return APPOINTMENT_STATUS_CONFIG.pending
   }

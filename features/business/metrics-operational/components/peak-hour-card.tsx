@@ -1,4 +1,4 @@
-import { memo } from 'react'
+
 import { Clock } from 'lucide-react'
 
 import {
@@ -14,7 +14,7 @@ type PeakHourCardProps = {
   peakHour: number
 }
 
-export const PeakHourCard = memo(function PeakHourCard({ peakHour }: PeakHourCardProps) {
+export function PeakHourCard({ peakHour }: PeakHourCardProps) {
   return (
     <Item variant="outline" className="flex-col gap-3">
       <ItemHeader>
@@ -31,4 +31,4 @@ export const PeakHourCard = memo(function PeakHourCard({ peakHour }: PeakHourCar
       </ItemContent>
     </Item>
   )
-})
+}

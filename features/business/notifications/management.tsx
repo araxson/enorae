@@ -4,11 +4,13 @@ import {
   getNotificationStatistics,
   getNotificationTemplates,
 } from './api/queries'
-import { NotificationOverviewCards } from './components/notification-overview-cards'
-import { NotificationHistoryTable } from './components/notification-history-table'
-import { NotificationTemplatesManager } from './components/notification-templates-manager'
-import { NotificationPreferencesForm } from './components/notification-preferences-form'
-import { NotificationPreviewPanel } from './components/notification-preview-panel'
+import {
+  NotificationOverviewCards,
+  NotificationHistoryTable,
+  NotificationTemplatesManager,
+  NotificationPreferencesForm,
+  NotificationPreviewPanel,
+} from './components'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 export async function BusinessNotificationManagement() {

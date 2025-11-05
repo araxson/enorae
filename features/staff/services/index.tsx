@@ -1,7 +1,6 @@
 import { getStaffProfile } from '@/features/staff/appointments/api/queries'
 import { getStaffServices } from './api/queries'
-import { ServicesClient } from './components'
-import { ServicesUnavailableError, ProfileNotFoundError } from './components/services-error-state'
+import { ServicesClient, ServicesUnavailableError, ProfileNotFoundError } from './components'
 
 export async function StaffServices() {
   let staffProfile
@@ -27,4 +26,4 @@ export async function StaffServices() {
     </div>
   )
 }
-export * from './api/types'
+export type * from './api/types'

@@ -1,7 +1,6 @@
 import { getUserSalonMedia } from './api/queries'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
-import { SalonMediaContent } from './components/salon-media-content'
-import { SalonMediaUnavailableError } from './components/salon-media-error'
+import { getUserSalon } from '@/features/business/common/api/queries'
+import { SalonMediaContent, SalonMediaUnavailableError } from './components'
 
 export async function SalonMedia() {
   let salon
@@ -20,4 +19,4 @@ export async function SalonMedia() {
 
   return <SalonMediaContent media={media} salonName={salonName} />
 }
-export * from './api/types'
+export type * from './api/types'

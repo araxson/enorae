@@ -1,4 +1,3 @@
-import 'server-only'
 import { randomInt } from 'crypto'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 import {

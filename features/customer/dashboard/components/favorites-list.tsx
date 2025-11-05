@@ -13,7 +13,14 @@ import {
   ItemSeparator,
 } from '@/components/ui/item'
 import type { CustomerFavoriteView } from '@/features/customer/favorites'
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 
 interface FavoritesListProps {
   favorites: CustomerFavoriteView[]
@@ -31,10 +38,12 @@ export function FavoritesList({ favorites }: FavoritesListProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Heart className="size-6" aria-hidden="true" />
+                <Heart className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No favorites yet</EmptyTitle>
-              <EmptyDescription>Save salons to rebook faster next time.</EmptyDescription>
+              <EmptyDescription>
+                Save salons to rebook faster next time.
+              </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button variant="outline" asChild>

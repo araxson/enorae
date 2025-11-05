@@ -13,7 +13,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { cn } from '@/lib/utils/index'
-import type { RevenueForecast } from '@/features/business/metrics/utils/metrics'
+import type { RevenueForecast } from '@/features/business/metrics/utils'
 
 type RevenueForecastCardProps = {
   forecast: RevenueForecast
@@ -64,9 +64,9 @@ export function RevenueForecastCard({ forecast }: RevenueForecastCardProps) {
         <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
           <ChartContainer
             config={{
-              actual: { label: 'Actual', color: 'hsl(var(--chart-1))' },
-              forecast: { label: 'Forecast', color: 'hsl(var(--chart-2))' },
-              baseline: { label: 'Baseline', color: 'hsl(var(--muted-foreground))' },
+              actual: { label: 'Actual', color: 'var(--chart-1)' },
+              forecast: { label: 'Forecast', color: 'var(--chart-2)' },
+              baseline: { label: 'Baseline', color: 'var(--muted-foreground)' },
             }}
             className="h-72 w-full"
           >

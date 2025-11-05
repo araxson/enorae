@@ -1,5 +1,7 @@
+import { Suspense } from 'react'
+
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { FinancePageContent } from './components'
+import { FinanceDashboardSkeleton, FinancePageContent } from './components'
 
 export const adminFinanceMetadata = genMeta({
   title: 'Finance & Revenue | Admin',
@@ -15,8 +17,12 @@ export async function FinancePageFeature({
 }) {
   const resolved = searchParams ? await searchParams : undefined
 
-  return <FinancePageContent startDate={resolved?.startDate} endDate={resolved?.endDate} />
+  return (
+    <Suspense fallback={<FinanceDashboardSkeleton />}>
+      <FinancePageContent startDate={resolved?.startDate} endDate={resolved?.endDate} />
+    </Suspense>
+  )
 }
 
 export { FinanceDashboard, FinanceDashboardSkeleton, FinancePageContent } from './components'
-export * from './api/types'
+export type * from './api/types'

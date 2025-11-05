@@ -44,21 +44,21 @@ export async function MessageThreadDetail({ threadId }: MessageThreadDetailProps
                   Back to Messages
                 </Link>
               </Button>
-              <ItemTitle>{thread['subject'] || 'Conversation'}</ItemTitle>
+              <ItemTitle>{thread.subject || 'Conversation'}</ItemTitle>
             </div>
             </ItemHeader>
             <ItemContent>
               <ItemDescription>
                 Thread started{' '}
-                {thread['created_at']
-                  ? new Date(thread['created_at']).toLocaleDateString()
+                {thread.created_at
+                  ? new Date(thread.created_at).toLocaleDateString()
                   : 'N/A'}
               </ItemDescription>
             </ItemContent>
           </Item>
         </ItemGroup>
 
-        <MessageThread threadId={threadId} messages={messages} currentUserId={session.user['id']} />
+        <MessageThread threadId={threadId} messages={messages} currentUserId={session.user.id} />
       </div>
     </section>
   )

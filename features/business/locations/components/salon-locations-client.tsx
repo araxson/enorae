@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { LocationList } from './location-list'
-import { LocationForm } from './location-form'
+import { LocationFormMigrated as LocationForm } from './location-form-migrated'
 import type { SalonLocation } from '@/features/business/locations'
 
 type SalonLocationsClientProps = {

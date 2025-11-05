@@ -34,7 +34,7 @@ export async function getOperatingHoursBySalon(salonId: string): Promise<Operati
 
   const { data, error } = await supabase
     .from('operating_hours_view')
-    .select('*')
+    .select('id, salon_id, day_of_week, open_time, close_time, is_closed, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('day_of_week', { ascending: true })
 
@@ -64,7 +64,7 @@ export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWe
 
   const { data, error } = await supabase
     .from('operating_hours_view')
-    .select('*')
+    .select('id, salon_id, day_of_week, open_time, close_time, is_closed, created_at, updated_at')
     .eq('salon_id', salonId)
     .eq('day_of_week', dayName)
     .single()
@@ -73,7 +73,7 @@ export async function getOperatingHoursByDay(salonId: string, dayOfWeek: DayOfWe
     if (error.code === 'PGRST116') return null
     throw error
   }
-  return data
+  return data as unknown as OperatingHour | null
 }
 
 /**

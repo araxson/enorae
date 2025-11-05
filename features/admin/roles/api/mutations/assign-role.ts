@@ -19,9 +19,10 @@ export async function assignRole(formData: FormData): Promise<RoleActionResponse
     const { session, supabase } = await requireAdminContext()
     const actorId = session.user.id
 
+    const roleValue = formData.get('role')?.toString() ?? ''
     const payload: AssignmentPayload = {
       userId: formData.get('userId')?.toString() ?? '',
-      role: formData.get('role')?.toString() as AssignmentPayload['role'],
+      role: roleValue as AssignmentPayload['role'], // Safe: validated by assignmentSchema below
       salonId: formData.get('salonId')?.toString() || undefined,
       permissions: parsePermissions(formData.get('permissions')),
     }
@@ -30,8 +31,12 @@ export async function assignRole(formData: FormData): Promise<RoleActionResponse
 
     const validation = assignmentSchema.safeParse(payload)
     if (!validation.success) {
-      logger.error(validation.error.issues[0]?.message ?? 'Invalid payload', 'validation', { targetUserId: payload.userId, adminId: actorId })
-      return { success: false, error: validation.error.issues[0]?.message ?? 'Invalid payload' }
+      logger.error('Validation failed', 'validation', { targetUserId: payload.userId, adminId: actorId, fieldErrors: validation.error.flatten().fieldErrors })
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     if (ROLES_NEEDING_SALON.includes(payload.role) && !payload.salonId) {

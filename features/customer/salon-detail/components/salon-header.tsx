@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
-import { FavoriteButton } from '@/features/customer/favorites/components/favorite-button'
+import { FavoriteButton } from '@/features/customer/favorites/components'
 import { Clock, MapPin, Star } from 'lucide-react'
 import {
   ContactInfo,
@@ -72,6 +72,8 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
                         alt={image.alt}
                         fill
                         className="object-cover"
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        priority={index === 0}
                       />
                     </div>
                   </CarouselItem>
@@ -87,6 +89,8 @@ export function SalonHeader({ salon, media, isFavorited = false }: SalonHeaderPr
                 alt={images[0]?.alt ?? ''}
                 fill
                 className="object-cover"
+                loading="eager"
+                priority
               />
             </div>
           ) : null}

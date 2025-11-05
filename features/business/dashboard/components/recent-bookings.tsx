@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback } from 'react'
+
 import Link from 'next/link'
 import { Calendar, User, Clock, MoreHorizontal, ChevronRight } from 'lucide-react'
 
@@ -38,7 +38,6 @@ type RecentBookingsProps = {
   appointments: AppointmentWithDetails[]
 }
 
-// PERFORMANCE FIX: Memoize getInitials to prevent recreation on every render
 const getInitials = (name: string) => {
   if (!name) return 'U'
   return name
@@ -49,7 +48,7 @@ const getInitials = (name: string) => {
     .slice(0, 2)
 }
 
-export const RecentBookings = memo(function RecentBookings({ appointments }: RecentBookingsProps) {
+export function RecentBookings({ appointments }: RecentBookingsProps) {
   const isEmpty = appointments.length === 0
 
   return (
@@ -160,4 +159,4 @@ export const RecentBookings = memo(function RecentBookings({ appointments }: Rec
       </ItemContent>
     </Item>
   )
-})
+}

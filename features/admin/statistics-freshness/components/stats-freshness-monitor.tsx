@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/item'
 import { AlertTriangle, Database } from 'lucide-react'
 import { getStatisticsFreshness } from '../api/queries'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { FreshnessTable } from './freshness-table'
 
 export async function StatsFreshnessMonitor() {

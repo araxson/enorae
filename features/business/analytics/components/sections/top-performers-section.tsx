@@ -1,6 +1,6 @@
 'use client'
-import { ExportButton } from '@/features/business/business-common/components'
-import { TopPerformers } from '@/features/business/analytics/components/top-performers'
+import { ExportButton } from '@/features/business/common/components'
+import { TopPerformers } from '@/features/business/analytics/components'
 import type { getTopServices, getTopStaff } from '@/features/business/analytics/api/queries'
 
 type ServicePerformance = Awaited<ReturnType<typeof getTopServices>>[number]

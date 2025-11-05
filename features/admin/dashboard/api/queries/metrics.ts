@@ -5,7 +5,17 @@ import { logSupabaseError } from '@/lib/supabase/errors'
 import { createOperationLogger } from '@/lib/observability'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
-export async function getPlatformMetrics() {
+export async function getPlatformMetrics(): Promise<{
+  totalSalons: number
+  totalUsers: number
+  totalAppointments: number
+  activeAppointments: number
+  completedAppointments: number
+  revenue: number
+  activeUsers: number
+  pendingVerifications: number
+  avgUtilization: number
+}> {
   const logger = createOperationLogger('getPlatformMetrics', {})
   logger.start()
 

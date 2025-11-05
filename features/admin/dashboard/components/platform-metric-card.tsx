@@ -6,6 +6,7 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemHeader,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -28,17 +29,21 @@ export function PlatformMetricCard({
   helper,
 }: PlatformMetricCardProps) {
   return (
-    <Item variant="outline" className="flex-col gap-3">
-      <ItemMedia variant="icon">
-        <Icon className="size-5" aria-hidden="true" />
-      </ItemMedia>
+    <Item variant="outline">
+      <ItemHeader>
+        <ItemMedia variant="icon">
+          <Icon className="size-5" aria-hidden="true" />
+        </ItemMedia>
+        <ItemContent>
+          <ItemTitle>{title}</ItemTitle>
+          <ItemDescription>{description}</ItemDescription>
+        </ItemContent>
+        {helper ? <ItemActions>{helper}</ItemActions> : null}
+      </ItemHeader>
       <ItemContent>
-        <ItemTitle>{title}</ItemTitle>
-        <p className="text-2xl font-semibold text-foreground">{value}</p>
-        <ItemDescription>{description}</ItemDescription>
+        <ItemTitle>{value}</ItemTitle>
         <Progress value={progressValue} aria-label={`${title} progress`} />
       </ItemContent>
-      {helper ? <ItemActions>{helper}</ItemActions> : null}
     </Item>
   )
 }

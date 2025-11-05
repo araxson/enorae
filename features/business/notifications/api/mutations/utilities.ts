@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -57,7 +57,7 @@ export async function getSupabaseClient() {
   return createClient()
 }
 
-export function revalidateNotifications() {
+export async function revalidateNotifications() {
   revalidatePath('/business/notifications', 'page')
 }
 

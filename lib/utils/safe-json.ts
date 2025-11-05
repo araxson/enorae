@@ -7,10 +7,10 @@
  * For type-safe parsing, use safeJsonParseWithValidation() with a type guard instead.
  *
  * @example
- * // ❌ UNSAFE - No validation of parsed structure
+ * // UNSAFE - No validation of parsed structure
  * const data = safeJsonParse<MyType>(json, defaultValue)
  *
- * // ✅ SAFE - With validation
+ * // SAFE - With validation
  * const data = safeJsonParseWithValidation(json, isMyType, defaultValue)
  */
 
@@ -18,7 +18,7 @@ export function safeJsonParse<T = unknown>(json: string, fallback: T): T {
   try {
     const parsed: unknown = JSON.parse(json)
     return parsed as T
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn(
       `Failed to parse JSON: ${error instanceof Error ? error.message : 'Unknown error'}`,
     )
@@ -37,7 +37,7 @@ export function safeJsonParseWithValidation<T = unknown>(
   try {
     const parsed = JSON.parse(json)
     return validator(parsed) ? parsed : fallback
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn(
       `Failed to parse JSON: ${error instanceof Error ? error.message : 'Unknown error'}`,
     )
@@ -83,7 +83,7 @@ export function safeJsonParseObject<T extends Record<string, unknown>>(
     return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)
       ? (parsed as T)
       : fallback
-  } catch (error) {
+  } catch (error: unknown) {
     return fallback
   }
 }

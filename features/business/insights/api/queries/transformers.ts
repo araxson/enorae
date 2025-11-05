@@ -6,13 +6,17 @@ import type {
   ReviewSummary,
   ServiceAggregation,
 } from '../../api/types'
-import { calculateSegment } from '@/features/business/insights/utils/insights'
+import { calculateSegment } from '@/features/business/insights/utils'
 import { createOperationLogger } from '@/lib/observability'
 import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 
 export function groupAppointmentsByCustomer(
   appointments: AppointmentWithProfile[],
-) {
+): {
+  customerMap: Map<string, CustomerAggregate>
+  appointmentToCustomer: Map<string, string>
+  appointmentStaffMap: Map<string, string>
+} {
   const customerMap = new Map<string, CustomerAggregate>()
   const appointmentToCustomer = new Map<string, string>()
   const appointmentStaffMap = new Map<string, string>()
@@ -35,7 +39,10 @@ export function groupAppointmentsByCustomer(
       })
     }
 
-    customerMap.get(appointment.customer_id)!.appointments.push(appointment)
+    const customer = customerMap.get(appointment.customer_id)
+    if (customer) {
+      customer.appointments.push(appointment)
+    }
   })
 
   return { customerMap, appointmentToCustomer, appointmentStaffMap }
@@ -45,7 +52,11 @@ export function groupServicesByCustomer(
   rows: Array<{ appointment_id: string | null; service_id: string | null; staff_id: string | null }>,
   appointmentToCustomer: Map<string, string>,
   appointmentStaffMap: Map<string, string>,
-) {
+): {
+  aggregation: Map<string, ServiceAggregation>
+  serviceIds: Set<string>
+  staffIds: Set<string>
+} {
   const aggregation = new Map<string, ServiceAggregation>()
   const serviceIds = new Set<string>()
   const staffIds = new Set<string>()
@@ -64,7 +75,8 @@ export function groupServicesByCustomer(
       })
     }
 
-    const aggregate = aggregation.get(customerId)!
+    const aggregate = aggregation.get(customerId)
+    if (!aggregate) return
 
     if (entry.service_id) {
       aggregate.serviceCounts.set(
@@ -127,22 +139,26 @@ export function buildMetricsList(
         )
       : 0
 
-    const favoriteServiceName =
+    const favoriteServiceEntry =
       aggregate && aggregate.serviceCounts.size > 0
-        ? serviceNameMap.get(
-            Array.from(aggregate.serviceCounts.entries()).sort(
-              (a, b) => b[1] - a[1],
-            )[0]?.[0] ?? '',
-          ) ?? 'N/A'
+        ? Array.from(aggregate.serviceCounts.entries()).sort(
+            (a, b) => b[1] - a[1],
+          )[0]
+        : undefined
+    const favoriteServiceName =
+      favoriteServiceEntry
+        ? serviceNameMap.get(favoriteServiceEntry[0]) ?? 'N/A'
         : 'N/A'
 
-    const favoriteStaffName =
+    const favoriteStaffEntry =
       aggregate && aggregate.staffCounts.size > 0
-        ? staffNameMap.get(
-            Array.from(aggregate.staffCounts.entries()).sort(
-              (a, b) => b[1] - a[1],
-            )[0]?.[0] ?? '',
-          ) ?? 'N/A'
+        ? Array.from(aggregate.staffCounts.entries()).sort(
+            (a, b) => b[1] - a[1],
+          )[0]
+        : undefined
+    const favoriteStaffName =
+      favoriteStaffEntry
+        ? staffNameMap.get(favoriteStaffEntry[0]) ?? 'N/A'
         : 'N/A'
 
     const lifetimeValue = totalVisits * ANALYTICS_CONFIG.DEFAULT_AVERAGE_SERVICE_PRICE

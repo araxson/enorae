@@ -4,7 +4,6 @@ import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils/index"
-import { logWarn } from "@/lib/observability"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
@@ -68,33 +67,6 @@ const ChartContainer = React.forwardRef<
 })
 ChartContainer.displayName = "Chart"
 
-/**
- * Sanitize CSS identifier to prevent XSS
- * Only allows alphanumeric, hyphen, and underscore
- */
-function sanitizeCssIdentifier(value: string): string {
-  return value.replace(/[^a-zA-Z0-9_-]/g, '')
-}
-
-/**
- * Sanitize CSS color value to prevent XSS
- * Validates against common color formats
- */
-function sanitizeCssColor(color: string): string {
-  // Allow hex colors (#fff, #ffffff), rgb/rgba, hsl/hsla, and CSS color names
-  const safeColorPattern = /^(#[0-9a-f]{3,8}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-z]+)$/i
-
-  if (!safeColorPattern.test(color)) {
-    logWarn('Invalid color value rejected in ChartStyle', {
-      operationName: 'sanitizeCssColor',
-      color,
-    })
-    return 'currentColor' // Safe fallback
-  }
-
-  return color
-}
-
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color
@@ -104,29 +76,19 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     return null
   }
 
-  // SECURITY: Sanitize all user-provided values before CSS interpolation
-  const safeId = sanitizeCssIdentifier(id)
-
   return (
     <style
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
             ([theme, prefix]) => `
-${prefix} [data-chart=${safeId}] {
+${prefix} [data-chart=${id}] {
 ${colorConfig
   .map(([key, itemConfig]) => {
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color
-
-    if (!color) return null
-
-    // SECURITY: Sanitize both CSS property name and color value
-    const safeKey = sanitizeCssIdentifier(key)
-    const safeColor = sanitizeCssColor(color)
-
-    return `  --color-${safeKey}: ${safeColor};`
+    return color ? `  --color-${key}: ${color};` : null
   })
   .join("\n")}
 }

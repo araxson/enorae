@@ -1,6 +1,6 @@
 'use server'
 
-import { sanitizeAdminText } from '@/features/admin/admin-common'
+import { sanitizeAdminText } from '@/features/admin/common'
 import { resolveAdminClient, resolveAdminSession } from './shared'
 import { validateReviewId, deleteReview as deleteReviewOp } from '@/features/admin/moderation/api/moderation-factory'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'

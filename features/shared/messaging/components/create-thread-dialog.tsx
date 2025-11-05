@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { createThread } from '@/features/shared/messaging/api/mutations'
 import {
   Field,

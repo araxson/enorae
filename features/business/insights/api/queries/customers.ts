@@ -13,7 +13,7 @@ import {
   groupAppointmentsByCustomer,
   groupServicesByCustomer,
 } from './transformers'
-import { selectTopByLifetimeValue } from '@/features/business/insights/utils/insights'
+import { selectTopByLifetimeValue } from '@/features/business/insights/utils'
 import type { CustomerMetrics } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 

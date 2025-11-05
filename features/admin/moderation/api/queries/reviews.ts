@@ -55,7 +55,7 @@ export async function getReviewsForModeration(
 
   let query = supabase
     .from('admin_reviews_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, rating, comment, is_verified, is_flagged, helpful_count, has_response, created_at')
     .order('created_at', { ascending: false })
 
   if (filters?.['is_flagged'] !== undefined) {
@@ -77,12 +77,20 @@ export async function getReviewsForModeration(
   const { data, error } = await query['limit'](REVIEW_LIMIT)
   if (error) throw error
 
-  const reviews = (data || []) as ReviewRow[]
+  const reviews = (data || []) as unknown as ReviewRow[]
   const reviewerIds = Array.from(
-    new Set(reviews.map((review) => review['customer_id']).filter(Boolean) as string[])
+    new Set(
+      reviews
+        .map((review) => review['customer_id'])
+        .filter((id): id is string => typeof id === 'string')
+    )
   ).slice(0, QUERY_LIMITS.MODERATION_SAMPLE)
   const reviewIds = Array.from(
-    new Set(reviews.map((review) => review['id']).filter(Boolean) as string[])
+    new Set(
+      reviews
+        .map((review) => review['id'])
+        .filter((id): id is string => typeof id === 'string')
+    )
   )
 
   const reviewerStats = await fetchReviewerStats(supabase, reviewerIds)

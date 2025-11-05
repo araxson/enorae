@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { notFound } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -37,14 +38,14 @@ const formatStatusLabel = (status: string | null) =>
     ? status.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
     : 'Pending'
 
-export async function AppointmentDetail({ appointmentId }: AppointmentDetailProps) {
+export async function AppointmentDetail({ appointmentId }: AppointmentDetailProps): Promise<JSX.Element> {
   const appointment = await getCustomerAppointmentById(appointmentId)
 
   if (!appointment) {
     notFound()
   }
 
-  const statusLabel = formatStatusLabel(appointment['status'])
+  const statusLabel = formatStatusLabel(appointment.status)
 
   return (
     <div className="mx-auto max-w-4xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
@@ -56,10 +57,10 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
             </ItemMedia>
             <ItemContent>
               <ItemTitle>Confirmation</ItemTitle>
-              <ItemDescription>{appointment['confirmation_code'] || 'No code'}</ItemDescription>
+              <ItemDescription>{appointment.confirmation_code || 'No code'}</ItemDescription>
             </ItemContent>
             <ItemActions>
-              <Badge variant={getStatusVariant(appointment['status'])}>{statusLabel}</Badge>
+              <Badge variant={getStatusVariant(appointment.status)}>{statusLabel}</Badge>
             </ItemActions>
           </Item>
         </ItemGroup>
@@ -72,18 +73,18 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
           <CardContent>
             <div className="flex flex-col gap-6">
               <AppointmentInfoSection
-                startTime={appointment['start_time']}
-                endTime={appointment['end_time']}
-                durationMinutes={appointment['duration_minutes']}
-                staffName={appointment['staff_name']}
+                startTime={appointment.start_time}
+                endTime={appointment.end_time}
+                durationMinutes={appointment.duration_minutes}
+                staffName={appointment.staff_name}
               />
 
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">Service</p>
                 <AppointmentServiceCard
-                  serviceName={appointment['service_name']}
-                  durationMinutes={appointment['duration_minutes']}
-                  totalPrice={appointment['total_price']}
+                  serviceName={appointment.service_name}
+                  durationMinutes={appointment.duration_minutes}
+                  totalPrice={appointment.total_price}
                 />
               </div>
             </div>
@@ -91,9 +92,9 @@ export async function AppointmentDetail({ appointmentId }: AppointmentDetailProp
         </Card>
 
         <AppointmentActionsSection
-          appointmentId={appointment['id']}
-          status={appointment['status']}
-          startTime={appointment['start_time']}
+          appointmentId={appointment.id}
+          status={appointment.status}
+          startTime={appointment.start_time}
         />
       </div>
     </div>

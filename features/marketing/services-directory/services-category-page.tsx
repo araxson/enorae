@@ -9,7 +9,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 
 import {
   CategoryNavigation,

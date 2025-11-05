@@ -28,7 +28,10 @@ export const buildCancellationPatterns = (
   const patternMap = new Map<string, { count: number; description: string }>()
 
   cancelled.forEach((row) => {
-    const start = parseISO(row['start_time'] as string)
+    const startTime = row['start_time']
+    if (!startTime || typeof startTime !== 'string') return
+
+    const start = parseISO(startTime)
     const label = `${getDayLabel(start)} · ${getTimeBucket(start)}`
     const description = `Cancellations during ${getTimeBucket(start).toLowerCase()} on ${getDayLabel(start)}`
     const existing = patternMap.get(label)
@@ -60,9 +63,9 @@ export const buildTrend = <T extends {
   analyticsRows: T[],
 ): AppointmentTrendPoint[] =>
   analyticsRows
-    .filter((row) => row['date'])
+    .filter((row): row is T & { date: string } => typeof row['date'] === 'string')
     .map((row) => ({
-      date: row['date'] as string,
+      date: row['date'],
       total: row.platform_appointments ?? 0,
       cancelled: row.platform_cancelled_appointments ?? 0,
       noShow: row.platform_no_shows ?? 0,
@@ -70,7 +73,16 @@ export const buildTrend = <T extends {
     }))
     .reverse()
 
-export const buildNoShowRecords = (rows: AppointmentRow[]) => {
+export const buildNoShowRecords = (
+  rows: AppointmentRow[]
+): { count: number; rate: number; recent: Array<{
+  id: string
+  salonName: string | null
+  customerName: string | null
+  staffName: string | null
+  startTime: string | null
+  totalPrice: number | null
+}> } => {
   const noShows = rows.filter((row) => row.status === 'no_show')
   const total = noShows.length
   const rate = rows.length ? total / rows.length : 0

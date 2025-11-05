@@ -15,7 +15,7 @@ export async function getChainById(chainId: string): Promise<SalonChainRow | nul
 
   const { data, error } = await supabase
     .from('salon_chains_view')
-    .select('*')
+    .select('id, name, slug, description, owner_id, owner_email, subscription_tier, subscription_status, total_salons, total_staff, total_revenue, is_verified, is_active, created_at, updated_at')
     .eq('id', chainId)
     .single<SalonChainRow>()
 

@@ -29,7 +29,13 @@ export async function addClientNote(
 
     const validation = clientNoteSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.issues[0]?.message || "Validation failed" }
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return {
+        success: false,
+        error: firstError || "Validation failed",
+        fieldErrors: fieldErrors as Record<string, string[] | undefined>
+      }
     }
 
     const { customerId, note } = validation.data

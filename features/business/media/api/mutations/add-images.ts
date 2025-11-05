@@ -7,7 +7,12 @@ import { createOperationLogger } from '@/lib/observability'
 import { getRequiredString } from '@/lib/utils/safe-form-data'
 import { validateAddImage } from './helpers'
 
-export async function addGalleryImage(formData: FormData) {
+type ActionResult = {
+  success?: boolean
+  error?: string
+}
+
+export async function addGalleryImage(formData: FormData): Promise<ActionResult> {
   const logger = createOperationLogger('addGalleryImage', {})
   logger.start()
 

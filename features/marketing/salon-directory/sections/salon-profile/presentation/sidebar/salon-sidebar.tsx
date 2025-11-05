@@ -1,4 +1,5 @@
-import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
+import { ItemGroup } from '@/components/ui/item'
+import { MarketingPanel } from '@/features/marketing/components/common'
 import type { Salon } from '../types'
 import { ContactCard } from './contact-card'
 import { QuickStatsCard } from './quick-stats-card'
@@ -14,16 +15,12 @@ interface SalonSidebarProps {
 export function SalonSidebar({ salon, location }: SalonSidebarProps) {
   return (
     <ItemGroup className="gap-6">
-      <Item variant="muted">
-        <ItemContent>
-          <div className="flex flex-col gap-2">
-            <ItemTitle>
-              <h2 className="text-xl font-semibold tracking-tight">Helpful details</h2>
-            </ItemTitle>
-            <ItemDescription>Key details to help you plan visits and stay in touch with the salon.</ItemDescription>
-          </div>
-        </ItemContent>
-      </Item>
+      <MarketingPanel
+        variant="muted"
+        title="Helpful details"
+        description="Key information to help you plan visits and stay in touch with the salon."
+        align="start"
+      />
       <ContactCard salon={salon} location={location} />
       <QuickStatsCard salon={salon} />
       <SpecialtiesCard salon={salon} />

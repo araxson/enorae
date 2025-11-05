@@ -1,13 +1,12 @@
 import { Crown } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
@@ -19,8 +18,8 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ isVIP, loyaltyTier }: DashboardHeaderProps) {
   return (
-    <ItemGroup className="gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <Item variant="muted" size="sm" className="flex-1">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <Item variant="muted" size="sm">
         {isVIP ? (
           <>
             <ItemMedia variant="icon">
@@ -30,7 +29,7 @@ export function DashboardHeader({ isVIP, loyaltyTier }: DashboardHeaderProps) {
               <ItemTitle>VIP member</ItemTitle>
               <ItemDescription>Tier {loyaltyTier?.toUpperCase() ?? 'Standard'}</ItemDescription>
             </ItemContent>
-            <ItemActions className="flex-none">
+            <ItemActions>
               <Badge variant="default">VIP</Badge>
             </ItemActions>
           </>
@@ -41,18 +40,18 @@ export function DashboardHeader({ isVIP, loyaltyTier }: DashboardHeaderProps) {
           </ItemContent>
         )}
       </Item>
-      <Item variant="muted" size="sm" className="flex-1">
+      <Item variant="muted" size="sm">
         <ItemContent>
           <ItemTitle>Dashboard status</ItemTitle>
           <ItemDescription>
             <LastUpdated />
           </ItemDescription>
         </ItemContent>
-        <ItemActions className="flex-none items-center gap-3 text-sm text-muted-foreground">
+        <ItemActions>
           <Separator orientation="vertical" className="hidden h-4 sm:block" />
           <RefreshButton />
         </ItemActions>
       </Item>
-    </ItemGroup>
+    </div>
   )
 }

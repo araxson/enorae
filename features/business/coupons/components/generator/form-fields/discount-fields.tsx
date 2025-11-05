@@ -1,48 +1,54 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { Field, FieldContent, FieldGroup, FieldLabel } from '@/components/ui/field'
-import type { BulkCouponFormState } from '../../../api/types'
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 
-interface DiscountFieldsProps {
-  formState: BulkCouponFormState
-  updateFormState: (updates: Partial<BulkCouponFormState>) => void
-}
+import type { FieldProps } from './types'
 
-/**
- * Discount configuration fields: value and description
- */
-export function DiscountFields({ formState, updateFormState }: DiscountFieldsProps) {
+export function DiscountFields({ errors }: FieldProps) {
+  const discountValueError = errors?.['discount_value']?.[0]
+
   return (
-    <FieldGroup className="grid gap-4 md:grid-cols-2">
+    <FieldGroup>
       <Field>
-        <FieldLabel htmlFor="discount-value">
-          Discount Value {formState.discount_type === 'percentage' ? '(%)' : '($)'}
+        <FieldLabel htmlFor="discount_value">
+          Discount Value
+          <span className="text-destructive" aria-label="required"> *</span>
         </FieldLabel>
         <FieldContent>
           <Input
-            id="discount-value"
+            id="discount_value"
+            name="discount_value"
             type="number"
             min={0}
-            max={formState.discount_type === 'percentage' ? 100 : undefined}
-            step={formState.discount_type === 'percentage' ? 1 : 0.5}
-            value={formState.discount_value}
-            onChange={(event) => updateFormState({ discount_value: Number(event.target.value) })}
+            step="0.01"
             required
+            aria-required="true"
+            aria-invalid={!!discountValueError}
+            aria-describedby={discountValueError ? 'discount-value-error discount-value-hint' : 'discount-value-hint'}
+            defaultValue={10}
+            className={discountValueError ? 'border-destructive' : ''}
           />
-        </FieldContent>
-      </Field>
-      <Field>
-        <FieldLabel htmlFor="description">Campaign Description</FieldLabel>
-        <FieldContent>
-          <Input
-            id="description"
-            value={formState.description}
-            onChange={(event) => updateFormState({ description: event.target.value })}
-            required
-          />
+          <FieldDescription id="discount-value-hint">
+            For percentage: 1-100. For fixed amount: any positive number.
+          </FieldDescription>
+          {discountValueError && (
+            <p id="discount-value-error" className="text-sm text-destructive mt-1" role="alert">
+              {discountValueError}
+            </p>
+          )}
         </FieldContent>
       </Field>
     </FieldGroup>
   )
 }
+
+/**
+ * Validity date fields
+ */

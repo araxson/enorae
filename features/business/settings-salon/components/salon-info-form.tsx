@@ -1,20 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Input } from '@/components/ui/input'
-import { ActionButton } from '@/features/shared/ui-components'
-import { updateSalonInfo } from '@/features/business/settings-salon/api/mutations'
-import { settingsSalonSchema, type SettingsSalonSchema } from '@/features/business/settings-salon/api/schema'
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldLabel,
-  FieldSet,
-} from '@/components/ui/field'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { useActionState, useRef, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { updateSalonInfoAction } from '@/features/business/settings-salon/api/actions'
+import { FieldSet } from '@/components/ui/field'
 import {
   Item,
   ItemContent,
@@ -22,6 +11,12 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  FormStatusAlerts,
+  BusinessNameField,
+  BusinessTypeField,
+  EstablishedDateField,
+} from './sections'
 
 interface SalonInfoFormProps {
   salonId: string
@@ -38,36 +33,18 @@ export function SalonInfoForm({
   businessType,
   establishedAt,
 }: SalonInfoFormProps) {
-  const [error, setError] = useState<string | null>(null)
+  const updateWithSalonId = updateSalonInfoAction.bind(null, salonId)
+  const [state, formAction, isPending] = useActionState(updateWithSalonId, null)
+  const firstErrorRef = useRef<HTMLInputElement>(null)
 
-  const form = useForm<SettingsSalonSchema>({
-    resolver: zodResolver(settingsSalonSchema),
-    defaultValues: {
-      business_name: businessName || salonName || '',
-      business_type: businessType || '',
-      established_at: establishedAt ? new Date(establishedAt) : undefined,
-    },
-  })
-
-  const handleSave = async (values: SettingsSalonSchema) => {
-    setError(null)
-
-    const formData = new FormData()
-    formData.append('business_name', values.business_name)
-    if (values.business_type && values.business_type.trim().length > 0) {
-      formData.append('business_type', values.business_type)
+  // Focus first error field after validation
+  useEffect(() => {
+    if (state?.errors && firstErrorRef.current) {
+      firstErrorRef.current.focus()
     }
-    if (values.established_at) {
-      formData.append('established_at', values.established_at.toISOString())
-    }
+  }, [state?.errors])
 
-    const result = await updateSalonInfo(salonId, formData)
-
-    if (result.error) {
-      setError(result.error)
-      throw new Error(result.error)
-    }
-  }
+  const hasErrors = state?.errors && Object.keys(state.errors).length > 0
 
   return (
     <Item variant="outline" className="flex-col gap-4">
@@ -80,96 +57,50 @@ export function SalonInfoForm({
         </div>
       </ItemHeader>
       <ItemContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSave)}>
-            <FieldSet className="flex flex-col gap-6">
-              <FormField
-                control={form.control}
-                name="business_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <Field>
-                      <FieldLabel htmlFor="business_name">Business Name</FieldLabel>
-                      <FieldContent>
-                        <FormControl>
-                          <Input
-                            id="business_name"
-                            placeholder="e.g., Elite Hair & Beauty LLC"
-                            maxLength={200}
-                            {...field}
-                          />
-                        </FormControl>
-                      </FieldContent>
-                      <FieldDescription>
-                        Your legal business name (if different from salon name).
-                      </FieldDescription>
-                      <FormMessage />
-                    </Field>
-                  </FormItem>
-                )}
-              />
+        <FormStatusAlerts
+          isPending={isPending}
+          success={state?.success}
+          message={state?.message}
+          errors={state?.errors}
+        />
 
-              <FormField
-                control={form.control}
-                name="business_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <Field>
-                      <FieldLabel htmlFor="business_type">Business Type</FieldLabel>
-                      <FieldContent>
-                        <FormControl>
-                          <Input
-                            id="business_type"
-                            placeholder="e.g., LLC, Corporation, Sole Proprietorship"
-                            maxLength={100}
-                            {...field}
-                          />
-                        </FormControl>
-                      </FieldContent>
-                      <FieldDescription>Your business entity type.</FieldDescription>
-                      <FormMessage />
-                    </Field>
-                  </FormItem>
-                )}
-              />
+        <form action={formAction} aria-describedby={hasErrors ? 'form-errors' : undefined}>
+          <FieldSet className="flex flex-col gap-6">
+            <BusinessNameField
+              defaultValue={businessName || salonName || ''}
+              isPending={isPending}
+              errors={state?.errors?.['business_name']}
+              firstErrorRef={firstErrorRef}
+            />
 
-              <FormField
-                control={form.control}
-                name="established_at"
-                render={({ field }) => (
-                  <FormItem>
-                    <Field>
-                      <FieldLabel htmlFor="established_at">Established Date</FieldLabel>
-                      <FieldContent>
-                        <FormControl>
-                          <Input
-                            id="established_at"
-                            type="date"
-                            value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : field.value || ''}
-                            onChange={(e) => field.onChange(e.target.value ? new Date(e.target.value) : undefined)}
-                          />
-                        </FormControl>
-                      </FieldContent>
-                      <FieldDescription>When your business was founded.</FieldDescription>
-                      <FormMessage />
-                    </Field>
-                  </FormItem>
-                )}
-              />
+            <BusinessTypeField
+              defaultValue={businessType || ''}
+              isPending={isPending}
+              errors={state?.errors?.['business_type']}
+            />
 
-              <div className="flex justify-end">
-                <ActionButton
-                  onAction={() => form.handleSubmit(handleSave)()}
-                  successMessage="Business information updated successfully"
-                  loadingText="Saving..."
-                  disabled={form.formState.isSubmitting}
-                >
-                  Save Changes
-                </ActionButton>
-              </div>
-            </FieldSet>
-          </form>
-        </Form>
+            <EstablishedDateField
+              defaultValue={
+                establishedAt ? new Date(establishedAt).toISOString().split('T')[0] : ''
+              }
+              isPending={isPending}
+              errors={state?.errors?.['established_at']}
+            />
+
+            <div className="flex justify-end">
+              <Button type="submit" disabled={isPending} aria-busy={isPending}>
+                {isPending ? (
+                  <>
+                    <span className="sr-only">Saving changes, please wait</span>
+                    <span aria-hidden="true">Saving...</span>
+                  </>
+                ) : (
+                  'Save Changes'
+                )}
+              </Button>
+            </div>
+          </FieldSet>
+        </form>
       </ItemContent>
     </Item>
   )

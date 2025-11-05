@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,7 @@ type AppointmentRowProps = {
   onCancel: AppointmentAction
 }
 
-export const AppointmentsTableRow = memo(function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCancel }: AppointmentRowProps) {
+export function AppointmentsTableRow({ appointment, onConfirm, onComplete, onCancel }: AppointmentRowProps) {
   const config = STATUS_CONFIG[appointment['status'] as keyof typeof STATUS_CONFIG]
   const appointmentDate = appointment['start_time'] ? new Date(appointment['start_time']) : null
 
@@ -47,7 +47,12 @@ export const AppointmentsTableRow = memo(function AppointmentsTableRow({ appoint
             {appointment['status'] === 'pending' && appointment['id'] && (
               <form action={onConfirm}>
                 <input type="hidden" name="id" value={appointment['id']} />
-                <Button size="sm" variant="outline" type="submit">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  type="submit"
+                  aria-label={`Confirm appointment on ${appointmentDate ? format(appointmentDate, 'MMM dd') : 'date'}`}
+                >
                   Confirm
                 </Button>
               </form>
@@ -55,7 +60,12 @@ export const AppointmentsTableRow = memo(function AppointmentsTableRow({ appoint
             {appointment['status'] === 'confirmed' && appointment['id'] && (
               <form action={onComplete}>
                 <input type="hidden" name="id" value={appointment['id']} />
-                <Button size="sm" variant="outline" type="submit">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  type="submit"
+                  aria-label={`Mark appointment on ${appointmentDate ? format(appointmentDate, 'MMM dd') : 'date'} as complete`}
+                >
                   Complete
                 </Button>
               </form>
@@ -63,7 +73,12 @@ export const AppointmentsTableRow = memo(function AppointmentsTableRow({ appoint
             {appointment['status'] !== 'cancelled' && appointment['status'] !== 'completed' && appointment['id'] && (
               <form action={onCancel}>
                 <input type="hidden" name="id" value={appointment['id']} />
-                <Button size="sm" variant="destructive" type="submit">
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  type="submit"
+                  aria-label={`Cancel appointment on ${appointmentDate ? format(appointmentDate, 'MMM dd') : 'date'}`}
+                >
                   Cancel
                 </Button>
               </form>
@@ -73,4 +88,4 @@ export const AppointmentsTableRow = memo(function AppointmentsTableRow({ appoint
       </TableCell>
     </TableRow>
   )
-})
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useMemo } from 'react'
+
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import {
@@ -34,7 +34,7 @@ interface NavItem {
   }[]
 }
 
-export const NavMain = memo(function NavMain({
+export function NavMain({
   items,
   label = "Platform",
 }: {
@@ -103,4 +103,4 @@ export const NavMain = memo(function NavMain({
       </SidebarMenu>
     </SidebarGroup>
   )
-})
+}

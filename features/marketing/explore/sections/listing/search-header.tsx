@@ -66,8 +66,8 @@ export function SearchHeader({ query, onQueryChange, onSearch }: SearchHeaderPro
             </InputGroupAddon>
           ) : null}
         </InputGroup>
-        <Button type="button" className="gap-2" onClick={onSearch}>
-          <Search className="size-4" aria-hidden="true" />
+        <Button type="button" onClick={onSearch}>
+          <Search className="mr-2 size-4" aria-hidden="true" />
           {listingCopy.searchButton}
         </Button>
       </div>

@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
@@ -9,7 +9,10 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
  * Reject salon application
  * Disables bookings and marks as soft-deleted
  */
-export async function rejectSalon(formData: FormData) {
+export async function rejectSalon(formData: FormData): Promise<
+  | { error: string }
+  | { success: true }
+> {
   const logger = createOperationLogger('rejectSalon', {})
   logger.start()
 

@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { RateLimitConsole } from '@/features/admin/rate-limit-tracking'
 export const metadata = { title: 'Rate Limit Monitoring | Admin' }
 export default function RateLimitMonitoringPage() {

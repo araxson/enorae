@@ -19,7 +19,7 @@ export async function getRevenueForecast(days = DEFAULT_FORECAST_DAYS): Promise<
 
   const { data, error } = await supabase
     .from('admin_revenue_overview_view')
-    .select('*')
+    .select('date, total_revenue')
     .gte('date', startDate.toISOString().split('T')[0])
     .lte('date', endDate.toISOString().split('T')[0])
     .order('date', { ascending: true })

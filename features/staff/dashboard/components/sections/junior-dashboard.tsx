@@ -1,14 +1,12 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Clock, Calendar } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
-import { StaffMetrics } from '@/features/staff/dashboard/components/staff-metrics'
-import { TodaySchedule } from '@/features/staff/dashboard/components/today-schedule'
-import { UpcomingAppointments } from '@/features/staff/dashboard/components/upcoming-appointments'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
+import { StaffMetrics, TodaySchedule, UpcomingAppointments } from '@/features/staff/dashboard/components'
 import { RoleBadge } from './role-badge'
-import { RefreshButton, LastUpdated } from '@/features/shared/ui-components'
+import { RefreshButton, LastUpdated } from '@/features/shared/ui'
 import type { AppointmentWithDetails } from '@/features/shared/appointments/api/types'
 import type { StaffMetricsSummary } from '@/features/staff/dashboard/api/queries'
 
@@ -25,8 +23,6 @@ export function JuniorDashboard({
   todayAppointments,
   upcomingAppointments,
 }: Props) {
-  const [activeTab, setActiveTab] = useState('overview')
-
   const summaries: StaffSummary[] = useMemo(() => {
     const upcomingCount = upcomingAppointments.length
     return [
@@ -64,6 +60,20 @@ export function JuniorDashboard({
     { value: 'upcoming', label: 'Upcoming', icon: Calendar },
   ]
 
+  const tabContent = {
+    overview: (
+      <div className="space-y-6">
+        <StaffMetrics metrics={metrics} />
+        <TodaySchedule appointments={todayAppointments} />
+      </div>
+    ),
+    upcoming: (
+      <div className="space-y-6">
+        <UpcomingAppointments appointments={upcomingAppointments} />
+      </div>
+    ),
+  }
+
   return (
     <StaffPageShell
       title="Daily focus"
@@ -75,8 +85,8 @@ export function JuniorDashboard({
       summaries={summaries}
       quickActions={quickActions}
       tabs={tabs}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
+      defaultTab="overview"
+      tabContent={tabContent}
       toolbarEnd={
         <div className="hidden items-center gap-2 sm:flex">
           <RoleBadge roleLevel={roleLevel} />
@@ -84,21 +94,6 @@ export function JuniorDashboard({
           <RefreshButton />
         </div>
       }
-    >
-      <div className="space-y-6">
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            <StaffMetrics metrics={metrics} />
-            <TodaySchedule appointments={todayAppointments} />
-          </div>
-        )}
-
-        {activeTab === 'upcoming' && (
-          <div className="space-y-6">
-            <UpcomingAppointments appointments={upcomingAppointments} />
-          </div>
-        )}
-      </div>
-    </StaffPageShell>
+    />
   )
 }

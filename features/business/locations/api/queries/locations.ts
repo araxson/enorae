@@ -26,12 +26,12 @@ export async function getLocationAddress(locationId: string): Promise<LocationAd
 
   const { data, error } = await supabase
     .from('location_addresses_view')
-    .select('*')
+    .select('id, location_id, street_address, street_address_2, city, state_province, postal_code, country, latitude, longitude, created_at')
     .eq('location_id', locationId)
     .single()
 
   if (error && error.code !== 'PGRST116') throw error // Ignore "not found" errors
-  return data
+  return data as unknown as LocationAddress | null
 }
 
 export async function getAllLocationAddresses(): Promise<LocationAddress[]> {
@@ -60,11 +60,11 @@ export async function getAllLocationAddresses(): Promise<LocationAddress[]> {
   // Get all addresses for these locations
   const { data, error } = await supabase
     .from('location_addresses_view')
-    .select('*')
+    .select('id, location_id, street_address, street_address_2, city, state_province, postal_code, country, latitude, longitude, created_at')
     .in('location_id', locationIds)
 
   if (error) throw error
-  return data || []
+  return (data || []) as unknown as LocationAddress[]
 }
 
 export async function getSalonLocations(): Promise<SalonLocation[]> {
@@ -79,9 +79,9 @@ export async function getSalonLocations(): Promise<SalonLocation[]> {
 
   const { data, error } = await supabase
     .from('salon_locations_view')
-    .select('*')
+    .select('id, salon_id, name, description, is_primary, is_active, created_at, updated_at')
     .in('salon_id', salonIds)
 
   if (error) throw error
-  return data || []
+  return (data || []) as unknown as SalonLocation[]
 }

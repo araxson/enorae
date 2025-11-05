@@ -1,13 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useActionState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Globe, AlertCircle } from 'lucide-react'
-import { updateAdvancedPreferences } from '@/features/shared/preferences/api/mutations'
-import { TIME_MS } from '@/lib/config/constants'
+import { updateAdvancedPreferencesAction } from '@/features/shared/preferences/api/actions'
 import {
   Item,
   ItemContent,
@@ -27,38 +24,41 @@ interface AdvancedPreferencesFormProps {
   initialPreferences?: AdvancedPreferences
 }
 
+interface FormState {
+  success?: boolean
+  error?: string
+  fieldErrors?: Record<string, string[]>
+  data?: unknown
+}
+
+function SubmitButton({ disabled }: { disabled: boolean }) {
+  return (
+    <Button type="submit" disabled={disabled}>
+      <span>Save Preferences</span>
+    </Button>
+  )
+}
+
 export function AdvancedPreferencesForm({
   initialPreferences = {},
 }: AdvancedPreferencesFormProps) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
-
   const [preferences, setPreferences] = useState<AdvancedPreferences>({
     timezone: initialPreferences.timezone || 'America/New_York',
     locale: initialPreferences.locale || 'en-US',
     currency_code: initialPreferences.currency_code || 'USD',
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
-    setSuccess(false)
+  const [state, formAction, isPending] = useActionState<FormState, FormData>(
+    updateAdvancedPreferencesAction,
+    {}
+  )
 
-    const result = await updateAdvancedPreferences(preferences)
-
-    if (result.success) {
-      setSuccess(true)
-      router.refresh()
-      setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
-    } else {
-      setError(result.error)
+  // Show success/error feedback
+  useEffect(() => {
+    if (state.success) {
+      // Success message handled by Alert component
     }
-
-    setIsLoading(false)
-  }
+  }, [state])
 
   return (
     <Item variant="outline">
@@ -72,38 +72,40 @@ export function AdvancedPreferencesForm({
         <ItemDescription>
           Customize your regional settings, language, and currency preferences
         </ItemDescription>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col gap-6">
-            <TimezoneField preferences={preferences} setPreferences={setPreferences} />
-            <LocaleField preferences={preferences} setPreferences={setPreferences} />
-            <CurrencyField preferences={preferences} setPreferences={setPreferences} />
+        <form action={formAction} aria-describedby={state.error ? 'form-error' : undefined}>
+          {/* Screen reader announcement for form status */}
+          <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+            {isPending && 'Form is submitting, please wait'}
+            {state.success && 'Preferences saved successfully'}
+          </div>
 
-            {error && (
-              <Alert variant="destructive">
+          {/* Hidden inputs for preference values */}
+          <input type="hidden" name="timezone" value={preferences.timezone || ''} />
+          <input type="hidden" name="locale" value={preferences.locale || ''} />
+          <input type="hidden" name="currency_code" value={preferences.currency_code || ''} />
+
+          <div className="flex flex-col gap-6">
+            <TimezoneField preferences={preferences} setPreferences={setPreferences} disabled={isPending} />
+            <LocaleField preferences={preferences} setPreferences={setPreferences} disabled={isPending} />
+            <CurrencyField preferences={preferences} setPreferences={setPreferences} disabled={isPending} />
+
+            {state.error && (
+              <Alert variant="destructive" role="alert" id="form-error">
                 <AlertCircle className="size-4" />
                 <AlertTitle>Update failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{state.error}</AlertDescription>
               </Alert>
             )}
 
-            {success && (
-              <Alert>
+            {state.success && (
+              <Alert role="status">
                 <AlertCircle className="size-4" />
                 <AlertTitle>Preferences saved</AlertTitle>
                 <AlertDescription>Preferences updated successfully!</AlertDescription>
               </Alert>
             )}
 
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <>
-                  <Spinner />
-                  <span>Saving...</span>
-                </>
-              ) : (
-                <span>Save Preferences</span>
-              )}
-            </Button>
+            <SubmitButton disabled={isPending} />
           </div>
         </form>
       </ItemContent>

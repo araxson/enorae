@@ -5,7 +5,7 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
-import { BulkCouponGenerator, CouponAnalyticsOverview, CouponForm, CouponsList } from '.'
+import { BulkCouponGenerator, CouponAnalyticsOverview, CouponsList } from '.'
 import type { getCouponAnalytics, getCouponServiceOptions } from '../api/queries'
 
 type CouponManagementContentProps = {
@@ -33,8 +33,6 @@ export function CouponManagementContent({
       </ItemGroup>
 
       <CouponAnalyticsOverview analytics={analytics} />
-
-      <CouponForm salonId={salonId} services={services} />
 
       <BulkCouponGenerator salonId={salonId} />
 

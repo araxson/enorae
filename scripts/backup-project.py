@@ -90,9 +90,9 @@ class ProjectBackup:
     
     def _check_project_root(self) -> bool:
         """Verify we're in the correct project directory"""
-        claude_md = self.project_root / "CLAUDE.md"
+        claude_md = self.project_root / "claude.md"
         if not claude_md.exists():
-            self._print_colored("❌ Must be run from project root (CLAUDE.md not found)", Colors.RED)
+            self._print_colored("❌ Must be run from project root (claude.md not found)", Colors.RED)
             return False
         return True
     
@@ -275,7 +275,7 @@ Package.json Info:
         success = True
         
         # Check key files
-        key_files = ["CLAUDE.md", "package.json", "turbo.json"]
+        key_files = ["claude.md", "package.json", "turbo.json"]
         for file_name in key_files:
             src_file = self.project_root / file_name
             dst_file = backup_path / file_name

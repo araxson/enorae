@@ -1,4 +1,3 @@
-import 'server-only'
 import { COUPONS_UNSUPPORTED_MESSAGE } from '@/features/business/coupons/api/messages'
 import { createOperationLogger } from '@/lib/observability'
 
@@ -79,7 +78,13 @@ export async function getCouponAnalytics(salonId: string): Promise<CouponAnalyti
   }
 }
 
-export async function getCouponUsageStats(couponId: string) {
+type CouponUsageStats = {
+  total_uses: number
+  unique_customers: number
+  total_discount: number
+}
+
+export async function getCouponUsageStats(couponId: string): Promise<CouponUsageStats> {
   return {
     total_uses: 0,
     unique_customers: 0,
@@ -87,7 +92,23 @@ export async function getCouponUsageStats(couponId: string) {
   }
 }
 
-export function buildCouponEffectiveness(analytics: CouponAnalyticsSnapshot) {
+type CouponEffectiveness = {
+  totals: {
+    totalDiscount: number
+    totalUses: number
+    activeCoupons: number
+    averageDiscount: number
+  }
+  topCoupon: CouponWithStats | null
+  expiringSoon: CouponWithStats[]
+  trend: Array<{
+    date: string
+    uses: number
+    discount: number
+  }>
+}
+
+export function buildCouponEffectiveness(analytics: CouponAnalyticsSnapshot): CouponEffectiveness {
   const { coupons, usage } = analytics
 
   const totalDiscount = coupons.reduce((sum, coupon) => sum + coupon.stats.totalDiscount, 0)

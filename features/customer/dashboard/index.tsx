@@ -1,3 +1,3 @@
-export { CustomerDashboardPage as CustomerDashboard } from './components'
+export { CustomerDashboardPage as CustomerDashboard, CustomerDashboardSkeleton } from './components'
 export * from './api/queries'
-export * from './api/types'
+export type * from './api/types'

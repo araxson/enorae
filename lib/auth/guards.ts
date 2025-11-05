@@ -38,7 +38,7 @@ export async function requireAuthSafe(): Promise<
   try {
     const result = await requireAuth()
     return { success: true, ...result }
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unauthorized',

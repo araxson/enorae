@@ -1,7 +1,7 @@
 'use client'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { ExportButton } from '@/features/business/business-common/components'
+import { ExportButton } from '@/features/business/common/components'
 import type { getCustomerCohorts } from '@/features/business/analytics/api/queries'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {

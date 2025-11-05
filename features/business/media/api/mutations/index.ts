@@ -1,3 +1,5 @@
-
 export * from './media'
 export * from './helpers'
+export * from './add-images'
+export * from './remove-images'
+export * from './update-media'

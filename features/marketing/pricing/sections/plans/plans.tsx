@@ -4,13 +4,12 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemFooter,
-  ItemHeader,
+  ItemGroup,
   ItemMedia,
+  ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
-import { cn } from '@/lib/utils'
+import { MarketingPanel, MarketingSection } from '@/features/marketing/components/common'
 import { Check } from 'lucide-react'
 import { plansData } from './plans.data'
 
@@ -22,43 +21,43 @@ export function Plans() {
       containerClassName="max-w-6xl"
       groupClassName="gap-10"
     >
-      <Item variant="muted">
-        <ItemContent>
-          <div className="flex flex-col items-center justify-center text-center">
-            <ItemTitle>{plansData.title}</ItemTitle>
-          </div>
-        </ItemContent>
-      </Item>
+      <MarketingPanel
+        align="center"
+        variant="muted"
+        title={plansData.title}
+        description="Compare tiers to find your salon's best fit."
+      />
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {plansData.plans.map((plan) => (
-          <Item
+          <div
             key={plan.name}
-            variant="outline"
-            className={cn(
-              'relative flex flex-col gap-6',
-              plan.highlighted && 'border-primary ring-2 ring-primary/20',
-            )}
+            className={`relative flex flex-col gap-4 rounded-lg bg-background p-1 ${plan.highlighted ? 'ring-2 ring-primary/20' : 'ring-1 ring-border/40'}`}
           >
             {plan.highlighted ? (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <Badge>Most popular</Badge>
               </div>
             ) : null}
-            <ItemHeader className="flex flex-col gap-2">
-              <ItemTitle>
-                <h3 className="text-xl font-semibold tracking-tight">{plan.name}</h3>
-              </ItemTitle>
-              <p className="text-muted-foreground">{plan.description}</p>
-            </ItemHeader>
-            <ItemContent className="flex flex-col gap-6">
+            <MarketingPanel
+              align="start"
+              variant="outline"
+              title={plan.name}
+              description={plan.description}
+              actions={
+                <Button variant={plan.highlighted ? 'default' : 'outline'} size="lg">
+                  {plan.cta}
+                </Button>
+              }
+            >
               <Item variant="muted">
                 <ItemContent>
                   <ItemTitle>{plan.price}</ItemTitle>
                   <ItemDescription>{plan.period}</ItemDescription>
                 </ItemContent>
               </Item>
-              <div className="flex flex-col gap-2">
+              <ItemSeparator />
+              <ItemGroup className="gap-2">
                 {plan.features.map((feature) => (
                   <Item key={feature} variant="muted">
                     <ItemMedia variant="icon">
@@ -69,14 +68,9 @@ export function Plans() {
                     </ItemContent>
                   </Item>
                 ))}
-              </div>
-            </ItemContent>
-            <ItemFooter>
-              <Button className="w-full" variant={plan.highlighted ? 'default' : 'outline'}>
-                {plan.cta}
-              </Button>
-            </ItemFooter>
-          </Item>
+              </ItemGroup>
+            </MarketingPanel>
+          </div>
         ))}
       </div>
     </MarketingSection>

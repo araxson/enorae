@@ -74,28 +74,32 @@ function ReviewCard({ review }: { review: SalonReview }) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <ItemGroup className="sm:flex-row sm:items-center sm:justify-between">
-          <Item>
-            <ItemContent>
-              <StarRating rating={review['rating']} />
-            </ItemContent>
-            {review['is_verified'] ? (
-              <ItemActions className="flex-none">
-                <Badge variant="secondary">Verified</Badge>
-              </ItemActions>
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <StarRating rating={review['rating']} />
+                </ItemContent>
+                {review['is_verified'] ? (
+                  <ItemActions>
+                    <Badge variant="secondary">Verified</Badge>
+                  </ItemActions>
+                ) : null}
+              </Item>
+            </ItemGroup>
+            {reviewDate ? (
+              <ItemGroup>
+                <Item>
+                  <ItemContent>
+                    <ItemDescription>{reviewDate}</ItemDescription>
+                  </ItemContent>
+                </Item>
+              </ItemGroup>
             ) : null}
-          </Item>
-          {reviewDate ? (
-            <Item>
-              <ItemContent>
-                <ItemDescription>{reviewDate}</ItemDescription>
-              </ItemContent>
-            </Item>
-          ) : null}
-        </ItemGroup>
-      </CardHeader>
+          </div>
+        </CardHeader>
       <CardContent>
         <CardDescription>{review['comment']}</CardDescription>
       </CardContent>
@@ -122,18 +126,15 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
   if (reviews.length === 0) {
     return (
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <Empty>
-            <EmptyMedia variant="icon">
-              <Star className="size-6" />
-            </EmptyMedia>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Star className="size-5" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No reviews yet</EmptyTitle>
               <EmptyDescription>Be the first to leave a review for this salon.</EmptyDescription>
             </EmptyHeader>
-            <EmptyContent>
-              Reviews from verified customers will appear here once submitted.
-            </EmptyContent>
           </Empty>
         </CardContent>
       </Card>
@@ -147,21 +148,25 @@ export function SalonReviews({ reviews }: SalonReviewsProps) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <ItemGroup className="sm:flex-row sm:items-center sm:justify-between">
-            <Item>
-              <ItemContent>
-                <CardTitle>Customer reviews ({reviews.length})</CardTitle>
-              </ItemContent>
-            </Item>
-            <Item>
-              <ItemContent>
-                <StarRating rating={Math.round(avgRating)} />
-              </ItemContent>
-              <ItemActions className="flex-none">
-                <CardDescription>{avgRating.toFixed(1)} average</CardDescription>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <CardTitle>Customer reviews ({reviews.length})</CardTitle>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+            <ItemGroup>
+              <Item>
+                <ItemContent>
+                  <StarRating rating={Math.round(avgRating)} />
+                </ItemContent>
+                <ItemActions>
+                  <CardDescription>{avgRating.toFixed(1)} average</CardDescription>
+                </ItemActions>
+              </Item>
+            </ItemGroup>
+          </div>
         </CardHeader>
         <CardContent>
           <CardDescription>

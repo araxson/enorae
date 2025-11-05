@@ -7,8 +7,8 @@ import { ClientCard } from './client-card'
 import { ClientStats } from './client-stats'
 import { ClientFilters } from './client-filters'
 import { ClientDetailDialog } from './client-detail-dialog'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffQuickAction, StaffSummary } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffQuickAction, StaffSummary } from '@/features/staff/common'
 import {
   Empty,
   EmptyDescription,

@@ -7,11 +7,7 @@ export function DirectoryHeader() {
     <ItemGroup className="gap-4">
       <Item variant="muted">
         <ItemHeader>
-          <ItemTitle>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              {servicesDirectoryHeader.title}
-            </h1>
-          </ItemTitle>
+          <ItemTitle>{servicesDirectoryHeader.title}</ItemTitle>
         </ItemHeader>
         <ItemContent>
           <ItemDescription>{servicesDirectoryHeader.description}</ItemDescription>

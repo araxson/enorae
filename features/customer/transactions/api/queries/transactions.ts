@@ -44,7 +44,7 @@ export async function getCustomerTransactions(): Promise<CustomerTransactionWith
 
   const { data, error } = await supabase
     .from('manual_transactions_view')
-    .select('*')
+    .select('id, customer_id, salon_id, staff_id, appointment_id, amount, payment_method, transaction_at, status, notes, created_at')
     .eq('customer_id', session.user.id)
     .order('transaction_at', { ascending: false })
     .returns<ManualTransactionRow[]>()
@@ -157,7 +157,7 @@ export async function getCustomerTransactionById(
 
   const { data, error } = await supabase
     .from('manual_transactions_view')
-    .select('*')
+    .select('id, customer_id, salon_id, staff_id, appointment_id, amount, payment_method, transaction_at, status, notes, created_at')
     .eq('id', id)
     .eq('customer_id', session.user.id)
     .maybeSingle<ManualTransactionRow>()

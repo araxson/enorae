@@ -30,7 +30,7 @@ export async function getStaffDashboardData(): Promise<StaffDashboardData> {
 
   const { data: staffData, error: staffError } = await supabase
     .from('admin_staff_overview_view')
-    .select('*')
+    .select('id, user_id, full_name, salon_id, salon_name, salon_slug, staff_role, title, experience_years, created_at')
     .order('created_at', { ascending: false })
     .limit(500)
 

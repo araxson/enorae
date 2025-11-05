@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/item'
 import type { SessionSecuritySnapshot } from '@/features/admin/session-security/api/queries'
 import { ActivitySquare, ShieldCheck, ShieldX, TriangleAlert } from 'lucide-react'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { SessionSecurityTable } from './session-security-table'
 
 interface SessionSecurityClientProps {

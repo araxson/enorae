@@ -30,17 +30,16 @@ export async function getOptimizationRecommendations(
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
   const supabase = createServiceRoleClient()
 
-  // NOTE: Using SELECT * for admin views since they're not user-facing performance critical
   const [optimizationsRes, statsRes, indexesRes] = await Promise.all([
-    supabase.from('low_priority_optimizations_summary_view').select('*').limit(limit),
+    supabase.from('low_priority_optimizations_summary_view').select('id, recommendation, status, priority, impact').limit(limit),
     supabase
       .from('statistics_freshness_view')
-      .select('*')
+      .select('schemaname, tablename, last_analyze, n_mod_since_analyze')
       .order('last_analyze', { ascending: true })
       .limit(limit),
     supabase
       .from('unused_indexes_view')
-      .select('*')
+      .select('schemaname, tablename, indexname, idx_scan, scans, index_size')
       .order('idx_scan', { ascending: true })
       .limit(limit),
   ])
@@ -49,9 +48,9 @@ export async function getOptimizationRecommendations(
   if (statsRes.error) throw statsRes.error
   if (indexesRes.error) throw indexesRes.error
 
-  const recommendations = (optimizationsRes.data ?? []) as Optimization[]
-  const statisticsFreshness = (statsRes.data ?? []) as StatsFreshness[]
-  const unusedIndexes = (indexesRes.data ?? []) as UnusedIndex[]
+  const recommendations = (optimizationsRes.data ?? []) as unknown as Optimization[]
+  const statisticsFreshness = (statsRes.data ?? []) as unknown as StatsFreshness[]
+  const unusedIndexes = (indexesRes.data ?? []) as unknown as UnusedIndex[]
 
   const criticalRecommendations = recommendations.filter(
     (r) => r['status'] === 'critical' || r['status'] === 'high'

@@ -8,7 +8,10 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { UUID_REGEX } from '../../constants'
 import { createOperationLogger } from '@/lib/observability'
 
-export async function terminateSession(formData: FormData) {
+export async function terminateSession(formData: FormData): Promise<
+  | { error: string }
+  | { success: true }
+> {
   const logger = createOperationLogger('terminateSession', {})
   logger.start()
 
@@ -42,7 +45,10 @@ export async function terminateSession(formData: FormData) {
   }
 }
 
-export async function terminateAllUserSessions(formData: FormData) {
+export async function terminateAllUserSessions(formData: FormData): Promise<
+  | { error: string }
+  | { success: true }
+> {
   try {
     const userId = formData.get('userId')?.toString()
     if (!userId || !UUID_REGEX.test(userId)) {

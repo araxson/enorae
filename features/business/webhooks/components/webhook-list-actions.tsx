@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { retryAllFailedWebhooks, clearCompletedWebhooks } from '@/features/business/webhooks/api/mutations'
-import { ConfirmDialog } from '@/features/shared/ui-components'
+import { ConfirmDialog } from '@/features/shared/ui'
 
 interface WebhookListActionsProps {
   failedCount: number

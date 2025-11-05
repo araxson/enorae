@@ -81,33 +81,44 @@ export async function getSalonMetricsHistory(days = 30): Promise<SalonMetricsDat
  * Get daily metrics for charts (last 30 days)
  */
 export async function getDailyMetrics(days = 30): Promise<DailyMetricWithTimestamp[]> {
-  // SECURITY: Require authentication
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+  const logger = createOperationLogger('getDailyMetrics', {})
+  logger.start()
 
-  const supabase = await createClient()
-  const salonId = await requireUserSalonId()
+  try {
+    // SECURITY: Require authentication
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
-  const cutoffDate = new Date()
-  cutoffDate.setDate(cutoffDate.getDate() - days)
+    const supabase = await createClient()
+    const salonId = await requireUserSalonId()
 
-  // COMPLIANCE: Query public view (not schema table)
-  const { data, error } = await supabase
-    .from('daily_metrics_view')
-    .select('*')
-    .eq('salon_id', salonId)
-    .gte('metric_at', cutoffDate.toISOString().split('T')[0])
-    .order('metric_at', { ascending: true })
+    const cutoffDate = new Date()
+    cutoffDate.setDate(cutoffDate.getDate() - days)
 
-  if (error) throw error
+    // COMPLIANCE: Query public view (not schema table)
+    const { data, error } = await supabase
+      .from('daily_metrics_view')
+      .select('salon_id, metric_at, total_revenue, service_revenue, total_appointments, completed_appointments, cancelled_appointments, new_customers, returning_customers, active_staff_count, created_at')
+      .eq('salon_id', salonId)
+      .gte('metric_at', cutoffDate.toISOString().split('T')[0])
+      .order('metric_at', { ascending: true })
 
-  const metrics = (data ?? []) as DailyMetric[]
+    if (error) throw error
 
-  return metrics.reduce<DailyMetricWithTimestamp[]>((acc, metric) => {
-    if (!metric?.['metric_at']) {
+    const metrics = (data ?? []) as DailyMetric[]
+
+    const result = metrics.reduce<DailyMetricWithTimestamp[]>((acc, metric) => {
+      if (!metric?.['metric_at']) {
+        return acc
+      }
+
+      acc.push({ ...metric, metric_at: metric['metric_at'] })
       return acc
-    }
+    }, [])
 
-    acc.push({ ...metric, metric_at: metric['metric_at'] })
-    return acc
-  }, [])
+    logger.success({ salonId, days, count: result.length })
+    return result
+  } catch (error) {
+    logger.error(error instanceof Error ? error : String(error), 'system', { days })
+    return []
+  }
 }

@@ -26,10 +26,10 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
 
   const supabase = await createClient()
 
-  // ✅ FIXED: Query identity.sessions via public view (application sessions)
+  // FIXED: Query identity.sessions via public view (application sessions)
   const { data, error } = await supabase
     .from('sessions_view')
-    .select('*')
+    .select('id, user_id, session_token, is_active, ip_address, user_agent, created_at, updated_at, deleted_at, expires_at')
     .eq('user_id', session.user.id)
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -37,8 +37,8 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
 
   if (error) throw error
   const sessions = data || []
-  return sessions.map((session: Session) => ({
-    ...session,
+  return sessions.map((sessionRow) => ({
+    ...sessionRow,
     is_current: false, // Note: is_current field not available in view
   }))
 }
@@ -53,7 +53,7 @@ export async function getSessionCount(): Promise<number> {
 
   const supabase = await createClient()
 
-  // ✅ FIXED: Query identity.sessions via public view
+  // FIXED: Query identity.sessions via public view
   const { count, error } = await supabase
     .from('sessions_view')
     .select('*', { count: 'exact', head: true })

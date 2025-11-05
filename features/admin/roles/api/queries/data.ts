@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
@@ -33,11 +35,11 @@ export async function getAllRoleAssignments(): Promise<AdminUserRole[]> {
 
   const { data, error } = await supabase
     .from('user_roles_view')
-    .select('*')
+    .select('id, user_id, role, salon_id, is_active, created_at, updated_at')
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data || []
+  return (data || []) as unknown as AdminUserRole[]
 }
 
 /**
@@ -51,12 +53,12 @@ export async function getUserRoleAssignments(userId: string): Promise<AdminUserR
 
   const { data, error } = await supabase
     .from('user_roles_view')
-    .select('*')
+    .select('id, user_id, role, salon_id, is_active, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data || []
+  return (data || []) as unknown as AdminUserRole[]
 }
 
 /**
@@ -70,12 +72,12 @@ export async function getSalonRoleAssignments(salonId: string): Promise<AdminUse
 
   const { data, error } = await supabase
     .from('user_roles_view')
-    .select('*')
+    .select('id, user_id, role, salon_id, is_active, created_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data || []
+  return (data || []) as unknown as AdminUserRole[]
 }
 
 /**

@@ -3,3 +3,4 @@
 
 // Note: Shared salon queries and mutations will be exported here as they are added
 // Currently placeholder exports only
+export * from './types'

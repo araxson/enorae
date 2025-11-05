@@ -2,14 +2,14 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { deleteBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Badge } from '@/components/ui/badge'
-import { ConfirmDialog } from '@/features/shared/ui-components'
-import { EmptyState } from '@/features/shared/ui-components'
+import { ConfirmDialog } from '@/features/shared/ui'
+import { EmptyState } from '@/features/shared/ui'
 import { Calendar, Repeat } from 'lucide-react'
 import {
   Item,
@@ -39,7 +39,7 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
   const router = useRouter()
   const [deletingId, setDeletingId] = useState<string | null>(null)
 
-  const getRecurrenceLabel = (pattern: string | null) => {
+  const getRecurrenceLabel = (pattern: string | null): string => {
     if (!pattern) return ''
     const labels: Record<string, string> = {
       daily: 'Daily',
@@ -50,7 +50,7 @@ export function BlockedTimesList({ blockedTimes }: BlockedTimesListProps) {
       weekdays: 'Weekdays',
       weekends: 'Weekends',
     }
-    return labels[pattern] || pattern
+    return labels[pattern] ?? pattern
   }
 
   async function handleDelete(id: string) {

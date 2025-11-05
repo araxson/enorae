@@ -27,30 +27,40 @@ export async function updateAppointmentStatus(
   const supabase = await createClient()
 
   try {
-    // Get the appointment to verify ownership
-    const { data: appointment } = await supabase
-      .from('appointments_view')
-      .select('staff_id')
-      .eq('id', appointmentId)
-      .single()
+    // PERFORMANCE FIX: Fetch appointment and verify ownership in parallel with update
+    // Before: 3 sequential queries (appointment -> staff -> update)
+    // After: Fetch both then update (faster total time)
+    const [appointmentResult, staffProfileResult] = await Promise.all([
+      supabase
+        .from('appointments_view')
+        .select('staff_id')
+        .eq('id', appointmentId)
+        .single(),
+      supabase
+        .from('staff_profiles_view')
+        .select('id, user_id')
+        .eq('user_id', session.user.id)
+        .single()
+    ])
+
+    const { data: appointment } = appointmentResult
+    const { data: staffProfile } = staffProfileResult
 
     if (!appointment) {
       logger.error(new Error('Appointment not found'), 'not_found')
-      throw new Error('Appointment not found')
+      return { success: false, error: 'Appointment not found' }
+    }
+
+    if (!staffProfile) {
+      logger.error(new Error('Staff profile not found'), 'not_found')
+      return { success: false, error: 'Staff profile not found. Please contact support.' }
     }
 
     // Verify the staff member owns this appointment
     const appt = appointment as { staff_id: string | null }
-    const { data: staffProfile } = await supabase
-      .from('staff_profiles_view')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .eq('id', appt.staff_id!)
-      .single()
-
-    if (!staffProfile) {
+    if (appt.staff_id !== staffProfile.id) {
       logger.error(new Error('Unauthorized access attempt'), 'permission')
-      throw new Error('Unauthorized: Cannot update this appointment')
+      return { success: false, error: 'You do not have permission to update this appointment' }
     }
 
     // Update status
@@ -62,7 +72,8 @@ export async function updateAppointmentStatus(
 
     if (error) {
       logger.error(error, 'database')
-      throw error
+      console.error('Appointment status update error:', error)
+      return { success: false, error: 'Failed to update appointment status. Please try again.' }
     }
 
     revalidatePath('/staff/appointments', 'page')
@@ -71,7 +82,8 @@ export async function updateAppointmentStatus(
     return { success: true }
   } catch (error) {
     logger.error(error instanceof Error ? error : new Error(String(error)), 'system')
-    throw error
+    console.error('Unexpected error updating appointment status:', error)
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
 }
 
@@ -95,45 +107,62 @@ export async function cancelAppointment(appointmentId: string) {
   const session = await requireAuth()
   const supabase = await createClient()
 
-  // Get the appointment to verify ownership
-  const { data: appointment } = await supabase
-    .from('appointments_view')
-    .select('staff_id')
-    .eq('id', appointmentId)
-    .single()
+  try {
+    // PERFORMANCE FIX: Fetch appointment and staff profile in parallel
+    // Before: 3 sequential queries (appointment -> staff -> update)
+    // After: Fetch both in parallel then update (faster total time)
+    const [appointmentResult, staffProfileResult] = await Promise.all([
+      supabase
+        .from('appointments_view')
+        .select('staff_id')
+        .eq('id', appointmentId)
+        .single(),
+      supabase
+        .from('staff_profiles_view')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .single()
+    ])
 
-  if (!appointment) {
-    throw new Error('Appointment not found')
+    const { data: appointment } = appointmentResult
+    const { data: staffProfile } = staffProfileResult
+
+    if (!appointment) {
+      return { success: false, error: 'Appointment not found' }
+    }
+
+    if (!staffProfile) {
+      return { success: false, error: 'Staff profile not found. Please contact support.' }
+    }
+
+    // Verify ownership
+    const appt2 = appointment as { staff_id: string | null }
+    if (appt2.staff_id !== staffProfile.id) {
+      return { success: false, error: 'You do not have permission to cancel this appointment' }
+    }
+
+    // Cancel appointment
+    const { error } = await supabase
+      .schema('scheduling')
+      .from('appointments')
+      .update({
+        status: 'cancelled',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', appointmentId)
+
+    if (error) {
+      console.error('Appointment cancellation error:', error)
+      return { success: false, error: 'Failed to cancel appointment. Please try again.' }
+    }
+
+    revalidatePath('/staff/appointments', 'page')
+    revalidatePath('/staff', 'layout')
+    return { success: true }
+  } catch (error) {
+    console.error('Unexpected error cancelling appointment:', error)
+    return { success: false, error: 'An unexpected error occurred. Please try again.' }
   }
-
-  // Verify ownership
-  const appt2 = appointment as { staff_id: string | null }
-  const { data: staffProfile } = await supabase
-    .from('staff_profiles_view')
-    .select('id')
-    .eq('user_id', session.user.id)
-    .eq('id', appt2.staff_id!)
-    .single()
-
-  if (!staffProfile) {
-    throw new Error('Unauthorized')
-  }
-
-  // Cancel appointment
-  const { error } = await supabase
-    .schema('scheduling')
-    .from('appointments')
-    .update({
-      status: 'cancelled',
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', appointmentId)
-
-  if (error) throw error
-
-  revalidatePath('/staff/appointments', 'page')
-  revalidatePath('/staff', 'layout')
-  return { success: true }
 }
 
 /**
@@ -149,30 +178,44 @@ export async function addAppointmentNotes(
 
     const validation = appointmentNotesSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.issues[0]?.message || "Validation failed" }
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const { appointmentId, serviceNotes, productsUsed, nextVisitRecommendations } = validation.data
 
-    // Verify appointment ownership
-    const { data: appointment } = await supabase
-      .from('appointments_view')
-      .select('staff_id, customer_id, salon_id')
-      .eq('id', appointmentId)
-      .single<{ staff_id: string; customer_id: string; salon_id: string }>()
+    // PERFORMANCE FIX: Fetch appointment and staff profile in parallel
+    // Before: 2 sequential queries (appointment -> staff)
+    // After: Fetch both in parallel (faster total time)
+    const [appointmentResult, staffProfileResult] = await Promise.all([
+      supabase
+        .from('appointments_view')
+        .select('staff_id, customer_id, salon_id')
+        .eq('id', appointmentId)
+        .single<{ staff_id: string; customer_id: string; salon_id: string }>(),
+      supabase
+        .from('staff_profiles_view')
+        .select('id')
+        .eq('user_id', session.user.id)
+        .single<{ id: string }>()
+    ])
+
+    const { data: appointment } = appointmentResult
+    const { data: staffProfile } = staffProfileResult
 
     if (!appointment || !appointment.staff_id) {
       return { success: false, error: 'Appointment not found or not assigned to staff' }
     }
 
-  const { data: staffProfile } = await supabase
-    .from('staff_profiles_view')
-      .select('id')
-      .eq('user_id', session.user.id)
-      .eq('id', appointment.staff_id)
-      .single<{ id: string }>()
-
     if (!staffProfile) {
+      return { success: false, error: 'Unauthorized: Cannot add notes to this appointment' }
+    }
+
+    // Verify ownership
+    if (appointment.staff_id !== staffProfile.id) {
       return { success: false, error: 'Unauthorized: Cannot add notes to this appointment' }
     }
 
@@ -206,7 +249,13 @@ export async function addAppointmentNotes(
         })
         .eq('id', existingThread.id)
 
-      if (error) throw error
+      if (error) {
+        console.error('Error updating message thread:', error)
+        return {
+          success: false,
+          error: 'Failed to update appointment notes. Please try again.'
+        }
+      }
     } else {
       // Create new thread for appointment notes
       const { error: threadError } = await supabase
@@ -225,7 +274,13 @@ export async function addAppointmentNotes(
           },
         })
 
-      if (threadError) throw threadError
+      if (threadError) {
+        console.error('Error creating message thread:', threadError)
+        return {
+          success: false,
+          error: 'Failed to save appointment notes. Please try again.'
+        }
+      }
     }
 
     revalidatePath('/staff/appointments', 'page')

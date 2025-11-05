@@ -1,12 +1,13 @@
 import { Separator } from '@/components/ui/separator'
 import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { MarketingPanel, MarketingSection } from '@/features/marketing/components/common'
 
 import {
   CategoryNavigation,
@@ -33,11 +34,22 @@ export async function ServicesDirectoryPage() {
       containerClassName="max-w-6xl"
       groupClassName="gap-8"
     >
-      <Item variant="muted">
-        <ItemContent>
-          <ItemDescription>Browse every service Enorae salons offer and jump into details quickly.</ItemDescription>
-        </ItemContent>
-      </Item>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Services</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <MarketingPanel
+        variant="muted"
+        description="Browse every service Enorae salons offer and jump into details quickly."
+      />
       <DirectoryHeader />
       <CategoryNavigation categories={categories} />
       {popularServices.length > 0 ? (
@@ -47,13 +59,11 @@ export async function ServicesDirectoryPage() {
         </>
       ) : null}
       <div className="flex flex-col gap-4">
-        <Item variant="muted">
-          <ItemHeader>
-            <ItemTitle>
-              <h2 className="text-xl font-semibold tracking-tight">All Services</h2>
-            </ItemTitle>
-          </ItemHeader>
-        </Item>
+        <MarketingPanel
+          variant="muted"
+          title="All services"
+          description="Compare durations, pricing, and highlights at a glance."
+        />
         <ServicesGrid services={services} />
       </div>
     </MarketingSection>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { createBlockedTime } from '@/features/shared/blocked-times/api/mutations'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -140,7 +140,7 @@ export function BlockedTimeForm({
               <Checkbox
                 id="is_recurring"
                 checked={isRecurring}
-                onCheckedChange={(checked) => setIsRecurring(!!checked)}
+                onCheckedChange={(checked) => setIsRecurring(checked === true)}
               />
             </Field>
 

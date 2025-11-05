@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import {
   Item,
+  ItemActions,
   ItemContent,
   ItemDescription,
   ItemGroup,
@@ -26,67 +27,72 @@ interface BusinessRecommendationsTabProps {
 
 export function BusinessRecommendationsTab({ recommendations }: BusinessRecommendationsTabProps) {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">AI-powered recommendations</h3>
-          <p className="text-sm text-muted-foreground">Data-driven actions to improve your performance.</p>
-        </div>
-        <Badge variant="outline">
-          <Lightbulb className="mr-1 size-3" aria-hidden="true" />
-          {recommendations.length} insights
-        </Badge>
-      </div>
+    <ItemGroup className="gap-4">
+      <Item>
+        <ItemContent>
+          <ItemTitle>AI-powered recommendations</ItemTitle>
+          <ItemDescription>Data-driven actions to improve your performance.</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Badge variant="outline">
+            <Lightbulb className="mr-1 size-3" aria-hidden="true" />
+            {recommendations.length} insights
+          </Badge>
+        </ItemActions>
+      </Item>
 
       {recommendations.length > 0 ? (
         <Accordion type="single" collapsible className="w-full">
           {recommendations.map((rec, idx) => (
             <AccordionItem key={rec.id} value={`item-${idx}`}>
               <AccordionTrigger>
-                <div className="flex flex-wrap items-center gap-2 text-left">
-                  <span>{rec.title}</span>
-                  <Badge
-                    variant={
-                      rec.priority === 'high'
-                        ? 'destructive'
-                        : rec.priority === 'medium'
-                        ? 'default'
-                        : 'secondary'
-                    }
-                  >
-                    {rec.priority}
-                  </Badge>
-                  <Badge variant="outline">{rec.category}</Badge>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="space-y-4">
-                <p className="text-sm">{rec.description}</p>
-                <Item variant="outline" className="items-center gap-3">
-                  <ItemMedia variant="icon">
-                    <Target className="size-4 text-primary" aria-hidden="true" />
-                  </ItemMedia>
+                <Item size="sm">
                   <ItemContent>
-                    <ItemTitle>Impact</ItemTitle>
-                    <ItemDescription>{rec.impact}</ItemDescription>
+                    <ItemTitle>{rec.title}</ItemTitle>
                   </ItemContent>
+                  <ItemActions>
+                    <Badge
+                      variant={
+                        rec.priority === 'high'
+                          ? 'destructive'
+                          : rec.priority === 'medium'
+                          ? 'default'
+                          : 'secondary'
+                      }
+                    >
+                      {rec.priority}
+                    </Badge>
+                    <Badge variant="outline">{rec.category}</Badge>
+                  </ItemActions>
                 </Item>
-                <div>
-                  <ItemTitle>Action items</ItemTitle>
-                  <ItemGroup className="mt-2 space-y-1.5">
-                    {rec.actionItems.map((item, idx) => (
-                      <Item key={idx} variant="muted" className="items-start gap-2">
-                        <ItemMedia variant="icon">
-                          <CheckCircle2
-                            className="size-4 text-primary"
-                            aria-hidden="true"
-                          />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemDescription>{item}</ItemDescription>
-                        </ItemContent>
-                      </Item>
-                    ))}
-                  </ItemGroup>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-4">
+                  <p className="text-sm">{rec.description}</p>
+                  <Item variant="outline" size="sm">
+                    <ItemMedia variant="icon">
+                      <Target className="size-4 text-primary" aria-hidden="true" />
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>Impact</ItemTitle>
+                      <ItemDescription>{rec.impact}</ItemDescription>
+                    </ItemContent>
+                  </Item>
+                  <div>
+                    <ItemTitle>Action items</ItemTitle>
+                    <div className="mt-2 space-y-1.5">
+                      {rec.actionItems.map((item, actionIdx) => (
+                        <Item key={actionIdx} variant="muted" size="sm">
+                          <ItemMedia variant="icon">
+                            <CheckCircle2 className="size-4 text-primary" aria-hidden="true" />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemDescription>{item}</ItemDescription>
+                          </ItemContent>
+                        </Item>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -101,6 +107,6 @@ export function BusinessRecommendationsTab({ recommendations }: BusinessRecommen
           </AlertDescription>
         </Alert>
       )}
-    </div>
+    </ItemGroup>
   )
 }

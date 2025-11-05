@@ -20,7 +20,7 @@ const updateStaffMetadataSchema = z.object({
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
-  | { success: false; error: string }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> }
 
 export async function updateStaffInfo(formData: FormData): Promise<ActionResponse> {
   try {
@@ -40,16 +40,21 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
     }
 
     // Validate input
+    const experienceYearsValue = formData.get('experienceYears')
     const result = updateStaffInfoSchema.safeParse({
       title: formData.get('title')?.toString() || null,
       bio: formData.get('bio')?.toString() || null,
-      experienceYears: formData.get('experienceYears')
-        ? parseInt(formData.get('experienceYears')!.toString(), 10)
+      experienceYears: experienceYearsValue
+        ? parseInt(experienceYearsValue.toString(), 10)
         : null,
     })
 
     if (!result.success) {
-      return { success: false, error: result.error.issues[0]?.message || 'Validation failed' }
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: result.error.flatten().fieldErrors
+      }
     }
 
     const { title, bio, experienceYears } = result.data
@@ -70,7 +75,10 @@ export async function updateStaffInfo(formData: FormData): Promise<ActionRespons
 
     if (updateError) {
       console.error('Error updating staff profile:', updateError)
-      throw updateError
+      return {
+        success: false,
+        error: 'Failed to update staff profile. Please try again.'
+      }
     }
 
     revalidatePath('/staff/profile', 'page')
@@ -96,7 +104,11 @@ export async function updateStaffMetadata(
 
     const validation = updateStaffMetadataSchema.safeParse(data)
     if (!validation.success) {
-      return { success: false, error: validation.error.issues[0]?.message || 'Validation failed' }
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const { specialties, certifications, interests } = validation.data
@@ -123,7 +135,13 @@ export async function updateStaffMetadata(
         updated_at: new Date().toISOString(),
       })
 
-    if (error) throw error
+    if (error) {
+      console.error('Error updating staff metadata:', error)
+      return {
+        success: false,
+        error: 'Failed to update staff metadata. Please try again.'
+      }
+    }
 
     revalidatePath('/staff/profile', 'page')
     return { success: true, data: undefined }

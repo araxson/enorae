@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole } from '@/lib/auth'
-import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
+import { sanitizeAdminText } from '@/features/admin/common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
 import { banUserSchema, UUID_REGEX } from '../../constants'
 import { createOperationLogger, logError } from '@/lib/observability'
@@ -12,7 +12,10 @@ import { createOperationLogger, logError } from '@/lib/observability'
  * Ban user permanently - requires super_admin role
  * Terminates all sessions and marks user as permanently banned
  */
-export async function banUser(formData: FormData) {
+export async function banUser(formData: FormData): Promise<
+  | { error: string; fieldErrors?: Record<string, string[] | undefined> }
+  | { success: true }
+> {
   const logger = createOperationLogger('banUser', {})
   logger.start()
 
@@ -24,7 +27,10 @@ export async function banUser(formData: FormData) {
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.issues[0]?.message ?? 'Invalid ban payload' }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: parsed.error.flatten().fieldErrors
+      }
     }
 
     const { userId, reason, isPermanent } = parsed.data

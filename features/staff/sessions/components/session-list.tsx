@@ -12,6 +12,7 @@ import type { StaffSessionDetail } from '@/features/staff/sessions/api/types'
 import { SessionRow } from './session-row'
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -28,6 +29,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Spinner } from '@/components/ui/spinner'
+import { Button } from '@/components/ui/button'
 
 interface SessionListProps {
   sessions: StaffSessionDetail[]
@@ -71,6 +73,11 @@ export function SessionList({ sessions, currentSessionId }: SessionListProps) {
               <EmptyTitle>No active sessions</EmptyTitle>
               <EmptyDescription>Sign in on a device to see sessions here.</EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <Button asChild variant="outline">
+                <a href="/staff/settings">Review security settings</a>
+              </Button>
+            </EmptyContent>
           </Empty>
         </CardContent>
       </Card>

@@ -5,7 +5,7 @@ import {
   ItemDescription,
   ItemTitle,
 } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 import { forCustomersData } from './for-customers.data'
 
 export function ForCustomers() {

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { newsletterSubscriptionSchema } from '../schema'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { rateLimit, getClientIdentifier, createRateLimitKey } from '@/lib/utils/rate-limit'
 
 const DEFAULT_NEWSLETTER_SOURCE = 'marketing_site'
 
@@ -17,15 +18,30 @@ const DEFAULT_NEWSLETTER_SOURCE = 'marketing_site'
 export async function subscribeToNewsletter(input: unknown) {
   const logger = createOperationLogger('subscribeToNewsletter', {})
 
+  // CRITICAL FIX: Rate limiting to prevent spam
+  const ip = await getClientIdentifier()
+  const rateLimitKey = createRateLimitKey('newsletter', ip)
+  const rateLimitResult = await rateLimit({
+    identifier: rateLimitKey,
+    limit: 5, // 5 subscriptions
+    windowMs: 3600000, // per hour
+  })
+
+  if (!rateLimitResult.success) {
+    logger.warn('Newsletter subscription rate limit exceeded', { ip })
+    return {
+      success: false,
+      error: rateLimitResult.error || 'Too many subscription attempts. Please try again later.',
+    }
+  }
+
   const parsed = newsletterSubscriptionSchema.safeParse(input)
   if (!parsed.success) {
-    const message = parsed.error.issues[0]?.message || 'Invalid email address'
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    const message = firstError || 'Invalid email address'
     logger.error(message, 'validation', { input })
-    console.error('Newsletter subscription validation failed', {
-      error: message,
-      timestamp: new Date().toISOString()
-    })
-    return { success: false, error: message }
+    return { success: false, error: message, fieldErrors }
   }
 
   try {
@@ -33,12 +49,6 @@ export async function subscribeToNewsletter(input: unknown) {
 
     // SCHEMA ALIGNMENT: Table does not exist in database
     // Logging subscription attempt instead of database insert
-    console.log('[subscribeToNewsletter] Subscription attempt (table does not exist):', {
-      email: parsed.data.email,
-      source: parsed.data.source ?? DEFAULT_NEWSLETTER_SOURCE,
-      timestamp: new Date().toISOString(),
-    })
-
     logger.warn('Newsletter subscription not persisted - table does not exist', {
       email: parsed.data.email,
       source: parsed.data.source ?? DEFAULT_NEWSLETTER_SOURCE,
@@ -46,22 +56,11 @@ export async function subscribeToNewsletter(input: unknown) {
 
     revalidatePath('/', 'page')
 
-    console.log('Newsletter subscription logged (not persisted)', {
-      email: parsed.data.email,
-      source: parsed.data.source ?? DEFAULT_NEWSLETTER_SOURCE,
-      timestamp: new Date().toISOString()
-    })
-
     return {
       success: true,
       // Return success to not break UI, but data is not persisted
     }
   } catch (error) {
-    console.error('Newsletter subscription unexpected error', {
-      email: parsed.data.email,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    })
     logger.error(error instanceof Error ? error : String(error), 'system', { email: parsed.data.email })
     return {
       success: false,

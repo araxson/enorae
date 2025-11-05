@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { Edit2, Trash2, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -132,7 +132,7 @@ export function PreferencesList({ preferences, onEdit }: PreferencesListProps) {
         </TableBody>
       </Table>
 
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+      <AlertDialog open={deleteId !== null} onOpenChange={(open) => { if (!open) setDeleteId(null) }}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Preference</AlertDialogTitle>

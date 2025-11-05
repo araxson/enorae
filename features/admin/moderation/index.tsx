@@ -1,5 +1,5 @@
 import { getReviewsForModeration, getModerationStats } from '@/features/admin/moderation/api/queries'
-import { ModerationClient } from '@/features/admin/moderation/components/moderation-client'
+import { ModerationClient } from '@/features/admin/moderation/components'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 
 export async function AdminModeration() {
@@ -16,4 +16,4 @@ export async function AdminModeration() {
     </div>
   )
 }
-export * from './api/types'
+export type * from './api/types'

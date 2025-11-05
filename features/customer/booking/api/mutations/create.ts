@@ -7,6 +7,7 @@ import { requireAuth } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { generateConfirmationCode } from './utilities'
 import { logInfo, logError } from '@/lib/observability'
+import { rateLimit, getClientIdentifier, createRateLimitKey } from '@/lib/utils/rate-limit'
 import {
   validateBookingData,
   validateSalon,
@@ -19,7 +20,18 @@ import {
 type AppointmentInsert = Database['scheduling']['Tables']['appointments']['Insert']
 type AppointmentServiceInsert = Database['scheduling']['Tables']['appointment_services']['Insert']
 
-export async function createBooking(formData: FormData) {
+type BookingFormState = {
+  errors?: {
+    _form?: string[]
+    salonId?: string[]
+    serviceId?: string[]
+    appointmentDate?: string[]
+    [key: string]: string[] | undefined
+  }
+  message?: string
+}
+
+export async function createBooking(prevState: BookingFormState | null, formData: FormData): Promise<BookingFormState> {
   const salonId = formData.get('salonId') as string
   const serviceId = formData.get('serviceId') as string
   const staffId = formData.get('staffId') as string
@@ -33,6 +45,29 @@ export async function createBooking(formData: FormData) {
 
   try {
     const session = await requireAuth()
+
+    // Rate limiting: 5 booking attempts per user per hour
+    const clientIp = await getClientIdentifier()
+    const rateLimitKey = createRateLimitKey('booking', `${session.user.id}:${clientIp}`)
+    const rateLimitResult = await rateLimit({
+      identifier: rateLimitKey,
+      limit: 5,
+      windowMs: 3600000, // 1 hour
+    })
+
+    if (!rateLimitResult.success) {
+      logInfo('Booking rate limit exceeded', {
+        operationName: 'createBooking',
+        userId: session.user.id,
+        salonId,
+        remaining: rateLimitResult.remaining ?? 0,
+      })
+      return {
+        errors: { _form: [rateLimitResult.error ?? 'Too many booking attempts. Please try again later.'] },
+        message: rateLimitResult.error ?? 'Too many booking attempts. Please try again later.'
+      }
+    }
+
     const supabase = await createClient()
 
     logInfo('Booking creation - user authenticated', {
@@ -44,16 +79,34 @@ export async function createBooking(formData: FormData) {
 
     // Step 1: Validate input data
     const dataValidation = await validateBookingData(formData, session.user.id, salonId)
-    if ('error' in dataValidation) return dataValidation
+    if ('error' in dataValidation) {
+      const errorMessage = dataValidation.error ?? 'Validation failed'
+      return {
+        errors: { _form: [errorMessage] },
+        message: errorMessage
+      }
+    }
     const validatedData = dataValidation.data!
 
     // Step 2: Validate salon
     const salonValidation = await validateSalon(salonId, session.user.id)
-    if ('error' in salonValidation) return salonValidation
+    if ('error' in salonValidation) {
+      const errorMessage = salonValidation.error ?? 'Salon validation failed'
+      return {
+        errors: { salonId: [errorMessage] },
+        message: errorMessage
+      }
+    }
 
     // Step 3: Fetch and validate service details
     const serviceValidation = await validateService(validatedData.serviceId, session.user.id, salonId)
-    if ('error' in serviceValidation) return serviceValidation
+    if ('error' in serviceValidation) {
+      const errorMessage = serviceValidation.error ?? 'Service validation failed'
+      return {
+        errors: { serviceId: [errorMessage] },
+        message: errorMessage
+      }
+    }
     const typedService = serviceValidation.data!
 
     // Step 4: Calculate appointment times
@@ -72,7 +125,13 @@ export async function createBooking(formData: FormData) {
       salonId,
       serviceId
     )
-    if ('error' in timeValidation) return timeValidation
+    if ('error' in timeValidation) {
+      const errorMessage = timeValidation.error ?? 'Time validation failed'
+      return {
+        errors: { appointmentDate: [errorMessage] },
+        message: errorMessage
+      }
+    }
 
     // Step 6: Create appointment with confirmation code
     const confirmationCode = generateConfirmationCode()
@@ -107,7 +166,10 @@ export async function createBooking(formData: FormData) {
         error: appointmentError.message,
         errorCategory: 'database'
       })
-      return { error: appointmentError.message }
+      return {
+        errors: { _form: [appointmentError.message] },
+        message: appointmentError.message
+      }
     }
 
     logInfo('Booking appointment created', {
@@ -160,7 +222,10 @@ export async function createBooking(formData: FormData) {
         appointmentId: appointment.id
       })
 
-      return { error: 'Failed to attach service to appointment. Please try again.' }
+      return {
+        errors: { _form: ['Failed to attach service to appointment. Please try again.'] },
+        message: 'Failed to attach service to appointment. Please try again.'
+      }
     }
 
     logInfo('Booking completed successfully', {
@@ -186,6 +251,9 @@ export async function createBooking(formData: FormData) {
       error: error instanceof Error ? error.message : 'Unknown error',
       errorCategory: 'system'
     })
-    return { error: 'An unexpected error occurred. Please try again.' }
+    return {
+      errors: { _form: ['An unexpected error occurred. Please try again.'] },
+      message: 'An unexpected error occurred. Please try again.'
+    }
   }
 }

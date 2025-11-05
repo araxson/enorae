@@ -11,6 +11,7 @@ import { Clock } from 'lucide-react'
 import type { Database } from '@/lib/types/database.types'
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -35,11 +36,11 @@ export function ServiceList({ services }: ServiceListProps) {
   if (services.length === 0) {
     return (
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Clock className="size-6" aria-hidden="true" />
+                <Clock className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No services available</EmptyTitle>
               <EmptyDescription>
@@ -68,8 +69,8 @@ export function ServiceList({ services }: ServiceListProps) {
           {services.map((service, index) => (
             <AccordionItem key={service['id'] || ''} value={`service-${index}`}>
               <AccordionTrigger>
-                <ItemGroup className="w-full px-4 py-3">
-                  <Item variant="muted" size="sm" className="w-full flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div className="w-full px-4 py-3">
+                  <Item variant="muted" size="sm">
                     <ItemContent>
                       <ItemTitle>{service['name'] || 'Service'}</ItemTitle>
                     </ItemContent>
@@ -79,10 +80,10 @@ export function ServiceList({ services }: ServiceListProps) {
                       </ItemActions>
                     ) : null}
                   </Item>
-                </ItemGroup>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4 pt-2">
-                <ItemGroup className="gap-4">
+                <div className="flex flex-col gap-4">
                   {service['description'] ? (
                     <Item>
                       <ItemContent>
@@ -103,7 +104,7 @@ export function ServiceList({ services }: ServiceListProps) {
                       </div>
                     </ItemContent>
                   </Item>
-                </ItemGroup>
+                </div>
               </AccordionContent>
             </AccordionItem>
           ))}

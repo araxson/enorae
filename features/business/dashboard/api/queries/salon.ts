@@ -12,18 +12,25 @@ export async function getUserSalon(): Promise<SalonView> {
   const logger = createOperationLogger('getUserSalon', {})
   logger.start()
 
-  await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
-  const salonId = await requireUserSalonId()
-  const supabase = await createClient()
+  try {
+    await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
+    const salonId = await requireUserSalonId()
+    const supabase = await createClient()
 
-  const { data, error } = await supabase
-    .from('salons_view')
-    .select('*')
-    .eq('id', salonId)
-    .single()
+    const { data, error } = await supabase
+      .from('salons_view')
+      .select('id, name, slug, full_description, city, state_province, country_code, rating_average, rating_count, is_verified, is_active, created_at, formatted_address, primary_phone, primary_email')
+      .eq('id', salonId)
+      .single()
 
-  if (error) throw error
-  return data
+    if (error) throw error
+
+    logger.success({ salonId })
+    return data as SalonView
+  } catch (error) {
+    logger.error(error instanceof Error ? error : String(error), 'system')
+    throw error
+  }
 }
 
 export async function getUserSalonIds(): Promise<string[]> {

@@ -19,7 +19,7 @@ export async function authorizeStaffAccess(
 
   const { data: staffProfile, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, staff_role, title, experience_years, is_active, created_at')
     .eq('user_id', session.user.id)
     .eq('id', staffId)
     .maybeSingle()

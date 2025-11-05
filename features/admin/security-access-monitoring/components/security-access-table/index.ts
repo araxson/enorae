@@ -5,3 +5,5 @@
  */
 export { SecurityAccessTable } from './security-access-table'
 export type { SecurityAccessTableProps } from './types'
+export * from './table-row'
+export * from './utils'

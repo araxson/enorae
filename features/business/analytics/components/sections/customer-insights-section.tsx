@@ -1,6 +1,5 @@
 'use client'
-import { ExportButton } from '@/features/business/business-common/components'
-import { CustomerInsightsCard } from '@/features/business/business-common/components/customer-insights-card'
+import { ExportButton, CustomerInsightsCard } from '@/features/business/common/components'
 import type { getCustomerInsights } from '@/features/business/analytics/api/queries'
 
 type CustomerInsights = Awaited<ReturnType<typeof getCustomerInsights>>

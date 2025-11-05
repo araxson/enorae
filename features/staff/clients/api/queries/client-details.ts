@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
@@ -43,7 +45,7 @@ export async function getClientDetail(staffId: string, customerId: string): Prom
   // Get all appointments for this client with this staff member
   const { data: appointments } = await supabase
     .from('appointments_view')
-    .select('*')
+    .select('id, salon_id, customer_id, customer_name, staff_id, staff_name, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('customer_id', customerId)
     .order('start_time', { ascending: true })

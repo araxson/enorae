@@ -23,7 +23,7 @@ export async function getRecentAppointments(
   try {
     const { data, error } = await supabase
       .from('appointments_view')
-      .select('*')
+      .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, duration_minutes, confirmation_code, created_at')
       .eq('salon_id', salonId)
       .order('created_at', { ascending: false })
       .limit(limit)

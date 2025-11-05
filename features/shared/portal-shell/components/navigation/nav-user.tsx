@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/sidebar'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { createClient } from '@/lib/supabase/client'
 
 function getInitials(name: string, email: string): string {

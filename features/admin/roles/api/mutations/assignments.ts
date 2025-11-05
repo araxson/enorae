@@ -17,7 +17,7 @@ export async function applyRoleAssignment(
   supabase: ReturnType<typeof createServiceRoleClient>,
   data: AssignmentPayload,
   actorId: string,
-) {
+): Promise<string> {
   const logger = createOperationLogger('applyRoleAssignment', {})
   logger.start()
 
@@ -34,20 +34,19 @@ export async function applyRoleAssignment(
     existingQuery = existingQuery.is('salon_id', null)
   }
 
-  const { data: existing } = await existingQuery
-    .returns<Database['identity']['Tables']['user_roles']['Row']>()
-    .maybeSingle()
-  const existingRole = existing ?? null
+  const { data: existing } = await existingQuery.maybeSingle()
+
+  type UserRoleRow = Database['identity']['Tables']['user_roles']['Row']
 
   const permissions =
     data.permissions && data.permissions.length > 0 ? data.permissions : null
 
-  if (existingRole) {
-    const role = existingRole as Database['identity']['Tables']['user_roles']['Row']
+  if (existing) {
+    const existingRole = existing as UserRoleRow
     const permissionsChanged =
-      JSON.stringify(role.permissions || []) !== JSON.stringify(permissions || [])
+      JSON.stringify(existingRole.permissions || []) !== JSON.stringify(permissions || [])
 
-    if (!role.is_active || permissionsChanged) {
+    if (!existingRole.is_active || permissionsChanged) {
       const { error } = await supabase
         .schema('identity')
         .from('user_roles')
@@ -58,11 +57,11 @@ export async function applyRoleAssignment(
           deleted_by_id: null,
           permissions,
         })
-        .eq('id', role.id)
+        .eq('id', existingRole.id)
 
       if (error) throw error
     }
-    return role.id
+    return existingRole.id
   }
 
   const { data: inserted, error } = await supabase

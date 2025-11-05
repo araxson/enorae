@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { authorizeStaffAccess, toDateOnly } from '@/features/staff/commission/utils/commission'
+import { authorizeStaffAccess, toDateOnly } from '@/features/staff/commission/utils'
 import type { PayoutSchedule } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 

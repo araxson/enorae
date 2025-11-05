@@ -133,7 +133,7 @@ export const EXTERNAL_APIS = {
 
 // Log configuration status at startup (only in development)
 if (process.env.NODE_ENV === 'development') {
-  console.log('✅ Environment variables validated successfully')
+  console.log('Environment variables validated successfully')
   console.log('  - Site URL:', ENV.NEXT_PUBLIC_SITE_URL)
   console.log('  - Supabase URL:', ENV.NEXT_PUBLIC_SUPABASE_URL)
   console.log('  - Google Maps:', isGoogleMapsEnabled() ? 'Enabled' : 'Disabled')

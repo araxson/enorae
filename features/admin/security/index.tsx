@@ -1,6 +1,6 @@
 import { AdminSecurityClient } from './components'
 
-export async function SecurityAudit() {
+export async function SecurityAudit(): Promise<React.JSX.Element> {
   return <AdminSecurityClient />
 }
-export * from './api/types'
+export type * from './api/types'

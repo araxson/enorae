@@ -88,12 +88,12 @@ export async function getSalonChains(): Promise<SalonChain[]> {
 
   const { data, error } = await supabase
     .from('salon_chains_view')
-    .select('*')
+    .select('id, owner_id, name, description, salon_count, total_staff_count, created_at, updated_at')
     .in('id', chainIds)
     .order('name', { ascending: true })
 
   if (error) throw error
-  return (data || []) as SalonChain[]
+  return (data || []) as unknown as SalonChain[]
 }
 
 /**
@@ -119,7 +119,7 @@ export async function getSalonChainById(id: string): Promise<SalonChain | null> 
 
   const { data, error } = await supabase
     .from('salon_chains_view')
-    .select('*')
+    .select('id, owner_id, name, description, salon_count, total_staff_count, created_at, updated_at')
     .eq('id', id)
     .maybeSingle()
 
@@ -145,12 +145,12 @@ export async function getChainSalons(chainId: string) {
 
   const { data, error } = await supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, formatted_address, primary_phone, rating_average, rating_count, created_at, updated_at')
     .in('id', ownedSalons.map(salon => salon.id))
     .order('name', { ascending: true })
 
   if (error) throw error
-  return (data || []) as SalonViewRow[]
+  return (data || []) as unknown as SalonViewRow[]
 }
 
 /**
@@ -209,11 +209,11 @@ export async function getChainAnalytics(chainId: string) {
   if (staffResponse.error) throw staffResponse.error
   if (servicesResponse.error) throw servicesResponse.error
 
-  const appointments = (appointmentsResponse.data ?? []) as AppointmentRow[]
-  const transactions = (transactionsResponse.data ?? []) as ManualTransactionRow[]
-  const ratingRows = (ratingsResponse.data ?? []) as SalonViewRow[]
-  const staffRows = (staffResponse.data ?? []) as StaffRow[]
-  const serviceRows = (servicesResponse.data ?? []) as ServiceRow[]
+  const appointments = (appointmentsResponse.data ?? []) as unknown as AppointmentRow[]
+  const transactions = (transactionsResponse.data ?? []) as unknown as ManualTransactionRow[]
+  const ratingRows = (ratingsResponse.data ?? []) as unknown as SalonViewRow[]
+  const staffRows = (staffResponse.data ?? []) as unknown as StaffRow[]
+  const serviceRows = (servicesResponse.data ?? []) as unknown as ServiceRow[]
 
   const revenueBySalon = new Map<string, number>()
   transactions.forEach(tx => {

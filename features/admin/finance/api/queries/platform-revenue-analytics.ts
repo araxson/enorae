@@ -15,7 +15,7 @@ export async function getPlatformRevenueAnalytics(
 
   let query = supabase
     .from('admin_revenue_overview_view')
-    .select('*')
+    .select('date, total_revenue, service_revenue, product_revenue, total_appointments, completed_appointments, cancelled_appointments, no_show_appointments')
     .order('date', { ascending: false })
 
   if (startDate) {

@@ -67,7 +67,9 @@ export async function updateChainSettings(formData: FormData) {
     })
 
     if (!payloadResult.success) {
-      return { error: payloadResult.error.issues[0]?.message ?? 'Invalid settings payload' }
+      const fieldErrors = payloadResult.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Invalid settings payload' }
     }
 
     const {

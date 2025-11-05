@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, memo, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Heart } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -20,7 +20,7 @@ interface FavoriteButtonProps {
   variant?: 'default' | 'icon'
 }
 
-export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFavorited = false, variant = 'default' }: FavoriteButtonProps) {
+export function FavoriteButton({ salonId, initialFavorited = false, variant = 'default' }: FavoriteButtonProps) {
   const [favorited, setFavorited] = useState(initialFavorited)
   const [loading, setLoading] = useState(false)
   const isMountedRef = useRef(true)
@@ -31,7 +31,7 @@ export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFav
     }
   }, [])
 
-  const handleToggle = useCallback(async () => {
+  const handleToggle = async () => {
     if (!isMountedRef.current) return
 
     setLoading(true)
@@ -58,7 +58,7 @@ export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFav
         setLoading(false)
       }
     }
-  }, [salonId])
+  }
 
   if (variant === 'icon') {
     return (
@@ -75,7 +75,7 @@ export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFav
               {loading ? (
                 <Spinner className="size-4" />
               ) : (
-                <Heart className={favorited ? 'size-4 fill-current' : 'size-4'} />
+                <Heart className={favorited ? 'size-4 fill-current' : 'size-4'} aria-hidden="true" />
               )}
             </Button>
           </TooltipTrigger>
@@ -103,7 +103,7 @@ export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFav
               </>
             ) : (
               <>
-                <Heart className={favorited ? 'size-4 fill-current' : 'size-4'} />
+                <Heart className={favorited ? 'size-4 fill-current' : 'size-4'} aria-hidden="true" />
                 <span>{favorited ? 'Favorited' : 'Add to Favorites'}</span>
               </>
             )}
@@ -115,4 +115,4 @@ export const FavoriteButton = memo(function FavoriteButton({ salonId, initialFav
       </Tooltip>
     </TooltipProvider>
   )
-})
+}

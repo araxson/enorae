@@ -24,7 +24,6 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemMedia,
   ItemSeparator,
   ItemTitle,
@@ -46,10 +45,12 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Calendar className="size-6" aria-hidden="true" />
+                <Calendar className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No upcoming appointments</EmptyTitle>
-              <EmptyDescription>You don't have any upcoming appointments.</EmptyDescription>
+              <EmptyDescription>
+                You don&apos;t have any upcoming appointments.
+              </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <Button asChild>
@@ -75,28 +76,23 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemContent>
-              <ItemTitle>Upcoming appointments</ItemTitle>
-              <ItemDescription>{appointments.length} scheduled</ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button variant="ghost" size="sm" asChild>
-                <Link href="/customer/appointments">
-                  View all
-                  <ChevronRight className="ml-1 size-4" aria-hidden="true" />
-                </Link>
-              </Button>
-            </ItemActions>
-          </Item>
-        </ItemGroup>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <CardTitle>Upcoming appointments</CardTitle>
+            <CardDescription>{appointments.length} scheduled</CardDescription>
+          </div>
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/customer/appointments">
+              View all
+              <ChevronRight className="size-4" aria-hidden="true" />
+            </Link>
+          </Button>
+        </div>
       </CardHeader>
       <Separator />
       <CardContent className="p-0">
         <ScrollArea className="h-96">
-          <div className="p-6">
-            <ItemGroup>
+          <div className="flex flex-col gap-4 p-6">
             {appointments.map((appointment, index) => {
               const salonInitials = getInitials(appointment['salon_name'] || 'Salon')
               const appointmentDate = appointment['start_time']
@@ -105,44 +101,42 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
 
               return (
                 <Fragment key={appointment['id']}>
-                    <Item variant="outline" size="sm">
-                      <ItemMedia>
-                        <Avatar>
-                          <AvatarFallback>{salonInitials}</AvatarFallback>
-                        </Avatar>
-                      </ItemMedia>
-                      <ItemContent>
-                        <ItemTitle>
-                          {appointment['salon_name'] || 'Salon TBD'}
-                          <Badge variant={getStatusVariant(appointment['status'])}>
-                            {appointment['status'] || 'pending'}
-                          </Badge>
-                        </ItemTitle>
-                        <ItemDescription>{appointmentDate}</ItemDescription>
+                  <Item variant="outline" size="sm">
+                    <ItemMedia>
+                      <Avatar>
+                        <AvatarFallback>{salonInitials}</AvatarFallback>
+                      </Avatar>
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>
+                        {appointment['salon_name'] || 'Salon TBD'}
+                        <Badge variant={getStatusVariant(appointment['status'])}>
+                          {appointment['status'] || 'pending'}
+                        </Badge>
+                      </ItemTitle>
+                      <ItemDescription>{appointmentDate}</ItemDescription>
+                      <ItemDescription>
+                        <Clock className="inline size-3" aria-hidden="true" />{' '}
+                        {formatAppointmentTime(appointment['start_time'])}
+                      </ItemDescription>
+                      {appointment['salon_name'] ? (
                         <ItemDescription>
-                          <Clock className="inline size-3" aria-hidden="true" />
-                          {' '}{formatAppointmentTime(appointment['start_time'])}
+                          <MapPin className="inline size-3" aria-hidden="true" /> View location
                         </ItemDescription>
-                        {appointment['salon_name'] ? (
-                          <ItemDescription>
-                            <MapPin className="inline size-3" aria-hidden="true" />
-                            {' '}View location
-                          </ItemDescription>
-                        ) : null}
-                      </ItemContent>
-                      <ItemActions>
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/customer/appointments/${appointment['id']}`}>
-                            View
-                          </Link>
-                        </Button>
-                      </ItemActions>
-                    </Item>
-                    {index < appointments.length - 1 ? <ItemSeparator /> : null}
+                      ) : null}
+                    </ItemContent>
+                    <ItemActions>
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link href={`/customer/appointments/${appointment['id']}`}>
+                          View
+                        </Link>
+                      </Button>
+                    </ItemActions>
+                  </Item>
+                  {index < appointments.length - 1 ? <ItemSeparator /> : null}
                 </Fragment>
               )
             })}
-            </ItemGroup>
           </div>
         </ScrollArea>
       </CardContent>
@@ -150,7 +144,7 @@ export function UpcomingBookings({ appointments }: UpcomingBookingsProps) {
       <CardFooter>
         <Button variant="outline" asChild>
           <Link href="/customer/salons">
-            <Store className="mr-2 size-4" />
+            <Store className="size-4" aria-hidden="true" />
             Book another appointment
           </Link>
         </Button>

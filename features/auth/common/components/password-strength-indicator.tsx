@@ -141,10 +141,16 @@ export function PasswordStrengthIndicator({
   )
 }
 
+type PasswordStrengthResult = {
+  isValid: boolean
+  metCount: number
+  totalCount: number
+}
+
 /**
  * Hook to get password strength validation
  */
-export function usePasswordStrength(password: string) {
+export function usePasswordStrength(password: string): PasswordStrengthResult {
   return useMemo(() => {
     const requirements = [
       password.length >= 8,

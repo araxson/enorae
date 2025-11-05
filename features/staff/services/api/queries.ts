@@ -26,5 +26,5 @@ export async function getStaffServices(staffId: string): Promise<StaffService[]>
     .order('service_name', { ascending: true })
 
   if (error) throw error
-  return data || []
+  return (data as StaffService[]) || []
 }

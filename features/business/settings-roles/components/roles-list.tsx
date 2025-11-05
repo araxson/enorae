@@ -123,7 +123,11 @@ export function RolesList({ roles, onEdit, onDeactivate }: RolesListProps) {
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-label={`Actions for ${role.user?.['full_name'] || 'user'} (${role['role'] ? (ROLE_LABELS[role['role']] || role['role']) : 'Unknown'})`}
+                  >
                     <MoreVertical className="size-4" />
                   </Button>
                 </DropdownMenuTrigger>

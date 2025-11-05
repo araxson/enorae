@@ -7,7 +7,11 @@ import { createOperationLogger } from '@/lib/observability'
 // Consider users active if they've logged in within this time period
 const ACTIVE_USER_LOOKBACK_DAYS = 30
 
-export async function getUserStats() {
+export async function getUserStats(): Promise<{
+  total: number
+  active: number
+  byRole: Record<string, number>
+}> {
   const logger = createOperationLogger('getUserStats', {})
   logger.start()
 
@@ -17,7 +21,7 @@ export async function getUserStats() {
 
   const { count: totalUsers } = await supabase
     .from('profiles_view')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .is('deleted_at', null)
 
   const { data: roleDistribution } = await supabase
@@ -40,7 +44,7 @@ export async function getUserStats() {
 
   const { count: activeUsers } = await supabase
     .from('admin_users_overview_view')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .gte('last_active', activeUserCutoffDate.toISOString())
     .is('deleted_at', null)
 
@@ -51,19 +55,25 @@ export async function getUserStats() {
   }
 }
 
-export async function getUsersOverview() {
+export async function getUsersOverview(): Promise<{
+  totalUsers: number
+  activeUsers: number
+  suspendedUsers: number
+  usersWithRoles: number
+  roleBreakdown: Array<{ role: string; count: number }>
+}> {
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 
   const supabase = createServiceRoleClient()
 
   const { count: totalUsers } = await supabase
     .from('profiles_view')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .is('deleted_at', null)
 
   const { count: suspendedUsers } = await supabase
     .from('profiles_view')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .eq('is_active', false)
     .is('deleted_at', null)
 
@@ -72,7 +82,7 @@ export async function getUsersOverview() {
 
   const { count: activeUsers } = await supabase
     .from('admin_users_overview_view')
-    .select('*', { count: 'exact', head: true })
+    .select('id', { count: 'exact', head: true })
     .gte('last_active', activeUserCutoffDate.toISOString())
     .is('deleted_at', null)
 

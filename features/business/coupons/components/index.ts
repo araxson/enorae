@@ -1,7 +1,6 @@
-export { BulkCouponGenerator } from './bulk-coupon-generator'
+// Note: BulkCouponGenerator and CouponForm have been migrated/deleted
 export { CouponAnalyticsOverview } from './coupon-analytics-overview'
 export { CouponCard } from './coupon-card'
-export { CouponForm } from './coupon-form'
 export { CouponFormFields } from './coupon-form-fields'
 export { CouponManagementContent } from './coupon-management-content'
 export { CouponsList } from './coupons-list'
@@ -13,3 +12,4 @@ export * from './analytics/expiring-soon-list'
 
 // Re-export helpers
 export * from './coupon-card-helpers'
+export * from './bulk-coupon-generator-migrated'

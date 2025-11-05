@@ -40,7 +40,7 @@ export async function getDailyMetrics(
 
   const { data, error } = await supabase
     .from('daily_metrics_view')
-    .select('*')
+    .select('salon_id, metric_at, total_revenue, service_revenue, product_revenue, total_appointments, completed_appointments, cancelled_appointments, no_show_appointments, new_customers, returning_customers, utilization_rate')
     .eq('salon_id', salonId)
     .gte('metric_at', dateFrom)
     .lte('metric_at', dateTo)
@@ -66,7 +66,7 @@ export async function getLatestDailyMetric(salonId: string): Promise<DailyMetric
 
   const { data, error } = await supabase
     .from('daily_metrics_view')
-    .select('*')
+    .select('salon_id, metric_at, total_revenue, service_revenue, product_revenue, total_appointments, completed_appointments, cancelled_appointments, no_show_appointments, new_customers, returning_customers, utilization_rate')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })
     .limit(1)

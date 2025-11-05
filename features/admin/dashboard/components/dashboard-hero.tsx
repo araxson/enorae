@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup, ButtonGroupSeparator } from '@/components/ui/button-group'
 import { Spinner } from '@/components/ui/spinner'
-import { DataRefreshControls } from '@/features/shared/dashboard/components/data-refresh-controls'
+import { DataRefreshControls } from '@/features/shared/dashboard/components'
 import { Kbd } from '@/components/ui/kbd'
 import {
   DropdownMenu,
@@ -29,8 +29,6 @@ import {
   ShieldAlert,
   ShieldCheck,
 } from 'lucide-react'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
-
 type PlatformMetrics = Awaited<
   ReturnType<
     typeof import('@/features/admin/dashboard/api/queries').getPlatformMetrics
@@ -43,113 +41,100 @@ export function DashboardHero({ metrics }: { metrics: PlatformMetrics }) {
   return (
     <TooltipProvider delayDuration={150}>
       <Card>
-        <CardHeader>
-          <ItemGroup className="gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <Item variant="muted" className="lg:flex-1">
-              <ItemContent className="gap-2">
-                <Breadcrumb>
-                  <BreadcrumbList>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
-                <ItemTitle>Platform control center</ItemTitle>
-                <ItemDescription>
-                  Monitor platform health, engagement, and operational signals in real time.
-                </ItemDescription>
-              </ItemContent>
-              <ItemActions>
-                <div className="flex items-center gap-2">
-                  <Spinner aria-hidden="true" className="size-3.5" />
-                  <Badge variant="outline">Live feed</Badge>
-                </div>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+        <CardHeader className="space-y-4">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold leading-none tracking-tight">Platform control center</h2>
+              <p className="text-sm text-muted-foreground">
+                Monitor platform health, engagement, and operational signals in real time.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Spinner aria-hidden="true" className="size-3.5" />
+              <Badge variant="outline">Live feed</Badge>
+            </div>
+          </div>
         </CardHeader>
 
-        <CardContent>
-          <ItemGroup className="gap-4 lg:flex-row lg:items-start">
-            <Item variant="muted" className="lg:flex-1">
-              <ItemContent className="gap-3">
-                <DataRefreshControls generatedAt={generatedAt} tooltip="Refresh dashboard data" />
-                <ItemDescription>
-                  Synced across {metrics.totalSalons.toLocaleString()}{' '}
-                  {metrics.totalSalons === 1 ? 'salon' : 'salons'} • Press{' '}
-                  <Kbd aria-label="Refresh dashboard">R</Kbd> to refresh
-                </ItemDescription>
-              </ItemContent>
+        <CardContent className="grid gap-4 lg:grid-cols-2">
+          <section className="rounded-md border border-muted bg-muted/30 p-4">
+            <div className="space-y-3">
+              <DataRefreshControls generatedAt={generatedAt} tooltip="Refresh dashboard data" />
+              <p className="text-sm text-muted-foreground">
+                Synced across {metrics.totalSalons.toLocaleString()}{' '}
+                {metrics.totalSalons === 1 ? 'salon' : 'salons'} • Press{' '}
+                <Kbd aria-label="Refresh dashboard">R</Kbd> to refresh
+              </p>
               {metrics.pendingVerifications > 0 ? (
-                <ItemActions>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link href="/admin/users">
-                        <Badge variant="secondary">
-                          <ShieldAlert className="size-4" aria-hidden="true" />{' '}
-                          {metrics.pendingVerifications}{' '}
-                          {metrics.pendingVerifications === 1
-                            ? 'unverified user'
-                            : 'unverified users'}
-                        </Badge>
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      View users with unverified email addresses
-                    </TooltipContent>
-                  </Tooltip>
-                </ItemActions>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link href="/admin/users">
+                      <Badge variant="secondary">
+                        <ShieldAlert className="size-4" aria-hidden="true" /> {metrics.pendingVerifications}{' '}
+                        {metrics.pendingVerifications === 1 ? 'unverified user' : 'unverified users'}
+                      </Badge>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent>View users with unverified email addresses</TooltipContent>
+                </Tooltip>
               ) : null}
-            </Item>
+            </div>
+          </section>
 
-            <Item variant="muted" className="lg:flex-1">
-              <ItemContent className="gap-1">
-                <ItemTitle>Quick actions</ItemTitle>
-                <ItemDescription>Jump directly to admin management tools.</ItemDescription>
-              </ItemContent>
-              <ItemActions>
-                <ButtonGroup aria-label="Admin quick actions">
-                  <ButtonGroup>
-                    <Button asChild size="sm">
-                      <Link href="/admin/chains">Manage chains</Link>
-                    </Button>
-                  </ButtonGroup>
-                  <ButtonGroupSeparator />
-                  <ButtonGroup>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm">
-                          <Settings className="size-4" aria-hidden="true" /> Quick actions
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Navigate to</DropdownMenuLabel>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/analytics">
-                            <LineChart className="size-4" aria-hidden="true" /> Platform analytics
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/moderation">
-                            <MessageSquareWarning className="size-4" aria-hidden="true" /> Review moderation
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin/security">
-                            <ShieldCheck className="size-4" aria-hidden="true" /> Security center
-                          </Link>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </ButtonGroup>
+          <section className="rounded-md border border-muted bg-muted/30 p-4">
+            <div className="space-y-3">
+              <div>
+                <h3 className="text-lg font-semibold leading-none">Quick actions</h3>
+                <p className="text-sm text-muted-foreground">Jump directly to admin management tools.</p>
+              </div>
+              <ButtonGroup aria-label="Admin quick actions">
+                <ButtonGroup>
+                  <Button asChild size="sm">
+                    <Link href="/admin/chains">Manage chains</Link>
+                  </Button>
                 </ButtonGroup>
-              </ItemActions>
-            </Item>
-          </ItemGroup>
+                <ButtonGroupSeparator />
+                <ButtonGroup>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Settings className="size-4" aria-hidden="true" /> Quick actions
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Navigate to</DropdownMenuLabel>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/analytics">
+                          <LineChart className="size-4" aria-hidden="true" /> Platform analytics
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/moderation">
+                          <MessageSquareWarning className="size-4" aria-hidden="true" /> Review moderation
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/security">
+                          <ShieldCheck className="size-4" aria-hidden="true" /> Security center
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </ButtonGroup>
+              </ButtonGroup>
+            </div>
+          </section>
         </CardContent>
       </Card>
     </TooltipProvider>

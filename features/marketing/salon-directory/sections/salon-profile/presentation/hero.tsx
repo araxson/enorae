@@ -23,11 +23,7 @@ export function SalonHero({ salon }: SalonHeroProps) {
       <Item variant="muted">
         <ItemContent>
           <div className="flex flex-col gap-4">
-            <ItemTitle>
-              <h1 className="text-2xl font-semibold tracking-tight">
-                {salon['name'] || 'Unnamed Salon'}
-              </h1>
-            </ItemTitle>
+            <ItemTitle>{salon['name'] || 'Unnamed Salon'}</ItemTitle>
             {salon['rating_average'] !== null && (
               <Item variant="outline">
                 <ItemMedia variant="icon">

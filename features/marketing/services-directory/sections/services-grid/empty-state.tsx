@@ -16,7 +16,7 @@ interface EmptyStateProps {
 
 export function EmptyState({ categoryName }: EmptyStateProps) {
   return (
-    <Empty className="border border-border/60 bg-card/40 py-12">
+    <Empty>
       <EmptyMedia variant="icon">
         <Sparkles className="size-6" aria-hidden="true" />
       </EmptyMedia>

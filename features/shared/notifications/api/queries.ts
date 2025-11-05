@@ -21,7 +21,7 @@ export async function getNotifications(limit = 50) {
   const { data, error } = await supabase
     .schema('communication')
     .from('messages')
-    .select('*')
+    .select('id, from_user_id, to_user_id, content, context_type, is_read, created_at')
     .eq('to_user_id', user.id)
     .eq('is_read', false)
     .order('created_at', { ascending: false })
@@ -61,7 +61,7 @@ export async function getNotificationsByChannel(channel: string) {
   const { data, error } = await supabase
     .schema('communication')
     .from('messages')
-    .select('*')
+    .select('id, from_user_id, to_user_id, content, context_type, is_read, created_at')
     .eq('to_user_id', user.id)
     .eq('context_type', channel)
     .order('created_at', { ascending: false })

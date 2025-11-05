@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import type { PasswordResetResult } from '../api/types'
+import { useState, useActionState, useRef, useEffect } from 'react'
 import { resetPassword } from '../api/mutations'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
-import { PasswordInput } from '@/features/auth/common/components/password-input'
-import { PasswordStrengthIndicator, usePasswordStrength } from '@/features/auth/common/components/password-strength-indicator'
+import { PasswordInput, PasswordStrengthIndicator, usePasswordStrength } from '@/features/auth/common/components'
 import {
   Field,
   FieldContent,
@@ -23,40 +23,25 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 
-export function ResetPasswordForm() {
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+export function ResetPasswordForm(): React.ReactElement {
+  const [state, formAction, isPending] = useActionState<PasswordResetResult, FormData>(
+    resetPassword,
+    null as unknown as PasswordResetResult
+  )
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const firstErrorRef = useRef<HTMLInputElement>(null)
 
   const { isValid: isPasswordValid } = usePasswordStrength(password)
 
-  async function handleSubmit(formData: FormData) {
-    setLoading(true)
-    setError(null)
-
-    // Validate password strength
-    if (!isPasswordValid) {
-      setError('Please meet all password requirements')
-      setLoading(false)
-      return
+  // Focus first error field after validation
+  useEffect(() => {
+    if (state && !state.success && firstErrorRef.current) {
+      firstErrorRef.current.focus()
     }
+  }, [state])
 
-    // Validate passwords match
-    if (password !== confirmPassword) {
-      setError('Passwords do not match')
-      setLoading(false)
-      return
-    }
-
-    const result = await resetPassword(formData)
-
-    if (!result.success) {
-      setError(result.error)
-      setLoading(false)
-    }
-    // On success, server action redirects to login
-  }
+  const hasErrors = state && !state.success && 'errors' in state && state.errors && Object.keys(state.errors).length > 0
 
   return (
     <div className="w-full max-w-md">
@@ -68,39 +53,88 @@ export function ResetPasswordForm() {
           </div>
         </ItemHeader>
 
-        <form action={handleSubmit}>
+        <form action={formAction} noValidate>
           <ItemContent>
             <div className="flex flex-col gap-6">
-            {error && (
-              <Alert variant="destructive">
+            {/* Screen reader announcement for form status */}
+            <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+              {isPending && 'Form is submitting, please wait'}
+              {state && !state.success && 'error' in state && state.error && !isPending && state.error}
+            </div>
+
+            {/* Error summary */}
+            {hasErrors && state && !state.success && 'errors' in state && state.errors && (
+              <Alert variant="destructive" role="alert" tabIndex={-1}>
+                <AlertCircle className="size-4" />
+                <AlertTitle>There are {Object.keys(state.errors).length} errors in the form</AlertTitle>
+                <AlertDescription>
+                  <ul className="list-disc list-inside space-y-1 mt-2">
+                    {Object.entries(state.errors).map(([field, messages]) => (
+                      <li key={field}>
+                        <a
+                          href={`#${field}`}
+                          className="underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        >
+                          {field}: {(messages as string[])[0]}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            {/* General error */}
+            {state && !state.success && 'error' in state && state.error && !hasErrors && (
+              <Alert variant="destructive" role="alert">
                 <AlertCircle className="size-4" />
                 <AlertTitle>Password reset failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{state.error}</AlertDescription>
               </Alert>
             )}
 
             <Field>
-              <FieldLabel htmlFor="password">New password</FieldLabel>
+              <FieldLabel htmlFor="password">
+                New password
+                <span className="text-destructive" aria-label="required"> *</span>
+              </FieldLabel>
               <FieldContent>
                 <PasswordInput
+                  ref={state && !state.success && 'errors' in state && state.errors?.['password'] ? firstErrorRef : null}
                   id="password"
                   name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter new password"
                   required
+                  aria-required="true"
+                  aria-invalid={!!(state && !state.success && 'errors' in state && state.errors?.['password'])}
+                  aria-describedby={
+                    state && !state.success && 'errors' in state && state.errors?.['password']
+                      ? 'password-error password-strength'
+                      : 'password-strength'
+                  }
+                  disabled={isPending}
                   autoFocus
                 />
                 {password ? (
-                  <FieldDescription>
+                  <FieldDescription id="password-strength">
                     <PasswordStrengthIndicator password={password} showRequirements />
                   </FieldDescription>
                 ) : null}
+                {state && !state.success && 'errors' in state && state.errors?.['password'] && (
+                  <p id="password-error" className="text-sm text-destructive mt-1" role="alert">
+                    {state.errors['password'][0]}
+                  </p>
+                )}
               </FieldContent>
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="confirmPassword">Confirm new password</FieldLabel>
+              <FieldLabel htmlFor="confirmPassword">
+                Confirm new password
+                <span className="text-destructive" aria-label="required"> *</span>
+              </FieldLabel>
               <FieldContent>
                 <PasswordInput
                   id="confirmPassword"
@@ -109,6 +143,14 @@ export function ResetPasswordForm() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm new password"
                   required
+                  aria-required="true"
+                  aria-invalid={!!(state && !state.success && 'errors' in state && state.errors?.['confirmPassword'])}
+                  aria-describedby={
+                    state && !state.success && 'errors' in state && state.errors?.['confirmPassword']
+                      ? 'confirmPassword-error'
+                      : undefined
+                  }
+                  disabled={isPending}
                 />
                 {confirmPassword && password !== confirmPassword ? (
                   <FieldDescription className="text-destructive font-medium">
@@ -120,6 +162,11 @@ export function ResetPasswordForm() {
                     Passwords match
                   </FieldDescription>
                 ) : null}
+                {state && !state.success && 'errors' in state && state.errors?.['confirmPassword'] && (
+                  <p id="confirmPassword-error" className="text-sm text-destructive mt-1" role="alert">
+                    {state.errors['confirmPassword'][0]}
+                  </p>
+                )}
               </FieldContent>
             </Field>
           </div>
@@ -129,12 +176,14 @@ export function ResetPasswordForm() {
             <Button
               type="submit"
               className="w-full"
-              disabled={loading || !isPasswordValid || password !== confirmPassword}
+              disabled={isPending}
+              aria-busy={isPending}
             >
-              {loading ? (
+              {isPending ? (
                 <>
                   <Spinner className="size-4" />
-                  <span>Resetting password...</span>
+                  <span aria-hidden="true">Resetting password...</span>
+                  <span className="sr-only">Resetting your password, please wait</span>
                 </>
               ) : (
                 <span>Reset password</span>

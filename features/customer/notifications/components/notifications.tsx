@@ -1,27 +1,21 @@
 import { Notifications as SharedNotifications } from '@/features/shared/notifications'
 import { Bell } from 'lucide-react'
-import {
-  Item,
-  ItemContent,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
 
 export async function Notifications() {
   return (
-    <section className="mx-auto w-full px-6 max-w-6xl pb-16 pt-6">
-      <ItemGroup className="mb-6">
-        <Item variant="muted" size="sm">
-          <ItemMedia variant="icon">
-            <Bell className="size-4" aria-hidden="true" />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>Notifications</ItemTitle>
-          </ItemContent>
-        </Item>
-      </ItemGroup>
+    <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+      <header className="flex items-center gap-3">
+        <div className="flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
+          <Bell className="size-5" aria-hidden="true" />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight">Notifications</h2>
+          <p className="text-sm text-muted-foreground">
+            Stay connected with real-time updates from your salons.
+          </p>
+        </div>
+      </header>
       <SharedNotifications />
-    </section>
+    </div>
   )
 }

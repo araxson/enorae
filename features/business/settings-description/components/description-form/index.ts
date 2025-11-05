@@ -3,3 +3,7 @@ export type { ArrayFieldState, DescriptionFieldState } from '../../hooks/use-des
 export { DescriptionsSection } from './descriptions-section'
 export { SeoSection } from './seo-section'
 export { ArrayFieldsSection } from './array-fields-section'
+export * from './array-input'
+export * from './highlights-section'
+export * from './keywords-section'
+export * from './recognition-section'

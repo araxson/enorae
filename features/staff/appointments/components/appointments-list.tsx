@@ -4,11 +4,13 @@ import { Fragment, useState } from 'react'
 import { Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
 import { AppointmentDetailDialog } from './appointment-detail-dialog'
 import { AppointmentItem } from './appointment-item'
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -27,24 +29,27 @@ export function AppointmentsList({ appointments, title = 'Appointments', showAct
 
   if (appointments.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Calendar className="size-8" aria-hidden="true" />
-              </EmptyMedia>
-              <EmptyTitle>No appointments scheduled</EmptyTitle>
-              <EmptyDescription>
-                Appointments in this period will appear here once they are booked.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        </CardContent>
-      </Card>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+        </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Calendar className="size-8" aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyTitle>No appointments scheduled</EmptyTitle>
+            <EmptyDescription>
+              Appointments in this period will appear here once they are booked.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button asChild>
+              <a href="/staff/schedule">Go to schedule</a>
+            </Button>
+          </EmptyContent>
+        </Empty>
+      </div>
     )
   }
 

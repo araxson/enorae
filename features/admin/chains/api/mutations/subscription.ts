@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { sanitizeAdminText } from '@/features/admin/admin-common'
+import { sanitizeAdminText } from '@/features/admin/common'
 import type { Tables } from '@/lib/types/database.types'
 import { updateChainSubscriptionSchema } from './schemas'
 import { logChainAudit } from './audit'
@@ -29,7 +29,9 @@ export async function updateChainSubscription(data: {
   try {
     const parsed = updateChainSubscriptionSchema.safeParse(data)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid subscription payload' }
+      const fieldErrors = parsed.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { success: false, error: firstError ?? 'Invalid subscription payload' }
     }
 
     const { chainId, subscriptionTier } = parsed.data

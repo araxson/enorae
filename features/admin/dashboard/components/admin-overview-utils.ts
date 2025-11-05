@@ -1,4 +1,4 @@
-import { APPOINTMENT_STATUS_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
+import { APPOINTMENT_STATUS_BADGE_VARIANT } from '@/features/admin/common/constants/badge-variants'
 
 /**
  * Re-export utilities from lib/utils for backward compatibility

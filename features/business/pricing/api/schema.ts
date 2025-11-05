@@ -20,7 +20,7 @@ export const discountTypeEnum = z.enum(['percentage', 'fixed_amount', 'tiered'])
 /**
  * Day of week validation
  */
-const dayOfWeekSchema = z.coerce.number().int().min(0, 'Sunday is 0').max(6, 'Saturday is 6')
+const dayOfWeekSchema = z.number().int().min(0, 'Sunday is 0').max(6, 'Saturday is 6')
 
 /**
  * Dynamic pricing rule schema
@@ -30,13 +30,11 @@ export const pricingRuleSchema = z.object({
   name: z.string().min(3, 'Rule name must be at least 3 characters').max(200, 'Name is too long'),
   description: z.string().max(1000, 'Description must be 1000 characters or fewer').optional(),
   rule_type: pricingRuleTypeEnum,
-  is_active: z.boolean().default(true),
-  priority: z.coerce
-    .number()
+  is_active: z.boolean(),
+  priority: z.number()
     .int('Priority must be a whole number')
     .min(0, 'Priority cannot be negative')
-    .max(100, 'Priority too high')
-    .default(50),
+    .max(100, 'Priority too high'),
 
   // Service and staff applicability
   applies_to_service_ids: z
@@ -64,26 +62,23 @@ export const pricingRuleSchema = z.object({
 
   // Pricing adjustments
   adjustment_type: discountTypeEnum,
-  adjustment_value: z.coerce
-    .number()
+  adjustment_value: z.number()
     .min(-100, 'Adjustment cannot decrease by more than 100%')
     .max(1000, 'Adjustment seems too high'),
-  max_discount_amount: z.coerce
-    .number()
+  max_discount_amount: z.number()
     .min(0, 'Max discount cannot be negative')
     .max(99999.99, 'Amount is too high')
     .optional(),
-  min_booking_value: z.coerce
-    .number()
+  min_booking_value: z.number()
     .min(0, 'Minimum booking value cannot be negative')
     .max(99999.99, 'Amount is too high')
     .optional(),
 
   // Conditions
-  requires_advance_booking_days: z.coerce.number().int().min(0).max(365).optional(),
-  requires_min_services: z.coerce.number().int().min(1).max(20).optional(),
-  is_first_time_customer_only: z.boolean().default(false),
-  is_combinable_with_other_rules: z.boolean().default(false),
+  requires_advance_booking_days: z.number().int().min(0).max(365).optional(),
+  requires_min_services: z.number().int().min(1).max(20).optional(),
+  is_first_time_customer_only: z.boolean(),
+  is_combinable_with_other_rules: z.boolean(),
 
   notes: z.string().max(500, 'Notes must be 500 characters or fewer').optional(),
 }).refine(
@@ -183,8 +178,8 @@ export const groupDiscountSchema = z.object({
     .min(2, 'Minimum 2 services for group discount')
     .max(20, 'Maximum 20 services'),
   discount_type: discountTypeEnum,
-  discount_value: z.coerce.number().min(0, 'Discount cannot be negative'),
-  max_discount_amount: z.coerce.number().min(0).max(99999.99).optional(),
+  discount_value: z.number().min(0, 'Discount cannot be negative'),
+  max_discount_amount: z.number().min(0).max(99999.99).optional(),
   applies_to_service_ids: z
     .array(z.string().regex(UUID_REGEX, 'Invalid service ID'))
     .max(100, 'Too many services')

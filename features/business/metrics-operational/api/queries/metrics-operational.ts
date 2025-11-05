@@ -20,7 +20,7 @@ export async function getOperationalMetrics(salonId: string): Promise<Operationa
 
   const { data, error } = await supabase
     .from('operational_metrics_view')
-    .select('*')
+    .select('salon_id, metric_at, staff_utilization, booking_efficiency, customer_satisfaction, service_completion_rate, average_service_duration')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })
     .limit(1)
@@ -31,7 +31,7 @@ export async function getOperationalMetrics(salonId: string): Promise<Operationa
     return null
   }
 
-  return data
+  return data as unknown as OperationalMetric | null
 }
 
 export async function getOperationalSalon() {

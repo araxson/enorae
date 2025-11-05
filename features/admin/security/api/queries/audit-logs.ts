@@ -5,7 +5,8 @@ import type { Database } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'
 import { QUERY_LIMITS } from '@/lib/config/constants'
 
-type AuditLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
+type SecurityIncidentLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
+type AuditLogRow = Pick<SecurityIncidentLogRow, 'id' | 'user_id' | 'event_type' | 'entity_type' | 'entity_id' | 'new_values' | 'ip_address' | 'user_agent' | 'is_success' | 'severity' | 'created_at'>
 
 export interface AuditLog {
   id: string
@@ -34,7 +35,7 @@ export interface SecurityEvent {
 
 const NORMALIZED_SEVERITY_FALLBACK = 'info'
 
-const normalizeIp = (value: AuditLogRow['ip_address']): string | null => {
+const normalizeIp = (value: unknown): string | null => {
   if (typeof value === 'string') {
     return value
   }
@@ -88,7 +89,7 @@ export async function getAuditLogs(filters?: {
 
   const supabase = createServiceRoleClient()
 
-  let query = supabase.from('security_incident_logs_view').select('*')
+  let query = supabase.from('security_incident_logs_view').select('id, user_id, event_type, entity_type, entity_id, new_values, ip_address, user_agent, is_success, severity, created_at')
 
   if (filters?.eventType) {
     query = query.eq('event_type', filters.eventType)
@@ -132,7 +133,7 @@ export async function getSecurityEvents(filters?: {
 
   const supabase = createServiceRoleClient()
 
-  let query = supabase.from('security_incident_logs_view').select('*')
+  let query = supabase.from('security_incident_logs_view').select('id, user_id, event_type, entity_type, entity_id, new_values, ip_address, user_agent, is_success, severity, created_at')
 
   if (filters?.severity) {
     query = query.eq('severity', filters.severity)
@@ -161,7 +162,13 @@ export async function getSecurityEvents(filters?: {
 /**
  * Get overview statistics
  */
-export async function getSecurityOverview(dateFrom: string, dateTo: string) {
+export async function getSecurityOverview(dateFrom: string, dateTo: string): Promise<{
+  totalAuditLogs: number
+  totalSecurityEvents: number
+  failedLogins: number
+  suspiciousActivity: number
+  eventsByType: Record<string, number>
+}> {
   // SECURITY: Require platform admin
   await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
 

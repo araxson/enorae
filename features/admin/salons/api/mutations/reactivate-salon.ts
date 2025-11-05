@@ -1,14 +1,17 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 /**
  * Reactivate salon - enables bookings and restores to active status
  */
-export async function reactivateSalon(formData: FormData) {
+export async function reactivateSalon(formData: FormData): Promise<
+  | { error: string }
+  | { success: true }
+> {
   const logger = createOperationLogger('reactivateSalon', {})
   logger.start()
 

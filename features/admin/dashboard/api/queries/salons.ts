@@ -17,7 +17,7 @@ export async function getRecentSalons(): Promise<AdminSalon[]> {
   // Use salons_view for enriched salon data
   const { data, error } = await supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, slug, description, city, state_province, country, status, rating_average, review_count, is_verified, is_active, created_at')
     .order('created_at', { ascending: false })
     .limit(10)
     .returns<AdminSalon[]>()

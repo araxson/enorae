@@ -107,13 +107,13 @@ export async function getBusinessDashboardData() {
   const supabase = await getSupabaseClient()
 
   const [salonResult, appointmentsData, staff, services, recentAppointments] = await Promise.all([
-    supabase.from('salons_view').select('*').eq('id', salonId).single(),
+    supabase.from('salons_view').select('id, name, formatted_address, primary_phone, created_at, updated_at').eq('id', salonId).single(),
     supabase.from('appointments_view').select('status').eq('salon_id', salonId),
     supabase.from('staff_enriched_view').select('id').eq('salon_id', salonId).eq('is_active', true),
     supabase.from('services_view').select('id').eq('salon_id', salonId).eq('is_active', true),
     supabase
       .from('appointments_view')
-      .select('*')
+      .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, duration_minutes, confirmation_code, created_at, updated_at')
       .eq('salon_id', salonId)
       .order('created_at', { ascending: false })
       .limit(5),

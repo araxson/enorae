@@ -35,7 +35,7 @@ export function RevokeRoleDialog({ open, onOpenChange, isLoading, onConfirm, rol
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="flex items-center gap-2">
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
             {isLoading ? (
               <>
                 <Spinner />
@@ -68,12 +68,7 @@ export function DeleteRoleDialog({ open, onOpenChange, isLoading, onConfirm, ena
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button
-              onClick={onConfirm}
-              disabled={isLoading}
-              variant="destructive"
-              className="flex items-center gap-2"
-            >
+            <Button onClick={onConfirm} disabled={isLoading} variant="destructive">
               {isLoading ? (
                 <>
                   <Spinner />

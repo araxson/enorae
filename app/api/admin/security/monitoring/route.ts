@@ -4,6 +4,10 @@ import { requireAnyRole } from '@/lib/auth/session'
 import { validateCSRFSafe } from '@/lib/csrf'
 import { logApiCall, logError, logAuthEvent } from '@/lib/observability'
 
+// Next.js 15+: GET requests are NOT cached by default - must set dynamic explicitly
+// Security monitoring is real-time and user-specific
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: Request) {
   const startTime = Date.now()
 

@@ -1,7 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { StatCard } from '@/features/shared/ui-components'
+import { StatCard } from '@/features/shared/ui'
 import { Activity, CreditCard, Users, Building2 } from 'lucide-react'
 import type { TransactionMetrics, ManualTransactionRow } from '@/features/admin/finance/api/types'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
@@ -67,8 +76,8 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
           </ItemGroup>
         </CardHeader>
         <CardContent>
-          <div className="-m-6">
-            <Table>
+          <Table>
+            <TableCaption>Transactions recorded across the platform during the selected period.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Date</TableHead>
@@ -120,8 +129,21 @@ export function TransactionMonitoring({ metrics }: TransactionMonitoringProps) {
                 ))
               )}
             </TableBody>
-            </Table>
-          </div>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <span className="text-sm text-muted-foreground">
+                    Transactions listed: {metrics.recentTransactions.length}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right">
+                  <span className="text-sm font-semibold">
+                    ${metrics.recentTransactions.reduce((sum, tx) => sum + tx.amount, 0).toFixed(2)}
+                  </span>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
         </CardContent>
       </Card>
     </div>

@@ -4,7 +4,7 @@ import 'server-only'
 
 import { z } from 'zod'
 
-import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/common/api/salon-context'
 import { requireAnyRole, requireUserSalonId, ROLE_GROUPS } from '@/lib/auth'
 import { ANALYTICS_CONFIG } from '@/lib/config/constants'
 import { createClient } from '@/lib/supabase/server'
@@ -36,7 +36,9 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
   })
 
   if (!payload.success) {
-    throw new Error(payload.error.issues[0]?.message ?? 'Invalid pricing input')
+    const fieldErrors = payload.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    throw new Error(firstError ?? 'Invalid pricing input')
   }
 
   const { bookingTime, serviceId, customerId } = payload.data
@@ -61,7 +63,7 @@ export async function calculateDynamicPrice(input: DynamicPricingInput): Promise
   // Get service pricing - price is stored in service_pricing table, not services table
   const { data: pricing, error: pricingError } = await supabase
     .from('service_pricing_view')
-    .select('*')
+    .select('id, service_id, service_name, salon_id, base_price, min_price, max_price, pricing_type, created_at')
     .eq('service_id', serviceId)
     .maybeSingle<ServicePricingView>()
 
@@ -147,9 +149,11 @@ export async function validateCoupon(input: {
 }): Promise<CouponValidationResult> {
   const parsed = couponSchema.safeParse(input)
   if (!parsed.success) {
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
     return {
       valid: false,
-      error: parsed.error.issues[0]?.message ?? 'Invalid input',
+      error: firstError ?? 'Invalid input',
     }
   }
 

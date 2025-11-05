@@ -2,6 +2,18 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemTitle,
+} from '@/components/ui/item'
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 
 type DurationAccuracy = {
   service_id: string
@@ -17,25 +29,39 @@ export function DurationAccuracySection({ durationAccuracy }: { durationAccuracy
       {durationAccuracy.map((entry) => (
         <AccordionItem key={entry.service_id} value={entry.service_id}>
           <AccordionTrigger>
-            <div className="flex w-full items-center justify-between">
-              <span>{entry.service_name}</span>
+            <Item size="sm">
+              <ItemContent>
+                <ItemTitle>{entry.service_name}</ItemTitle>
+              </ItemContent>
               {entry.variance != null && (
-                <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'} className="ml-2">
-                  {entry.variance > 0 ? '+' : ''}
-                  {entry.variance} min
-                </Badge>
+                <ItemActions>
+                  <Badge variant={Math.abs(entry.variance) > 10 ? 'destructive' : 'outline'}>
+                    {entry.variance > 0 ? '+' : ''}
+                    {entry.variance} min
+                  </Badge>
+                </ItemActions>
               )}
-            </div>
+            </Item>
           </AccordionTrigger>
-          <AccordionContent className="space-y-2 text-muted-foreground">
-            <div className="flex items-center justify-between">
-              <span>Scheduled</span>
-              <span>{entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Actual</span>
-              <span>{entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}</span>
-            </div>
+          <AccordionContent>
+            <FieldGroup className="gap-2">
+              <Field orientation="horizontal">
+                <FieldLabel>Scheduled</FieldLabel>
+                <FieldContent>
+                  <span className="text-sm text-muted-foreground">
+                    {entry.expected_duration ? `${entry.expected_duration} min` : 'N/A'}
+                  </span>
+                </FieldContent>
+              </Field>
+              <Field orientation="horizontal">
+                <FieldLabel>Actual</FieldLabel>
+                <FieldContent>
+                  <span className="text-sm text-muted-foreground">
+                    {entry.actual_duration ? `${entry.actual_duration} min` : 'N/A'}
+                  </span>
+                </FieldContent>
+              </Field>
+            </FieldGroup>
           </AccordionContent>
         </AccordionItem>
       ))}

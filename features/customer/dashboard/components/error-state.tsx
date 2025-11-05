@@ -16,11 +16,11 @@ export function DashboardErrorState() {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <AlertCircle className="size-6" aria-hidden="true" />
+            <AlertCircle className="size-5" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>Error loading dashboard</EmptyTitle>
           <EmptyDescription>
-            We couldn't load your dashboard data. Please try again.
+            We couldn&apos;t load your dashboard data. Please try again.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>

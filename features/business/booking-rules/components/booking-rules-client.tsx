@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus, Clock, Calendar, Timer } from 'lucide-react'
-import { BookingRuleForm } from './booking-rule-form'
+import { BookingRuleFormMigrated } from './booking-rule-form-migrated'
 import type { BookingRuleWithService } from '@/features/business/booking-rules/api/queries'
 import {
   Empty,
@@ -27,10 +27,9 @@ import { ButtonGroup } from '@/components/ui/button-group'
 interface BookingRulesClientProps {
   rules: BookingRuleWithService[]
   services: Array<{ id: string; name: string }>
-  onSubmit: (formData: FormData) => Promise<{ success?: boolean; error?: string }>
 }
 
-export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesClientProps) {
+export function BookingRulesClient({ rules, services }: BookingRulesClientProps) {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedRule, setSelectedRule] = useState<BookingRuleWithService | null>(null)
 
@@ -164,12 +163,11 @@ export function BookingRulesClient({ rules, services, onSubmit }: BookingRulesCl
         )}
       </div>
 
-      <BookingRuleForm
+      <BookingRuleFormMigrated
         open={isFormOpen}
         onOpenChange={handleClose}
         rule={selectedRule}
         services={servicesWithoutRules}
-        onSubmit={onSubmit}
       />
     </>
   )

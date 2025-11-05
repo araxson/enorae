@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import type { VerifyOtpResult, ResendOtpResult } from '../api/types'
+import { useState, useActionState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { verifyOTP, resendOTP } from '../api/mutations'
 import { Button } from '@/components/ui/button'
@@ -32,40 +33,31 @@ export function VerifyOTPForm({
   email: initialEmail,
   type = 'email',
   redirectTo = '/',
-}: VerifyOTPFormProps) {
+}: VerifyOTPFormProps): React.ReactElement {
   const router = useRouter()
   const searchParams = useSearchParams()
   const emailFromUrl = searchParams.get('email')
-
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [otp, setOtp] = useState('')
   const email = initialEmail || emailFromUrl || ''
 
-  async function handleVerify() {
-    if (otp.length !== 6) {
-      setError('Please enter a valid 6-digit code')
-      return
-    }
+  const [state, formAction, isPending] = useActionState<VerifyOtpResult, FormData>(
+    verifyOTP,
+    null as unknown as VerifyOtpResult
+  )
+  const [otp, setOtp] = useState('')
 
-    setLoading(true)
-    setError(null)
-
-    const formData = new FormData()
-    formData.append('email', email)
-    formData.append('token', otp)
-    formData.append('type', type)
-
-    const result = await verifyOTP(formData)
-
-    if (!result.success) {
-      setError(result.error)
-      setLoading(false)
-      setOtp('') // Clear OTP on error
-    } else {
+  // Handle success redirect
+  useEffect(() => {
+    if (state?.success) {
       router.push(redirectTo)
     }
-  }
+  }, [state?.success, router, redirectTo])
+
+  // Clear OTP on error
+  useEffect(() => {
+    if (state && !state.success && state.error) {
+      setOtp('')
+    }
+  }, [state])
 
   async function handleResend() {
     const formData = new FormData()
@@ -79,7 +71,7 @@ export function VerifyOTPForm({
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <div className="flex flex-col gap-6 p-6 md:p-8">
+          <form action={formAction} className="flex flex-col gap-6 p-6 md:p-8" noValidate>
             <FieldGroup className="gap-6">
               <div className="flex flex-col items-center gap-4 text-center">
                 <Shield className="size-12 text-primary" aria-hidden="true" />
@@ -89,23 +81,45 @@ export function VerifyOTPForm({
                 </p>
               </div>
 
-              {error ? (
-                <Alert variant="destructive">
+              {/* Screen reader announcement for form status */}
+              <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+                {isPending && 'Form is submitting, please wait'}
+                {state && !state.success && state.error && !isPending && state.error}
+              </div>
+
+              {/* Hidden fields for form data */}
+              <input type="hidden" name="email" value={email} />
+              <input type="hidden" name="type" value={type} />
+
+              {state && !state.success && state.error && (
+                <Alert variant="destructive" role="alert">
                   <AlertCircle className="size-4" />
                   <AlertTitle>Verification failed</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertDescription>{state.error}</AlertDescription>
                 </Alert>
-              ) : null}
+              )}
 
               <Field>
-                <FieldLabel htmlFor="otp">Verification code</FieldLabel>
+                <FieldLabel htmlFor="token">
+                  Verification code
+                  <span className="text-destructive" aria-label="required"> *</span>
+                </FieldLabel>
                 <InputOTP
-                  id="otp"
+                  id="token"
+                  name="token"
                   maxLength={6}
                   value={otp}
                   onChange={setOtp}
-                  disabled={loading}
+                  disabled={isPending}
                   containerClassName="justify-center gap-4"
+                  required
+                  aria-required="true"
+                  aria-invalid={!!(state && !state.success && state.errors?.['token'])}
+                  aria-describedby={
+                    state && !state.success && state.errors?.['token']
+                      ? 'token-error'
+                      : undefined
+                  }
                 >
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
@@ -119,6 +133,11 @@ export function VerifyOTPForm({
                     <InputOTPSlot index={5} />
                   </InputOTPGroup>
                 </InputOTP>
+                {state && !state.success && state.errors?.['token'] && (
+                  <p id="token-error" className="text-sm text-destructive mt-1" role="alert">
+                    {state.errors['token'][0]}
+                  </p>
+                )}
                 <FieldDescription className="flex flex-col items-center gap-2 text-center text-sm">
                   <span className="text-muted-foreground">
                     Didn&apos;t receive the code?
@@ -127,20 +146,25 @@ export function VerifyOTPForm({
                 </FieldDescription>
               </Field>
 
-              {otp.length === 6 ? (
+              {otp.length === 6 && (
                 <Alert>
                   <CheckCircle2 className="size-4 text-primary" />
                   <AlertTitle>Ready to verify</AlertTitle>
                   <AlertDescription>Code entered. Click verify to continue.</AlertDescription>
                 </Alert>
-              ) : null}
+              )}
 
               <Field className="space-y-2">
-                <Button onClick={handleVerify} disabled={loading || otp.length !== 6}>
-                  {loading ? (
+                <Button
+                  type="submit"
+                  disabled={isPending || otp.length !== 6}
+                  aria-busy={isPending}
+                >
+                  {isPending ? (
                     <>
                       <Spinner className="size-4" />
-                      <span>Verifying...</span>
+                      <span aria-hidden="true">Verifying...</span>
+                      <span className="sr-only">Verifying your code, please wait</span>
                     </>
                   ) : (
                     <span>Verify code</span>
@@ -151,7 +175,7 @@ export function VerifyOTPForm({
                 </FieldDescription>
               </Field>
             </FieldGroup>
-          </div>
+          </form>
           <div className="relative hidden bg-muted md:block">
             <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
               <div className="space-y-4">

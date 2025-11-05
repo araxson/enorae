@@ -18,7 +18,7 @@ export type BlockedTimeWithRelations = BlockedTime & {
 /**
  * Get all blocked times for a specific salon
  */
-export async function getBlockedTimesBySalon(salonId: string) {
+export async function getBlockedTimesBySalon(salonId: string): Promise<BlockedTime[]> {
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
@@ -31,7 +31,7 @@ export async function getBlockedTimesBySalon(salonId: string) {
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, salon_id, staff_id, start_time, end_time, reason, recurring_rule, created_by_id, created_at')
     .eq('salon_id', salonId)
     .order('start_time', { ascending: true })
 
@@ -42,7 +42,7 @@ export async function getBlockedTimesBySalon(salonId: string) {
 /**
  * Get all blocked times for a specific staff member
  */
-export async function getBlockedTimesByStaff(staffId: string) {
+export async function getBlockedTimesByStaff(staffId: string): Promise<BlockedTime[]> {
   // SECURITY: Require staff or business role
   await requireAnyRole([...ROLE_GROUPS.STAFF_USERS, ...ROLE_GROUPS.BUSINESS_USERS])
 
@@ -52,7 +52,7 @@ export async function getBlockedTimesByStaff(staffId: string) {
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, salon_id, staff_id, start_time, end_time, reason, recurring_rule, created_by_id, created_at')
     .eq('staff_id', staffId)
     .order('start_time', { ascending: true })
 
@@ -63,7 +63,7 @@ export async function getBlockedTimesByStaff(staffId: string) {
 /**
  * Get upcoming blocked times for a salon
  */
-export async function getUpcomingBlockedTimes(salonId: string) {
+export async function getUpcomingBlockedTimes(salonId: string): Promise<BlockedTime[]> {
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   if (!(await canAccessSalon(salonId))) {
@@ -78,7 +78,7 @@ export async function getUpcomingBlockedTimes(salonId: string) {
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, salon_id, staff_id, start_time, end_time, reason, recurring_rule, created_by_id, created_at')
     .eq('salon_id', salonId)
     .gte('start_time', now)
     .order('start_time', { ascending: true })
@@ -90,7 +90,7 @@ export async function getUpcomingBlockedTimes(salonId: string) {
 /**
  * Get a single blocked time by ID
  */
-export async function getBlockedTimeById(id: string) {
+export async function getBlockedTimeById(id: string): Promise<BlockedTime> {
   // SECURITY: Require business role
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
@@ -100,9 +100,9 @@ export async function getBlockedTimeById(id: string) {
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, salon_id, staff_id, start_time, end_time, reason, recurring_rule, created_by_id, created_at')
     .eq('id', id)
-    .maybeSingle<{ salon_id: string | null }>()
+    .maybeSingle<BlockedTime & { salon_id: string | null }>()
 
   if (error) throw error
   if (!data?.salon_id || !(await canAccessSalon(data.salon_id))) {
@@ -115,7 +115,7 @@ export async function getBlockedTimeById(id: string) {
 /**
  * Get salon for current user (for blocked times)
  */
-export async function getBlockedTimesSalon() {
+export async function getBlockedTimesSalon(): Promise<{ id: string }> {
   // SECURITY: Require authentication
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const salonId = await requireUserSalonId()

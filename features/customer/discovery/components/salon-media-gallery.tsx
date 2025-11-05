@@ -13,7 +13,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Item,
   ItemActions,
@@ -65,6 +71,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
                       alt={media['salon_name'] || 'Salon logo'}
                       fill
                       className="object-contain"
+                      loading="lazy"
                     />
                   </AspectRatio>
                 </ItemContent>
@@ -81,6 +88,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
                       alt={media['salon_name'] || 'Salon cover'}
                       fill
                       className="object-cover"
+                      loading="lazy"
                     />
                   </AspectRatio>
                 </ItemContent>
@@ -101,6 +109,7 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
                               alt={`${media['salon_name'] || 'Salon'} - Photo ${idx + 1}`}
                               fill
                               className="object-cover"
+                              loading="lazy"
                             />
                           </AspectRatio>
                         </CarouselItem>
@@ -115,10 +124,10 @@ export function SalonMediaGallery({ media }: SalonMediaGalleryProps) {
           </ItemGroup>
         ) : (
           <Empty>
-            <EmptyMedia variant="icon">
-              <ImageIcon className="size-6" aria-hidden="true" />
-            </EmptyMedia>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <ImageIcon className="size-5" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No photos available</EmptyTitle>
               <EmptyDescription>Upload media to showcase your salon.</EmptyDescription>
             </EmptyHeader>

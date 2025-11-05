@@ -9,8 +9,7 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 
 import { ctaContent } from './cta.data'
 
@@ -23,11 +22,9 @@ export function CTA() {
           <EmptyDescription>{ctaContent.description}</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemDescription>Choose the option that fits—get started now or talk with our team first.</ItemDescription>
-            </ItemContent>
-          </Item>
+          <EmptyDescription>
+            Choose the option that fits—get started now or talk with our team first.
+          </EmptyDescription>
           <ButtonGroup aria-label="Marketing call to action options">
             <Button asChild size="lg">
               <Link href={ctaContent.primaryCta.href}>

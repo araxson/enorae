@@ -22,7 +22,13 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
 
   try {
     // SEC-M302: Validate input with Zod schema
-    const validated = revokeSessionSchema.parse({ sessionId })
+    const result = revokeSessionSchema.safeParse({ sessionId })
+
+    if (!result.success) {
+      return { success: false, error: 'Invalid session ID' }
+    }
+
+    const validated = result.data
 
     const session = await verifySession()
     if (!session) return { success: false, error: 'Unauthorized' }
@@ -51,7 +57,7 @@ export async function revokeSession(sessionId: string): Promise<ActionResponse> 
       return { success: false, error: 'Session is already inactive.' }
     }
 
-    // ✅ FIXED: Update identity.sessions table to mark as inactive
+    // FIXED: Update identity.sessions table to mark as inactive
     const { error } = await supabase
       .schema('identity')
       .from('sessions')
@@ -107,7 +113,7 @@ export async function revokeAllOtherSessions(): Promise<ActionResponse<{ count: 
       return { success: false, error: 'No active session' }
     }
 
-    // ✅ FIXED: Update identity.sessions table to revoke all other sessions
+    // FIXED: Update identity.sessions table to revoke all other sessions
     const { data, error } = await supabase
       .schema('identity')
       .from('sessions')

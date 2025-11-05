@@ -11,6 +11,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 interface CustomerMetricsProps {
   metrics: {
@@ -69,7 +72,16 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
           </ItemContent>
           <ItemActions>
             <TrendingUp className="size-3" />
-            <Badge variant={activityVariant}>{activityLevel} user</Badge>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Badge variant={activityVariant}>{activityLevel} user</Badge>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <span>Calculated from your recent bookings and favorites.</span>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </ItemActions>
         </Item>
       </ItemGroup>
@@ -127,7 +139,7 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Calendar className="size-6" aria-hidden="true" />
+                  <Calendar className="size-5" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No activity yet</EmptyTitle>
                 <EmptyDescription>
@@ -135,7 +147,9 @@ export function CustomerMetrics({ metrics }: CustomerMetricsProps) {
                 </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
-                Returning here after a visit will show your progress and rewards.
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/customer/salons">Book your first appointment</Link>
+                </Button>
               </EmptyContent>
             </Empty>
           </CardContent>

@@ -1,4 +1,4 @@
-import type { TrustBadgeType } from '@/features/marketing/common-components/trust-badge'
+import type { TrustBadgeType } from '@/features/marketing/components/common/trust-badge'
 
 type HeroTrustBadge = {
   type: TrustBadgeType
@@ -20,7 +20,7 @@ export const heroContent = {
   },
   trustBadges: [
     { type: 'verified', text: '500+ Verified Salons' },
-    { type: 'rated', text: '4.8★ Average Rating' },
+    { type: 'rated', text: '4.8 Average Rating' },
     { type: 'popular', text: '10,000+ Happy Customers' },
     { type: 'secure' },
   ] satisfies HeroTrustBadge[],

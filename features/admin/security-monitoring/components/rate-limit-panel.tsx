@@ -3,8 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import type { RateLimitRule, RateLimitViolation } from '@/features/admin/security-monitoring/api/types'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription, ItemGroup } from '@/components/ui/item'
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
 
 interface RateLimitPanelProps {
   violations: RateLimitViolation[]
@@ -20,54 +22,61 @@ const formatWindow = (seconds: number) => {
 export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
   return (
     <Card>
-      <CardHeader>
-        <ItemGroup>
-          <Item className="items-center gap-2">
-            <ItemContent className="flex items-center gap-2">
-              <Lock className="size-4" aria-hidden="true" />
-              <CardTitle>Rate Limit Monitoring</CardTitle>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+      <CardHeader className="space-y-2">
+        <div className="flex items-center gap-2">
+          <Lock className="size-4 text-muted-foreground" aria-hidden="true" />
+          <CardTitle>Rate Limit Monitoring</CardTitle>
+        </div>
+        <CardDescription>Live snapshot of enforcement activity and rule coverage.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ItemGroup className="flex flex-wrap items-center gap-4">
-          <Item>
-            <ItemContent>
-              <ItemDescription>
-                Active rules: <strong>{rules.filter((rule) => rule.isActive).length}</strong>
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-          <Item>
-            <ItemContent>
-              <ItemDescription>
-                Current blocks: <strong>{violations.length}</strong>
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
-
+      <CardContent className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-2">Active Blocks</h3>
+          <section className="rounded-md border border-dashed border-muted p-4">
+            <p className="text-sm text-muted-foreground">Active rules</p>
+            <p className="text-2xl font-semibold">
+              {rules.filter((rule) => rule.isActive).length}
+            </p>
+            <CardDescription>Rules currently enforcing quotas.</CardDescription>
+          </section>
+          <section className="rounded-md border border-dashed border-muted p-4">
+            <p className="text-sm text-muted-foreground">Current blocks</p>
+            <p className="text-2xl font-semibold">{violations.length}</p>
+            <CardDescription>Identifiers temporarily rate limited.</CardDescription>
+          </section>
+        </div>
+
+        <Separator />
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <section className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold leading-none tracking-tight">Active blocks</h3>
+              <p className="text-sm text-muted-foreground">
+                Most recent violations ordered by window start.
+              </p>
+            </div>
             {violations.length === 0 ? (
               <Empty>
                 <EmptyHeader>
                   <EmptyTitle>No identifiers blocked</EmptyTitle>
-                  <EmptyDescription>Rate limit enforcement will display here when thresholds are exceeded.</EmptyDescription>
+                  <EmptyDescription>
+                    Rate limit enforcement will display here when thresholds are exceeded.
+                  </EmptyDescription>
                 </EmptyHeader>
+                <EmptyContent>
+                  <Button variant="outline" size="sm">
+                    Refresh now
+                  </Button>
+                </EmptyContent>
               </Empty>
             ) : (
-              <ItemGroup className="flex flex-col gap-2">
+              <div className="space-y-2">
                 {violations.slice(0, 6).map((violation) => (
                   <Alert key={`${violation.identifier}-${violation.endpoint}`} variant="destructive">
                     <AlertTitle>{violation.identifier}</AlertTitle>
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="destructive">
-                        <Ban className="size-3" aria-hidden="true" />
-                        {' '}
-                        Blocked
+                        <Ban className="size-3" aria-hidden="true" /> Blocked
                       </Badge>
                       <AlertDescription>Endpoint {violation.endpoint}</AlertDescription>
                     </div>
@@ -82,38 +91,51 @@ export function RateLimitPanel({ violations, rules }: RateLimitPanelProps) {
                     ) : null}
                   </Alert>
                 ))}
-              </ItemGroup>
+              </div>
             )}
-          </div>
+          </section>
 
-          <div>
-            <h3 className="scroll-m-20 text-xl font-semibold tracking-tight mb-2">Rule Configuration</h3>
+          <section className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold leading-none tracking-tight">Rule configuration</h3>
+              <p className="text-sm text-muted-foreground">
+                Inspect thresholds and scope for each policy.
+              </p>
+            </div>
             {rules.length === 0 ? (
               <Empty>
                 <EmptyHeader>
                   <EmptyTitle>No rate limiting rules configured</EmptyTitle>
                   <EmptyDescription>Define request policies to gate traffic and prevent abuse.</EmptyDescription>
                 </EmptyHeader>
+                <EmptyContent>
+                  <Button variant="outline" size="sm">
+                    Create rule
+                  </Button>
+                </EmptyContent>
               </Empty>
             ) : (
-              <ItemGroup className="flex flex-col gap-2">
+              <Accordion type="single" collapsible className="w-full">
                 {rules.slice(0, 6).map((rule) => (
-                  <Alert key={rule.id}>
-                    <AlertTitle>{rule.ruleName}</AlertTitle>
-                    <AlertDescription>Rate limit policy</AlertDescription>
-                    <AlertDescription>
-                      {rule.maxRequests} requests / {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
-                    </AlertDescription>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant={rule.isActive ? 'outline' : 'secondary'}>
-                        {rule.isActive ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </div>
-                  </Alert>
+                  <AccordionItem key={rule.id} value={rule.id}>
+                    <AccordionTrigger className="text-sm font-medium">
+                      {rule.ruleName}
+                    </AccordionTrigger>
+                    <AccordionContent className="space-y-2">
+                      <p className="text-sm text-muted-foreground">
+                        {rule.maxRequests} requests every {formatWindow(rule.windowSeconds)} ({rule.appliesTo})
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge variant={rule.isActive ? 'outline' : 'secondary'}>
+                          {rule.isActive ? 'Active' : 'Inactive'}
+                        </Badge>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </ItemGroup>
+              </Accordion>
             )}
-          </div>
+          </section>
         </div>
       </CardContent>
     </Card>

@@ -1,5 +1,4 @@
-import { ChainsPageContent } from './components/chains-page-content'
-import { ChainDetailContent } from './components/chain-detail-content'
+import { ChainsPageContent, ChainDetailContent } from './components'
 
 export function CustomerChainsPage() {
   return <ChainsPageContent />
@@ -16,4 +15,4 @@ export async function SalonChainDetailFeature({
 
 export { getSalonChains, getSalonChainById, getChainLocations } from './api/queries'
 export type { SalonChainWithLocations } from './api/queries'
-export * from './api/types'
+export type * from './api/types'

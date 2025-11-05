@@ -7,6 +7,13 @@ import {
 
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 
 interface BusinessOpportunitiesTabProps {
   opportunities: Array<{
@@ -19,11 +26,13 @@ interface BusinessOpportunitiesTabProps {
 
 export function BusinessOpportunitiesTab({ opportunities }: BusinessOpportunitiesTabProps) {
   return (
-    <div className="space-y-4">
-      <div>
-        <h3 className="scroll-m-20 text-xl font-semibold tracking-tight">Growth opportunities</h3>
-        <p className="text-sm text-muted-foreground">Focus areas with the highest projected upside.</p>
-      </div>
+    <ItemGroup className="gap-4">
+      <Item>
+        <ItemContent>
+          <ItemTitle>Growth opportunities</ItemTitle>
+          <ItemDescription>Focus areas with the highest projected upside.</ItemDescription>
+        </ItemContent>
+      </Item>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {opportunities.map((opp, idx) => (
           <Card key={idx}>
@@ -46,6 +55,6 @@ export function BusinessOpportunitiesTab({ opportunities }: BusinessOpportunitie
           </Card>
         ))}
       </div>
-    </div>
+    </ItemGroup>
   )
 }

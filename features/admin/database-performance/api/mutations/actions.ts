@@ -21,7 +21,7 @@ export async function createRecommendedIndex(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = createIndexSchema.parse({
+    const result = createIndexSchema.safeParse({
       tableName: formData.get('tableName')?.toString(),
       columnName: formData.get('columnName')?.toString(),
       indexType: (formData.get('indexType')?.toString() || 'btree') as
@@ -30,6 +30,14 @@ export async function createRecommendedIndex(formData: FormData) {
         | 'gist'
         | 'gin',
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // NOTE: create_index_on_column RPC function does not exist in database
     // This is a database maintenance operation that requires an RPC function to be created

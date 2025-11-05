@@ -68,7 +68,7 @@ export function AuditLogsFilters({ onFilterChange }: AuditLogsFiltersProps) {
           Filters
         </ItemTitle>
         <ItemActions>
-          <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-2">
+          <Button variant="ghost" size="sm" onClick={clearFilters}>
             <X className="size-4" />
             Clear
           </Button>

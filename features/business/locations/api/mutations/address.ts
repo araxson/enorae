@@ -8,7 +8,7 @@ import { addressSchema } from '../schema'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
-  | { success: false; error: string }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> }
 
 export interface AddressInput {
   street_address: string
@@ -52,9 +52,12 @@ export async function updateLocationAddress(
     })
 
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      logger.error(firstError?.message ?? 'Invalid input', 'validation')
-      return { success: false, error: firstError?.message ?? 'Invalid address data' }
+      logger.error('Validation failed', 'validation')
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     // Verify location ownership through salon

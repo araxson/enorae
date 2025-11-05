@@ -3,8 +3,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { getCurrentUserMetadata } from '@/features/shared/profile-metadata/api/queries'
 import { getProfile, getUserAppointments } from './api/queries'
-import { CustomerProfileContent } from './components/customer-profile-content'
-import { CustomerProfileAuthError } from './components/customer-profile-error'
+import { CustomerProfileContent, CustomerProfileAuthError } from './components'
 
 export const customerProfileMetadata = genMeta({
   title: 'My Profile',
@@ -33,4 +32,4 @@ export function CustomerProfileFeature() {
     </Suspense>
   )
 }
-export * from './api/types'
+export type * from './api/types'

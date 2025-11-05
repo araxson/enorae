@@ -4,7 +4,19 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import type { ServicePricing } from '@/features/business/services'
 import { createOperationLogger } from '@/lib/observability'
 
-export type ServicePricingWithService = ServicePricing & {
+// Custom type that adds service details to the pricing data
+export type ServicePricingWithService = {
+  id: string
+  service_id: string | null
+  service_name: string | null
+  salon_id: string | null
+  base_price: number | null
+  min_price: number | null
+  max_price: number | null
+  pricing_type: string | null
+  created_at: string | null
+  updated_at: string | null
+  deleted_at: string | null
   service: {
     id: string
     name: string
@@ -43,13 +55,28 @@ export async function getServicePricing(): Promise<ServicePricingWithService[]> 
   if (error) throw error
   if (!data) return []
 
+  // Map database schema to expected format
+  const pricingData = data.map(row => ({
+    id: row.id ?? '',
+    service_id: row.service_id,
+    service_name: row.service_name,
+    salon_id: row.salon_id,
+    base_price: row.base_price,
+    min_price: null,
+    max_price: null,
+    pricing_type: null,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    deleted_at: row.deleted_at,
+  }))
+
   // PERFORMANCE FIX: Batch fetch all services in one query instead of N+1
-  const serviceIds = data
+  const serviceIds = pricingData
     .map((pricing) => pricing.service_id)
     .filter(Boolean) as string[]
 
   if (serviceIds.length === 0) {
-    return data.map((pricing) => ({ ...pricing, service: null }))
+    return pricingData.map((pricing): ServicePricingWithService => ({ ...pricing, service: null }))
   }
 
   const { data: servicesData, error: servicesError } = await supabase
@@ -74,7 +101,7 @@ export async function getServicePricing(): Promise<ServicePricingWithService[]> 
     ])
   )
 
-  return data.map((pricing) => ({
+  return pricingData.map((pricing): ServicePricingWithService => ({
     ...pricing,
     service: pricing.service_id ? servicesMap.get(pricing.service_id) ?? null : null,
   }))
@@ -109,13 +136,28 @@ export async function getServicePricingByServiceId(
   if (error) throw error
   if (!data) return null
 
+  // Map database schema to expected format
+  const pricingData = {
+    id: data.id ?? '',
+    service_id: data.service_id,
+    service_name: data.service_name,
+    salon_id: data.salon_id,
+    base_price: data.base_price,
+    min_price: null,
+    max_price: null,
+    pricing_type: null,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    deleted_at: data.deleted_at,
+  }
+
   // Fetch service details
   let service = null
-  if (data.service_id) {
+  if (pricingData.service_id) {
     const { data: serviceData } = await supabase
       .from('services_view')
       .select('id, name, description, salon_id')
-      .eq('id', data.service_id)
+      .eq('id', pricingData.service_id)
       .single()
 
     service = serviceData || null
@@ -125,10 +167,17 @@ export async function getServicePricingByServiceId(
     }
   }
 
-  return {
-    ...data,
-    service: service || null,
-  } as ServicePricingWithService
+  const result: ServicePricingWithService = {
+    ...pricingData,
+    service: service && service.id && service.name ? {
+      id: service.id,
+      name: service.name,
+      description: service.description,
+      salon_id: service.salon_id,
+    } : null,
+  }
+
+  return result
 }
 
 /**
@@ -160,13 +209,28 @@ export async function getServicePricingById(
   if (error) throw error
   if (!data) return null
 
+  // Map database schema to expected format
+  const pricingData = {
+    id: data.id ?? '',
+    service_id: data.service_id,
+    service_name: data.service_name,
+    salon_id: data.salon_id,
+    base_price: data.base_price,
+    min_price: null,
+    max_price: null,
+    pricing_type: null,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+    deleted_at: data.deleted_at,
+  }
+
   // Fetch service details
   let service = null
-  if (data.service_id) {
+  if (pricingData.service_id) {
     const { data: serviceData } = await supabase
       .from('services_view')
       .select('id, name, description, salon_id')
-      .eq('id', data.service_id)
+      .eq('id', pricingData.service_id)
       .single()
 
     service = serviceData || null
@@ -176,8 +240,15 @@ export async function getServicePricingById(
     }
   }
 
-  return {
-    ...data,
-    service: service || null,
-  } as ServicePricingWithService
+  const result: ServicePricingWithService = {
+    ...pricingData,
+    service: service && service.id && service.name ? {
+      id: service.id,
+      name: service.name,
+      description: service.description,
+      salon_id: service.salon_id,
+    } : null,
+  }
+
+  return result
 }

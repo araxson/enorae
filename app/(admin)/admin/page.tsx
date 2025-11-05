@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { AdminDashboard } from '@/features/admin/dashboard'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 
 export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Platform Dashboard | Admin', description: 'Platform administration and monitoring' }

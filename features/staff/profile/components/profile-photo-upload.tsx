@@ -77,12 +77,11 @@ export function ProfilePhotoUpload({ currentPhotoUrl, userName }: ProfilePhotoUp
                     disabled={isUploading}
                     className="hidden"
                   />
-                  <label htmlFor="photo-upload">
+                  <label htmlFor="photo-upload" className="w-fit">
                     <Button
                       type="button"
                       variant="outline"
                       disabled={isUploading}
-                      onClick={() => document.getElementById('photo-upload')?.click()}
                     >
                       {isUploading ? (
                         <>

@@ -7,4 +7,4 @@ export async function StaffSettingsPage() {
     </section>
   )
 }
-export * from './api/types'
+export type * from './api/types'

@@ -2,7 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, requireUserSalonId, canAccessSalon, ROLE_GROUPS } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import { mergeStaffWithUsers, type EnrichedStaffProfile } from '@/features/shared/staff/api/enrich'
 import { createOperationLogger } from '@/lib/observability'
 
@@ -29,7 +29,7 @@ async function fetchStaffUsers(
 
   const { data, error } = await supabase
     .from('admin_users_overview_view')
-    .select('*')
+    .select('id, email, full_name, avatar_url, phone_number, created_at, updated_at')
     .in('id', userIds)
     .returns<UserOverviewRow[]>()
 
@@ -52,7 +52,7 @@ export async function getStaff(salonId: string): Promise<EnrichedStaffProfile[]>
   // Explicit salon filter for security
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, title, bio, hourly_rate, commission_rate, is_active, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: true })
     .returns<StaffProfileRow[]>()
@@ -85,7 +85,7 @@ export async function getStaffById(staffId: string): Promise<EnrichedStaffProfil
   // Get staff member, verify they belong to the same salon
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, title, bio, hourly_rate, commission_rate, is_active, created_at, updated_at')
     .eq('id', staffId)
     .eq('salon_id', salonId)
     .maybeSingle<StaffProfileRow>()
@@ -111,7 +111,7 @@ export async function getStaffWithServices(salonId: string) {
   // Get all staff services for the salon
   const { data: staffServices, error } = await supabase
     .from('staff_services_view')
-    .select('*')
+    .select('id, staff_id, service_id, salon_id, custom_price, custom_duration_minutes, created_at, updated_at')
     .eq('salon_id', salonId)
     .returns<StaffServiceRow[]>()
 
@@ -143,7 +143,7 @@ export async function getAvailableServices(salonId: string) {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, name, description, slug, category_name, price, duration_minutes, is_active, created_at, updated_at')
     .eq('salon_id', salonId)
 
   if (error) throw error

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { MarketingExplorePage, exploreSEO } from '@/features/marketing/explore'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 
 export const metadata = exploreSEO
 

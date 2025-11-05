@@ -10,12 +10,12 @@ import {
 /**
  * Handle acknowledge action
  */
-export async function handleAcknowledge(accessId: string) {
+export async function handleAcknowledge(accessId: string): Promise<{ success: string } | { error: string }> {
   const formData = new FormData()
   formData.append('accessId', accessId)
   const result = await acknowledgeSecurityAlert(formData)
 
-  if (result.error) {
+  if ('error' in result) {
     return { error: result.error }
   }
 
@@ -25,12 +25,12 @@ export async function handleAcknowledge(accessId: string) {
 /**
  * Handle dismiss action
  */
-export async function handleDismiss(accessId: string) {
+export async function handleDismiss(accessId: string): Promise<{ success: string } | { error: string }> {
   const formData = new FormData()
   formData.append('accessId', accessId)
   const result = await dismissSecurityAlert(formData)
 
-  if (result.error) {
+  if ('error' in result) {
     return { error: result.error }
   }
 
@@ -44,14 +44,14 @@ export async function handleSuppress(
   accessId: string,
   reason: string,
   duration: '1hour' | '1day' | '1week' | 'permanent'
-) {
+): Promise<{ success: string } | { error: string }> {
   const formData = new FormData()
   formData.append('accessId', accessId)
   formData.append('reason', reason)
   formData.append('duration', duration)
   const result = await suppressSecurityAlert(formData)
 
-  if (result.error) {
+  if ('error' in result) {
     return { error: result.error }
   }
 

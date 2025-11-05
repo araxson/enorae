@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { StaffPerformanceSummary } from './staff-performance-summary'
 import { StaffServicesManager } from './staff-services-manager'
-import { StaffFormDialog } from './staff-form-dialog'
+import { StaffFormMigrated } from './staff-form-dialog'
 import type { StaffWithServices } from '@/features/business/staff/api/queries'
 import type { Database } from '@/lib/types/database.types'
 
@@ -48,12 +49,23 @@ export function StaffManagementClient({
         />
       </div>
 
-      <StaffFormDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        onSuccess={handleSuccess}
-        staff={null}
-      />
+      {isDialogOpen && (
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Staff Member</DialogTitle>
+              <DialogDescription>
+                Add a new staff member to your team
+              </DialogDescription>
+            </DialogHeader>
+            <StaffFormMigrated
+              salonId={staffWithServices[0]?.salon_id ?? ''}
+              staff={null}
+              onSuccess={handleSuccess}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   )
 }

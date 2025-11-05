@@ -52,7 +52,7 @@ export async function getUserPreferences(): Promise<UserPreferences> {
   const { data: metadata } = await supabase
     .schema('identity')
     .from('profiles_metadata')
-    .select('*')
+    .select('profile_id, preferences')
     .eq('profile_id', profile.id)
     .single()
 

@@ -43,7 +43,7 @@ export async function getSalonBySlug(slug: string) {
 
   const { data: salon, error: salonError } = await supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, slug, formatted_address, city, state, rating_average, rating_count, logo_url, cover_image_url, is_active, created_at, booking_lead_time_hours, employee_count')
     .eq('slug', slug)
     .single<Salon>()
 
@@ -141,34 +141,36 @@ export async function getSalonMetadataBySlug(slug: string) {
   return data as { name: string | null; full_description: string | null; formatted_address: string | null } | null
 }
 
-export async function getSalonServices(salonId: string) {
+export async function getSalonServices(salonId: string): Promise<Service[]> {
   await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, category_id, name, description, current_price, duration_minutes, is_active, created_at, category_name')
     .eq('salon_id', salonId)
     .eq('is_active', true)
     .order('name')
+    .returns<Service[]>()
 
   if (error) throw error
-  return data as Service[]
+  return data || []
 }
 
-export async function getSalonStaff(salonId: string) {
+export async function getSalonStaff(salonId: string): Promise<Staff[]> {
   await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, title, bio, experience_years, created_at')
     .eq('salon_id', salonId)
-    .eq('status', 'active')
-    .order('full_name')
+    .is('deleted_at', null)
+    .order('created_at', { ascending: true })
+    .returns<Staff[]>()
 
   if (error) throw error
-  return data as Staff[]
+  return data || []
 }
 
 export async function getSalonReviews(salonId: string, limit: number = 10) {
@@ -177,7 +179,7 @@ export async function getSalonReviews(salonId: string, limit: number = 10) {
 
   const { data, error } = await supabase
     .from('salon_reviews_view')
-    .select('*')
+    .select('id, salon_id, customer_id, customer_name, rating, comment, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
     .limit(limit)
@@ -186,20 +188,20 @@ export async function getSalonReviews(salonId: string, limit: number = 10) {
   return (data || []) as SalonReview[]
 }
 
-export async function getSalonMedia(salonId: string) {
+export async function getSalonMedia(salonId: string): Promise<SalonMedia | null> {
   await requireAuth()
   const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('salon_media_view')
-    .select('*')
+    .select('salon_id, logo_url, cover_image_url, gallery_urls, gallery_image_count, created_at, updated_at')
     .eq('salon_id', salonId)
-    .single()
+    .maybeSingle<SalonMedia>()
 
   // Return null if not found (no error thrown)
   if (error && error.code === 'PGRST116') return null
   if (error) throw error
-  return data as SalonMedia
+  return data
 }
 
 export async function checkIsFavorited(salonId: string): Promise<boolean> {

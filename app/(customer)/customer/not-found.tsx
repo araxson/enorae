@@ -1,4 +1,4 @@
-import { NotFoundPage } from '@/features/shared/ui-components'
+import { NotFoundPage } from '@/features/shared/ui'
 
 export default function CustomerNotFound() {
   return (

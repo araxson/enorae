@@ -1,5 +1,12 @@
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { MarketingPanel, MarketingSection } from '@/features/marketing/components/common'
 import { ExploreListing } from './sections'
 import { getPublicSalons } from './api/queries'
 
@@ -8,13 +15,22 @@ export async function MarketingExplorePage() {
   return (
     <main className="flex flex-col gap-10">
       <MarketingSection spacing="compact">
-        <Item variant="muted">
-          <ItemContent>
-            <div className="flex flex-col items-center text-center">
-              <ItemDescription>Browse every verified salon on Enorae or filter inside the directory below.</ItemDescription>
-            </div>
-          </ItemContent>
-        </Item>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Explore salons</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <MarketingPanel
+          variant="muted"
+          align="center"
+          description="Browse every verified salon on Enorae or filter inside the directory below."
+        />
       </MarketingSection>
       <ExploreListing salons={salons} />
     </main>

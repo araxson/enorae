@@ -21,6 +21,9 @@
     "useUnknownInCatchVariables": true,
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "types": [
       "@types/node",

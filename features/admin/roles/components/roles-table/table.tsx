@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { format } from 'date-fns'
-import { Shield, ShieldOff, Trash2, MoreVertical } from 'lucide-react'
+import { Shield, ShieldOff, Trash2, MoreVertical, ChevronDown, ChevronRight } from 'lucide-react'
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,6 +24,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import type { UserRole } from '@/lib/types'
 import {
   Item,
@@ -33,12 +42,177 @@ import {
 const formatRoleLabel = (role: string | null | undefined) =>
   role ? role.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()) : 'N/A'
 
+// Helper function to categorize permissions
+const categorizePermissions = (permissions: string[] | null | undefined) => {
+  if (!permissions || permissions.length === 0) return null
+
+  const categories = {
+    userManagement: [] as string[],
+    contentManagement: [] as string[],
+    settings: [] as string[],
+    other: [] as string[],
+  }
+
+  permissions.forEach((perm) => {
+    const lower = perm.toLowerCase()
+    if (lower.includes('user') || lower.includes('profile') || lower.includes('account')) {
+      categories.userManagement.push(perm)
+    } else if (
+      lower.includes('content') ||
+      lower.includes('post') ||
+      lower.includes('review') ||
+      lower.includes('comment')
+    ) {
+      categories.contentManagement.push(perm)
+    } else if (
+      lower.includes('setting') ||
+      lower.includes('config') ||
+      lower.includes('system')
+    ) {
+      categories.settings.push(perm)
+    } else {
+      categories.other.push(perm)
+    }
+  })
+
+  return categories
+}
+
 type Props = {
   roles: UserRole[]
   canDelete: boolean
   onRevoke: (role: UserRole) => void
   onDelete: (role: UserRole) => void
   onEditPermissions: (role: UserRole) => void
+}
+
+function PermissionsCell({ role }: { role: UserRole }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const permissions = role['permissions']
+  const categories = categorizePermissions(permissions)
+
+  if (!categories) {
+    return <span className="text-sm text-muted-foreground">—</span>
+  }
+
+  const totalCount = permissions?.length || 0
+  const hasMultiple = totalCount > 3
+
+  if (!hasMultiple) {
+    return (
+      <div className="flex flex-wrap gap-1">
+        {permissions?.map((perm, idx) => (
+          <Badge key={idx} variant="secondary" className="text-xs">
+            {perm}
+          </Badge>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-2">
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="h-auto p-0 hover:bg-transparent"
+      >
+        {isExpanded ? (
+          <ChevronDown className="mr-1 h-3 w-3" />
+        ) : (
+          <ChevronRight className="mr-1 h-3 w-3" />
+        )}
+        <span className="text-sm">
+          {totalCount} {totalCount === 1 ? 'permission' : 'permissions'}
+        </span>
+      </Button>
+
+      {isExpanded && (
+        <Accordion type="multiple" className="w-full">
+          {categories.userManagement.length > 0 && (
+            <AccordionItem value="user">
+              <AccordionTrigger className="py-2 text-xs">
+                User Management
+                <Badge variant="secondary" className="ml-2">
+                  {categories.userManagement.length}
+                </Badge>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-wrap gap-1">
+                  {categories.userManagement.map((perm, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
+                      {perm}
+                    </Badge>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+
+          {categories.contentManagement.length > 0 && (
+            <AccordionItem value="content">
+              <AccordionTrigger className="py-2 text-xs">
+                Content Management
+                <Badge variant="secondary" className="ml-2">
+                  {categories.contentManagement.length}
+                </Badge>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-wrap gap-1">
+                  {categories.contentManagement.map((perm, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
+                      {perm}
+                    </Badge>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+
+          {categories.settings.length > 0 && (
+            <AccordionItem value="settings">
+              <AccordionTrigger className="py-2 text-xs">
+                Settings
+                <Badge variant="secondary" className="ml-2">
+                  {categories.settings.length}
+                </Badge>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-wrap gap-1">
+                  {categories.settings.map((perm, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
+                      {perm}
+                    </Badge>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+
+          {categories.other.length > 0 && (
+            <AccordionItem value="other">
+              <AccordionTrigger className="py-2 text-xs">
+                Other
+                <Badge variant="secondary" className="ml-2">
+                  {categories.other.length}
+                </Badge>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-wrap gap-1">
+                  {categories.other.map((perm, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
+                      {perm}
+                    </Badge>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          )}
+        </Accordion>
+      )}
+    </div>
+  )
 }
 
 export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEditPermissions }: Props) {
@@ -57,8 +231,8 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
         </ItemGroup>
       </CardHeader>
       <CardContent>
-        <div className="-m-6">
-          <Table>
+        <Table>
+          <TableCaption>Role assignments by user, salon, and status.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
@@ -113,8 +287,8 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
                         <Badge variant="secondary">Inactive</Badge>
                       )}
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {role['permissions']?.length ? role['permissions'].join(', ') : '—'}
+                    <TableCell>
+                      <PermissionsCell role={role} />
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {role['created_at'] ? format(new Date(role['created_at']), 'MMM d, yyyy') : 'N/A'}
@@ -155,8 +329,16 @@ export function RolesTableContent({ roles, canDelete, onRevoke, onDelete, onEdit
               })
             )}
           </TableBody>
-          </Table>
-        </div>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={7}>
+                <span className="text-sm text-muted-foreground">
+                  Total assignments: {roles.length}
+                </span>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
       </CardContent>
     </Card>
   )

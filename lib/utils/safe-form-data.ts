@@ -68,10 +68,10 @@ export function getOptionalBoolean(formData: FormData, key: string): boolean {
  * that elements match type T. For complex element types, validate in calling code.
  *
  * @example
- * // ✅ SAFE - Simple types
+ * // SAFE - Simple types
  * const ids = getRequiredJsonArray<string>(formData, 'ids')
  *
- * // ⚠️ COMPLEX - Validate elements yourself
+ * // WARNING - Validate elements yourself
  * const items = getRequiredJsonArray<ComplexType>(formData, 'items')
  * items.forEach(item => validateComplexType(item))
  */
@@ -83,7 +83,7 @@ export function getRequiredJsonArray<T = unknown>(formData: FormData, key: strin
       throw new Error(`Field ${key} is not an array`)
     }
     return parsed as T[]
-  } catch (error) {
+  } catch (error: unknown) {
     throw new Error(
       `Invalid JSON array for field ${key}: ${error instanceof Error ? error.message : 'Unknown error'}`,
     )
@@ -106,7 +106,7 @@ export function getOptionalJsonArray<T = unknown>(
   try {
     const parsed: unknown = JSON.parse(value)
     return Array.isArray(parsed) ? (parsed as T[]) : fallback
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn(`Failed to parse JSON array for field ${key}`)
     return fallback
   }
@@ -129,7 +129,7 @@ export function getRequiredJsonObject<T extends Record<string, unknown>>(
       throw new Error(`Field ${key} is not an object`)
     }
     return parsed as T
-  } catch (error) {
+  } catch (error: unknown) {
     throw new Error(
       `Invalid JSON object for field ${key}: ${error instanceof Error ? error.message : 'Unknown error'}`,
     )
@@ -154,7 +154,7 @@ export function getOptionalJsonObject<T extends Record<string, unknown>>(
     return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)
       ? (parsed as T)
       : fallback
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn(`Failed to parse JSON object for field ${key}`)
     return fallback
   }

@@ -4,7 +4,7 @@ import type { UserRole } from '@/lib/types'
 import { RolesTableContent } from './table'
 import { DeleteRoleDialog, RevokeRoleDialog } from './dialogs'
 import { useRoleActions } from './use-role-actions'
-import { EditPermissionsDialog } from '@/features/admin/roles/components/edit-permissions-dialog'
+import { EditPermissionsDialog } from '@/features/admin/roles/components'
 
 export type RolesTableProps = {
   roles: UserRole[]

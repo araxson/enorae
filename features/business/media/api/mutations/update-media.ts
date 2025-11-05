@@ -7,7 +7,12 @@ import { createOperationLogger } from '@/lib/observability'
 import { getRequiredString, getOptionalString } from '@/lib/utils/safe-form-data'
 import { validateUpdateMedia, type UpdateMediaValidation } from './helpers'
 
-export async function updateSalonMedia(formData: FormData) {
+type ActionResult = {
+  success?: boolean
+  error?: string
+}
+
+export async function updateSalonMedia(formData: FormData): Promise<ActionResult> {
   const logger = createOperationLogger('updateSalonMedia', {})
   logger.start()
 

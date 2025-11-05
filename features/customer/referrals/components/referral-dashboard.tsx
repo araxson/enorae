@@ -1,6 +1,7 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
+import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Users, Gift, Check, MessageSquare, History } from 'lucide-react'
@@ -23,6 +24,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   referralCode: string | null
@@ -63,6 +65,19 @@ const metrics = [
 ] as const
 
 export function ReferralDashboard({ referralCode, stats, history }: Props) {
+  const [isCopied, setIsCopied] = useState(false)
+
+  const handleCopy = async () => {
+    if (!referralCode) return
+    try {
+      await navigator.clipboard.writeText(referralCode)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch {
+      setIsCopied(false)
+    }
+  }
+
   if (!referralCode) {
     return (
       <Card>
@@ -70,16 +85,17 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Users className="size-6" aria-hidden="true" />
+                <Users className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>Referrals coming soon</EmptyTitle>
               <EmptyDescription>
-                Invite rewards aren&apos;t available yet. We&apos;ll notify you once referrals
-                launch.
+                Invite rewards aren&apos;t available yet. We&apos;ll notify you once referrals launch.
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              Keep an eye on announcements for the referral program rollout.
+              <Button asChild variant="outline" size="sm">
+                <Link href="/customer/notifications">Enable notifications</Link>
+              </Button>
             </EmptyContent>
           </Empty>
         </CardContent>
@@ -117,7 +133,12 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="font-mono text-lg font-semibold text-foreground">{referralCode}</p>
+          <div className="flex items-center gap-3">
+            <p className="font-mono text-lg font-semibold text-foreground">{referralCode}</p>
+            <Button variant="outline" size="sm" onClick={handleCopy}>
+              {isCopied ? 'Copied' : 'Copy'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -131,13 +152,18 @@ export function ReferralDashboard({ referralCode, stats, history }: Props) {
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <History className="size-6" aria-hidden="true" />
+                  <History className="size-5" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No referrals recorded yet</EmptyTitle>
                 <EmptyDescription>
                   Share your code when the program launches to start earning rewards.
                 </EmptyDescription>
               </EmptyHeader>
+              <EmptyContent>
+                <Button variant="outline" size="sm" onClick={handleCopy}>
+                  Copy code
+                </Button>
+              </EmptyContent>
             </Empty>
           ) : (
             <ItemGroup className="gap-2">

@@ -1,10 +1,9 @@
 import { Suspense } from 'react'
 
 import { getUserFavorites } from './api/queries'
-import { FavoritesList } from './components'
+import { FavoritesList, FavoritesSkeleton } from './components'
 
 import { generateMetadata as genMeta } from '@/lib/metadata'
-import { Spinner } from '@/components/ui/spinner'
 
 export type * from './api/types'
 export const favoritesMetadata = genMeta({
@@ -32,13 +31,7 @@ export async function Favorites() {
 
 export function FavoritesFeature() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center py-12">
-          <Spinner />
-        </div>
-      }
-    >
+    <Suspense fallback={<FavoritesSkeleton />}>
       <Favorites />
     </Suspense>
   )

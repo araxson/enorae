@@ -130,7 +130,7 @@ export async function getFailedWebhooks(limit = 50) {
 
   const { data, error } = await supabase
     .from('communication_webhook_queue_view')
-    .select('*')
+    .select('id, salon_id, event_type, payload, status, attempts, last_error, created_at, completed_at')
     .eq('salon_id', salonId)
     .eq('status', 'failed')
     .order('created_at', { ascending: false })
@@ -147,7 +147,7 @@ export async function getWebhookQueue() {
 
   const { data, error } = await supabase
     .from('communication_webhook_queue_view')
-    .select('*')
+    .select('id, salon_id, event_type, payload, status, attempts, last_error, created_at, completed_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
     .limit(100)
@@ -163,7 +163,7 @@ export async function getWebhookQueueById(id: string) {
 
   const { data, error } = await supabase
     .from('communication_webhook_queue_view')
-    .select('*')
+    .select('id, salon_id, event_type, payload, status, attempts, last_error, created_at, completed_at')
     .eq('id', id)
     .eq('salon_id', salonId)
     .maybeSingle()

@@ -1,5 +1,5 @@
 import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 
 import {
   DirectoryHeader,
@@ -22,15 +22,24 @@ interface SalonDirectoryPageProps {
     | undefined
 }
 
+// Type guard for Promise check
+function isPromise<T>(value: unknown): value is Promise<T> {
+  if (!value || typeof value !== 'object') return false
+  if (!('then' in value)) return false
+
+  const maybePromise = value as Record<string, unknown>
+  return typeof maybePromise['then'] === 'function'
+}
+
 export async function SalonDirectoryPage({
   searchParams,
 }: SalonDirectoryPageProps) {
   let resolvedSearchParams: SalonSearchParams | undefined
 
-  if (searchParams && typeof (searchParams as Promise<SalonSearchParams>).then === 'function') {
-    resolvedSearchParams = await (searchParams as Promise<SalonSearchParams | undefined>)
+  if (isPromise<SalonSearchParams | undefined>(searchParams)) {
+    resolvedSearchParams = await searchParams
   } else {
-    resolvedSearchParams = searchParams as SalonSearchParams | undefined
+    resolvedSearchParams = searchParams
   }
 
   const [salons, cities, categories] = await Promise.all([

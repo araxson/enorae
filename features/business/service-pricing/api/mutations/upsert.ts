@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/common/api/salon-context'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const pricingSchema = z.object({
@@ -73,7 +73,12 @@ const buildPricingRecord = (pricing: PricingInput, userId: string) => {
   }
 }
 
-export async function upsertServicePricing(formData: FormData) {
+type ActionResult = {
+  success?: boolean
+  error?: string
+}
+
+export async function upsertServicePricing(formData: FormData): Promise<ActionResult> {
   const logger = createOperationLogger('upsertServicePricing', {})
   logger.start()
 
@@ -83,7 +88,9 @@ export async function upsertServicePricing(formData: FormData) {
     const parsed = schema.safeParse(payload)
 
     if (!parsed.success) {
-      return { error: parsed.error.issues[0]?.message || 'Validation failed' }
+      const fieldErrors = parsed.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError || 'Validation failed' }
     }
 
     const { supabase, session, salonId } = await resolveSalonContext()

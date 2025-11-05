@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/item'
 import type { RateLimitRulesSnapshot } from '@/features/admin/rate-limit-rules/api/queries'
 import { Activity, Shield, Zap } from 'lucide-react'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { RateLimitRulesTable } from './rate-limit-rules-table'
 
 interface RateLimitRulesClientProps {

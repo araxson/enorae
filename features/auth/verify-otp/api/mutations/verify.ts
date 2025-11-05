@@ -5,7 +5,10 @@ import { otpSchema } from '../schema'
 import type { VerifyOtpResult } from '../types'
 import { createOperationLogger, logAuthEvent } from '@/lib/observability'
 
-export async function verifyOTP(formData: FormData): Promise<VerifyOtpResult> {
+export async function verifyOTP(
+  prevState: VerifyOtpResult | null,
+  formData: FormData
+): Promise<VerifyOtpResult> {
   const email = formData.get('email') as string
 
   const logger = createOperationLogger('verifyOTP', { email })
@@ -19,9 +22,12 @@ export async function verifyOTP(formData: FormData): Promise<VerifyOtpResult> {
       token: otpCode,
     })
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      logger.error(firstError?.message ?? 'Invalid input', 'validation', { email })
-      return { success: false, error: firstError?.message ?? 'Invalid input' }
+      logger.error('Validation failed', 'validation', { email })
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        errors: validation.error.flatten().fieldErrors
+      }
     }
 
     const { email: validatedEmail, token: validatedToken } = validation.data

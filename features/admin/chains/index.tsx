@@ -11,5 +11,5 @@ export async function AdminChains() {
   return <AdminChainsContent chains={chains} analytics={analytics} compliance={compliance} />
 }
 
-export { AdminChainsSkeleton } from './components/admin-chains-skeleton'
-export * from './api/types'
+export { AdminChainsSkeleton } from './components'
+export type * from './api/types'

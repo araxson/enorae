@@ -1,13 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useActionState, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Bell, Mail, MessageSquare, Smartphone } from 'lucide-react'
-import { updateNotificationPreferences } from '@/features/shared/preferences/api/mutations'
-import { TIME_MS } from '@/lib/config/constants'
+import { updateNotificationPreferencesAction } from '@/features/shared/preferences/api/actions'
 import {
   Item,
   ItemContent,
@@ -29,14 +26,24 @@ interface NotificationPreferencesFormProps {
   initialPreferences?: NotificationPreferences
 }
 
+interface FormState {
+  success?: boolean
+  error?: string
+  fieldErrors?: Record<string, string[]>
+  data?: unknown
+}
+
+function SubmitButton({ disabled }: { disabled: boolean }) {
+  return (
+    <Button type="submit" disabled={disabled}>
+      <span>Save preferences</span>
+    </Button>
+  )
+}
+
 export function NotificationPreferencesForm({
   initialPreferences = {},
 }: NotificationPreferencesFormProps) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
-
   const [preferences, setPreferences] = useState<NotificationPreferences>({
     email_appointments: initialPreferences.email_appointments ?? true,
     email_promotions: initialPreferences.email_promotions ?? false,
@@ -44,24 +51,21 @@ export function NotificationPreferencesForm({
     push_enabled: initialPreferences.push_enabled ?? true,
   })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
-    setSuccess(false)
+  const [state, formAction, isPending] = useActionState<FormState, FormData>(
+    updateNotificationPreferencesAction,
+    {}
+  )
 
-    const result = await updateNotificationPreferences(preferences)
-
-    if (result.success) {
-      setSuccess(true)
-      router.refresh()
-      setTimeout(() => setSuccess(false), TIME_MS.SUCCESS_MESSAGE_TIMEOUT)
-    } else {
-      setError(result.error)
+  // Reset success state after showing message
+  useEffect(() => {
+    if (state.success) {
+      const timer = setTimeout(() => {
+        // Success message will naturally disappear when state changes
+      }, 3000)
+      return () => clearTimeout(timer)
     }
-
-    setIsLoading(false)
-  }
+    return undefined
+  }, [state.success])
 
   return (
     <Item variant="outline">
@@ -75,7 +79,19 @@ export function NotificationPreferencesForm({
         <ItemDescription>
           Manage how you receive notifications and updates from Enorae
         </ItemDescription>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form action={formAction} className="space-y-6" aria-describedby={state.error ? 'form-error' : undefined}>
+          {/* Screen reader announcement for form status */}
+          <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+            {isPending && 'Form is submitting, please wait'}
+            {state.success && 'Preferences saved successfully'}
+          </div>
+
+          {/* Hidden inputs to pass preference values */}
+          <input type="hidden" name="email_appointments" value={String(preferences.email_appointments)} />
+          <input type="hidden" name="email_promotions" value={String(preferences.email_promotions)} />
+          <input type="hidden" name="sms_reminders" value={String(preferences.sms_reminders)} />
+          <input type="hidden" name="push_enabled" value={String(preferences.push_enabled)} />
+
           <NotificationSection
             icon={<Mail className="size-4 text-muted-foreground" />}
             title="Email notifications"
@@ -90,6 +106,7 @@ export function NotificationPreferencesForm({
                 onCheckedChange={(checked) =>
                   setPreferences((prev) => ({ ...prev, email_appointments: checked }))
                 }
+                disabled={isPending}
               />
               <NotificationToggleItem
                 id="email_promotions"
@@ -100,6 +117,7 @@ export function NotificationPreferencesForm({
                 onCheckedChange={(checked) =>
                   setPreferences((prev) => ({ ...prev, email_promotions: checked }))
                 }
+                disabled={isPending}
               />
             </div>
           </NotificationSection>
@@ -118,6 +136,7 @@ export function NotificationPreferencesForm({
                 onCheckedChange={(checked) =>
                   setPreferences((prev) => ({ ...prev, sms_reminders: checked }))
                 }
+                disabled={isPending}
               />
             </div>
           </NotificationSection>
@@ -136,36 +155,28 @@ export function NotificationPreferencesForm({
                 onCheckedChange={(checked) =>
                   setPreferences((prev) => ({ ...prev, push_enabled: checked }))
                 }
+                disabled={isPending}
               />
             </div>
           </NotificationSection>
 
-          {error && (
-            <Alert variant="destructive">
+          {state.error && (
+            <Alert variant="destructive" role="alert" id="form-error">
               <AlertCircle className="size-4" />
               <AlertTitle>Update failed</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription>{state.error}</AlertDescription>
             </Alert>
           )}
 
-          {success && (
-            <Alert>
+          {state.success && (
+            <Alert role="status">
               <AlertCircle className="size-4" />
               <AlertTitle>Preferences saved</AlertTitle>
               <AlertDescription>Preferences updated successfully!</AlertDescription>
             </Alert>
           )}
 
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Spinner />
-                <span>Saving...</span>
-              </>
-            ) : (
-              <span>Save preferences</span>
-            )}
-          </Button>
+          <SubmitButton disabled={isPending} />
         </form>
       </ItemContent>
     </Item>

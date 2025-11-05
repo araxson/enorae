@@ -27,7 +27,7 @@ export function CalendarDayCard({ day, blockedTimes, appointments }: CalendarDay
   const isToday = isSameDay(day, new Date())
 
   return (
-    <Card key={day.toISOString()} className={isToday ? 'border-primary' : ''}>
+    <Card key={day.toISOString()}>
       <CardContent>
         <div className="flex flex-col gap-3 p-3">
           <div>
@@ -37,6 +37,7 @@ export function CalendarDayCard({ day, blockedTimes, appointments }: CalendarDay
             <p className="text-xs text-muted-foreground">
               {format(day, 'MMM d')}
             </p>
+            {isToday ? <Badge variant="secondary" className="mt-2 w-fit">Today</Badge> : null}
           </div>
 
           {appointments.length > 0 && (

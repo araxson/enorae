@@ -2,7 +2,10 @@
 
 import { useMemo } from 'react'
 
-export function useCurrencyFormatter() {
+export function useCurrencyFormatter(): {
+  formatCurrency: (amount: number) => string
+  formatPercentage: (value: number) => string
+} {
   const formatCurrency = useMemo(
     () => (amount: number) => {
       return new Intl.NumberFormat('en-US', {

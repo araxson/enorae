@@ -31,15 +31,13 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
     schedules: StaffScheduleWithDetails[]
   }
 
-  // PERFORMANCE: Memoize grouping logic to prevent re-computation on every render
   const staffGroups = useMemo(() => {
     return schedules.reduce<Record<string, StaffGroup>>(
       (acc, schedule) => {
         const key = schedule['staff_id'] || 'unknown'
 
         if (!acc[key]) {
-          // PERFORMANCE: Mutate accumulator instead of spreading to reduce object creation
-          acc[key] = {
+                  acc[key] = {
             staffId: schedule['staff_id'],
             staffName: schedule['staff_name'] || 'Unknown',
             staffTitle: schedule['staff_title'] || null,
@@ -48,15 +46,13 @@ export function SchedulesGrid({ schedules, onUpdate }: SchedulesGridProps) {
           return acc
         }
 
-        // PERFORMANCE: Mutate array instead of spreading
-        acc[key].schedules.push(schedule)
+              acc[key].schedules.push(schedule)
         return acc
       },
       {}
     )
   }, [schedules])
 
-  // PERFORMANCE: Wrap callbacks in useCallback to prevent re-creation on every render
   const handleDelete = useCallback(async (scheduleId: string) => {
     if (!confirm('Are you sure you want to delete this schedule?')) return
 

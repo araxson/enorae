@@ -36,7 +36,7 @@ export function validateUpdateMedia(data: {
   cover_image_url?: string | null
   video_url?: string | null
   brand_colors?: string | null
-}): { success: true; data: UpdateMediaValidation } | { success: false; error: string } {
+}): { success: true; data: UpdateMediaValidation } | { success: false; error: string; fieldErrors?: Record<string, string[]> } {
   // Validate brand colors if provided
   let brandColorsData: string[] | undefined
   if (data.brand_colors) {
@@ -44,9 +44,11 @@ export function validateUpdateMedia(data: {
     const validated = brandColorsSchema.safeParse(parsed)
     brandColorsData = validated.success ? validated.data : undefined
     if (!validated.success) {
+      const flattened = validated.error.flatten()
       return {
         success: false,
-        error: `Brand colors validation failed: ${validated.error.issues.map((i) => i.message).join(', ')}`,
+        error: 'Brand colors validation failed. Please check your input.',
+        fieldErrors: flattened.fieldErrors as Record<string, string[]>
       }
     }
   }
@@ -60,8 +62,12 @@ export function validateUpdateMedia(data: {
   })
 
   if (!validation.success) {
-    const errors = validation.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')
-    return { success: false, error: `Media validation failed: ${errors}` }
+    const flattened = validation.error.flatten()
+    return {
+      success: false,
+      error: 'Media validation failed. Please check your input.',
+      fieldErrors: flattened.fieldErrors
+    }
   }
 
   return { success: true, data: validation.data }
@@ -70,11 +76,15 @@ export function validateUpdateMedia(data: {
 export function validateAddImage(data: {
   salonId: string
   imageUrl: string
-}): { success: true } | { success: false; error: string } {
+}): { success: true } | { success: false; error: string; fieldErrors?: Record<string, string[]> } {
   const validation = addImageSchema.safeParse(data)
   if (!validation.success) {
-    const errors = validation.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')
-    return { success: false, error: `Validation failed: ${errors}` }
+    const flattened = validation.error.flatten()
+    return {
+      success: false,
+      error: 'Validation failed. Please check your input.',
+      fieldErrors: flattened.fieldErrors
+    }
   }
   return { success: true }
 }
@@ -82,11 +92,15 @@ export function validateAddImage(data: {
 export function validateRemoveImage(data: {
   salonId: string
   imageUrl: string
-}): { success: true } | { success: false; error: string } {
+}): { success: true } | { success: false; error: string; fieldErrors?: Record<string, string[]> } {
   const validation = removeImageSchema.safeParse(data)
   if (!validation.success) {
-    const errors = validation.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ')
-    return { success: false, error: `Validation failed: ${errors}` }
+    const flattened = validation.error.flatten()
+    return {
+      success: false,
+      error: 'Validation failed. Please check your input.',
+      fieldErrors: flattened.fieldErrors
+    }
   }
   return { success: true }
 }

@@ -25,3 +25,5 @@ export {
   type ProfileMetadataSchema,
   type AvatarUploadSchema,
 } from './schema'
+export * from './actions'
+export * from './types'

@@ -34,22 +34,22 @@ export async function getDatabaseHealth(
   const [bloatRes, cacheRes, hotUpdateRes, toastRes] = await Promise.all([
     supabase
       .from('table_bloat_estimate_view')
-      .select('*')
+      .select('schemaname, tablename, dead_tuple_percent, estimated_bloat_bytes')
       .order('dead_tuple_percent', { ascending: false })
       .limit(limit),
     supabase
       .from('table_cache_hit_ratio_view')
-      .select('*')
+      .select('schemaname, tablename, cache_hit_ratio, buffer_hits, disk_reads')
       .order('cache_hit_ratio', { ascending: true })
       .limit(limit),
     supabase
       .from('hot_update_stats_view')
-      .select('*')
+      .select('schemaname, tablename, hot_update_percentage, status')
       .order('hot_update_percentage', { ascending: false })
       .limit(limit),
     supabase
       .from('toast_usage_summary_view')
-      .select('*')
+      .select('schemaname, tablename, toast_index_percentage, toast_size_bytes')
       .order('toast_index_percentage', { ascending: false })
       .limit(limit),
   ])
@@ -59,10 +59,10 @@ export async function getDatabaseHealth(
   if (hotUpdateRes.error) throw hotUpdateRes.error
   if (toastRes.error) throw toastRes.error
 
-  const bloatedTables = (bloatRes.data ?? []) as TableBloat[]
-  const cachePerformance = (cacheRes.data ?? []) as CacheHitRatio[]
-  const hotUpdateStats = (hotUpdateRes.data ?? []) as HotUpdateStats[]
-  const toastUsage = (toastRes.data ?? []) as ToastUsage[]
+  const bloatedTables = (bloatRes.data ?? []) as unknown as TableBloat[]
+  const cachePerformance = (cacheRes.data ?? []) as unknown as CacheHitRatio[]
+  const hotUpdateStats = (hotUpdateRes.data ?? []) as unknown as HotUpdateStats[]
+  const toastUsage = (toastRes.data ?? []) as unknown as ToastUsage[]
 
   const totalBloatedTables = bloatedTables.filter(
     (t) => (t['dead_tuple_percent'] ?? 0) > 10

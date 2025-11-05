@@ -11,11 +11,14 @@ import {
 
 import {
   Empty,
+  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import type { DashboardAppointment } from '@/features/customer/dashboard/api/queries'
 import {
   Item,
@@ -61,11 +64,16 @@ export function AppointmentHistory({ appointments }: AppointmentHistoryProps) {
           <Empty>
             <EmptyHeader>
               <EmptyMedia variant="icon">
-                <History className="size-8" aria-hidden="true" />
+                <History className="size-5" aria-hidden="true" />
               </EmptyMedia>
               <EmptyTitle>No past appointments</EmptyTitle>
               <EmptyDescription>Your appointment history will appear here.</EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/customer/appointments">Book now</Link>
+              </Button>
+            </EmptyContent>
           </Empty>
         ) : (
           <ItemGroup>

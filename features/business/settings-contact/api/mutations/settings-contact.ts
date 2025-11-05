@@ -47,8 +47,9 @@ export async function updateSalonContactDetails(
     // Validate input with Zod schema
     const validation = settingsContactSchema.safeParse(input)
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      return { success: false, error: firstError?.message ?? 'Validation failed' }
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { success: false, error: firstError ?? 'Validation failed' }
     }
 
     const validatedData = validation.data

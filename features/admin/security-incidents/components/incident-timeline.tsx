@@ -15,7 +15,7 @@ interface IncidentTimelineProps {
   incidents: SecurityIncidentRecord[]
 }
 
-export function IncidentTimeline({ incidents }: IncidentTimelineProps) {
+export function IncidentTimeline({ incidents }: IncidentTimelineProps): React.JSX.Element {
   const getSeverityBadge = (severity: string) => {
     switch (severity) {
       case 'critical':

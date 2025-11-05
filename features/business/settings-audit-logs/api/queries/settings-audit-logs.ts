@@ -4,47 +4,12 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS, canAccessSalon } from '@/lib/auth'
 import type { Database } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'
-
-export interface AuditLog {
-  id: string
-  user_id: string
-  impersonator_id: string | null
-  action: string
-  entity_type: string
-  entity_id: string | null
-  old_values: Record<string, unknown> | null
-  new_values: Record<string, unknown> | null
-  ip_address: string | null
-  user_agent: string | null
-  request_id: string | null
-  is_success: boolean
-  error_message: string | null
-  created_at: string
-}
-
-export interface SecurityAuditLog {
-  id: string
-  event_type: string
-  severity: string
-  user_id: string | null
-  salon_id: string | null
-  ip_address: string | null
-  user_agent: string | null
-  request_id: string | null
-  metadata: Record<string, unknown> | null
-  created_at: string
-}
-
-export interface AuditLogFilters {
-  action?: string
-  entityType?: string
-  startDate?: string
-  endDate?: string
-  userId?: string
-  isSuccess?: boolean
-}
-
-type SecurityIncidentLogRow = Database['public']['Views']['security_incident_logs_view']['Row']
+import type {
+  AuditLog,
+  SecurityAuditLog,
+  AuditLogFilters,
+  SecurityIncidentLogRow,
+} from '../types'
 
 function normalizeRecord(value: unknown): Record<string, unknown> | null {
   if (value && typeof value === 'object' && !Array.isArray(value)) {
@@ -113,7 +78,7 @@ export async function getAuditLogs(
 
   let query = supabase
     .from('security_incident_logs_view')
-    .select('*')
+    .select('id, salon_id, event_type, event_category, severity, user_id, is_success, metadata, created_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
     .limit(100)
@@ -168,7 +133,7 @@ export async function getSecurityAuditLogs(
 
   let query = supabase
     .from('security_incident_logs_view')
-    .select('*')
+    .select('id, salon_id, event_type, event_category, severity, user_id, is_success, metadata, created_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: false })
     .limit(100)

@@ -1,4 +1,3 @@
-import 'server-only'
 import type { Database } from '@/lib/types/database.types'
 
 export type AdminUser = Database['public']['Views']['admin_users_overview_view']['Row']

@@ -1,28 +1,19 @@
 'use client'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+
+import { useActionState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { blockedTimeSchema, type BlockedTimeFormData } from '../api/schema'
-import { createBlockedTime, updateBlockedTime } from '../api/mutations'
+import { createBlockedTimeAction, updateBlockedTimeAction } from '../api/actions'
 import type { BlockedTime } from '@/features/staff/blocked-times/api/types'
 import {
-  Field,
-  FieldContent,
-  FieldError,
   FieldGroup,
-  FieldLabel,
   FieldLegend,
   FieldSeparator,
   FieldSet,
 } from '@/components/ui/field'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { TIME_MS } from '@/lib/config/constants'
+import { TimeRangeFields, BlockTypeField, ReasonField, RecurringField } from './sections'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface BlockedTimeFormProps {
   blockedTime?: BlockedTime
@@ -30,167 +21,142 @@ interface BlockedTimeFormProps {
   onCancel?: () => void
 }
 
-export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTimeFormProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+function SubmitButton({ isEditing }: { isEditing: boolean }) {
+  return (
+    <Button type="submit" aria-busy="false">
+      {isEditing ? 'Update' : 'Create'}
+    </Button>
+  )
+}
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<BlockedTimeFormData>({
-    resolver: zodResolver(blockedTimeSchema),
-    defaultValues: blockedTime ? {
-      start_time: new Date(blockedTime['start_time'] || '').toISOString().slice(0, 16),
-      end_time: new Date(blockedTime['end_time'] || '').toISOString().slice(0, 16),
-      block_type: blockedTime['block_type'] || 'break',
-      reason: blockedTime['reason'] || '',
-      is_recurring: blockedTime['is_recurring'] || false,
-      recurrence_pattern: blockedTime['recurrence_pattern'] || null,
-    } : {
-      start_time: new Date().toISOString().slice(0, 16),
-      end_time: new Date(Date.now() + TIME_MS.ONE_HOUR).toISOString().slice(0, 16),
-      block_type: 'break',
-      reason: '',
-      is_recurring: false,
-      recurrence_pattern: null,
-    },
+export function BlockedTimeForm({ blockedTime, onSuccess, onCancel }: BlockedTimeFormProps) {
+  const isEditing = !!blockedTime?.id
+  const action = isEditing ? updateBlockedTimeAction.bind(null, blockedTime.id) : createBlockedTimeAction
+
+  const [state, formAction] = useActionState(action, {
+    success: false,
+    message: '',
+    errors: {},
   })
 
-  const isRecurring = watch('is_recurring')
+  const firstErrorRef = useRef<HTMLInputElement>(null)
 
-  const onSubmit = async (data: BlockedTimeFormData) => {
-    try {
-      setIsSubmitting(true)
-      setError(null)
-
-      if (blockedTime?.['id']) {
-        await updateBlockedTime(blockedTime['id'], data)
-      } else {
-        await createBlockedTime(data)
-      }
-
-      onSuccess?.()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
-    } finally {
-      setIsSubmitting(false)
+  // Focus first error field after validation
+  useEffect(() => {
+    if (state?.errors && Object.keys(state.errors).length > 0 && firstErrorRef.current) {
+      firstErrorRef.current.focus()
     }
-  }
+  }, [state?.errors])
+
+  // Call onSuccess when form succeeds
+  useEffect(() => {
+    if (state?.success) {
+      onSuccess?.()
+    }
+  }, [state?.success, onSuccess])
+
+  const hasErrors = state?.errors && Object.keys(state.errors).length > 0
+
+  // Default values for new form
+  const defaultStartTime = blockedTime?.start_time
+    ? new Date(blockedTime.start_time).toISOString().slice(0, 16)
+    : new Date().toISOString().slice(0, 16)
+  const defaultEndTime = blockedTime?.end_time
+    ? new Date(blockedTime.end_time).toISOString().slice(0, 16)
+    : new Date(Date.now() + TIME_MS.ONE_HOUR).toISOString().slice(0, 16)
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FieldSet>
-        <FieldLegend>Timing</FieldLegend>
-        <FieldGroup className="@md/field-group:grid @md/field-group:grid-cols-2">
-          <Field>
-            <FieldLabel htmlFor="start_time">Start Time</FieldLabel>
-            <FieldContent>
-              <Input
-                id="start_time"
-                type="datetime-local"
-                {...register('start_time')}
-              />
-              {errors['start_time'] ? (
-                <FieldError>{errors['start_time'].message}</FieldError>
-              ) : null}
-            </FieldContent>
-          </Field>
+    <div>
+      {/* Screen reader announcement for form status */}
+      <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {state?.message && !hasErrors && state.message}
+      </div>
 
-          <Field>
-            <FieldLabel htmlFor="end_time">End Time</FieldLabel>
-            <FieldContent>
-              <Input
-                id="end_time"
-                type="datetime-local"
-                {...register('end_time')}
-              />
-              {errors['end_time'] ? (
-                <FieldError>{errors['end_time'].message}</FieldError>
-              ) : null}
-            </FieldContent>
-          </Field>
-        </FieldGroup>
+      {/* Error summary for accessibility */}
+      {hasErrors && (
+        <Alert variant="destructive" className="mb-6" tabIndex={-1}>
+          <AlertTitle>
+            Please fix {Object.keys(state.errors).length} error{Object.keys(state.errors).length === 1 ? '' : 's'}:
+          </AlertTitle>
+          <AlertDescription>
+            <ul className="list-disc list-inside space-y-1">
+              {Object.entries(state.errors).map(([field, messages]) => (
+                <li key={field}>
+                  <a
+                    href={`#${field}`}
+                    className="underline hover:no-underline"
+                  >
+                    {field.replace(/_/g, ' ')}: {(messages as string[])[0]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </AlertDescription>
+        </Alert>
+      )}
 
-        <FieldSeparator />
-
-        <Field>
-          <FieldLabel htmlFor="block_type">Block Type</FieldLabel>
-          <FieldContent>
-            <Select
-              value={watch('block_type')}
-              onValueChange={(value) => setValue('block_type', value as BlockedTimeFormData['block_type'])}
-            >
-              <SelectTrigger id="block_type">
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="break">Break</SelectItem>
-                <SelectItem value="lunch">Lunch</SelectItem>
-                <SelectItem value="personal">Personal</SelectItem>
-                <SelectItem value="vacation">Vacation</SelectItem>
-                <SelectItem value="sick_leave">Sick Leave</SelectItem>
-                <SelectItem value="training">Training</SelectItem>
-                <SelectItem value="holiday">Holiday</SelectItem>
-                <SelectItem value="maintenance">Maintenance</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            {errors['block_type'] ? (
-              <FieldError>{errors['block_type'].message}</FieldError>
-            ) : null}
-          </FieldContent>
-        </Field>
-
-        <Field>
-          <FieldLabel htmlFor="reason">Reason</FieldLabel>
-          <FieldContent>
-            <Textarea
-              id="reason"
-              placeholder="Enter reason for blocked time"
-              {...register('reason')}
+      <form action={formAction} aria-describedby={hasErrors ? 'form-errors' : undefined}>
+        <FieldSet>
+          <FieldLegend>Timing</FieldLegend>
+          <FieldGroup className="@md/field-group:grid @md/field-group:grid-cols-2">
+            <TimeRangeFields
+              startError={state?.errors?.['start_time']?.[0]}
+              endError={state?.errors?.['end_time']?.[0]}
+              defaultStartTime={defaultStartTime}
+              defaultEndTime={defaultEndTime}
+              firstErrorRef={firstErrorRef}
             />
-            {errors['reason'] ? (
-              <FieldError>{errors['reason'].message}</FieldError>
-            ) : null}
-          </FieldContent>
-        </Field>
+          </FieldGroup>
 
-        <Field orientation="horizontal">
-          <FieldLabel htmlFor="is_recurring">Recurring</FieldLabel>
-          <FieldContent>
-            <Switch
-              id="is_recurring"
-              checked={isRecurring}
-              onCheckedChange={(checked) => setValue('is_recurring', checked)}
-            />
-          </FieldContent>
-        </Field>
+          <FieldSeparator />
 
-        {error ? <FieldError>{error}</FieldError> : null}
+          <BlockTypeField
+            defaultValue={blockedTime?.block_type}
+            error={state?.errors?.['block_type']?.[0]}
+          />
 
-        <div className="flex justify-end">
-          <ButtonGroup>
-            {onCancel && (
-              <Button type="button" variant="outline" onClick={onCancel}>
-                Cancel
-              </Button>
-            )}
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Spinner className="size-4" />
-                  <span>Saving...</span>
-                </>
-              ) : (
-                <span>{blockedTime ? 'Update' : 'Create'}</span>
+          <ReasonField
+            defaultValue={blockedTime?.reason ?? null}
+            error={state?.errors?.['reason']?.[0]}
+          />
+
+          <RecurringField
+            defaultValue={blockedTime?.is_recurring}
+            error={state?.errors?.['is_recurring']?.[0]}
+          />
+
+          {state?.message && !state.success && !hasErrors && (
+            <Alert variant="destructive" className="mt-4">
+              <AlertTitle>Unable to save blocked time</AlertTitle>
+              <AlertDescription>{state.message}</AlertDescription>
+            </Alert>
+          )}
+
+          {state?.success && (
+            <Alert className="mt-4" role="status">
+              <AlertTitle>
+                {isEditing ? 'Blocked time updated' : 'Blocked time created'}
+              </AlertTitle>
+              <AlertDescription>
+                {isEditing
+                  ? 'Your existing blocked time has been updated.'
+                  : 'Your new blocked time is now scheduled.'}
+              </AlertDescription>
+            </Alert>
+          )}
+
+          <div className="flex justify-end">
+            <ButtonGroup>
+              {onCancel && (
+                <Button type="button" variant="outline" onClick={onCancel}>
+                  Cancel
+                </Button>
               )}
-            </Button>
-          </ButtonGroup>
-        </div>
-      </FieldSet>
-    </form>
+              <SubmitButton isEditing={isEditing} />
+            </ButtonGroup>
+          </div>
+        </FieldSet>
+      </form>
+    </div>
   )
 }

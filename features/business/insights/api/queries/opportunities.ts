@@ -7,7 +7,14 @@ import { createOperationLogger } from '@/lib/observability'
 // Type aliases for database views
 type OperationalMetric = Database['public']['Views']['operational_metrics_view']['Row']
 
-export async function getGrowthOpportunities(salonId: string) {
+type GrowthOpportunity = {
+  type: string
+  title: string
+  description: string
+  potential: string
+}
+
+export async function getGrowthOpportunities(salonId: string): Promise<GrowthOpportunity[]> {
   const logger = createOperationLogger('getGrowthOpportunities', {})
   logger.start()
 
@@ -19,7 +26,7 @@ export async function getGrowthOpportunities(salonId: string) {
   // Get operational metrics
   const { data: operational, error: operationalError } = await supabase
     .from('operational_metrics_view')
-    .select('*')
+    .select('salon_id, metric_at, staff_utilization_rate, appointment_utilization_rate, avg_appointment_gap_minutes, created_at')
     .eq('salon_id', salonId)
     .order('metric_at', { ascending: false })
     .limit(1)
@@ -34,7 +41,7 @@ export async function getGrowthOpportunities(salonId: string) {
   // Explicitly type the operational metric
   const typedOperational = operational as OperationalMetric | null
 
-  const opportunities = []
+  const opportunities: GrowthOpportunity[] = []
 
   if (typedOperational?.peak_hour) {
     opportunities.push({

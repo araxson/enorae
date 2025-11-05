@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+
 import { format } from 'date-fns'
 import { Monitor, Smartphone, Tablet, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -27,7 +27,7 @@ function getDeviceIcon(deviceType: string | null | undefined) {
   }
 }
 
-export const SessionRow = memo(function SessionRow({
+export function SessionRow({
   session,
   isCurrent,
   isRevoking,
@@ -72,4 +72,4 @@ export const SessionRow = memo(function SessionRow({
       </TableCell>
     </TableRow>
   )
-})
+}

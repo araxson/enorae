@@ -7,7 +7,7 @@ import type { Json } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'
 import { getOptionalString, getOptionalJsonObject } from '@/lib/utils/safe-form-data'
 
-export async function updateProfileMetadata(formData: FormData) {
+export async function updateProfileMetadata(formData: FormData): Promise<{ success: boolean }> {
   const logger = createOperationLogger('updateProfileMetadata', {})
 
   try {
@@ -47,7 +47,7 @@ export async function updateProfileMetadata(formData: FormData) {
   }
 }
 
-export async function updateProfileAvatar(avatarUrl: string) {
+export async function updateProfileAvatar(avatarUrl: string): Promise<{ success: boolean }> {
   const logger = createOperationLogger('updateProfileAvatar', {})
 
   try {
@@ -79,7 +79,7 @@ export async function updateProfileAvatar(avatarUrl: string) {
   }
 }
 
-export async function updateProfilePreferences(formData: FormData) {
+export async function updateProfilePreferences(formData: FormData): Promise<{ success: boolean }> {
   const logger = createOperationLogger('updateProfilePreferences', {})
 
   try {

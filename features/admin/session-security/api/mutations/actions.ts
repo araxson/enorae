@@ -34,7 +34,7 @@ type SessionSecurityRecord = {
   [key: string]: unknown
 }
 
-export async function quarantineSession(formData: FormData) {
+export async function quarantineSession(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('quarantineSession', {})
   logger.start()
 
@@ -42,15 +42,24 @@ export async function quarantineSession(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = quarantineSessionSchema.parse({
+    const validation = quarantineSessionSchema.safeParse({
       sessionId: formData.get('sessionId')?.toString(),
       reason: formData.get('reason')?.toString(),
     })
 
+    if (!validation.success) {
+      logger.error('Validation failed', 'validation')
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = validation.data
+
     // Get current record
     const { data: record } = await supabase
       .from('security_session_security_view')
-      .select('*')
+      .select('id, session_id, user_id, user_email, risk_level, suspicious_score, created_at')
       .eq('id', validated.sessionId)
       .single()
 
@@ -58,7 +67,7 @@ export async function quarantineSession(formData: FormData) {
       return { error: 'Session security record not found' }
     }
 
-    const typedRecord = record as SessionSecurityRecord
+    const typedRecord = record as unknown as SessionSecurityRecord
 
     // TODO: Database schema doesn't have session_security_events table
     // Mark session as blocked in session_security table instead
@@ -101,7 +110,7 @@ export async function quarantineSession(formData: FormData) {
   }
 }
 
-export async function requireMfaForUser(formData: FormData) {
+export async function requireMfaForUser(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('requireMfaForUser', {})
   logger.start()
 
@@ -109,15 +118,24 @@ export async function requireMfaForUser(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = requireMfaSchema.parse({
+    const validation = requireMfaSchema.safeParse({
       userId: formData.get('userId')?.toString(),
       reason: formData.get('reason')?.toString(),
     })
 
+    if (!validation.success) {
+      logger.error('Validation failed', 'validation')
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = validation.data
+
     // Get user sessions
     const { data: userSessions } = await supabase
       .from('security_session_security_view')
-      .select('*')
+      .select('id, session_id, user_id, user_email, risk_level, created_at')
       .eq('user_id', validated.userId)
 
     if (!userSessions || userSessions.length === 0) {
@@ -153,7 +171,7 @@ export async function requireMfaForUser(formData: FormData) {
   }
 }
 
-export async function evictSession(formData: FormData) {
+export async function evictSession(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('evictSession', {})
   logger.start()
 
@@ -161,15 +179,24 @@ export async function evictSession(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = evictSessionSchema.parse({
+    const validation = evictSessionSchema.safeParse({
       sessionId: formData.get('sessionId')?.toString(),
       reason: formData.get('reason')?.toString(),
     })
 
+    if (!validation.success) {
+      logger.error('Validation failed', 'validation')
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = validation.data
+
     // Get current record
     const { data: record } = await supabase
       .from('security_session_security_view')
-      .select('*')
+      .select('id, session_id, user_id, user_email, risk_level, suspicious_score, created_at')
       .eq('id', validated.sessionId)
       .single()
 
@@ -177,7 +204,7 @@ export async function evictSession(formData: FormData) {
       return { error: 'Session security record not found' }
     }
 
-    const typedRecord = record as SessionSecurityRecord
+    const typedRecord = record as unknown as SessionSecurityRecord
 
     // TODO: Database schema doesn't have 'auth' schema access
     // Delete session from identity schema sessions table instead
@@ -217,7 +244,7 @@ export async function evictSession(formData: FormData) {
   }
 }
 
-export async function overrideSeverity(formData: FormData) {
+export async function overrideSeverity(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('overrideSeverity', {})
   logger.start()
 
@@ -225,7 +252,7 @@ export async function overrideSeverity(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = overrideSeveritySchema.parse({
+    const validation = overrideSeveritySchema.safeParse({
       sessionId: formData.get('sessionId')?.toString(),
       newRiskLevel: formData.get('newRiskLevel')?.toString() as
         | 'low'
@@ -235,10 +262,19 @@ export async function overrideSeverity(formData: FormData) {
       reason: formData.get('reason')?.toString(),
     })
 
+    if (!validation.success) {
+      logger.error('Validation failed', 'validation')
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = validation.data
+
     // Get current record
     const { data: record } = await supabase
       .from('security_session_security_view')
-      .select('*')
+      .select('id, session_id, user_id, user_email, risk_level, suspicious_score, created_at')
       .eq('id', validated.sessionId)
       .single()
 
@@ -246,7 +282,7 @@ export async function overrideSeverity(formData: FormData) {
       return { error: 'Session security record not found' }
     }
 
-    const typedRecord = record as SessionSecurityRecord
+    const typedRecord = record as unknown as SessionSecurityRecord
 
     // TODO: Database schema doesn't have session_risk_overrides table
     // Update suspicious_score in session_security table based on risk level

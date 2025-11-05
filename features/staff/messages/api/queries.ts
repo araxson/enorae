@@ -32,7 +32,7 @@ export async function getMyMessageThreads(): Promise<MessageThread[]> {
     .order('last_message_at', { ascending: false })
 
   if (error) throw error
-  return data
+  return data as MessageThread[]
 }
 
 export async function getThreadById(threadId: string): Promise<MessageThread | null> {
@@ -55,7 +55,7 @@ export async function getThreadById(threadId: string): Promise<MessageThread | n
     if (error.code === 'PGRST116') return null
     throw error
   }
-  return data
+  return data as MessageThread
 }
 
 export async function getThreadMessages(threadId: string): Promise<Message[]> {
@@ -87,7 +87,7 @@ export async function getThreadMessages(threadId: string): Promise<Message[]> {
     .order('created_at', { ascending: true })
 
   if (error) throw error
-  return data
+  return data as Message[]
 }
 
 export async function getUnreadCount(): Promise<number> {

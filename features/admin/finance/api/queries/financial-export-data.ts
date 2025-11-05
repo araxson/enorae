@@ -18,7 +18,7 @@ export async function getFinancialExportData(
 
   const { data: revenueData, error: revenueError } = await supabase
     .from('admin_revenue_overview_view')
-    .select('*')
+    .select('date, total_revenue, service_revenue, product_revenue, total_appointments, completed_appointments, cancelled_appointments, no_show_appointments')
     .gte('date', startDate)
     .lte('date', endDate)
     .order('date', { ascending: true })

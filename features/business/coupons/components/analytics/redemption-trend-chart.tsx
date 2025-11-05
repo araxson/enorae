@@ -20,8 +20,8 @@ export function RedemptionTrendChart({ trend }: RedemptionTrendChartProps) {
       <CardContent>
         <ChartContainer
           config={{
-            uses: { label: 'Uses', color: 'hsl(var(--chart-1))' },
-            discount: { label: 'Discount', color: 'hsl(var(--chart-2))' },
+            uses: { label: 'Uses', color: 'var(--chart-1)' },
+            discount: { label: 'Discount', color: 'var(--chart-2)' },
           }}
           className="h-64 w-full"
         >

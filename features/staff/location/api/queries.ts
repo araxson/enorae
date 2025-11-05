@@ -28,7 +28,7 @@ export async function getMyLocation(): Promise<StaffLocationDetail | null> {
       if (error.code === 'PGRST116') return null
       throw error
     }
-    return data
+    return data as StaffLocationDetail
   }
 
   // Otherwise get the primary location for the salon

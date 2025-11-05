@@ -1,5 +1,5 @@
 import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 import { Hero } from '@/features/marketing/how-it-works/sections/hero'
 import { ForCustomers } from '@/features/marketing/how-it-works/sections/for-customers'
 import { ForBusinesses } from '@/features/marketing/how-it-works/sections/for-businesses'

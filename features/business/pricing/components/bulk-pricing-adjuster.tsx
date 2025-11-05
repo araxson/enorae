@@ -165,7 +165,7 @@ export function BulkPricingAdjuster({ salonId, services }: BulkPricingAdjusterPr
             </FieldContent>
           </Field>
 
-          <Button onClick={handleAdjust} disabled={isPending} className="flex items-center gap-2">
+          <Button onClick={handleAdjust} disabled={isPending}>
             {isPending ? (
               <>
                 <Spinner />

@@ -24,7 +24,7 @@ export async function searchSalons(query: string, categoryFilter?: string) {
 
     let salonQuery = supabase
       .from('salons_view')
-      .select('*')
+      .select('id, name, slug, formatted_address, city, state, rating_average, rating_count, logo_url, is_active, created_at')
       .eq('is_active', true)
       .ilike('name', `%${sanitizedQuery}%`)
 
@@ -45,7 +45,7 @@ export async function searchSalons(query: string, categoryFilter?: string) {
         const salonIds = [...new Set(servicesData.map((s: Service) => s['salon_id']).filter(Boolean) as string[])]
         salonQuery = supabase
           .from('salons_view')
-          .select('*')
+          .select('id, name, slug, formatted_address, city, state, rating_average, rating_count, logo_url, is_active, created_at')
           .in('id', salonIds)
           .eq('is_active', true)
           .ilike('name', `%${sanitizedQuery}%`)

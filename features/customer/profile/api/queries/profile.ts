@@ -15,7 +15,7 @@ export type AppointmentWithRelations = Appointment & {
   staff: { id: string; full_name: string | null; title: string | null } | null
 }
 
-export async function getProfile() {
+export async function getProfile(): Promise<Profile> {
   const logger = createOperationLogger('getProfile', {})
   logger.start()
 
@@ -27,15 +27,15 @@ export async function getProfile() {
   // Explicit user filter for security
   const { data, error } = await supabase
     .from('profiles_view')
-    .select('*')
+    .select('user_id, email, full_name, avatar_url, phone_number, bio, location, created_at, updated_at')
     .eq('user_id', session.user.id)
     .single()
 
   if (error) throw error
-  return data as Profile
+  return data
 }
 
-export async function getUserAppointments() {
+export async function getUserAppointments(): Promise<AppointmentWithRelations[]> {
   // SECURITY: Require authentication
   const session = await requireAuth()
 
@@ -56,7 +56,7 @@ export async function getUserAppointments() {
   return data as AppointmentWithRelations[]
 }
 
-export async function getUserRoles() {
+export async function getUserRoles(): Promise<UserRole[]> {
   // SECURITY: Require authentication
   const session = await requireAuth()
 
@@ -74,7 +74,7 @@ export async function getUserRoles() {
   return data as UserRole[]
 }
 
-export async function getProfileMetadata() {
+export async function getProfileMetadata(): Promise<ProfileMetadata | null> {
   // SECURITY: Require authentication
   const session = await requireAuth()
 
@@ -83,7 +83,7 @@ export async function getProfileMetadata() {
   // Explicit user filter for security
   const { data, error } = await supabase
     .from('profiles_metadata_view')
-    .select('*')
+    .select('profile_id, last_seen_at, login_count, is_verified, verification_date')
     .eq('profile_id', session.user.id)
     .maybeSingle()
 
@@ -91,7 +91,7 @@ export async function getProfileMetadata() {
   return data as ProfileMetadata | null
 }
 
-export async function getProfilePreferences() {
+export async function getProfilePreferences(): Promise<ProfilePreferences | null> {
   // SECURITY: Require authentication
   const session = await requireAuth()
 
@@ -100,7 +100,7 @@ export async function getProfilePreferences() {
   // Explicit user filter for security
   const { data, error } = await supabase
     .from('profiles_preferences_view')
-    .select('*')
+    .select('profile_id, email_notifications, sms_notifications, theme, language, timezone')
     .eq('profile_id', session.user.id)
     .maybeSingle()
 

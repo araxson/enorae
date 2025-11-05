@@ -6,6 +6,15 @@ import {
   getCustomerMetrics,
   getVIPStatus,
 } from '@/features/customer/dashboard/api/queries'
+import Link from 'next/link'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { CustomerMetrics } from './customer-metrics'
 import { UpcomingBookings } from './upcoming-bookings'
 import { FavoritesList } from './favorites-list'
@@ -45,7 +54,21 @@ export async function CustomerDashboardPage() {
   }
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-12 pt-6 sm:px-6 lg:px-8">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/customer">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Dashboard</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <DashboardHeader isVIP={vipStatus?.isVIP ?? false} loyaltyTier={vipStatus?.loyaltyTier} />
 
       {vipStatus && vipStatus.isVIP ? <VIPStatusCard vipStatus={vipStatus} /> : null}

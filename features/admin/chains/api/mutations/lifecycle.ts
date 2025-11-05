@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { sanitizeAdminText } from '@/features/admin/admin-common'
+import { sanitizeAdminText } from '@/features/admin/common'
 import type { Tables } from '@/lib/types/database.types'
 import { chainIdSchema, deleteChainSchema } from './schemas'
 import { logChainAudit } from './audit'
@@ -28,7 +28,9 @@ export async function deleteChain(data: {
   try {
     const parsed = deleteChainSchema.safeParse(data)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid deletion payload' }
+      const fieldErrors = parsed.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { success: false, error: firstError ?? 'Invalid deletion payload' }
     }
 
     const { chainId } = parsed.data
@@ -84,7 +86,9 @@ export async function restoreChain(chainId: string): Promise<ChainActionResponse
   try {
     const parsed = chainIdSchema.safeParse(chainId)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid chain identifier' }
+      const fieldErrors = parsed.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { success: false, error: firstError ?? 'Invalid chain identifier' }
     }
 
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)

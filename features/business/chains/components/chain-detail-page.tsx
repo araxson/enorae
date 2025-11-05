@@ -15,11 +15,11 @@ import { ChainDetailView } from './chain-detail-view'
 import { ChainSettingsButton } from './chain-settings-button'
 
 type ChainDetailProps = {
-  params: Promise<{ chainId: string }>
+  params: Promise<{ 'chain-id': string }>
 }
 
 export async function ChainDetail({ params }: ChainDetailProps) {
-  const { chainId } = await params
+  const { 'chain-id': chainId } = await params
   const chain = await getSalonChainById(chainId)
 
   if (!chain) {

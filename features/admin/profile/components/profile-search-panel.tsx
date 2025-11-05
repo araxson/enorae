@@ -99,12 +99,11 @@ export function ProfileSearchPanel({
 
             <Card>
               <CardContent>
-                <div className="-m-6">
-                  <ScrollArea className="h-96">
-                    {results.length === 0 ? (
-                      <Empty>
-                        <EmptyHeader>
-                          <EmptyTitle>No profiles found</EmptyTitle>
+                <ScrollArea className="h-96">
+                  {results.length === 0 ? (
+                    <Empty>
+                      <EmptyHeader>
+                        <EmptyTitle>No profiles found</EmptyTitle>
                     <EmptyDescription>Try adjusting the search query or filters to locate a user.</EmptyDescription>
                   </EmptyHeader>
                 </Empty>
@@ -155,8 +154,7 @@ export function ProfileSearchPanel({
                   })}
                 </ItemGroup>
               )}
-                  </ScrollArea>
-                </div>
+                </ScrollArea>
               </CardContent>
             </Card>
           </div>

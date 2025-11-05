@@ -5,7 +5,8 @@ import { revalidateTag as nextRevalidateTag } from 'next/cache'
 export function revalidateCacheTags(tags: string[]): void {
   tags.forEach((tag: string) => {
     // Next.js 16 requires a second parameter for cache lifecycle
-    nextRevalidateTag(tag, 'auto')
+    // 'max' = maximum stale time (best for background refresh)
+    nextRevalidateTag(tag, 'max')
   })
 }
 

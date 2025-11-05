@@ -33,7 +33,7 @@ async function upsertSalonSettings(
   supabase: Client,
   salonId: string,
   payload: z.infer<typeof salonSettingsSchema>,
-) {
+): Promise<{ success: true } | { success: false; error: string }> {
   const { data: existing } = await supabase
     .schema('organization')
     .from('salon_settings')
@@ -51,7 +51,10 @@ async function upsertSalonSettings(
       })
       .eq('salon_id', salonId)
 
-    if (error) throw error
+    if (error) {
+      console.error('Error updating salon settings:', error)
+      return { success: false, error: 'Failed to update salon settings' }
+    }
   } else {
     const { error } = await supabase
       .schema('organization')
@@ -61,11 +64,18 @@ async function upsertSalonSettings(
         salon_id: salonId,
       })
 
-    if (error) throw error
+    if (error) {
+      console.error('Error inserting salon settings:', error)
+      return { success: false, error: 'Failed to create salon settings' }
+    }
   }
+
+  return { success: true }
 }
 
-function extractSalonSettings(formData: FormData) {
+function extractSalonSettings(formData: FormData):
+  | { success: true; data: z.infer<typeof salonSettingsSchema> }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> } {
   const result = salonSettingsSchema.safeParse({
     is_accepting_bookings: formData.get('is_accepting_bookings') === 'true',
     booking_lead_time_hours: formData.get('booking_lead_time_hours')
@@ -88,10 +98,14 @@ function extractSalonSettings(formData: FormData) {
   })
 
   if (!result.success) {
-    throw new z.ZodError(result.error.issues)
+    return {
+      success: false,
+      error: 'Validation failed. Please check your input.',
+      fieldErrors: result.error.flatten().fieldErrors
+    }
   }
 
-  return result.data
+  return { success: true, data: result.data }
 }
 
 export async function updateSalonSettings(salonId: string, formData: FormData) {
@@ -99,19 +113,35 @@ export async function updateSalonSettings(salonId: string, formData: FormData) {
   logger.start()
 
   try {
-    const supabase = await getSalonContext(salonId)
-    const validated = extractSalonSettings(formData)
+    const salonContext = await getSalonContext(salonId)
 
-    await upsertSalonSettings(supabase, salonId, validated)
+    if (salonContext.error || !salonContext.supabase) {
+      return { error: salonContext.error || 'Database connection unavailable' }
+    }
+
+    const supabase = salonContext.supabase
+    const validationResult = extractSalonSettings(formData)
+
+    if (!validationResult.success) {
+      logger.error('Validation failed', 'validation')
+      return {
+        error: validationResult.error,
+        fieldErrors: validationResult.fieldErrors
+      }
+    }
+
+    const upsertResult = await upsertSalonSettings(supabase, salonId, validationResult.data)
+
+    if (!upsertResult.success) {
+      logger.error('Database operation failed', 'database')
+      return { error: upsertResult.error }
+    }
 
     revalidateSettings()
 
     return { success: true }
   } catch (error: unknown) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    if (error instanceof z.ZodError) {
-      return { error: `Validation failed: ${error.issues[0]?.message}` }
-    }
     return { error: 'Failed to update salon settings' }
   }
 }
@@ -124,7 +154,13 @@ export async function toggleAcceptingBookings(
   logger.start()
 
   try {
-    const supabase = await getSalonContext(salonId)
+    const salonContext = await getSalonContext(salonId)
+
+    if (salonContext.error || !salonContext.supabase) {
+      return { error: salonContext.error || 'Database connection unavailable' }
+    }
+
+    const supabase = salonContext.supabase
 
     const { error } = await supabase
       .schema('organization')
@@ -135,7 +171,11 @@ export async function toggleAcceptingBookings(
       })
       .eq('salon_id', salonId)
 
-    if (error) throw error
+    if (error) {
+      console.error('Error toggling booking status:', error)
+      logger.error('Database operation failed', 'database')
+      return { error: 'Failed to update booking status' }
+    }
 
     revalidateSettings()
     return { success: true }
@@ -154,7 +194,13 @@ export async function toggleFeature(
   logger.start()
 
   try {
-    const supabase = await getSalonContext(salonId)
+    const salonContext = await getSalonContext(salonId)
+
+    if (salonContext.error || !salonContext.supabase) {
+      return { error: salonContext.error || 'Database connection unavailable' }
+    }
+
+    const supabase = salonContext.supabase
 
     const { data: settings, error: fetchError } = await supabase
       .schema('organization')
@@ -163,10 +209,14 @@ export async function toggleFeature(
       .eq('salon_id', salonId)
       .maybeSingle()
 
-    if (fetchError) throw fetchError
+    if (fetchError) {
+      console.error('Error fetching salon settings:', fetchError)
+      logger.error('Database fetch failed', 'database')
+      return { error: 'Failed to fetch current settings' }
+    }
 
     let features: string[] = Array.isArray(settings?.features)
-      ? [...settings!.features]
+      ? [...settings.features]
       : []
 
     if (enabled) {
@@ -186,7 +236,11 @@ export async function toggleFeature(
       })
       .eq('salon_id', salonId)
 
-    if (updateError) throw updateError
+    if (updateError) {
+      console.error('Error updating features:', updateError)
+      logger.error('Database update failed', 'database')
+      return { error: 'Failed to toggle feature' }
+    }
 
     revalidateSettings()
     return { success: true }

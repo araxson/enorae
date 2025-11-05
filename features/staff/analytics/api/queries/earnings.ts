@@ -1,5 +1,6 @@
 import 'server-only'
-import { requireAnyRole, ROLE_GROUPS, guardQueryUser } from '@/lib/auth'
+import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
+import { guardQueryUser } from '@/lib/auth/guards-query'
 import { getStaffPerformanceMetrics } from './performance'
 import { logQuery } from '@/lib/observability'
 

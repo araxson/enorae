@@ -53,7 +53,9 @@ export async function checkStaffAvailability(params: AvailabilityArgs): Promise<
   })
 
   if (!parsed.success) {
-    throw new Error(parsed.error.issues[0]?.message ?? 'Invalid availability input')
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    throw new Error(firstError ?? 'Invalid availability input')
   }
 
   const { staffId, startTime, endTime, excludeAppointmentId } = parsed.data
@@ -116,7 +118,9 @@ export async function checkAppointmentConflict(params: ConflictArgs): Promise<Co
   })
 
   if (!parsed.success) {
-    throw new Error(parsed.error.issues[0]?.message ?? 'Invalid conflict check input')
+    const fieldErrors = parsed.error.flatten().fieldErrors
+    const firstError = Object.values(fieldErrors)[0]?.[0]
+    throw new Error(firstError ?? 'Invalid conflict check input')
   }
 
   const { salonId, staffId, startTime, endTime, excludeAppointmentId } = parsed.data

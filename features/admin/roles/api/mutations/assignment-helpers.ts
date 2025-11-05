@@ -2,7 +2,6 @@
  * Admin roles assignment helpers
  * Pure utility functions that can be imported by both server and client code
  */
-import 'server-only'
 
 import { z } from 'zod'
 import { safeJsonParseStringArray } from '@/lib/utils/safe-json'

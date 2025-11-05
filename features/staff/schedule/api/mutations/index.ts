@@ -1,4 +1,3 @@
-
 // Schedule mutations
 export { createStaffSchedule } from './create'
 export { updateStaffSchedule } from './update'
@@ -12,3 +11,4 @@ export {
   createRecurringSchedule,
   updateRecurringSchedule
 } from './requests'
+export * from './context'

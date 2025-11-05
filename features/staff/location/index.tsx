@@ -13,4 +13,4 @@ export async function StaffLocationPage() {
     </section>
   )
 }
-export * from './api/types'
+export type * from './api/types'

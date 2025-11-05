@@ -32,6 +32,25 @@ interface AppointmentsDashboardProps {
 
 const REFRESH_INTERVAL_MS = 30_000
 
+// Type guard for AppointmentSnapshot validation
+function isValidAppointmentSnapshot(value: unknown): value is AppointmentSnapshot {
+  if (!value || typeof value !== 'object') return false
+
+  const snapshot = value as Record<string, unknown>
+  return (
+    'timeframe' in snapshot &&
+    'totals' in snapshot &&
+    'performance' in snapshot &&
+    'trend' in snapshot &&
+    'cancellations' in snapshot &&
+    'noShows' in snapshot &&
+    'fraudAlerts' in snapshot &&
+    'disputes' in snapshot &&
+    'salonPerformance' in snapshot &&
+    'recentAppointments' in snapshot
+  )
+}
+
 export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) {
   const [data, setData] = useState(snapshot)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -55,9 +74,19 @@ export function AppointmentsDashboard({ snapshot }: AppointmentsDashboardProps) 
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`)
       }
-      const payload = await response.json()
-      if (!payload?.data) throw new Error('Snapshot payload missing data property')
-      setData(payload.data as AppointmentSnapshot)
+      const payload: unknown = await response.json()
+
+      // Type guard for payload validation
+      if (
+        !payload ||
+        typeof payload !== 'object' ||
+        !('data' in payload) ||
+        !isValidAppointmentSnapshot(payload.data)
+      ) {
+        throw new Error('Invalid snapshot payload structure')
+      }
+
+      setData(payload.data)
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
         setError('Request timed out. Showing cached data.')

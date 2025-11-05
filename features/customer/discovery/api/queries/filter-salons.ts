@@ -9,7 +9,24 @@ import { discoveryFilterSchema } from '@/features/customer/discovery/api/schema'
 type Salon = Database['public']['Views']['salons_view']['Row']
 type Service = Database['public']['Views']['services_view']['Row']
 
-export async function getSalons(categoryFilter?: string) {
+// Partial salon type for discovery listing (fewer columns for performance)
+type DiscoverySalon = Pick<
+  Salon,
+  | 'id'
+  | 'name'
+  | 'slug'
+  | 'formatted_address'
+  | 'city'
+  | 'state_province'
+  | 'rating_average'
+  | 'rating_count'
+  | 'is_active'
+  | 'created_at'
+  | 'short_description'
+  | 'full_description'
+>
+
+export async function getSalons(categoryFilter?: string): Promise<Salon[]> {
   const logger = createOperationLogger('getSalons', {})
   logger.start()
 
@@ -18,11 +35,10 @@ export async function getSalons(categoryFilter?: string) {
 
   const { category } = discoveryFilterSchema.parse({ category: categoryFilter })
 
-  // NOTE: Selecting * to match Salon type expected by components
-  // This is user-facing data so we need full salon info for display
+  // Explicit column selection for optimal bandwidth usage - include description fields for search
   let query = supabase
     .from('salons_view')
-    .select('*')
+    .select('id, name, slug, formatted_address, city, state_province, rating_average, rating_count, is_active, created_at, short_description, full_description')
     .eq('is_active', true)
 
   // If category filter is provided, find salons offering services in that category
@@ -35,11 +51,13 @@ export async function getSalons(categoryFilter?: string) {
 
     if (servicesData && servicesData.length > 0) {
       const salonIds = [...new Set(servicesData.map((s: Service) => s['salon_id']).filter(Boolean) as string[])]
-      query = supabase.from('salons_view').select('*').in('id', salonIds).eq('is_active', true)
+      query = supabase.from('salons_view').select('id, name, slug, formatted_address, city, state_province, rating_average, rating_count, is_active, created_at, short_description, full_description').in('id', salonIds).eq('is_active', true)
     }
   }
 
-  const { data, error } = await query.order('created_at', { ascending: false })
+  const { data, error } = await query
+    .order('created_at', { ascending: false })
+    .returns<Salon[]>()
 
   if (error) throw error
   return data || []
@@ -53,10 +71,10 @@ export async function getSalonBySlug(slug: string) {
     await requireAuth()
     const supabase = await createClient()
 
-    // NOTE: Selecting * to match Salon type expected by components
+    // Explicit column selection for optimal bandwidth usage
     const { data, error } = await supabase
       .from('salons_view')
-      .select('*')
+      .select('id, name, slug, formatted_address, city, state_province, rating_average, rating_count, is_active, created_at')
       .eq('slug', slug)
       .eq('is_active', true)
       .single() as { data: Salon | null; error: PostgrestError | null }

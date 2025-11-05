@@ -57,7 +57,10 @@ export async function getRetentionMetrics(
     if (!customerVisits.has(apt.customer_id)) {
       customerVisits.set(apt.customer_id, [])
     }
-    customerVisits.get(apt.customer_id)!.push(new Date(apt.start_time))
+    const visits = customerVisits.get(apt.customer_id)
+    if (visits) {
+      visits.push(new Date(apt.start_time))
+    }
   }
 
   // Calculate metrics

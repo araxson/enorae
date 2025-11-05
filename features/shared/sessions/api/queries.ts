@@ -13,10 +13,10 @@ export type { SessionWithDevice } from '@/features/shared/sessions/api/types'
 export async function getUserSessions(): Promise<SessionWithMetadata[]> {
   const { supabase, user } = await requireSessionContext()
 
-  // ✅ FIXED: Query identity.sessions via public view (application sessions)
+  // FIXED: Query identity.sessions via public view (application sessions)
   const { data, error } = await supabase
     .from('sessions_view')
-    .select('*')
+    .select('id, user_id, device_info, ip_address, is_active, last_active_at, created_at, expires_at')
     .eq('user_id', user.id)
     .eq('is_active', true)
     .is('deleted_at', null)
@@ -33,7 +33,7 @@ export async function getUserSessions(): Promise<SessionWithMetadata[]> {
 export async function getSessionCount(): Promise<number> {
   const { supabase, user } = await requireSessionContext()
 
-  // ✅ FIXED: Query identity.sessions via public view
+  // FIXED: Query identity.sessions via public view
   const { count, error } = await supabase
     .from('sessions_view')
     .select('*', { count: 'exact', head: true })

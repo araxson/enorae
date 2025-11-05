@@ -25,17 +25,18 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
 
   const query = supabase
     .from('staff_schedules_view')
-    .select('*')
+    .select('id, staff_id, salon_id, day_of_week, start_time, end_time, is_active, break_start, break_end, effective_from, effective_until, created_at, updated_at')
     .eq('salon_id', salonId)
-    .order('work_date', { ascending: true })
+    .order('day_of_week', { ascending: true })
     .order('start_time', { ascending: true })
 
+  // Filter by effective dates if provided
   if (startDate) {
-    query.gte('work_date', startDate)
+    query.or(`effective_from.is.null,effective_from.lte.${startDate}`)
   }
 
   if (endDate) {
-    query.lte('work_date', endDate)
+    query.or(`effective_until.is.null,effective_until.gte.${endDate}`)
   }
 
   const { data, error } = await query
@@ -72,8 +73,9 @@ export async function getStaffSchedules(salonId: string, startDate?: string, end
   if (staffIds.length > 0) {
     const { data: staffRows, error: staffError } = await supabase
       .from('staff_profiles_view')
-      .select('*')
+      .select('id, user_id, salon_id, title, bio, created_at')
       .in('id', staffIds)
+      .is('deleted_at', null)
 
     if (staffError) throw staffError
 
@@ -115,17 +117,17 @@ export async function getStaffMemberSchedule(staffId: string, startDate?: string
 
   const query = supabase
     .from('staff_schedules_view')
-    .select('*')
+    .select('id, staff_id, salon_id, day_of_week, start_time, end_time, is_active, break_start, break_end, effective_from, effective_until, created_at, updated_at')
     .eq('staff_id', staffId)
-    .order('work_date', { ascending: true })
+    .order('day_of_week', { ascending: true })
     .order('start_time', { ascending: true })
 
   if (startDate) {
-    query.gte('work_date', startDate)
+    query.or(`effective_from.is.null,effective_from.lte.${startDate}`)
   }
 
   if (endDate) {
-    query.lte('work_date', endDate)
+    query.or(`effective_until.is.null,effective_until.gte.${endDate}`)
   }
 
   const { data, error } = await query

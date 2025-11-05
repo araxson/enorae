@@ -15,9 +15,11 @@ type WebsiteBookingSectionProps = {
     website_url: PrimitiveValue
     booking_url: PrimitiveValue
   }
+  errors?: Record<string, string[]>
+  isPending?: boolean
 }
 
-export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionProps) {
+export function WebsiteBookingSection({ initialValues, errors, isPending }: WebsiteBookingSectionProps) {
   return (
     <FieldGroup className="grid gap-6 grid-cols-1 md:grid-cols-2">
       <Field>
@@ -29,7 +31,15 @@ export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionPr
             type="url"
             defaultValue={initialValues.website_url ?? ''}
             placeholder="https://www.yoursalon.com"
+            aria-invalid={!!errors?.website_url}
+            aria-describedby={errors?.website_url ? 'website_url-error' : undefined}
+            disabled={isPending}
           />
+          {errors?.website_url && (
+            <p id="website_url-error" className="text-sm text-destructive mt-1" role="alert">
+              {errors.website_url[0]}
+            </p>
+          )}
         </FieldContent>
       </Field>
 
@@ -42,7 +52,15 @@ export function WebsiteBookingSection({ initialValues }: WebsiteBookingSectionPr
             type="url"
             defaultValue={initialValues.booking_url ?? ''}
             placeholder="https://book.yoursalon.com"
+            aria-invalid={!!errors?.booking_url}
+            aria-describedby={errors?.booking_url ? 'booking_url-error' : undefined}
+            disabled={isPending}
           />
+          {errors?.booking_url && (
+            <p id="booking_url-error" className="text-sm text-destructive mt-1" role="alert">
+              {errors.booking_url[0]}
+            </p>
+          )}
         </FieldContent>
       </Field>
     </FieldGroup>

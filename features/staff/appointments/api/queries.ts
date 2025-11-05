@@ -131,13 +131,16 @@ export async function getAppointmentById(appointmentId: string): Promise<StaffAp
 
   if (error || !appointment) return null
 
+  // Type guard for staff_id
+  const staffId = appointment.staff_id
+  if (!staffId) return null
+
   // Security: Verify this staff member owns this appointment
-  const appt = appointment as { staff_id: string | null }
   const { data: staffProfile } = await supabase
     .from('staff_profiles_view')
     .select('id')
     .eq('user_id', session.user.id)
-    .eq('id', appt.staff_id!)
+    .eq('id', staffId)
     .single()
 
   if (!staffProfile) {

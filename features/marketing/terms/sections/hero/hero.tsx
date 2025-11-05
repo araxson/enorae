@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
-import { MarketingHero } from '@/features/marketing/common-components'
+import { MarketingHero } from '@/features/marketing/components/common'
 import { heroData } from './hero.data'
 
 export function Hero() {

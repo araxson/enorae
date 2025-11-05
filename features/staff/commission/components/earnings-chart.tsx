@@ -48,7 +48,7 @@ export function EarningsChart({ data }: EarningsChartProps) {
       <CardContent>
         <ChartContainer
           config={{
-            earnings: { label: 'Earnings', color: 'hsl(var(--primary))' },
+            earnings: { label: 'Earnings', color: 'var(--primary)' },
           }}
           className="h-64 w-full"
         >

@@ -28,14 +28,14 @@ export function StaffPerformanceSection({ staffPerformance }: { staffPerformance
       {staffPerformance.map((record) => (
         <AccordionItem key={record.service_id} value={record.service_id}>
           <AccordionTrigger>{record.service_name}</AccordionTrigger>
-          <AccordionContent className="space-y-1 text-muted-foreground">
-            <ItemGroup>
+          <AccordionContent>
+            <ItemGroup className="gap-1">
               {record.staff.slice(0, 3).map((staff) => (
-                <Item key={staff.staff_id}>
+                <Item key={staff.staff_id} size="sm">
                   <ItemContent>
                     <ItemDescription>{staff.staff_name}</ItemDescription>
                   </ItemContent>
-                  <ItemActions className="flex-none">
+                  <ItemActions>
                     <ItemDescription>
                       {staff.appointmentCount} appts · {formatCurrency(staff.revenue)}
                     </ItemDescription>

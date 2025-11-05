@@ -1,4 +1,6 @@
-import { AdminReviews } from '@/features/admin/reviews'
+import { Suspense } from 'react'
+
+import { AdminReviews, AdminReviewsSkeleton } from '@/features/admin/reviews'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 
 export const metadata = genMeta({
@@ -8,5 +10,9 @@ export const metadata = genMeta({
 })
 
 export default function AdminReviewsPage() {
-  return <AdminReviews />
+  return (
+    <Suspense fallback={<AdminReviewsSkeleton />}>
+      <AdminReviews />
+    </Suspense>
+  )
 }

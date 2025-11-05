@@ -1,5 +1,7 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
-import { ConfirmDialog } from '@/features/shared/ui-components'
+import { ConfirmDialog } from '@/features/shared/ui'
 import { RefreshCw, Trash2 } from 'lucide-react'
 import { ButtonGroup } from '@/components/ui/button-group'
 

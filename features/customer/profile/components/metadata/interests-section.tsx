@@ -53,7 +53,7 @@ export function InterestsSection({
             <Empty>
               <EmptyHeader>
                 <EmptyMedia variant="icon">
-                  <Heart className="size-4" aria-hidden="true" />
+                  <Heart className="size-5" aria-hidden="true" />
                 </EmptyMedia>
                 <EmptyTitle>No interests yet</EmptyTitle>
                 <EmptyDescription>Add topics to personalize your recommendations.</EmptyDescription>

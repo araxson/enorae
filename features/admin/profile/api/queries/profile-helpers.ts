@@ -1,4 +1,3 @@
-import 'server-only'
 import type { AdminUserRow, MetadataRow, ProfileSummary } from '@/features/admin/profile/api/types'
 
 export const sanitizeSearchTerm = (term: string) =>

@@ -7,7 +7,7 @@ import {
   ItemDescription,
   ItemTitle,
 } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 import { ctaData } from './cta.data'
 
 export function CTA() {

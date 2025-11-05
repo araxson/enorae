@@ -9,7 +9,7 @@ export async function getMyBlockedTimes(): Promise<BlockedTime[]> {
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, staff_id, start_time, end_time, reason, is_active, created_at, updated_at')
     .eq('staff_id', user.id)
     .eq('is_active', true)
     .order('start_time', { ascending: true })
@@ -25,7 +25,7 @@ export async function getBlockedTimeById(id: string): Promise<BlockedTime | null
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, staff_id, start_time, end_time, reason, is_active, created_at, updated_at')
     .eq('id', id)
     .eq('staff_id', user.id)
     .single()
@@ -44,7 +44,7 @@ export async function getUpcomingBlockedTimes(): Promise<BlockedTime[]> {
   const { data, error } = await supabase
     .schema('scheduling')
     .from('blocked_times')
-    .select('*')
+    .select('id, staff_id, start_time, end_time, reason, is_active, created_at')
     .eq('staff_id', user.id)
     .eq('is_active', true)
     .gte('start_time', new Date().toISOString())

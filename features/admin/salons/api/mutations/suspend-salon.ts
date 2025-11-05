@@ -1,14 +1,17 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 /**
  * Suspend salon - disables bookings and cancels future appointments
  */
-export async function suspendSalon(formData: FormData) {
+export async function suspendSalon(formData: FormData): Promise<
+  | { error: string }
+  | { success: true }
+> {
   const logger = createOperationLogger('suspendSalon', {})
   logger.start()
 

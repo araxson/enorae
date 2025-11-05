@@ -14,7 +14,13 @@ const chainSchema = z.object({
   legal_name: z.string().max(200).optional().or(z.literal('')),
 })
 
-export async function createSalonChain(formData: FormData) {
+// React 19 useActionState signature: async (state: State, formData: FormData) => State
+type ChainActionState = { error: string; success?: undefined } | { success: boolean; error?: undefined } | null
+
+export async function createSalonChain(
+  prevState: ChainActionState,
+  formData: FormData
+): Promise<ChainActionState> {
   const logger = createOperationLogger('createSalonChain', {})
   logger.start()
 
@@ -26,7 +32,11 @@ export async function createSalonChain(formData: FormData) {
       legal_name: formData.get('legal_name'),
     })
 
-    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
 
     const data = result.data
     const supabase = await createClient()
@@ -55,7 +65,10 @@ export async function createSalonChain(formData: FormData) {
   }
 }
 
-export async function updateSalonChain(formData: FormData) {
+export async function updateSalonChain(
+  prevState: ChainActionState,
+  formData: FormData
+): Promise<ChainActionState> {
   const logger = createOperationLogger('updateSalonChain', {})
 
   try {
@@ -76,8 +89,11 @@ export async function updateSalonChain(formData: FormData) {
     })
 
     if (!result.success) {
-      logger.error(result.error.issues[0]?.message ?? 'Validation failed', 'validation', { chainId: id, userId: session.user.id })
-      return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      const errorMsg = firstError ?? 'Validation failed'
+      logger.error(errorMsg, 'validation', { chainId: id, userId: session.user.id })
+      return { error: errorMsg }
     }
 
     const data = result.data

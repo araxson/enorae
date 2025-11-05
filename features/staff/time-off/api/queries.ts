@@ -58,7 +58,7 @@ export async function getPendingTimeOffRequests(): Promise<TimeOffRequestWithSta
 
   const { data, error } = await supabase
     .from('time_off_requests_view')
-    .select('*')
+    .select('id, staff_id, staff_name, staff_title, salon_id, start_at, end_at, duration_days, request_type, status, reason, created_at')
     .eq('salon_id', staffProfile.salon_id)
     .eq('status', 'pending')
     .order('created_at', { ascending: false })

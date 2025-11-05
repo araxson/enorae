@@ -19,9 +19,10 @@ interface AdvancedPreferences {
 interface PreferenceFieldProps {
   preferences: AdvancedPreferences
   setPreferences: React.Dispatch<React.SetStateAction<AdvancedPreferences>>
+  disabled?: boolean
 }
 
-export function TimezoneField({ preferences, setPreferences }: PreferenceFieldProps) {
+export function TimezoneField({ preferences, setPreferences, disabled }: PreferenceFieldProps) {
   return (
     <Field>
       <FieldLabel htmlFor="timezone" className="flex items-center gap-2">
@@ -34,6 +35,7 @@ export function TimezoneField({ preferences, setPreferences }: PreferenceFieldPr
           onValueChange={(value) =>
             setPreferences((prev) => ({ ...prev, timezone: value }))
           }
+          disabled={disabled}
         >
           <SelectTrigger id="timezone">
             <SelectValue placeholder="Select timezone" />
@@ -54,7 +56,7 @@ export function TimezoneField({ preferences, setPreferences }: PreferenceFieldPr
   )
 }
 
-export function LocaleField({ preferences, setPreferences }: PreferenceFieldProps) {
+export function LocaleField({ preferences, setPreferences, disabled }: PreferenceFieldProps) {
   return (
     <Field>
       <FieldLabel htmlFor="locale" className="flex items-center gap-2">
@@ -67,6 +69,7 @@ export function LocaleField({ preferences, setPreferences }: PreferenceFieldProp
           onValueChange={(value) =>
             setPreferences((prev) => ({ ...prev, locale: value }))
           }
+          disabled={disabled}
         >
           <SelectTrigger id="locale">
             <SelectValue placeholder="Select language" />
@@ -87,7 +90,7 @@ export function LocaleField({ preferences, setPreferences }: PreferenceFieldProp
   )
 }
 
-export function CurrencyField({ preferences, setPreferences }: PreferenceFieldProps) {
+export function CurrencyField({ preferences, setPreferences, disabled }: PreferenceFieldProps) {
   return (
     <Field>
       <FieldLabel htmlFor="currency" className="flex items-center gap-2">
@@ -100,6 +103,7 @@ export function CurrencyField({ preferences, setPreferences }: PreferenceFieldPr
           onValueChange={(value) =>
             setPreferences((prev) => ({ ...prev, currency_code: value }))
           }
+          disabled={disabled}
         >
           <SelectTrigger id="currency">
             <SelectValue placeholder="Select currency" />

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition, useCallback } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { MoreHorizontal, Trash2, Star } from 'lucide-react'
 import {
   DropdownMenu,
@@ -41,7 +41,6 @@ export function NavFavorites({
   const [pendingId, setPendingId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
-  // PERFORMANCE: Wrap handler in useCallback to prevent re-creation
   const handleRemoveFavorite = useCallback((salonId?: string) => {
     if (!salonId) {
       toast.error('Unable to remove this favorite. Please try again later.')

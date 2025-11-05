@@ -13,4 +13,4 @@ export async function OperatingHoursManagement() {
 
   return <OperatingHoursContent salonId={salon.id} operatingHours={operatingHours} />
 }
-export * from './api/types'
+export type * from './api/types'

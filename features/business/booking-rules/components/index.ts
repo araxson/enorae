@@ -1,3 +1,2 @@
-export { BookingRuleForm } from './booking-rule-form'
-export * from './booking-rule-form-fields'
+export { BookingRuleFormMigrated as BookingRuleForm } from './booking-rule-form-migrated'
 export { BookingRulesClient } from './booking-rules-client'

@@ -3,7 +3,7 @@ import { PHONE_REGEX, UUID_REGEX, HEX_COLOR_REGEX, SLUG_REGEX } from './patterns
 
 /**
  * Shared validation schemas and utilities for consistent validation across the app
- * CLAUDE.md: Layer 6 - Validation standardization
+ * claude.md: Layer 6 - Validation standardization
  */
 
 // Re-export commonly used patterns for convenience

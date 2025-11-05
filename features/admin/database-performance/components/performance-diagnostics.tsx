@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/item'
 import { AlertTriangle, BarChart3, Clock, Timer } from 'lucide-react'
 import { getQueryPerformance } from '../api/queries'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { QueryPerformanceTable } from './query-performance-table'
 
 export async function PerformanceDiagnostics() {

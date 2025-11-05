@@ -12,7 +12,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import type { ServiceCategoryWithCounts } from '@/features/business/service-categories/api/queries'
-import { CategoryForm } from './category-form'
+import { CategoryFormMigrated as CategoryForm } from './category-form-migrated'
 import { CategoryList } from './category-list'
 
 type ServiceCategoriesClientProps = {

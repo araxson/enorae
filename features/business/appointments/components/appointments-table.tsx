@@ -98,7 +98,12 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                         {appointment['status'] === 'pending' && appointment['id'] && (
                           <form action={handleConfirm}>
                             <input type="hidden" name="id" value={appointment['id']} />
-                            <Button size="sm" variant="outline" type="submit">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              type="submit"
+                              aria-label={`Confirm appointment on ${appointmentDate ? format(appointmentDate, 'MMM dd') : 'date'}`}
+                            >
                               Confirm
                             </Button>
                           </form>
@@ -106,7 +111,12 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                         {appointment['status'] === 'confirmed' && appointment['id'] && (
                           <form action={handleComplete}>
                             <input type="hidden" name="id" value={appointment['id']} />
-                            <Button size="sm" variant="outline" type="submit">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              type="submit"
+                              aria-label={`Mark appointment on ${appointmentDate ? format(appointmentDate, 'MMM dd') : 'date'} as complete`}
+                            >
                               Complete
                             </Button>
                           </form>
@@ -114,7 +124,12 @@ export function AppointmentsTable({ appointments }: AppointmentsTableProps) {
                         {appointment['status'] !== 'cancelled' && appointment['status'] !== 'completed' && appointment['id'] && (
                           <form action={handleCancel}>
                             <input type="hidden" name="id" value={appointment['id']} />
-                            <Button size="sm" variant="destructive" type="submit">
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              type="submit"
+                              aria-label={`Cancel appointment on ${appointmentDate ? format(appointmentDate, 'MMM dd') : 'date'}`}
+                            >
                               Cancel
                             </Button>
                           </form>

@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { ServicesCategoryPage, generateServicesCategoryMetadata } from '@/features/marketing/services-directory'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 
 export { generateServicesCategoryMetadata as generateMetadata }
 

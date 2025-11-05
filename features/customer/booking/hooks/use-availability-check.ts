@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { checkStaffAvailability } from '@/features/shared/appointments/api/queries'
 
-type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
+export type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
 
 export function useAvailabilityCheck(
   selectedStaff: string,
@@ -63,9 +63,10 @@ export function useAvailabilityCheck(
           setAvailabilityMessage('Staff member is available for the selected time.')
         } else {
           setAvailabilityStatus('unavailable')
-          if (result['reason']) {
+          const reason = result.reason
+          if (reason) {
             const blockTypeLabel = result.blockType ? `(${result.blockType})` : ''
-            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${result['reason']}`)
+            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${reason}`)
           } else {
             setAvailabilityMessage('Staff member has a conflict at the selected time.')
           }

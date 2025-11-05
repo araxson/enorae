@@ -50,8 +50,9 @@ type Feature =
 export async function revalidateFeature(feature: Feature): Promise<void> {
   const portals: Portal[] = ['admin', 'business', 'staff', 'customer']
 
+  // Next.js 15+: revalidatePath requires type parameter
   for (const portal of portals) {
-    revalidatePath(`/${portal}/${feature}`)
+    revalidatePath(`/${portal}/${feature}`, 'page')
   }
 }
 
@@ -62,7 +63,9 @@ export async function revalidatePortalFeature(
   portal: Portal,
   feature: Feature
 ): Promise<void> {
-  revalidatePath(`/${portal}/${feature}`)
+  // Next.js 15+: revalidatePath requires type parameter
+  revalidatePath(`/${portal}/${feature}`, 'page')
+  return Promise.resolve()
 }
 
 /**
@@ -77,10 +80,11 @@ export async function revalidateFeatures(features: Feature[]): Promise<void> {
  * Revalidate all dashboards across portals
  */
 export async function revalidateDashboards(): Promise<void> {
-  revalidatePath('/admin/dashboard')
-  revalidatePath('/business/dashboard')
-  revalidatePath('/staff/dashboard')
-  revalidatePath('/customer/dashboard')
+  // Next.js 15+: revalidatePath requires type parameter
+  revalidatePath('/admin/dashboard', 'page')
+  revalidatePath('/business/dashboard', 'page')
+  revalidatePath('/staff/dashboard', 'page')
+  revalidatePath('/customer/dashboard', 'page')
 }
 
 /**
@@ -91,11 +95,13 @@ export async function revalidateCustomPath(
   type: 'page' | 'layout' = 'page'
 ): Promise<void> {
   revalidatePath(path, type)
+  return Promise.resolve()
 }
 
 /**
  * Revalidate multiple custom paths
  */
 export async function revalidateCustomPaths(paths: string[]): Promise<void> {
-  paths.forEach(path => revalidatePath(path))
+  // Next.js 15+: revalidatePath requires type parameter
+  paths.forEach(path => revalidatePath(path, 'page'))
 }

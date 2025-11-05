@@ -17,7 +17,13 @@ export async function deactivateUserRole(id: string): Promise<ActionResult> {
       return { error: 'Invalid role ID' }
     }
 
-    const { session, accessibleSalonIds, supabase } = await getAuthorizedContext()
+    const context = await getAuthorizedContext()
+
+    if (context.error || !context.supabase || !context.session) {
+      return { error: context.error || 'Authorization failed' }
+    }
+
+    const { session, accessibleSalonIds, supabase } = context
 
     // Verify role belongs to accessible salon
     await verifyRoleAccess(supabase, id, accessibleSalonIds)
@@ -58,7 +64,13 @@ export async function reactivateUserRole(id: string): Promise<ActionResult> {
       return { error: 'Invalid role ID' }
     }
 
-    const { session, accessibleSalonIds, supabase } = await getAuthorizedContext()
+    const context = await getAuthorizedContext()
+
+    if (context.error || !context.supabase || !context.session) {
+      return { error: context.error || 'Authorization failed' }
+    }
+
+    const { session, accessibleSalonIds, supabase } = context
 
     // Verify role belongs to accessible salon
     await verifyRoleAccess(supabase, id, accessibleSalonIds)

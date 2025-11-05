@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/item'
 import { AlertTriangle, Database, Layers, Package } from 'lucide-react'
 import { getToastUsage } from '../api/queries'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { ToastUsageTable } from './toast-usage-table'
 
 export async function ToastStorageAudit() {

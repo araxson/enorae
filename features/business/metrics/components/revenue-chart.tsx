@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useMemo } from 'react'
+import { useMemo } from 'react'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { format } from 'date-fns'
@@ -23,19 +23,19 @@ interface RevenueChartProps {
 const chartConfig = {
   total_revenue: {
     label: 'Total Revenue',
-    color: 'hsl(var(--primary))',
+    color: 'var(--primary)',
   },
   service_revenue: {
     label: 'Service Revenue',
-    color: 'hsl(var(--chart-1))',
+    color: 'var(--chart-1)',
   },
   product_revenue: {
     label: 'Product Revenue',
-    color: 'hsl(var(--chart-2))',
+    color: 'var(--chart-2)',
   },
 }
 
-export const RevenueChart = memo(function RevenueChart({ data }: RevenueChartProps) {
+export function RevenueChart({ data }: RevenueChartProps) {
   // Transform data for the chart - memoized to prevent recalculation on every render
   const chartData = useMemo(() => data.map((metric) => ({
     date: format(new Date(metric['metric_at']), 'MMM dd'),
@@ -123,4 +123,4 @@ export const RevenueChart = memo(function RevenueChart({ data }: RevenueChartPro
       </ItemContent>
     </Item>
   )
-})
+}

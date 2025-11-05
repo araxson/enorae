@@ -1,9 +1,9 @@
 import { Suspense } from 'react'
+import type { JSX } from 'react'
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
-import { Spinner } from '@/components/ui/spinner'
 import { generateMetadata as genMeta } from '@/lib/metadata'
 import { getCustomerMetrics } from './api/queries'
-import { MetricsDashboard } from './components'
+import { AnalyticsSkeleton, MetricsDashboard } from './components'
 
 export const customerAnalyticsMetadata = genMeta({
   title: 'Analytics | Enorae',
@@ -20,7 +20,7 @@ function CustomerAnalyticsPage() {
     <section className="py-10 mx-auto w-full px-6 max-w-6xl">
       <div className="flex flex-col gap-8">
         <ItemGroup className="gap-2">
-          <Item variant="muted" className="flex-col items-start gap-2">
+          <Item variant="muted" size="sm">
             <ItemContent>
               <ItemTitle>My Analytics</ItemTitle>
               <ItemDescription>
@@ -35,9 +35,9 @@ function CustomerAnalyticsPage() {
   )
 }
 
-export function CustomerAnalyticsFeature() {
+export function CustomerAnalyticsFeature(): JSX.Element {
   return (
-    <Suspense fallback={<div className="flex justify-center py-12"><Spinner /></div>}>
+    <Suspense fallback={<AnalyticsSkeleton />}>
       <CustomerAnalyticsPage />
     </Suspense>
   )
@@ -45,4 +45,4 @@ export function CustomerAnalyticsFeature() {
 
 export { getCustomerMetrics, getAppointmentFrequency } from './api/queries'
 export type { CustomerMetrics } from './api/queries'
-export * from './api/types'
+export type * from './api/types'

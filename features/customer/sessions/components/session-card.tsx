@@ -1,6 +1,5 @@
 'use client'
 
-import { useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -26,11 +25,11 @@ interface SessionCardProps {
 }
 
 export function SessionCard({ session, onRevoke, isRevoking }: SessionCardProps) {
-  const handleRevoke = useCallback(() => {
+  const handleRevoke = () => {
     if (session['id']) {
       onRevoke(session['id'])
     }
-  }, [session['id'], onRevoke])
+  }
   const formatDate = (date: string | null) => {
     if (!date) return 'Never'
     return new Date(date).toLocaleString('en-US', {

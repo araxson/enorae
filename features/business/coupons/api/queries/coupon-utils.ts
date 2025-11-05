@@ -2,11 +2,26 @@
  * Coupon utility functions
  * Pure functions that can be used in both server and client components
  */
-import 'server-only'
-import type { CouponAnalyticsSnapshot } from './coupon-validation'
+import type { CouponAnalyticsSnapshot, CouponWithStats } from './coupon-validation'
 import { createOperationLogger } from '@/lib/observability'
 
-export function buildCouponEffectivenessReport(analytics: CouponAnalyticsSnapshot) {
+type CouponEffectivenessReport = {
+  totals: {
+    totalDiscount: number
+    totalUses: number
+    activeCoupons: number
+    averageDiscount: number
+  }
+  topCoupon: CouponWithStats | null
+  expiringSoon: CouponWithStats[]
+  trend: Array<{
+    date: string
+    uses: number
+    discount: number
+  }>
+}
+
+export function buildCouponEffectivenessReport(analytics: CouponAnalyticsSnapshot): CouponEffectivenessReport {
   const { coupons, usage } = analytics
 
   const totalDiscount = coupons.reduce((sum, coupon) => sum + coupon.stats.totalDiscount, 0)

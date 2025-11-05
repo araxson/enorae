@@ -57,7 +57,10 @@ export async function getCustomerCohorts() {
         totalRevenue: 0,
       })
     }
-    cohortMap.get(cohortMonth)!.customers.add(visit.customer_id)
+    const cohort = cohortMap.get(cohortMonth)
+    if (cohort) {
+      cohort.customers.add(visit.customer_id)
+    }
   }
 
   // Convert to array and calculate metrics

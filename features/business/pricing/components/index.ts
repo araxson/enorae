@@ -5,6 +5,7 @@ export { DynamicPricingDashboard } from './dynamic-pricing-dashboard'
 export { DynamicPricingSummaryCards } from './dynamic-pricing-summary-cards'
 export { PriceScenariosTab } from './price-scenarios-tab'
 export { PricingRulesForm } from './pricing-rules-form'
+// export { PricingRuleFormFields } from './pricing-rules-form-fields' // DISABLED: File does not exist
 export { PricingRulesList } from './pricing-rules-list'
 export { PricingRulesTab } from './pricing-rules-tab'
 export { PricingSummaryCards } from './pricing-summary-cards'

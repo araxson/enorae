@@ -5,6 +5,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { Database } from '@/lib/types/database.types'
 
 type StatsFreshnessViewRow = Database['public']['Views']['statistics_freshness_view']['Row']
+type StatsFreshnessRowSubset = Pick<StatsFreshnessViewRow, 'schemaname' | 'tablename' | 'last_analyze' | 'live_rows' | 'rows_modified_since_analyze'>
 
 export interface StatsFreshnessRecord {
   id: string
@@ -15,7 +16,7 @@ export interface StatsFreshnessRecord {
   maintenance_recommended: boolean
 }
 
-function toStatsFreshnessRecord(row: StatsFreshnessViewRow): StatsFreshnessRecord {
+function toStatsFreshnessRecord(row: StatsFreshnessRowSubset): StatsFreshnessRecord {
   const schemaname = String(row.schemaname ?? 'public')
   const tablename = String(row.tablename ?? 'unknown')
   return {
@@ -46,7 +47,7 @@ export async function getStatisticsFreshness(
 
   const { data: tables, error } = await supabase
     .from('statistics_freshness_view')
-    .select('*')
+    .select('schemaname, tablename, last_analyze, live_rows, rows_modified_since_analyze')
     .order('last_analyze', { ascending: true })
     .range(offset, offset + limit - 1)
 

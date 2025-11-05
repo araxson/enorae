@@ -1,4 +1,6 @@
-import { memo, useMemo, useCallback } from 'react'
+'use client'
+
+import React, { useCallback, useMemo } from 'react'
 import { Badge } from '@/components/ui/badge'
 import type { AnalyticsOverview } from '@/features/business/analytics/api/queries'
 import {
@@ -16,8 +18,8 @@ type AnalyticsOverviewProps = {
   data: AnalyticsOverview
 }
 
-export const AnalyticsOverviewCards = memo(function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps) {
-  const formatCurrency = useCallback((amount: number) => {
+export function AnalyticsOverviewCards({ data }: AnalyticsOverviewProps): React.JSX.Element {
+  const formatCurrency = useCallback((amount: number): string => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -26,11 +28,21 @@ export const AnalyticsOverviewCards = memo(function AnalyticsOverviewCards({ dat
     }).format(amount)
   }, [])
 
-  const formatPercent = useCallback((value: number) => {
+  const formatPercent = useCallback((value: number): string => {
     return `${value.toFixed(1)}%`
   }, [])
 
-  const cards = useMemo(() => [
+  type CardType = {
+    title: string
+    value: string
+    icon: typeof DollarSign
+    iconColor: string
+    subtitle: string
+    trend?: number
+    detail?: string
+  }
+
+  const cards = useMemo((): CardType[] => [
     {
       title: 'Total Revenue',
       value: formatCurrency(data.revenue.total),
@@ -68,7 +80,7 @@ export const AnalyticsOverviewCards = memo(function AnalyticsOverviewCards({ dat
 
   return (
     <ItemGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      {cards.map((card) => (
+      {cards.map((card: CardType) => (
         <Item key={card.title} variant="outline" className="flex-col gap-3">
           <ItemHeader>
             <ItemTitle>{card.title}</ItemTitle>
@@ -97,4 +109,4 @@ export const AnalyticsOverviewCards = memo(function AnalyticsOverviewCards({ dat
       ))}
     </ItemGroup>
   )
-})
+}

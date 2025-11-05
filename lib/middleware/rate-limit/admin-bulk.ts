@@ -3,7 +3,7 @@ const DEFAULT_LIMIT = 10
 
 const tracker = new Map<string, number[]>()
 
-export function enforceAdminBulkRateLimit(userId: string, action: string, limit = DEFAULT_LIMIT, windowMs = WINDOW_MS) {
+export function enforceAdminBulkRateLimit(userId: string, action: string, limit = DEFAULT_LIMIT, windowMs = WINDOW_MS): void {
   const key = `${userId}:${action}`
   const now = Date.now()
   const timestamps = tracker.get(key)?.filter((timestamp) => now - timestamp < windowMs) ?? []

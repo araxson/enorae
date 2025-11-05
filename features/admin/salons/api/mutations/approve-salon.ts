@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { UUID_REGEX } from '@/features/admin/salons/api/utils/schemas'
+import { UUID_REGEX } from '@/features/admin/salons/api/utils'
 import { ensurePlatformAdmin, getSupabaseClient } from '@/features/admin/salons/api/mutations/shared'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
@@ -9,7 +9,10 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
  * Approve salon and make it live on the platform
  * Sets is_accepting_bookings to true and logs approval
  */
-export async function approveSalon(formData: FormData) {
+export async function approveSalon(formData: FormData): Promise<
+  | { error: string }
+  | { success: true }
+> {
   const logger = createOperationLogger('approveSalon', {})
   logger.start()
 

@@ -56,8 +56,11 @@ export async function createManualTransaction(formData: FormData): Promise<Actio
     const validation = manualTransactionSchema.safeParse(input)
 
     if (!validation.success) {
-      logger.error(validation.error.issues[0]?.message ?? 'Validation failed', 'validation')
-      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
+      logger.error('Validation failed', 'validation', { fieldErrors: validation.error.flatten().fieldErrors })
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const validated = validation.data

@@ -101,10 +101,9 @@ export function ReviewsStats({ stats }: ReviewsStatsProps) {
           <div className="flex flex-col gap-2">
             {stats.ratingDistribution.map((distribution) => (
               <div key={distribution.rating} className="flex items-center gap-3">
-                <span className="w-8 text-xs text-muted-foreground">
+                <span className="flex w-8 items-center gap-0.5 text-xs text-muted-foreground">
                   {distribution.rating}
-                  {' '}
-                  ★
+                  <Star className="size-3" aria-hidden="true" />
                 </span>
                 <Progress value={(distribution.count / maxCount) * 100} className="h-2 flex-1" />
                 <span className="w-8 text-right text-xs text-muted-foreground">{distribution.count}</span>

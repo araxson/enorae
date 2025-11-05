@@ -22,7 +22,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { SearchInput } from '@/features/shared/ui-components'
+import { SearchInput } from '@/features/shared/ui'
 import type { StaffMemberWithServices } from '@/features/business/staff/api/types'
 
 type StaffServicesListProps = {

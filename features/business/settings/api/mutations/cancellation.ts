@@ -19,7 +19,13 @@ export async function updateCancellationPolicy(
   logger.start()
 
   try {
-    const supabase = await getSalonContext(salonId)
+    const salonContext = await getSalonContext(salonId)
+
+    if (salonContext.error || !salonContext.supabase) {
+      return { error: salonContext.error || 'Database connection unavailable' }
+    }
+
+    const supabase = salonContext.supabase
 
     const validation = cancellationPolicySchema.safeParse({
       cancellation_hours: Number(formData.get('cancellation_hours')),
@@ -32,7 +38,10 @@ export async function updateCancellationPolicy(
     })
 
     if (!validation.success) {
-      return { error: `Validation failed: ${validation.error.issues[0]?.message}` }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const validated = validation.data

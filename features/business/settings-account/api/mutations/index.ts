@@ -1,2 +1,5 @@
-
-export * from './settings-account'
+export * from './password'
+export * from './email'
+export * from './profile'
+export * from './two-factor'
+export * from './delete-account'

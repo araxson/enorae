@@ -40,7 +40,7 @@ export function InvoiceHistoryCard({ invoices }: { invoices: Invoice[] }) {
                 <Badge variant={invoice.status === 'paid' ? 'default' : 'destructive'}>
                   {invoice.status}
                 </Badge>
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="ghost" size="sm">
                   <Download className="size-4" />
                   Download
                 </Button>

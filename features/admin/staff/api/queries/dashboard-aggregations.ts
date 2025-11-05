@@ -16,19 +16,22 @@ import type {
   StaffWithMetrics,
 } from '../../api/types'
 
-export function groupAppointmentsByStaff(rows: AppointmentRow[]) {
+export function groupAppointmentsByStaff(rows: AppointmentRow[]): Map<string, AppointmentRow[]> {
   const map = new Map<string, AppointmentRow[]>()
   for (const row of rows) {
     if (!row['staff_id']) continue
     if (!map.has(row['staff_id'])) {
       map.set(row['staff_id'], [])
     }
-    map.get(row['staff_id'])!.push(row)
+    const staffAppointments = map.get(row['staff_id'])
+    if (staffAppointments) {
+      staffAppointments.push(row)
+    }
   }
   return map
 }
 
-export function groupReviewsByAppointment(rows: ReviewRow[]) {
+export function groupReviewsByAppointment(rows: ReviewRow[]): Map<string, ReviewRow[]> {
   // NOTE: salon_reviews_view does not have appointment_id column
   // Return all reviews as a single group since they cannot be filtered by appointment
   const map = new Map<string, ReviewRow[]>()
@@ -36,7 +39,7 @@ export function groupReviewsByAppointment(rows: ReviewRow[]) {
   return map
 }
 
-export function extractCertifications(metadata?: MetadataRow) {
+export function extractCertifications(metadata?: MetadataRow): string[] {
   if (!metadata?.tags?.length) return [] as string[]
   return metadata.tags.filter((tag: string) => {
     const normalized = tag.toLowerCase()

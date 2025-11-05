@@ -34,7 +34,7 @@ export async function getVIPStatus() {
 
   const { data: roleData, error: roleError } = await supabase
     .from('user_roles_view')
-    .select('*')
+    .select('user_id, role_id, role_name, is_active')
     .eq('user_id', session.user['id'])
     .maybeSingle<UserRole>()
 

@@ -20,12 +20,12 @@ export async function getSalonContactDetails(salonId: string): Promise<SalonCont
 
   const { data, error } = await supabase
     .from('salon_contact_details_view')
-    .select('*')
+    .select('salon_id, primary_phone, secondary_phone, email, website, created_at, updated_at')
     .eq('salon_id', salonId)
     .single()
 
   if (error && error.code !== 'PGRST116') throw error // Ignore "not found" errors
-  return data
+  return data as unknown as SalonContactDetails | null
 }
 
 export async function getUserSalonContactDetails(): Promise<SalonContactDetails | null> {

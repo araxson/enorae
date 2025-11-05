@@ -6,7 +6,7 @@ export type {
   ComplianceOutcome,
   ComplianceStatus,
   PerformanceSnapshot,
-} from './api/queries/dashboard-metrics'
+} from './api/queries'
 export type {
   AdminStaffRow,
   AppointmentRow,

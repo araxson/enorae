@@ -17,7 +17,7 @@ export async function getAllReviews(limit = QUERY_LIMITS.MEDIUM_LIST): Promise<A
 
   const { data, error } = await supabase
     .from('admin_reviews_overview_view')
-    .select('*')
+    .select('id, salon_id, salon_name, customer_id, customer_name, rating, comment, status, is_flagged, flag_reason, created_at, updated_at')
     .order('created_at', { ascending: false })
     .limit(limit)
 
@@ -26,5 +26,5 @@ export async function getAllReviews(limit = QUERY_LIMITS.MEDIUM_LIST): Promise<A
     return []
   }
 
-  return data || []
+  return (data || []) as unknown as Database['public']['Views']['admin_reviews_overview_view']['Row'][]
 }

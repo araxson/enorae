@@ -29,4 +29,4 @@ export function SessionManagementFeature() {
 export { getUserSessions, getSessionCount } from './api/queries'
 export { revokeSession, revokeAllOtherSessions } from './api/mutations'
 export type { SessionWithDevice } from './api/queries'
-export * from './api/types'
+export type * from './api/types'

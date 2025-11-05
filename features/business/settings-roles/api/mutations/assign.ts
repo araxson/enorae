@@ -13,7 +13,13 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
   logger.start()
 
   try {
-    const { session, accessibleSalonIds, supabase } = await getAuthorizedContext()
+    const context = await getAuthorizedContext()
+
+    if (context.error || !context.supabase || !context.session) {
+      return { error: context.error || 'Authorization failed' }
+    }
+
+    const { session, accessibleSalonIds, supabase } = context
 
     // Parse and validate input
     const input = {
@@ -26,7 +32,9 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
     const validation = userRoleSchema.safeParse(input)
 
     if (!validation.success) {
-      return { error: validation.error.issues[0]?.message || 'Validation failed' }
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError || 'Validation failed' }
     }
 
     const validated = validation.data
@@ -39,6 +47,10 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
     const targetSalonId = validated.salon_id || accessibleSalonIds[0]
     if (!targetSalonId) {
       return { error: 'No salon ID available' }
+    }
+
+    if (!accessibleSalonIds.includes(targetSalonId)) {
+      return { error: 'Unauthorized to assign roles for this salon' }
     }
 
     // Check if user already has a role for this salon
@@ -80,7 +92,10 @@ export async function assignUserRole(formData: FormData): Promise<ActionResult> 
     return { success: true, data }
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: error.issues[0]?.message || 'Validation failed' }
+      const fieldErrors = error.flatten().fieldErrors
+      const errors = Object.values(fieldErrors)
+      const firstError = errors.length > 0 ? errors[0]?.[0] : undefined
+      return { error: firstError || 'Validation failed' }
     }
     if (error instanceof Error) {
       return { error: error.message }

@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useActionState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -20,7 +19,6 @@ import { Spinner } from '@/components/ui/spinner'
 import { ButtonGroup } from '@/components/ui/button-group'
 import { EditReviewForm } from './edit-review-form'
 import { EditWindowAlert } from './edit-window-alert'
-import { logError } from '@/lib/observability'
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
 const REVIEW_EDIT_WINDOW_DAYS = 7
@@ -32,45 +30,35 @@ interface EditReviewDialogProps {
 }
 
 export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
-  const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
   const daysSince = review['created_at']
     ? (Date.now() - new Date(review['created_at']).getTime()) / MILLISECONDS_PER_DAY
     : DEFAULT_DAYS_SINCE_FALLBACK
   const canEdit = daysSince <= REVIEW_EDIT_WINDOW_DAYS
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+  // Server Action wrapper for useActionState
+  type ReviewFormState = { success: boolean; error: string | null }
 
-    try {
-      const formData = new FormData(e.currentTarget)
-      const result = await updateReview(review?.['id'] || '', formData)
+  const updateReviewAction = async (prevState: ReviewFormState, formData: FormData): Promise<ReviewFormState> => {
+    const result = await updateReview(review?.['id'] || '', formData)
 
-      if (result.success) {
-        setOpen(false)
-        router.refresh()
-      } else {
-        setError(result.error || 'Failed to update review')
-      }
-    } catch (error) {
-      logError('Error updating review', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'EditReviewDialog', reviewId: review?.['id'] })
-      setError('An unexpected error occurred. Please try again.')
-    } finally {
-      setIsLoading(false)
+    if (result.success) {
+      setOpen(false)
+      return { success: true, error: null }
     }
+
+    return { success: false, error: result.error || 'Failed to update review' }
   }
+
+  const [state, formAction, isPending] = useActionState(updateReviewAction, { success: false, error: null })
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || (
-          <Button variant="outline" size="sm" className="flex-1">
-            <Pencil className="mr-2 size-4" />
+          <Button variant="outline" size="sm">
+            <Pencil className="size-4" />
             Edit
           </Button>
         )}
@@ -88,7 +76,7 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
         {!canEdit ? (
           <EditWindowAlert daysSince={daysSince} />
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form action={formAction} className="space-y-4" noValidate>
             <EditReviewForm
               reviewId={review['id'] || ''}
               salonId={review['salon_id'] || ''}
@@ -96,11 +84,11 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
               defaultRating={review['rating']}
             />
 
-            {error && (
-              <Alert variant="destructive">
+            {state?.error && (
+              <Alert variant="destructive" role="alert">
                 <AlertCircle className="size-4" />
                 <AlertTitle>Update failed</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{state.error}</AlertDescription>
               </Alert>
             )}
 
@@ -110,12 +98,12 @@ export function EditReviewDialog({ review, children }: EditReviewDialogProps) {
                   type="button"
                   variant="outline"
                   onClick={() => setOpen(false)}
-                  disabled={isLoading}
+                  disabled={isPending}
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" disabled={isPending} aria-busy={isPending}>
+                  {isPending ? (
                     <>
                       <Spinner className="size-4" />
                       <span>Updating</span>

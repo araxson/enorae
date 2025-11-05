@@ -8,7 +8,7 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
 // Dynamic pricing is handled through service_pricing table
 // This functionality is deprecated and should use service_pricing instead
 
-export async function createPricingRule(_input: unknown) {
+export async function createPricingRule(_input: unknown): Promise<never> {
   const logger = createOperationLogger('createPricingRule', {})
   logger.start()
 
@@ -23,7 +23,11 @@ export interface BulkPricingAdjustmentInput {
   reason?: string
 }
 
-export async function bulkAdjustPricing(input: BulkPricingAdjustmentInput) {
+type BulkAdjustResult = {
+  updated: number
+}
+
+export async function bulkAdjustPricing(input: BulkPricingAdjustmentInput): Promise<BulkAdjustResult> {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
@@ -80,14 +84,14 @@ export async function bulkAdjustPricing(input: BulkPricingAdjustmentInput) {
   return { updated: updates.length }
 }
 
-export async function updatePricingRule(_id: string, _input: unknown) {
+export async function updatePricingRule(_id: string, _input: unknown): Promise<never> {
   throw new Error('updatePricingRule is deprecated - use service_pricing table instead')
 }
 
-export async function deletePricingRule(_id: string) {
+export async function deletePricingRule(_id: string): Promise<never> {
   throw new Error('deletePricingRule is deprecated - use service_pricing table instead')
 }
 
-export async function togglePricingRuleStatus(_id: string, _isActive: boolean) {
+export async function togglePricingRuleStatus(_id: string, _isActive: boolean): Promise<never> {
   throw new Error('togglePricingRuleStatus is deprecated - use service_pricing table instead')
 }

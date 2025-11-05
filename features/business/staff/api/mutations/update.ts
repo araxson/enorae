@@ -24,9 +24,8 @@ export async function updateStaffMember(staffId: string, data: Partial<StaffForm
     // Validate input with Zod schema
     const validation = updateStaffSchema.safeParse(data)
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      logger.error(firstError?.message ?? 'Validation failed', 'validation', { staffId, salonId })
-      throw new Error(firstError?.message ?? 'Validation failed')
+      logger.error('Validation failed', 'validation', { staffId, salonId, fieldErrors: validation.error.flatten().fieldErrors })
+      throw new Error('Validation failed. Please check your input.')
     }
 
     const validatedData = validation.data

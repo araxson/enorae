@@ -1,4 +1,4 @@
-import { memo } from 'react'
+
 import { TrendingUp } from 'lucide-react'
 
 import {
@@ -14,7 +14,7 @@ type ForecastAccuracyCardProps = {
   forecastAccuracy: number
 }
 
-export const ForecastAccuracyCard = memo(function ForecastAccuracyCard({ forecastAccuracy }: ForecastAccuracyCardProps) {
+export function ForecastAccuracyCard({ forecastAccuracy }: ForecastAccuracyCardProps) {
   return (
     <Item variant="outline" className="flex-col gap-3">
       <ItemHeader>
@@ -33,4 +33,4 @@ export const ForecastAccuracyCard = memo(function ForecastAccuracyCard({ forecas
       </ItemContent>
     </Item>
   )
-})
+}

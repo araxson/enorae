@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'

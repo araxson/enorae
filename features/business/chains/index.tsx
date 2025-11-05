@@ -7,4 +7,4 @@ export async function SalonChains() {
   const chains = await getSalonChains()
   return <SalonChainsClient initialChains={chains} />
 }
-export * from './api/types'
+export type * from './api/types'

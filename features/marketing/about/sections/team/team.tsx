@@ -5,7 +5,7 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 import { teamData } from './team.data'
 
 export function Team() {

@@ -24,9 +24,10 @@ export async function getSalonStaff(salonId: string) {
 
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, title, bio, created_at')
     .eq('salon_id', salonId)
-    .order('full_name')
+    .is('deleted_at', null)
+    .order('title')
 
   if (error) throw error
 
@@ -59,10 +60,11 @@ export async function getAvailableStaffForSwap(salonId: string, excludeStaffId: 
 
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('id, full_name, title, user_id')
+    .select('id, title, user_id')
     .eq('salon_id', salonId)
     .neq('id', excludeStaffId)
-    .order('full_name')
+    .is('deleted_at', null)
+    .order('title')
 
   if (error) throw error
   return data || []

@@ -61,106 +61,124 @@ export function MessagesFilters({
   }, [onSearch, onStatusChange, onPriorityChange, onFlaggedChange])
 
   return (
-    <ItemGroup className="flex flex-col gap-4 lg:flex-row lg:items-center">
-      <Item variant="muted" className="flex-1">
-        <ItemContent>
-          <InputGroup className="flex-1" aria-label="Search messages">
-            <InputGroupAddon>
-              <Search className="size-4 text-muted-foreground" aria-hidden="true" />
-            </InputGroupAddon>
-            <InputGroupInput
-              type="search"
-              placeholder="Search messages..."
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value)
-                onSearch(e.target.value)
-              }}
-              aria-label="Search messages"
-              autoComplete="off"
-            />
-            <InputGroupAddon align="inline-end">
-              {searchValue ? (
-                <InputGroupButton
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Clear search"
-                  onClick={() => {
-                    setSearchValue('')
-                    onSearch('')
-                  }}
-                >
-                  <X className="size-4" aria-hidden="true" />
-                </InputGroupButton>
-              ) : null}
-            </InputGroupAddon>
-          </InputGroup>
-        </ItemContent>
-      </Item>
-      <Item variant="muted">
-        <ItemContent>
-          <div className="flex flex-wrap items-center gap-3">
-        <Select
-          value={status}
-          onValueChange={(value) => {
-            setStatus(value)
-            onStatusChange(value)
-          }}
-        >
-          <SelectTrigger className="w-40">
-            <SelectValue placeholder="All statuses" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All statuses</SelectItem>
-            <SelectItem value="open">Open</SelectItem>
-            <SelectItem value="in_progress">In progress</SelectItem>
-            <SelectItem value="resolved">Resolved</SelectItem>
-            <SelectItem value="closed">Closed</SelectItem>
-            <SelectItem value="archived">Archived</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select
-          value={priority}
-          onValueChange={(value) => {
-            setPriority(value)
-            onPriorityChange(value)
-          }}
-        >
-          <SelectTrigger className="w-40">
-            <SelectValue placeholder="All priorities" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All priorities</SelectItem>
-            <SelectItem value="urgent">Urgent</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-            <SelectItem value="normal">Normal</SelectItem>
-            <SelectItem value="low">Low</SelectItem>
-          </SelectContent>
-        </Select>
-        <Field orientation="horizontal" className="items-center gap-2 rounded-md border px-3 py-2">
-          <ShieldAlert className="size-4 text-destructive" aria-hidden="true" />
-          <FieldLabel htmlFor="flagged-only">
-            Flagged only
-          </FieldLabel>
-          <FieldContent className="flex-none">
-            <Switch
-              id="flagged-only"
-              checked={flaggedOnly}
-              onCheckedChange={(value) => {
-                setFlaggedOnly(value)
-                onFlaggedChange(value)
-              }}
-            />
-          </FieldContent>
-        </Field>
-            <ButtonGroup>
-              <Button variant="ghost" size="sm" onClick={clearFilters}>
-                Clear all filters
-              </Button>
-            </ButtonGroup>
-          </div>
-        </ItemContent>
-      </Item>
-    </ItemGroup>
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
+      <div className="flex-1">
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <div className="flex w-full">
+                <InputGroup aria-label="Search messages">
+                  <InputGroupAddon>
+                    <Search className="size-4 text-muted-foreground" aria-hidden="true" />
+                  </InputGroupAddon>
+                  <InputGroupInput
+                    type="search"
+                    placeholder="Search messages..."
+                    value={searchValue}
+                    onChange={(e) => {
+                      setSearchValue(e.target.value)
+                      onSearch(e.target.value)
+                    }}
+                    aria-label="Search messages"
+                    autoComplete="off"
+                  />
+                  <InputGroupAddon align="inline-end">
+                    {searchValue ? (
+                      <InputGroupButton
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label="Clear search"
+                        onClick={() => {
+                          setSearchValue('')
+                          onSearch('')
+                        }}
+                      >
+                        <X className="size-4" aria-hidden="true" />
+                      </InputGroupButton>
+                    ) : null}
+                  </InputGroupAddon>
+                </InputGroup>
+              </div>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
+      </div>
+
+      <div className="w-full lg:w-auto">
+        <ItemGroup>
+          <Item variant="muted">
+            <ItemContent>
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="w-40">
+                  <Select
+                    value={status}
+                    onValueChange={(value) => {
+                      setStatus(value)
+                      onStatusChange(value)
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="All statuses" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All statuses</SelectItem>
+                      <SelectItem value="open">Open</SelectItem>
+                      <SelectItem value="in_progress">In progress</SelectItem>
+                      <SelectItem value="resolved">Resolved</SelectItem>
+                      <SelectItem value="closed">Closed</SelectItem>
+                      <SelectItem value="archived">Archived</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="w-40">
+                  <Select
+                    value={priority}
+                    onValueChange={(value) => {
+                      setPriority(value)
+                      onPriorityChange(value)
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="All priorities" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All priorities</SelectItem>
+                      <SelectItem value="urgent">Urgent</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="size-4 text-destructive" aria-hidden="true" />
+                  <Field orientation="horizontal">
+                    <FieldLabel htmlFor="flagged-only">Flagged only</FieldLabel>
+                    <FieldContent>
+                      <Switch
+                        id="flagged-only"
+                        checked={flaggedOnly}
+                        onCheckedChange={(value) => {
+                          setFlaggedOnly(value)
+                          onFlaggedChange(value)
+                        }}
+                      />
+                    </FieldContent>
+                  </Field>
+                </div>
+
+                <ButtonGroup>
+                  <Button variant="ghost" size="sm" onClick={clearFilters}>
+                    Clear all filters
+                  </Button>
+                </ButtonGroup>
+              </div>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
+      </div>
+    </div>
   )
 }

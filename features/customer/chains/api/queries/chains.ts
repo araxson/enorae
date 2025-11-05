@@ -93,12 +93,13 @@ export async function getSalonChains(): Promise<SalonChain[]> {
 
   const { data, error } = await supabase
     .from('salon_chains_view')
-    .select('*')
+    .select('id, name, slug, is_active, created_at, salon_count')
     .eq('is_active', true)
     .order('name', { ascending: true })
 
   if (error) throw error
-  return data || []
+  // Return the data as-is, letting the view determine the type
+  return (data || []) as SalonChain[]
 }
 
 /**
@@ -119,10 +120,10 @@ export async function getSalonChainById(
 
   const { data: chain, error: chainError } = await supabase
     .from('salon_chains_view')
-    .select('*')
+    .select('id, name, slug, is_active, created_at, salon_count')
     .eq(isUuid ? 'id' : 'slug', identifier)
     .eq('is_active', true)
-    .maybeSingle<{ id: string; [key: string]: unknown }>()
+    .maybeSingle<{ id: string; salon_count: number | null; [key: string]: unknown }>()
 
   if (chainError) {
     if (chainError.code === 'PGRST116') return null
@@ -135,6 +136,8 @@ export async function getSalonChainById(
 
   return {
     ...(chain as SalonChain),
+    // Map salon_count to total_locations for backwards compatibility
+    total_locations: chain.salon_count,
     locations,
   } as SalonChainWithLocations
 }

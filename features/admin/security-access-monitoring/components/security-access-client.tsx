@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/item'
 import type { SecurityAccessSnapshot } from '@/features/admin/security-access-monitoring/api/queries'
 import { AlertOctagon, Bell, ShieldCheck, ShieldX } from 'lucide-react'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { SecurityAccessTable } from './security-access-table'
 
 interface SecurityAccessClientProps {

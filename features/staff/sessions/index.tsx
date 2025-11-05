@@ -1,5 +1,5 @@
 import { getMySessions, getCurrentSessionId } from './api/queries'
-import { SessionsFeatureContent } from './components/sessions-feature-content'
+import { SessionsFeatureContent } from './components'
 
 export async function StaffSessionsPage() {
   const [sessions, currentSessionId] = await Promise.all([
@@ -13,4 +13,4 @@ export async function StaffSessionsPage() {
     </section>
   )
 }
-export * from './api/types'
+export type * from './api/types'

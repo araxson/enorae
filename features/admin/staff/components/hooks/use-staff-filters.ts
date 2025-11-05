@@ -24,7 +24,13 @@ const initialState: StaffFiltersState = {
   backgroundFilter: 'all',
 }
 
-export function useStaffFilters() {
+export function useStaffFilters(): StaffFiltersState & {
+  setSearch: (search: string) => void
+  setRiskFilter: (riskFilter: RiskFilter) => void
+  setRoleFilter: (roleFilter: string) => void
+  setBackgroundFilter: (backgroundFilter: BackgroundStatus | 'all') => void
+  clearFilters: () => void
+} {
   const [filters, setFilters] = useState<StaffFiltersState>(initialState)
 
   const setSearch = useCallback((search: string) => {

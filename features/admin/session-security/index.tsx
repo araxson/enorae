@@ -8,7 +8,7 @@ import {
 import { getSessionSecurityMonitoring } from './api/queries'
 import { SessionSecurityClient } from './components'
 
-export async function SessionSecurityMonitoring() {
+export async function SessionSecurityMonitoring(): Promise<React.JSX.Element> {
   const snapshot = await getSessionSecurityMonitoring({ limit: 100, offset: 0 })
 
   return (
@@ -29,4 +29,4 @@ export async function SessionSecurityMonitoring() {
     </section>
   )
 }
-export * from './api/types'
+export type * from './api/types'

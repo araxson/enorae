@@ -5,4 +5,4 @@ export function ProductUsage() {
 }
 
 export default ProductUsage
-export * from './api/types'
+export type * from './api/types'

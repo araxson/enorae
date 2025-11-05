@@ -55,7 +55,7 @@ export async function getThreadById(threadId: string) {
   const { data, error } = await supabase
     .schema('communication')
     .from("message_threads")
-    .select("*")
+    .select("id, customer_id, staff_id, salon_id, last_message_at, unread_count, created_at")
     .eq("id", threadId)
     .single()
 
@@ -71,7 +71,7 @@ export async function getMessageThreadsByUser(userId: string) {
   const { data, error } = await supabase
     .schema('communication')
     .from("message_threads")
-    .select("*")
+    .select("id, customer_id, staff_id, salon_id, last_message_at, unread_count, created_at")
     .or(`customer_id.eq.${userId},staff_id.eq.${userId}`)
     .order("last_message_at", { ascending: false })
 
@@ -84,7 +84,7 @@ export async function getMessagesBetweenUsers(userId1: string, userId2: string) 
   const { data, error } = await supabase
     .schema('communication')
     .from("messages")
-    .select("*")
+    .select("id, thread_id, from_user_id, to_user_id, content, is_read, sent_at, created_at")
     .or(`from_user_id.eq.${userId1},to_user_id.eq.${userId1}`)
     .or(`from_user_id.eq.${userId2},to_user_id.eq.${userId2}`)
     .order("created_at", { ascending: false })

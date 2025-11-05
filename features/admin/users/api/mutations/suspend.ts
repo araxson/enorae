@@ -3,12 +3,15 @@
 import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
+import { sanitizeAdminText } from '@/features/admin/common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
 import { suspendUserSchema, UUID_REGEX } from '../../constants'
 import { createOperationLogger, logError } from '@/lib/observability'
 
-export async function suspendUser(formData: FormData) {
+export async function suspendUser(formData: FormData): Promise<
+  | { error: string; fieldErrors?: Record<string, string[] | undefined> }
+  | { success: true }
+> {
   const logger = createOperationLogger('suspendUser', {})
   logger.start()
 
@@ -20,7 +23,10 @@ export async function suspendUser(formData: FormData) {
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.issues[0]?.message ?? 'Invalid suspension payload' }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: parsed.error.flatten().fieldErrors
+      }
     }
 
     const { userId, reason, durationDays } = parsed.data

@@ -1,6 +1,6 @@
 import 'server-only'
 import type { Database } from '@/lib/types/database.types'
-import { guardQuery } from '@/lib/auth'
+import { guardQuery } from '@/lib/auth/guards-query'
 import { logQuery } from '@/lib/observability'
 import { objectEntries } from '@/lib/utils/typed-object'
 
@@ -25,7 +25,7 @@ export async function getCustomerMetrics(): Promise<CustomerMetrics> {
   // Get all appointments
   const { data: appointments, error: appointmentsError } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, customer_id, salon_id, staff_id, service_id, service_name, start_time, end_time, status, total_price, created_at')
     .eq('customer_id', user.id)
     .order('start_time', { ascending: false })
     .returns<Appointment[]>()
@@ -79,7 +79,7 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
 
   const { data: appointments, error } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, customer_id, start_time, status')
     .eq('customer_id', user.id)
     .gte('start_time', new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString())
     .returns<Appointment[]>()
@@ -89,8 +89,9 @@ export async function getAppointmentFrequency(): Promise<{ month: string; count:
   // Group by month
   const monthCounts: Record<string, number> = {}
   appointments?.forEach(apt => {
-    if (apt['start_time']) {
-      const date = new Date(apt['start_time'])
+    const startTime = apt.start_time
+    if (startTime) {
+      const date = new Date(startTime)
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
       monthCounts[monthKey] = (monthCounts[monthKey] || 0) + 1
     }

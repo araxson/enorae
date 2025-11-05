@@ -6,19 +6,24 @@ import { ButtonGroup } from '@/components/ui/button-group'
 import { Spinner } from '@/components/ui/spinner'
 
 interface ProfileFormActionsProps {
-  isSubmitting: boolean
+  isPending: boolean
 }
 
-export function ProfileFormActions({ isSubmitting }: ProfileFormActionsProps) {
+export function ProfileFormActions({ isPending }: ProfileFormActionsProps) {
   const router = useRouter()
 
   return (
     <ButtonGroup>
-      <Button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? (
+      <Button
+        type="submit"
+        disabled={isPending}
+        aria-busy={isPending}
+      >
+        {isPending ? (
           <>
             <Spinner />
-            <span>Saving...</span>
+            <span className="sr-only">Saving changes, please wait</span>
+            <span aria-hidden="true">Saving...</span>
           </>
         ) : (
           <span>Save changes</span>
@@ -28,7 +33,7 @@ export function ProfileFormActions({ isSubmitting }: ProfileFormActionsProps) {
         type="button"
         variant="outline"
         onClick={() => router.refresh()}
-        disabled={isSubmitting}
+        disabled={isPending}
       >
         Cancel
       </Button>

@@ -9,7 +9,13 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
 import { SalonCard } from '@/features/shared/salons'
 import type { Database } from '@/lib/types/database.types'
 
@@ -39,27 +45,20 @@ export function SalonGrid({ salons }: SalonGridProps) {
   }
 
   return (
-    <div
-      className="group/item-group flex flex-col gap-4"
-      data-slot="item-group"
-      role="list"
-    >
+    <ItemGroup className="gap-4">
       <Item variant="muted">
-        <ItemHeader>
-          <ItemTitle>Search results</ItemTitle>
-        </ItemHeader>
         <ItemContent>
+          <ItemTitle>Search results</ItemTitle>
           <ItemDescription>
             {salons.length} salon{salons.length !== 1 ? 's' : ''} found
           </ItemDescription>
         </ItemContent>
       </Item>
       <Item variant="muted">
-        <ItemHeader>
-          <ItemTitle>Next steps</ItemTitle>
-        </ItemHeader>
         <ItemContent>
-          <ItemDescription>Select a listing to view services, book, or share details with friends.</ItemDescription>
+          <ItemDescription>
+            Select a listing to view services, book, or share details with friends.
+          </ItemDescription>
         </ItemContent>
       </Item>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -102,6 +101,6 @@ export function SalonGrid({ salons }: SalonGridProps) {
           )
         })}
       </div>
-    </div>
+    </ItemGroup>
   )
 }

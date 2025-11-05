@@ -126,10 +126,10 @@ export async function getRateLimitTracking(
   const [{ data: trackingRows, error: trackingError }, { data: ruleRows }] = await Promise.all([
     supabase
       .from('security_rate_limit_tracking_view')
-      .select('*')
+      .select('identifier, endpoint, identifier_type, request_count, window_start_at, blocked_until, last_blocked_at, last_request_at, user_agent, metadata')
       .order('request_count', { ascending: false })
       .range(offset, offset + limit - 1),
-    supabase.from('security_rate_limit_rules_view').select('*'),
+    supabase.from('security_rate_limit_rules_view').select('id, endpoint, max_requests, window_seconds, is_active, created_at, updated_at'),
   ])
 
   if (trackingError) {
@@ -142,7 +142,7 @@ export async function getRateLimitTracking(
     }
   }
 
-  const ruleMap = buildRuleMap(ruleRows ?? null)
+  const ruleMap = buildRuleMap((ruleRows as unknown as RuleRow[]) ?? null)
   const normalizedRecords = (trackingRows ?? []).map((row) => normalizeRecord(row as TrackingRow, ruleMap))
 
   const { count: totalCount } = await supabase
@@ -169,7 +169,7 @@ export async function getRateLimitDetail(identifier: string, endpoint?: string):
 
   const supabase = createServiceRoleClient()
 
-  let query = supabase.from('security_rate_limit_tracking_view').select('*').eq('identifier', identifier)
+  let query = supabase.from('security_rate_limit_tracking_view').select('identifier, endpoint, identifier_type, request_count, window_start_at, blocked_until, last_blocked_at, last_request_at, user_agent, metadata').eq('identifier', identifier)
 
   if (endpoint) {
     query = query.eq('endpoint', endpoint)
@@ -184,10 +184,10 @@ export async function getRateLimitDetail(identifier: string, endpoint?: string):
 
   const { data: ruleRows } = await supabase
     .from('security_rate_limit_rules_view')
-    .select('*')
+    .select('id, endpoint, max_requests, window_seconds, is_active, created_at, updated_at')
     .eq('endpoint', endpoint ?? (data?.endpoint ?? ''))
 
-  const ruleMap = buildRuleMap(ruleRows ?? null)
+  const ruleMap = buildRuleMap((ruleRows as unknown as RuleRow[]) ?? null)
   return normalizeRecord(data as TrackingRow, ruleMap)
 }
 
@@ -198,7 +198,7 @@ export async function getRateLimitRules(): Promise<RateLimitRule[]> {
 
   const { data: rules, error } = await supabase
     .from('security_rate_limit_rules_view')
-    .select('*')
+    .select('id, endpoint, max_requests, window_seconds, is_active, created_at, updated_at')
     .order('endpoint', { ascending: true })
 
   if (error) {
@@ -206,5 +206,5 @@ export async function getRateLimitRules(): Promise<RateLimitRule[]> {
     return []
   }
 
-  return (rules ?? []).map(mapRule)
+  return ((rules as unknown as RuleRow[]) ?? []).map(mapRule)
 }

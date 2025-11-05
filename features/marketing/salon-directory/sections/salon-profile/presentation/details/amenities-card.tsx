@@ -9,9 +9,9 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { MarketingPanel } from '@/features/marketing/components/common'
 import type { Salon } from '../types'
 
 interface AmenitiesCardProps {
@@ -20,34 +20,30 @@ interface AmenitiesCardProps {
 
 export function AmenitiesCard({ salon }: AmenitiesCardProps) {
   return (
-    <Item variant="outline" className="flex flex-col gap-4">
-      <ItemHeader>
-        <ItemTitle>
-          <h3 className="text-lg font-semibold tracking-tight">Amenities</h3>
-        </ItemTitle>
-      </ItemHeader>
-      <ItemContent>
-        <Empty className="border border-border/50 bg-card/40">
-          <EmptyHeader>
-            <EmptyTitle>Amenities coming soon</EmptyTitle>
-            <EmptyDescription>
-              We&apos;re still collecting amenity details for {salon['name'] || 'this salon'}.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Item variant="muted">
-              <ItemHeader>
-                <ItemTitle>Amenity updates</ItemTitle>
-              </ItemHeader>
-              <ItemContent>
-                <ItemDescription>
-                  Check back later for updated in-salon experiences.
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-          </EmptyContent>
-        </Empty>
-      </ItemContent>
-    </Item>
+    <MarketingPanel
+      variant="outline"
+      title="Amenities"
+      description={`We're still collecting amenity details for ${salon['name'] || 'this salon'}.`}
+      align="start"
+    >
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>Amenities coming soon</EmptyTitle>
+          <EmptyDescription>
+            We&apos;ll publish amenity information as soon as the salon shares it.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Item variant="muted">
+            <ItemContent>
+              <ItemTitle>Amenity updates</ItemTitle>
+              <ItemDescription>
+                Check back later for updated in-salon experiences.
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </EmptyContent>
+      </Empty>
+    </MarketingPanel>
   )
 }

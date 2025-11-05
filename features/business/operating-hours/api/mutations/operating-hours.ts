@@ -49,7 +49,10 @@ export async function upsertOperatingHours(input: z.infer<typeof operatingHourSc
     const validation = operatingHourSchema.safeParse(input)
 
     if (!validation.success) {
-      return { error: validation.error.issues[0]?.message ?? 'Validation failed' }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const validated = validation.data

@@ -51,7 +51,10 @@ export async function getChainAnalytics(chainId?: string): Promise<ChainAnalytic
     if (!salonsByChain.has(salon['chain_id'])) {
       salonsByChain.set(salon['chain_id'], [])
     }
-    salonsByChain.get(salon['chain_id'])!.push(salon)
+    const chainSalons = salonsByChain.get(salon['chain_id'])
+    if (chainSalons) {
+      chainSalons.push(salon)
+    }
   }
 
   const analytics: ChainAnalytics[] = validChains.map(chain => {

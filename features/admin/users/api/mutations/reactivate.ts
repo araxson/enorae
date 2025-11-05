@@ -3,12 +3,15 @@
 import { revalidatePath } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { sanitizeAdminText } from '@/features/admin/admin-common/api/text-sanitizers'
+import { sanitizeAdminText } from '@/features/admin/common/api/text-sanitizers'
 import type { Json } from '@/lib/types/database.types'
 import { reactivateUserSchema, UUID_REGEX } from '../../constants'
 import { createOperationLogger, logError } from '@/lib/observability'
 
-export async function reactivateUser(formData: FormData) {
+export async function reactivateUser(formData: FormData): Promise<
+  | { error: string; fieldErrors?: Record<string, string[] | undefined> }
+  | { success: true }
+> {
   const logger = createOperationLogger('reactivateUser', {})
   logger.start()
 
@@ -19,7 +22,9 @@ export async function reactivateUser(formData: FormData) {
     })
 
     if (!parsed.success) {
-      return { error: parsed.error.issues[0]?.message ?? 'Invalid reactivation payload' }
+      const fieldErrors = parsed.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Invalid reactivation payload', fieldErrors }
     }
 
     const { userId, note } = parsed.data

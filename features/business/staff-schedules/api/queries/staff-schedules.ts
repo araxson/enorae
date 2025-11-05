@@ -36,7 +36,7 @@ export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
   // Fetch staff details separately
   const staffMap = new Map<string, { full_name: string | null; title: string | null }>()
 
-  const staffIds = [...new Set(data.map((s) => s.staff_id).filter(Boolean) as string[])]
+  const staffIds = [...new Set(data.map((s) => s.staff_id).filter((id): id is string => id !== null))]
   if (staffIds.length > 0) {
     const { data: staffData } = await supabase
       .schema('organization')
@@ -81,14 +81,14 @@ export async function getStaffSchedules(): Promise<StaffScheduleWithDetails[]> {
     }
   }
 
-  return (data || []).map((schedule) => {
+  return (data || []).map((schedule): StaffScheduleWithDetails => {
     const staff = schedule.staff_id ? staffMap.get(schedule.staff_id) : null
     return {
       ...schedule,
-      staff_name: staff?.full_name || null,
-      staff_title: staff?.title || null,
+      staff_name: staff?.full_name ?? null,
+      staff_title: staff?.title ?? null,
     }
-  }) as StaffScheduleWithDetails[]
+  })
 }
 
 /**
@@ -139,11 +139,11 @@ export async function getStaffSchedulesByStaffId(
     staff_title = staffData.title || null
   }
 
-  return (data || []).map((schedule) => ({
+  return (data || []).map((schedule): StaffScheduleWithDetails => ({
     ...schedule,
     staff_name,
     staff_title,
-  })) as StaffScheduleWithDetails[]
+  }))
 }
 
 /**

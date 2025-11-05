@@ -44,4 +44,4 @@ export async function SalonDetailFeature({
 }
 
 export { generateSalonDetailMetadata } from './metadata'
-export * from './api/types'
+export type * from './api/types'

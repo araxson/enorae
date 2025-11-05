@@ -1,20 +1,36 @@
-import { Item, ItemContent, ItemDescription } from '@/components/ui/item'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { Hero } from '@/features/marketing/contact/sections/hero'
 import { Form } from '@/features/marketing/contact/sections/form'
 import { Info } from '@/features/marketing/contact/sections/info'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingPanel, MarketingSection } from '@/features/marketing/components/common'
 
 export function ContactPage() {
   return (
     <main className="flex flex-col gap-16">
       <MarketingSection spacing="compact">
-        <Item variant="muted">
-          <ItemContent>
-            <div className="flex flex-col items-center text-center">
-              <ItemDescription>Reach our team directly or share details with the contact form below.</ItemDescription>
-            </div>
-          </ItemContent>
-        </Item>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Contact</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <MarketingPanel
+          variant="muted"
+          align="center"
+          description="Reach our team directly or share details with the contact form below."
+        />
       </MarketingSection>
       <Hero />
       <MarketingSection

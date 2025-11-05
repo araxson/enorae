@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { getChainAnalytics, getChainSalons } from '@/features/business/chains/api/queries'
 import { ChainLocationsList } from './chain-locations-list'
 import { ChainAnalyticsCards } from './chain-analytics-cards'
@@ -31,8 +32,11 @@ export async function ChainDetailView({ chainId, chainName }: ChainDetailViewPro
         <CardHeader>
           <CardTitle>Location Performance</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
-          <ChainLocationsList locations={analytics.locationMetrics} salons={salons} />
+        <CardContent>
+          <ScrollArea className="w-full">
+            <ChainLocationsList locations={analytics.locationMetrics} salons={salons} />
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>

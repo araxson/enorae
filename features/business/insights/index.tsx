@@ -13,16 +13,16 @@ export {
   getCustomerCohorts,
   getCustomerSegments,
   getTopCustomers,
-} from './api/queries/customer-analytics'
+} from './api/queries'
 
 // Churn Prediction
 export {
   predictChurnRisk,
   getAtRiskCustomers,
   getReactivationOpportunities,
-} from './api/queries/churn-prediction'
+} from './api/queries'
 
 // Business Insights Dashboard
 // Customer Insights Dashboard
 export { BusinessInsights, CustomerInsights } from './components'
-export * from './api/types'
+export type * from './api/types'

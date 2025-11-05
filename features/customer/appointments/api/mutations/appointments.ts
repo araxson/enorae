@@ -10,7 +10,7 @@ import { createOperationLogger } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
-  | { success: false; error: string }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> }
 
 /**
  * Cancel an appointment
@@ -127,8 +127,13 @@ export async function requestReschedule(
     })
 
     if (!result.success) {
-      logger.error(result.error.issues[0]?.message ?? 'Validation failed', 'validation')
-      return { success: false, error: result.error.issues[0]?.message ?? 'Validation failed' }
+      const flatErrors = result.error.flatten()
+      logger.error('Validation failed', 'validation', { fieldErrors: flatErrors.fieldErrors })
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: flatErrors.fieldErrors
+      }
     }
 
     const { newStartTime, reason } = result.data

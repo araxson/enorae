@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import { Sparkles, SlidersHorizontal } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
 import { ServicesStats } from './services-stats'
 import { ServicesFilters } from './services-filters'
 import { ServiceCard } from './service-card'
@@ -32,7 +32,6 @@ type ServicesClientProps = {
 }
 
 export function ServicesClient({ services }: ServicesClientProps) {
-  const [activeTab, setActiveTab] = useState('catalog')
   const [searchQuery, setSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [proficiencyFilter, setProficiencyFilter] = useState('all')
@@ -89,6 +88,52 @@ export function ServicesClient({ services }: ServicesClientProps) {
     { value: 'insights', label: 'Insights', icon: SlidersHorizontal },
   ]
 
+  const renderFilters = () => (
+    <ServicesFilters
+      searchQuery={searchQuery}
+      onSearchChange={setSearchQuery}
+      categoryFilter={categoryFilter}
+      onCategoryFilterChange={setCategoryFilter}
+      proficiencyFilter={proficiencyFilter}
+      onProficiencyFilterChange={setProficiencyFilter}
+      categories={categories}
+      showSearch={false}
+    />
+  )
+
+  const catalogContent = filteredServices.length === 0 ? (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Sparkles className="size-8" aria-hidden="true" />
+        </EmptyMedia>
+        <EmptyTitle>No services match your filters</EmptyTitle>
+        <EmptyDescription>Adjust your filters to see additional services.</EmptyDescription>
+      </EmptyHeader>
+    </Empty>
+  ) : (
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {filteredServices.map((service) => (
+        <ServiceCard key={service.id} service={service} />
+      ))}
+    </div>
+  )
+
+  const tabContent = {
+    catalog: (
+      <div className="space-y-6">
+        {renderFilters()}
+        {catalogContent}
+      </div>
+    ),
+    insights: (
+      <div className="space-y-6">
+        {renderFilters()}
+        <ServicesStats services={filteredServices} />
+      </div>
+    ),
+  }
+
   return (
     <StaffPageShell
       title="Service catalog"
@@ -100,49 +145,14 @@ export function ServicesClient({ services }: ServicesClientProps) {
       summaries={summaries}
       quickActions={quickActions}
       tabs={tabs}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
+      defaultTab="catalog"
+      tabContent={tabContent}
       searchPlaceholder="Search services or categories…"
       searchValue={searchQuery}
       onSearchChange={setSearchQuery}
       filters={[
         { id: 'category-filter', label: 'Filter by category', description: categoryFilter === 'all' ? 'Showing all categories' : categoryFilter },
       ]}
-    >
-      <div className="space-y-6">
-        <ServicesFilters
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          categoryFilter={categoryFilter}
-          onCategoryFilterChange={setCategoryFilter}
-          proficiencyFilter={proficiencyFilter}
-          onProficiencyFilterChange={setProficiencyFilter}
-          categories={categories}
-          showSearch={false}
-        />
-
-        {activeTab === 'catalog' ? (
-          filteredServices.length === 0 ? (
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Sparkles className="size-8" aria-hidden="true" />
-                </EmptyMedia>
-                <EmptyTitle>No services match your filters</EmptyTitle>
-                <EmptyDescription>Adjust your filters to see additional services.</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          ) : (
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {filteredServices.map((service) => (
-                <ServiceCard key={service.id} service={service} />
-              ))}
-            </div>
-          )
-        ) : (
-          <ServicesStats services={filteredServices} />
-        )}
-      </div>
-    </StaffPageShell>
+    />
   )
 }

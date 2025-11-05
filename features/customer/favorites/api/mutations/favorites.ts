@@ -9,7 +9,7 @@ import { createOperationLogger, logError } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
-  | { success: false; error: string }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> }
 
 export async function toggleFavorite(
   salonId: string,
@@ -27,8 +27,12 @@ export async function toggleFavorite(
     // Validate input
     const validation = favoriteSchema.safeParse({ salonId, notes })
     if (!validation.success) {
-      logger.error(validation.error.issues[0]?.message ?? 'Validation failed', 'validation', { salonId, userId: session.user.id })
-      return { success: false, error: validation.error.issues[0]?.message ?? "Validation failed" }
+      logger.error('Validation failed', 'validation', { salonId, userId: session.user.id })
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const { salonId: validatedSalonId, notes: validatedNotes } = validation.data
@@ -47,7 +51,7 @@ export async function toggleFavorite(
     }
 
     type FavoriteRecord = { id: string; notes: string | null }
-    const typedExisting = existing as FavoriteRecord | null
+    const typedExisting = existing as unknown as FavoriteRecord | null
 
     if (typedExisting?.id) {
       // If notes provided, update the favorite instead of removing

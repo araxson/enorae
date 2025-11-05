@@ -5,3 +5,6 @@
  */
 export { OptimizationPanel } from './optimization-panel'
 export type { OptimizationPanelProps } from './types'
+export * from './indexes-tab'
+export * from './recommendations-tab'
+export * from './statistics-tab'

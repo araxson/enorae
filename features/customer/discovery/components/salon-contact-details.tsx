@@ -10,7 +10,6 @@ import {
 import type { Database } from '@/lib/types/database.types'
 import {
   Empty,
-  EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -70,20 +69,21 @@ export function SalonContactDetails({ contactDetails }: SalonContactDetailsProps
 
   if (contactMethods.length === 0) {
     return (
-      <Empty>
-        <EmptyMedia variant="icon">
-          <Phone className="size-6" aria-hidden="true" />
-        </EmptyMedia>
-        <EmptyHeader>
-          <EmptyTitle>No contact information available</EmptyTitle>
-          <EmptyDescription>
-            The salon has not shared contact details yet. Check back later for updates.
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          Follow the salon to receive updates as soon as contact options are added.
-        </EmptyContent>
-      </Empty>
+      <Card>
+        <CardContent>
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Phone className="size-5" aria-hidden="true" />
+              </EmptyMedia>
+              <EmptyTitle>No contact information available</EmptyTitle>
+              <EmptyDescription>
+                The salon has not shared contact details yet. Check back later for updates.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </CardContent>
+      </Card>
     )
   }
 

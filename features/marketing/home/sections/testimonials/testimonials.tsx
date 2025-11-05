@@ -1,39 +1,38 @@
-import { Item, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
-import { MarketingSection, TestimonialCard } from '@/features/marketing/common-components'
+import { ItemDescription } from '@/components/ui/item'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import { MarketingPanel, MarketingSection, TestimonialCard } from '@/features/marketing/components/common'
 
 import { testimonials } from './testimonials.data'
 
 export function Testimonials() {
   return (
     <MarketingSection spacing="compact" groupClassName="gap-0">
-      <Item variant="outline" className="flex flex-col gap-6">
-        <ItemHeader className="flex flex-col items-center text-center">
-          <ItemTitle>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
-              What our users say
-            </h2>
-          </ItemTitle>
-          <p className="text-muted-foreground text-base md:text-lg">
-            Trusted by thousands of customers and salon professionals
-          </p>
-        </ItemHeader>
-        <ItemContent>
-          <div className="flex flex-col gap-6">
-            <Item variant="muted">
-              <ItemContent>
-                <ItemDescription>
-                  Curated from verified customer feedback collected after completed appointments.
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {testimonials.map((testimonial) => (
-                <TestimonialCard key={testimonial.author} {...testimonial} />
-              ))}
-            </div>
-          </div>
-        </ItemContent>
-      </Item>
+      <MarketingPanel
+        align="center"
+        title="What our users say"
+        description="Trusted by thousands of customers and salon professionals"
+      >
+        <ItemDescription>
+          Curated from verified customer feedback collected after completed appointments.
+        </ItemDescription>
+        <Carousel className="w-full" opts={{ align: 'start' }}>
+          <CarouselContent>
+            {testimonials.map((testimonial) => (
+              <CarouselItem key={testimonial.author} className="md:basis-1/2 lg:basis-1/3">
+                <TestimonialCard {...testimonial} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
+        </Carousel>
+      </MarketingPanel>
     </MarketingSection>
   )
 }

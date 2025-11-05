@@ -29,17 +29,23 @@ export function ContactForm({ salonId, contactDetails }: ContactFormProps) {
   const { state, handlers } = useContactForm({ salonId, contactDetails })
 
   return (
-    <form onSubmit={handlers.handleSubmit}>
+    <form onSubmit={handlers.handleSubmit} aria-busy={state.isSubmitting}>
       <div className="flex flex-col gap-8">
+        <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+          {state.isSubmitting && 'Form is submitting, please wait'}
+          {state.success && !state.isSubmitting && 'Contact details updated successfully'}
+          {state.error && !state.isSubmitting && 'Update failed'}
+        </div>
+
         {state.error && (
-          <Alert variant="destructive">
+          <Alert variant="destructive" role="alert">
             <AlertTitle>Update failed</AlertTitle>
             <AlertDescription>{state.error}</AlertDescription>
           </Alert>
         )}
 
         {state.success && (
-          <Alert>
+          <Alert role="status">
             <AlertTitle>Contact details saved</AlertTitle>
             <AlertDescription>Contact details updated successfully!</AlertDescription>
           </Alert>
@@ -109,11 +115,12 @@ export function ContactForm({ salonId, contactDetails }: ContactFormProps) {
         </Accordion>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={state.isSubmitting}>
+          <Button type="submit" disabled={state.isSubmitting} aria-busy={state.isSubmitting}>
             {state.isSubmitting ? (
               <>
                 <Spinner />
-                Saving
+                <span className="sr-only">Saving contact details, please wait</span>
+                <span aria-hidden="true">Saving</span>
               </>
             ) : (
               'Save Contact Details'

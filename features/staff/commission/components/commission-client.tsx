@@ -1,9 +1,9 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { DollarSign, TrendingUp, Calendar, PieChart } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { CommissionData, DailyEarnings, ServiceRevenue, CommissionRate, PayoutSchedule } from '@/features/staff/commission/api/queries'
 import { EarningsChart } from './earnings-chart'
@@ -27,8 +27,6 @@ export interface CommissionClientProps {
 }
 
 export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }: CommissionClientProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'services'>('overview')
-
   const summaries: StaffSummary[] = useMemo(() => {
     return [
       {
@@ -61,7 +59,7 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
     { id: 'schedule', label: 'Adjust availability', href: '/staff/schedule', icon: TrendingUp },
   ]
 
-  const metricsCards = (
+  const renderMetricsCards = () => (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader>
@@ -125,6 +123,55 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
     </div>
   )
 
+  const renderSummaryCard = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Commission summary</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <CardDescription>
+            Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
+          </CardDescription>
+          <ItemGroup className="grid gap-4 pt-4 md:grid-cols-2">
+            <Item variant="outline" size="sm">
+              <ItemContent>
+                <ItemTitle>{commission.totalAppointments}</ItemTitle>
+                <ItemDescription>Completed appointments</ItemDescription>
+              </ItemContent>
+            </Item>
+            <Item variant="outline" size="sm">
+              <ItemContent>
+                <ItemTitle>${commission.monthEarnings.toFixed(2)}</ItemTitle>
+                <ItemDescription>Month revenue</ItemDescription>
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
+      </CardContent>
+    </Card>
+  )
+
+  const tabContent = {
+    overview: (
+      <div className="space-y-6">
+        {renderMetricsCards()}
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <EarningsChart data={dailyEarnings} />
+          <ServiceBreakdown data={serviceBreakdown} />
+        </div>
+        {renderSummaryCard()}
+      </div>
+    ),
+    services: (
+      <div className="space-y-6">
+        {renderMetricsCards()}
+        <ServiceBreakdown data={serviceBreakdown} />
+        {renderSummaryCard()}
+      </div>
+    ),
+  }
+
   return (
     <StaffPageShell
       title="Commission"
@@ -139,51 +186,11 @@ export function CommissionClient({ commission, dailyEarnings, serviceBreakdown }
         { value: 'overview', label: 'Overview', icon: DollarSign },
         { value: 'services', label: 'Services', icon: PieChart, badge: serviceBreakdown.length ? serviceBreakdown.length.toString() : undefined },
       ]}
-      activeTab={activeTab}
-      onTabChange={(value: string) => setActiveTab(value as typeof activeTab)}
+      defaultTab="overview"
+      tabContent={tabContent}
       toggles={[
         { id: 'include-tips', label: 'Include tips', helper: 'Display tip income in totals', defaultOn: true },
       ]}
-    >
-      <div className="space-y-6">
-        {metricsCards}
-
-        {activeTab === 'overview' ? (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <EarningsChart data={dailyEarnings} />
-            <ServiceBreakdown data={serviceBreakdown} />
-          </div>
-        ) : (
-          <ServiceBreakdown data={serviceBreakdown} />
-        )}
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Commission summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <CardDescription>
-                Your commission is calculated based on completed appointments. The figures shown represent the total service revenue from appointments you&apos;ve completed.
-              </CardDescription>
-              <ItemGroup className="grid gap-4 pt-4 md:grid-cols-2">
-                <Item variant="outline" size="sm">
-                  <ItemContent>
-                    <ItemTitle>{commission.totalAppointments}</ItemTitle>
-                    <ItemDescription>Completed appointments</ItemDescription>
-                  </ItemContent>
-                </Item>
-                <Item variant="outline" size="sm">
-                  <ItemContent>
-                    <ItemTitle>${commission.monthEarnings.toFixed(2)}</ItemTitle>
-                    <ItemDescription>Month revenue</ItemDescription>
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </StaffPageShell>
+    />
   )
 }

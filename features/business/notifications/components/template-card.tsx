@@ -1,6 +1,6 @@
 'use client'
 
-import { memo, useCallback } from 'react'
+import { useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -17,7 +17,6 @@ interface TemplateCardProps {
 
 // PERFORMANCE: Wrap in React.memo to prevent re-renders in list views
 function TemplateCardComponent({ template, onEdit, onDelete, disabled }: TemplateCardProps) {
-  // PERFORMANCE: Wrap inline handlers to prevent new function creation on every render
   const handleEdit = useCallback(() => {
     onEdit(template)
   }, [onEdit, template])
@@ -26,7 +25,7 @@ function TemplateCardComponent({ template, onEdit, onDelete, disabled }: Templat
     onDelete(template.id)
   }, [onDelete, template.id])
   return (
-    <Card className="border-muted">
+    <Card>
       <CardHeader>
         <CardTitle>{template.name}</CardTitle>
         <CardDescription>
@@ -74,4 +73,4 @@ function TemplateCardComponent({ template, onEdit, onDelete, disabled }: Templat
 }
 
 // PERFORMANCE: Export memoized version
-export const TemplateCard = memo(TemplateCardComponent)
+export const TemplateCard = TemplateCardComponent

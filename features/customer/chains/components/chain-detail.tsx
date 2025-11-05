@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Store, Users, MapPin } from 'lucide-react'
+import { Store, Users, MapPin, Star } from 'lucide-react'
 import {
   Item,
   ItemActions,
@@ -140,8 +140,9 @@ export function ChainDetail({ chain }: ChainDetailProps) {
                         <Item variant="muted" size="sm">
                           <ItemContent>
                             <ItemTitle>Rating</ItemTitle>
-                            <ItemDescription>
-                              ⭐ {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
+                            <ItemDescription className="flex items-center gap-1">
+                              <Star className="size-4 fill-accent text-accent" aria-hidden="true" />
+                              {salon['rating_average'].toFixed(1)} ({salon['rating_count'] || 0} reviews)
                             </ItemDescription>
                           </ItemContent>
                         </Item>
@@ -164,22 +165,22 @@ export function ChainDetail({ chain }: ChainDetailProps) {
         ) : (
           <Card>
             <CardContent>
-              <div className="p-6">
-                <Empty>
+              <Empty>
+                <EmptyHeader>
                   <EmptyMedia variant="icon">
-                    <MapPin className="size-6" aria-hidden="true" />
+                    <MapPin className="size-5" aria-hidden="true" />
                   </EmptyMedia>
-                  <EmptyHeader>
-                    <EmptyTitle>No locations found</EmptyTitle>
-                    <EmptyDescription>
-                      This chain hasn&apos;t listed individual salon locations yet.
-                    </EmptyDescription>
-                  </EmptyHeader>
-                  <EmptyContent>
-                    Check back soon for new locations or follow the chain for updates.
-                  </EmptyContent>
-                </Empty>
-              </div>
+                  <EmptyTitle>No locations found</EmptyTitle>
+                  <EmptyDescription>
+                    This chain hasn&apos;t listed individual salon locations yet.
+                  </EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href="/customer/salons">Follow other salons</Link>
+                  </Button>
+                </EmptyContent>
+              </Empty>
             </CardContent>
           </Card>
         )}

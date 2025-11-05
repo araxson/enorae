@@ -24,9 +24,10 @@ export async function getPublicServiceCategories(): Promise<string[]> {
     .not('category_name', 'is', null)
 
   if (error) throw error
+  if (!data) return []
 
-  // Get unique categories
-  const categories = [...new Set((data || []).map((s: ServiceRow) => s.category_name).filter(Boolean) as string[])]
+  // Get unique categories - filter ensures only string values
+  const categories = [...new Set(data.map((s) => s.category_name).filter((name): name is string => Boolean(name)))]
   return categories.sort()
 }
 
@@ -39,7 +40,7 @@ export async function getPublicSalonServices(salonId: string): Promise<Service[]
 
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, name, category_name, category_slug, description, duration_minutes, is_active, created_at')
     .eq('salon_id', salonId)
     .eq('is_active', true)
     .order('category_name', { ascending: true })
@@ -47,5 +48,7 @@ export async function getPublicSalonServices(salonId: string): Promise<Service[]
     .returns<Service[]>()
 
   if (error) throw error
-  return data as Service[]
+  if (!data) return []
+
+  return data
 }

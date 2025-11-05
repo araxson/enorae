@@ -1,3 +1,5 @@
+'use client'
+
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {

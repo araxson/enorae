@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAuth } from '@/lib/auth'
-import { createOperationLogger, logMutation, logError } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
 
 type ActionResult = {
   success?: boolean
@@ -20,8 +20,11 @@ export async function markReviewAsHelpful(reviewId: string): Promise<ActionResul
   logger.start()
 
   try {
-    const session = await requireAuth()
-    const supabase = await createClient()
+    // Parallel execution: fetch session and supabase client simultaneously
+    const [session, supabase] = await Promise.all([
+      requireAuth(),
+      createClient()
+    ])
 
     // Insert vote record (prevents duplicates via UNIQUE constraint)
     const { error: voteError } = await supabase
@@ -56,8 +59,11 @@ export async function markReviewAsHelpful(reviewId: string): Promise<ActionResul
  */
 export async function unmarkReviewAsHelpful(reviewId: string): Promise<ActionResult> {
   try {
-    const session = await requireAuth()
-    const supabase = await createClient()
+    // Parallel execution: fetch session and supabase client simultaneously
+    const [session, supabase] = await Promise.all([
+      requireAuth(),
+      createClient()
+    ])
 
     // Delete the vote record
     const { error: deleteError } = await supabase

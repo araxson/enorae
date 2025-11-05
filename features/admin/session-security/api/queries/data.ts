@@ -6,6 +6,7 @@ import type { Database } from '@/lib/types/database.types'
 
 type SessionSecurityViewRow =
   Database['public']['Views']['security_session_security_view']['Row']
+type SessionSecurityRowSubset = Pick<SessionSecurityViewRow, 'id' | 'user_id' | 'session_id' | 'suspicious_score' | 'is_blocked' | 'ip_address' | 'last_activity_at' | 'created_at'>
 
 function normalizeIp(value: unknown): string {
   if (typeof value === 'string') return value
@@ -33,7 +34,7 @@ export interface SessionSecurityRecord {
   requires_mfa_override: boolean
 }
 
-function toSessionSecurityRecord(row: SessionSecurityViewRow): SessionSecurityRecord {
+function toSessionSecurityRecord(row: SessionSecurityRowSubset): SessionSecurityRecord {
   const suspiciousScore = row.suspicious_score ?? 0
   let riskLevel: 'low' | 'medium' | 'high' | 'critical' = 'low'
   if (suspiciousScore >= 90) riskLevel = 'critical'
@@ -78,7 +79,7 @@ export async function getSessionSecurityMonitoring(
   // Fetch main session security data
   const { data: records, error } = await supabase
     .from('security_session_security_view')
-    .select('*')
+    .select('id, user_id, session_id, suspicious_score, is_blocked, ip_address, last_activity_at, created_at')
     .order('risk_score', { ascending: false })
     .range(offset, offset + limit - 1)
 
@@ -131,7 +132,7 @@ export async function getSessionSecurityDetail(
 
   const { data: record, error } = await supabase
     .from('security_session_security_view')
-    .select('*')
+    .select('id, user_id, session_id, suspicious_score, is_blocked, ip_address, last_activity_at, created_at')
     .eq('id', sessionId)
     .single()
 

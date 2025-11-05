@@ -33,8 +33,8 @@ export function useStaffFilters(
           member.salonSlug,
           member.userId,
         ]
-          .filter(Boolean)
-          .map((value) => value!.toString().toLowerCase())
+          .filter((value): value is string => Boolean(value))
+          .map((value) => value.toString().toLowerCase())
 
         return searchTarget.some((target) => target.includes(normalizedQuery))
       })

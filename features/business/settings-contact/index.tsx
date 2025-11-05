@@ -11,4 +11,4 @@ export async function SalonContactSettings() {
 
   return <ContactForm salonId={salonId} contactDetails={contactDetails} />
 }
-export * from './api/types'
+export type * from './api/types'

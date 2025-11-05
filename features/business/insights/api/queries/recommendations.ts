@@ -33,7 +33,7 @@ export async function getBusinessRecommendations(salonId: string): Promise<Busin
 
   const { data: metrics, error: metricsError } = await supabase
     .from('daily_metrics_view')
-    .select('*')
+    .select('salon_id, metric_at, total_revenue, service_revenue, total_appointments, completed_appointments, cancelled_appointments, new_customers, returning_customers, active_staff_count, created_at')
     .eq('salon_id', salonId)
     .gte('metric_at', thirtyDaysAgo.toISOString().split('T')[0])
     .order('metric_at', { ascending: false })

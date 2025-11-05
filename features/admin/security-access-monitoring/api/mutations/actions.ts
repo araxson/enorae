@@ -27,7 +27,7 @@ type SecurityAccessRecord = {
   [key: string]: unknown
 }
 
-export async function acknowledgeSecurityAlert(formData: FormData) {
+export async function acknowledgeSecurityAlert(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('acknowledgeSecurityAlert', {})
   logger.start()
 
@@ -35,14 +35,22 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = acknowledgeAlertSchema.parse({
+    const result = acknowledgeAlertSchema.safeParse({
       accessId: formData.get('accessId')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // Get current record
     const { data: record } = await supabase
       .from('security_access_monitoring_view')
-      .select('*')
+      .select('id, user_email, risk_score, access_type, ip_address, created_at')
       .eq('id', validated.accessId)
       .single()
 
@@ -50,7 +58,7 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
       return { error: 'Security access record not found' }
     }
 
-    const typedRecord = record as SecurityAccessRecord
+    const typedRecord = record as unknown as SecurityAccessRecord
 
     // Audit log for security alert acknowledgement
     await supabase.schema('audit').from('audit_logs').insert({
@@ -77,7 +85,7 @@ export async function acknowledgeSecurityAlert(formData: FormData) {
   }
 }
 
-export async function dismissSecurityAlert(formData: FormData) {
+export async function dismissSecurityAlert(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('dismissSecurityAlert', {})
   logger.start()
 
@@ -85,14 +93,22 @@ export async function dismissSecurityAlert(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = dismissAlertSchema.parse({
+    const result = dismissAlertSchema.safeParse({
       accessId: formData.get('accessId')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // Get current record
     const { data: record } = await supabase
       .from('security_access_monitoring_view')
-      .select('*')
+      .select('id, user_email, risk_score, access_type, ip_address, created_at')
       .eq('id', validated.accessId)
       .single()
 
@@ -100,7 +116,7 @@ export async function dismissSecurityAlert(formData: FormData) {
       return { error: 'Security access record not found' }
     }
 
-    const typedRecord = record as SecurityAccessRecord
+    const typedRecord = record as unknown as SecurityAccessRecord
 
     // Audit log for security alert dismissal
     await supabase.schema('audit').from('audit_logs').insert({
@@ -127,7 +143,7 @@ export async function dismissSecurityAlert(formData: FormData) {
   }
 }
 
-export async function suppressSecurityAlert(formData: FormData) {
+export async function suppressSecurityAlert(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('suppressSecurityAlert', {})
   logger.start()
 
@@ -135,7 +151,7 @@ export async function suppressSecurityAlert(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = suppressAlertSchema.parse({
+    const result = suppressAlertSchema.safeParse({
       accessId: formData.get('accessId')?.toString(),
       reason: formData.get('reason')?.toString(),
       duration: formData.get('duration')?.toString() as
@@ -145,10 +161,18 @@ export async function suppressSecurityAlert(formData: FormData) {
         | 'permanent',
     })
 
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
+
     // Get current record
     const { data: record } = await supabase
       .from('security_access_monitoring_view')
-      .select('*')
+      .select('id, user_email, risk_score, access_type, ip_address, created_at')
       .eq('id', validated.accessId)
       .single()
 
@@ -156,7 +180,7 @@ export async function suppressSecurityAlert(formData: FormData) {
       return { error: 'Security access record not found' }
     }
 
-    const typedRecord = record as SecurityAccessRecord
+    const typedRecord = record as unknown as SecurityAccessRecord
 
     // Calculate suppression expiry
     const now = new Date()

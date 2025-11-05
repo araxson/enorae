@@ -100,5 +100,5 @@ function SalonCardComponent({ salon, variant = 'default' }: SalonCardProps) {
   )
 }
 
-// PERFORMANCE: Export memoized version
+// PERFORMANCE: Export memoized version to prevent unnecessary re-renders
 export const SalonCard = memo(SalonCardComponent)

@@ -17,7 +17,7 @@ export async function getPublicServices(category?: string): Promise<Service[]> {
 
   let query = supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, name, category_name, category_slug, description, duration_minutes, current_price, is_active, is_featured, created_at')
     .eq('is_active', true)
     .is('deleted_at', null)
     .order('name', { ascending: true })
@@ -29,7 +29,9 @@ export async function getPublicServices(category?: string): Promise<Service[]> {
   const { data, error } = await query
 
   if (error) throw error
-  return (data ?? []) as Service[]
+  if (!data) return []
+
+  return data
 }
 
 /**
@@ -41,7 +43,7 @@ export async function getFeaturedServices(limit: number = 6): Promise<Service[]>
 
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, name, category_name, category_slug, description, duration_minutes, current_price, is_active, is_featured, created_at')
     .eq('is_active', true)
     .eq('is_featured', true)
     .is('deleted_at', null)
@@ -49,7 +51,9 @@ export async function getFeaturedServices(limit: number = 6): Promise<Service[]>
     .limit(limit)
 
   if (error) throw error
-  return (data ?? []) as Service[]
+  if (!data) return []
+
+  return data
 }
 
 /**
@@ -61,14 +65,16 @@ export async function searchPublicServices(searchTerm: string): Promise<Service[
 
   const { data, error } = await supabase
     .from('services_view')
-    .select('*')
+    .select('id, salon_id, name, category_name, category_slug, description, duration_minutes, current_price, is_active, created_at')
     .eq('is_active', true)
     .is('deleted_at', null)
     .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
     .order('name', { ascending: true })
 
   if (error) throw error
-  return (data ?? []) as Service[]
+  if (!data) return []
+
+  return data
 }
 
 /**
@@ -94,12 +100,9 @@ export async function getPopularServices(limit: number = 10): Promise<
     .not('category_name', 'is', null)
 
   if (error) throw error
+  if (!data) return []
 
-  const serviceRows = (data ?? []) as Array<
-    Pick<Service, 'name' | 'category_name' | 'category_slug' | 'salon_id'> & {
-      current_price: number | null
-    }
-  >
+  const serviceRows = data
 
   // Group by service name and category
   const serviceMap: Record<

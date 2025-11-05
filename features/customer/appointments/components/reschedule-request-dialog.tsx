@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useActionState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -30,28 +29,23 @@ export function RescheduleRequestDialog({
   currentStartTime,
   children,
 }: RescheduleRequestDialogProps) {
-  const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
+  // Server Action wrapper for useActionState
+  type RescheduleFormState = { success: boolean; error: string | null }
 
-    const formData = new FormData(e.currentTarget)
+  const rescheduleAction = async (prevState: RescheduleFormState, formData: FormData): Promise<RescheduleFormState> => {
     const result = await requestReschedule(appointmentId, formData)
 
     if (result.success) {
       setOpen(false)
-      router.refresh()
-    } else {
-      setError(result.error)
+      return { success: true, error: null }
     }
 
-    setIsLoading(false)
+    return { success: false, error: result.error || 'Failed to request reschedule' }
   }
+
+  const [state, formAction, isPending] = useActionState(rescheduleAction, { success: false, error: null })
 
   const minDateTime = new Date()
   minDateTime.setHours(minDateTime.getHours() + 24) // Minimum 24 hours from now
@@ -60,14 +54,14 @@ export function RescheduleRequestDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || (
-          <Button variant="outline" className="w-full">
-            <Calendar className="mr-2 size-4" />
+          <Button variant="outline">
+            <Calendar className="size-4" />
             Request reschedule
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
-        <form onSubmit={handleSubmit}>
+        <form action={formAction} noValidate>
           <DialogHeader>
             <DialogTitle>Request reschedule</DialogTitle>
             <DialogDescription>
@@ -81,7 +75,7 @@ export function RescheduleRequestDialog({
             minDateTime={minDateTime}
           />
 
-          <RescheduleAlerts error={error} />
+          <RescheduleAlerts error={state?.error} />
 
           <DialogFooter>
             <ButtonGroup aria-label="Dialog actions">
@@ -89,12 +83,12 @@ export function RescheduleRequestDialog({
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
-                disabled={isLoading}
+                disabled={isPending}
               >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? (
+              <Button type="submit" disabled={isPending} aria-busy={isPending}>
+                {isPending ? (
                   <>
                     <Spinner className="size-4" />
                     <span>Sending request</span>

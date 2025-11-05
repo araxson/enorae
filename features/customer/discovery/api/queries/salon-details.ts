@@ -15,7 +15,7 @@ export async function getSalonOperatingHours(salonId: string): Promise<Operating
 
   const { data, error } = await supabase
     .from('operating_hours_view')
-    .select('*')
+    .select('id, salon_id, day_of_week, open_time, close_time, is_closed, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('day_of_week', { ascending: true })
 
@@ -69,7 +69,7 @@ export async function getSalonContactDetails(salonId: string): Promise<SalonCont
 
   const { data, error } = await supabase
     .from('salon_contact_details_view')
-    .select('*')
+    .select('salon_id, primary_phone, secondary_phone, email, website, social_media, created_at, updated_at')
     .eq('salon_id', salonId)
     .maybeSingle()
 
@@ -83,7 +83,7 @@ export async function getSalonDescription(salonId: string): Promise<SalonDescrip
 
   const { data, error } = await supabase
     .from('salon_descriptions_view')
-    .select('*')
+    .select('salon_id, short_description, long_description, amenities, specialties, created_at, updated_at')
     .eq('salon_id', salonId)
     .maybeSingle()
 
@@ -97,7 +97,7 @@ export async function getSalonMedia(salonId: string): Promise<SalonMediaView | n
 
   const { data, error } = await supabase
     .from('salon_media_view')
-    .select('*')
+    .select('salon_id, logo_url, cover_image_url, gallery_images, created_at, updated_at')
     .eq('salon_id', salonId)
     .maybeSingle()
 
@@ -111,7 +111,7 @@ export async function getSalonLocationAddress(locationId: string): Promise<Locat
 
   const { data, error } = await supabase
     .from('location_addresses_view')
-    .select('*')
+    .select('location_id, street_address, city, state, postal_code, country, formatted_address, latitude, longitude, created_at, updated_at')
     .eq('location_id', locationId)
     .maybeSingle()
 

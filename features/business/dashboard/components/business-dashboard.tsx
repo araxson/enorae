@@ -16,8 +16,8 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty'
-import { Spinner } from '@/components/ui/spinner'
 import { AnalyticsTab } from './analytics-tab'
+import { DashboardAnalyticsSkeleton } from './skeletons/dashboard-analytics-skeleton'
 import { DashboardView } from './dashboard-view'
 
 const EMPTY_METRICS: BusinessDashboardMetrics = {
@@ -114,19 +114,7 @@ export async function BusinessDashboardPage() {
       multiLocationMetrics={multiLocationMetrics}
       isTenantOwner={isTenantOwner}
       analyticsPanel={
-        <Suspense
-          fallback={
-            <Empty>
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Spinner className="size-8" />
-                </EmptyMedia>
-                <EmptyTitle>Loading analytics</EmptyTitle>
-                <EmptyDescription>Fetching the latest performance insights…</EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          }
-        >
+        <Suspense fallback={<DashboardAnalyticsSkeleton />}>
           <AnalyticsTab salonId={salon.id} />
         </Suspense>
       }

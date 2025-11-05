@@ -11,13 +11,13 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import type { InsightsSummary } from '@/features/business/insights/types'
-import { useCurrencyFormatter } from '@/features/business/insights/hooks/use-currency-formatter'
+import { useCurrencyFormatter } from '@/features/business/insights/hooks'
 
 interface CustomerInsightsSummaryCardsProps {
   summary: InsightsSummary
 }
 
-export function CustomerInsightsSummaryCards({ summary }: CustomerInsightsSummaryCardsProps) {
+export function CustomerInsightsSummaryCards({ summary }: CustomerInsightsSummaryCardsProps): React.JSX.Element {
   const { formatCurrency, formatPercentage } = useCurrencyFormatter()
   const metricValueClass = 'text-2xl font-semibold tracking-tight'
 

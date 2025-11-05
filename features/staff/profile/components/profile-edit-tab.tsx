@@ -1,6 +1,6 @@
 import { StaffInfoForm } from './staff-info-form'
-import { MetadataForm } from '@/features/shared/profile-metadata/components/metadata-form'
-import { UsernameForm } from '@/features/shared/profile/components/username-form'
+import { MetadataForm } from '@/features/shared/profile-metadata/components'
+import { UsernameForm } from '@/features/shared/profile/components'
 import { ProfilePhotoUpload } from './profile-photo-upload'
 import { CertificationsEditor } from './certifications-editor'
 import { SpecialtiesEditor } from './specialties-editor'

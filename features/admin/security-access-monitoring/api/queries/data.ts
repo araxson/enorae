@@ -22,9 +22,11 @@ export interface SecurityAccessRecord {
   acknowledgement_status: 'pending' | 'acknowledged' | 'dismissed'
 }
 
+type SecurityAccessRowSubset = Pick<SecurityAccessViewRow, 'id' | 'user_id' | 'action' | 'resource_type' | 'is_granted' | 'ip_address' | 'user_agent' | 'created_at'>
+
 // Transform database view row to SecurityAccessRecord
 // Database is source of truth - mapping actual columns to expected interface
-function transformToSecurityAccessRecord(row: SecurityAccessViewRow): SecurityAccessRecord {
+function transformToSecurityAccessRecord(row: SecurityAccessRowSubset): SecurityAccessRecord {
   return {
     id: row.id ?? '',
     user_id: row.user_id ?? '',
@@ -64,7 +66,7 @@ export async function getSecurityAccessMonitoring(
   // Fetch main access monitoring data
   const { data: records, error } = await supabase
     .from('security_access_monitoring_view')
-    .select('*')
+    .select('id, user_id, action, resource_type, is_granted, ip_address, user_agent, created_at')
     .order('accessed_at', { ascending: false })
     .range(offset, offset + limit - 1)
 
@@ -115,7 +117,7 @@ export async function getSecurityAccessDetail(
 
   const { data: record, error } = await supabase
     .from('security_access_monitoring_view')
-    .select('*')
+    .select('id, user_id, action, resource_type, is_granted, ip_address, user_agent, created_at')
     .eq('id', accessId)
     .single()
 

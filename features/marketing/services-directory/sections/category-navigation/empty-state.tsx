@@ -11,7 +11,7 @@ import {
 
 export function EmptyState() {
   return (
-    <Empty className="border border-border/60 bg-card/40">
+    <Empty>
       <EmptyHeader>
         <EmptyTitle>No categories available yet</EmptyTitle>
         <EmptyDescription>

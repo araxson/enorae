@@ -1,3 +1,4 @@
+import { AdminSection } from '@/features/admin/common/components'
 import { requireAnyRole } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import type { UserRole } from '@/lib/types'
@@ -56,16 +57,14 @@ export async function AdminRoles() {
   }, [])
 
   return (
-    <section className="py-16 md:py-24 lg:py-32">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <RolesClient
-          roles={transformedRoles}
-          stats={stats}
-          salons={sanitizedSalons}
-          canDelete={isSuperAdmin}
-          auditEvents={auditEvents}
-        />
-      </div>
-    </section>
+    <AdminSection>
+      <RolesClient
+        roles={transformedRoles}
+        stats={stats}
+        salons={sanitizedSalons}
+        canDelete={isSuperAdmin}
+        auditEvents={auditEvents}
+      />
+    </AdminSection>
   )
 }

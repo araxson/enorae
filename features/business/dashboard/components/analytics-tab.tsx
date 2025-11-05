@@ -13,7 +13,7 @@ import {
   ServicePopularityChart,
   CustomerInsightsCard,
   OperationalMetricsDashboard,
-} from '@/features/business/business-common/components'
+} from '@/features/business/common/components'
 
 interface AnalyticsTabProps {
   salonId: string

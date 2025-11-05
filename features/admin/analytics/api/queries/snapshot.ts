@@ -25,7 +25,43 @@ export {
  * Get comprehensive platform analytics snapshot
  * @param options - Options with windowDays (defaults to 30)
  */
-export async function getPlatformAnalyticsSnapshot(options?: { windowDays?: number }) {
+export async function getPlatformAnalyticsSnapshot(options?: { windowDays?: number }): Promise<{
+  timeframe: { start: string; end: string }
+  latestSnapshotDate: string
+  growth: {
+    summary: {
+      revenue: { current: number; previous: number; delta: number; deltaPercent: number }
+      newCustomers: { current: number; previous: number; delta: number; deltaPercent: number }
+      activeSalons: { current: number; previous: number; delta: number; deltaPercent: number }
+      appointments: { current: number; previous: number; delta: number; deltaPercent: number }
+    }
+    series: never[]
+  }
+  acquisition: {
+    totalNewUsers: number
+    newUsersLast30Days: number
+    newUsersLast7Days: number
+    deltaLast7Days: number
+    byRole: never[]
+    byCountry: never[]
+  }
+  retention: {
+    retentionRate: number
+    churnRate: number
+    returningCustomers: number
+    newCustomers: number
+    series: never[]
+  }
+  featureUsage: {
+    items: never[]
+  }
+  performance: {
+    avgUtilization: number
+    revenuePerSalon: number
+    appointmentsPerSalon: number
+    topSalons: never[]
+  }
+}> {
   const logger = createOperationLogger('getPlatformAnalyticsSnapshot', {})
   logger.start()
 

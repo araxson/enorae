@@ -1,4 +1,3 @@
-import 'server-only'
 import { z } from 'zod'
 import { requireAnyRole, getSalonContext, ROLE_GROUPS } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
@@ -34,17 +33,21 @@ export type ActionResult = {
   data?: unknown
 }
 
-export async function getAuthorizedContext() {
+type AuthorizedContext =
+  | { error: string; session: null; accessibleSalonIds: string[]; supabase: null }
+  | { error: null; session: Session; accessibleSalonIds: string[]; supabase: Awaited<ReturnType<typeof createClient>> }
+
+export async function getAuthorizedContext(): Promise<AuthorizedContext> {
   const session = await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
   const { accessibleSalonIds } = await getSalonContext()
 
   if (!accessibleSalonIds.length) {
-    throw new Error('User salon not found')
+    return { error: 'User salon not found', session: null, accessibleSalonIds: [], supabase: null }
   }
 
   const supabase = await createClient()
 
-  return { session, accessibleSalonIds, supabase }
+  return { error: null, session, accessibleSalonIds, supabase }
 }
 
 export async function verifyRoleAccess(
@@ -60,10 +63,10 @@ export async function verifyRoleAccess(
     .single<{ salon_id: string | null }>()
 
   if (!roleData || (roleData.salon_id && !accessibleSalonIds.includes(roleData.salon_id))) {
-    throw new Error('Role not found or unauthorized')
+    return { error: 'Role not found or unauthorized', data: null }
   }
 
-  return roleData
+  return { error: null, data: roleData }
 }
 
 const permissionsSchema = z.array(z.string())
@@ -76,7 +79,7 @@ export function parsePermissions(permissionsRaw: FormDataEntryValue | null): str
 
   const validated = permissionsSchema.safeParse(parsed)
   if (!validated.success) {
-    throw new Error('Invalid permissions format')
+    return undefined
   }
   return validated.data
 }

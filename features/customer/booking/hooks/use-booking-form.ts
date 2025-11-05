@@ -1,25 +1,29 @@
-import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
-import type { UseFormReturn } from 'react-hook-form'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
-import { checkStaffAvailability } from '@/features/shared/appointments/api/queries'
 import { createBooking } from '@/features/customer/booking/api/mutations'
 import type { BookingFormValues, Service } from '@/features/customer/booking/api/types'
+import { useAvailabilityCheck } from './use-availability-check'
 
-export type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'unavailable' | 'error'
+// Re-export for backward compatibility
+export type { AvailabilityStatus } from './use-availability-check'
+
+// NOTE: This hook is deprecated and should not use React Hook Form
+// It exists only for type compatibility - migrate to Server Actions
+interface FormLike {
+  watch: (field: string) => unknown
+  reset: () => void
+}
 
 interface UseBookingFormParams {
   services: Service[]
-  form: UseFormReturn<BookingFormValues>
+  form: FormLike // FIXME: Remove React Hook Form dependency
   salonId: string
 }
 
 export function useBookingForm({ services, form, salonId }: UseBookingFormParams) {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [availabilityMessage, setAvailabilityMessage] = useState<string | null>(null)
-  const [availabilityStatus, setAvailabilityStatus] = useState<AvailabilityStatus>('idle')
-  const [isCheckingAvailability, startAvailabilityCheck] = useTransition()
 
   const serviceId = form.watch('serviceId')
   const staffId = form.watch('staffId')
@@ -32,8 +36,10 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
   const serviceDurations = useMemo(() => {
     const map = new Map<string, number>()
     services.forEach((service) => {
-      if (service['id']) {
-        map.set(service['id'], service['duration_minutes'] ?? 30)
+      const serviceId = service.id
+      const durationMinutes = service.duration_minutes
+      if (serviceId) {
+        map.set(serviceId, durationMinutes ?? 30)
       }
     })
     return map
@@ -47,63 +53,16 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
   }, [dateValue, timeValue])
 
   const endDate = useMemo(() => {
-    if (!startDate || !serviceId) return null
+    if (!startDate || typeof serviceId !== 'string') return null
     const durationMinutes = serviceDurations.get(serviceId) ?? 30
     return new Date(startDate.getTime() + durationMinutes * 60_000)
   }, [startDate, serviceId, serviceDurations])
 
-  const latestCheckRef = useRef(0)
-
-  useEffect(() => {
-    if (!staffId || !startDate || !endDate) {
-      setAvailabilityStatus('idle')
-      setAvailabilityMessage(null)
-      return
-    }
-
-    setAvailabilityStatus('checking')
-    setAvailabilityMessage(null)
-
-    const checkId = latestCheckRef.current + 1
-    latestCheckRef.current = checkId
-
-    startAvailabilityCheck(async () => {
-      try {
-        const result = await checkStaffAvailability({
-          staffId,
-          startTime: startDate.toISOString(),
-          endTime: endDate.toISOString(),
-        })
-
-        if (checkId !== latestCheckRef.current) {
-          return
-        }
-
-        if (result.available) {
-          setAvailabilityStatus('available')
-          setAvailabilityMessage('Staff member is available for the selected time.')
-        } else {
-          setAvailabilityStatus('unavailable')
-          if (result.reason) {
-            const blockTypeLabel = result.blockType ? `(${result.blockType})` : ''
-            setAvailabilityMessage(`Time blocked ${blockTypeLabel}: ${result.reason}`)
-          } else {
-            setAvailabilityMessage('Staff member has a conflict at the selected time.')
-          }
-        }
-      } catch (availabilityError) {
-        if (checkId !== latestCheckRef.current) {
-          return
-        }
-        setAvailabilityStatus('error')
-        setAvailabilityMessage(
-          availabilityError instanceof Error
-            ? availabilityError.message
-            : 'Unable to check availability. Please try again.',
-        )
-      }
-    })
-  }, [staffId, startDate, endDate])
+  const availability = useAvailabilityCheck(
+    typeof staffId === 'string' ? staffId : '',
+    startDate,
+    endDate
+  )
 
   async function submitBooking(values: BookingFormValues) {
     setLoading(true)
@@ -114,16 +73,17 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
       formData.append('salonId', salonId)
       formData.append('serviceId', values.serviceId)
       formData.append('staffId', values.staffId)
-      formData.append('date', values['date'])
+      formData.append('date', values.date)
       formData.append('time', values.time)
       if (values.notes) {
         formData.append('notes', values.notes)
       }
 
-      const result = await createBooking(formData)
-      if (result?.error) {
-        setError(result.error)
-        toast.error(result.error)
+      const result = await createBooking(null, formData)
+      if (result.errors?._form) {
+        const errorMsg = result.errors._form[0] ?? 'Booking failed'
+        setError(errorMsg)
+        toast.error(errorMsg)
         return
       }
 
@@ -146,9 +106,9 @@ export function useBookingForm({ services, form, salonId }: UseBookingFormParams
     staffId,
     dateValue,
     timeValue,
-    availabilityMessage,
-    availabilityStatus,
-    isCheckingAvailability,
+    availabilityMessage: availability.availabilityMessage,
+    availabilityStatus: availability.availabilityStatus,
+    isCheckingAvailability: availability.isCheckingAvailability,
     progress,
     submitBooking,
   }

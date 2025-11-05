@@ -3,7 +3,7 @@ import { Hero } from '@/features/marketing/about/sections/hero'
 import { Mission } from '@/features/marketing/about/sections/mission'
 import { Values } from '@/features/marketing/about/sections/values'
 import { Team } from '@/features/marketing/about/sections/team'
-import { MarketingSection } from '@/features/marketing/common-components'
+import { MarketingSection } from '@/features/marketing/components/common'
 
 export function AboutPage() {
   return (

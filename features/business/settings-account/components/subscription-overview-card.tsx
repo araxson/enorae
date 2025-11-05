@@ -114,7 +114,7 @@ export function SubscriptionOverviewCard({
         <Separator />
 
         <ButtonGroup>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline">
             <TrendingUp className="size-4" />
             Upgrade Plan
           </Button>

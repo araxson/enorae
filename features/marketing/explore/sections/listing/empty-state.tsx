@@ -18,7 +18,7 @@ interface EmptyStateProps {
 
 export function EmptyState({ onReset }: EmptyStateProps) {
   return (
-    <Empty className="border border-border/50 bg-card/40 py-12">
+    <Empty>
       <EmptyMedia variant="icon">
         <Search className="size-6" aria-hidden="true" />
       </EmptyMedia>

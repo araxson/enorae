@@ -7,8 +7,10 @@ import { ZodError } from 'zod'
 import { reviewSchema } from '@/features/customer/reviews/api/validation'
 import type { Database } from '@/lib/types/database.types'
 import { MILLISECONDS_PER_DAY, REVIEW_EDIT_WINDOW_DAYS } from '@/lib/constants/time'
-import { createOperationLogger, logError } from '@/lib/observability'
+import { createOperationLogger } from '@/lib/observability'
 import { getRequiredString, getOptionalString, getRequiredInt, getOptionalInt } from '@/lib/utils/safe-form-data'
+import { sanitizeReviewComment, sanitizeText, isSpamContent } from '@/lib/utils/sanitize'
+import { rateLimit, getClientIdentifier, createRateLimitKey } from '@/lib/utils/rate-limit'
 
 type ActionResult = {
   success?: boolean
@@ -20,7 +22,25 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
   const logger = createOperationLogger('createReview', {})
 
   try {
-    const session = await requireAuth()
+    // Parallel execution: fetch auth, client IP, and create supabase client
+    const [session, clientIp] = await Promise.all([
+      requireAuth(),
+      getClientIdentifier()
+    ])
+
+    // Rate limiting: 3 reviews per user per day
+    const rateLimitKey = createRateLimitKey('review', `${session.user.id}:${clientIp}`)
+    const rateLimitResult = await rateLimit({
+      identifier: rateLimitKey,
+      limit: 3,
+      windowMs: 86400000, // 24 hours
+    })
+
+    if (!rateLimitResult.success) {
+      logger.warn('Review rate limit exceeded', { userId: session.user.id, remaining: rateLimitResult.remaining ?? 0 })
+      return { error: rateLimitResult.error ?? 'Too many reviews submitted. Please try again later.' }
+    }
+
     const supabase = await createClient()
 
     const data = {
@@ -36,7 +56,25 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
 
     logger.start({ salonId: data.salonId, userId: session.user.id, rating: data.rating })
 
-    const validated = reviewSchema.parse(data)
+    const result = reviewSchema.safeParse(data)
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
+
+    // SECURITY: Sanitize comment and title to prevent XSS
+    const sanitizedComment = sanitizeReviewComment(validated.comment)
+    const sanitizedTitle = validated.title ? sanitizeText(validated.title) : undefined
+
+    // SECURITY: Check for spam content
+    if (isSpamContent(sanitizedComment)) {
+      logger.warn('Spam content detected', { userId: session.user.id })
+      return { error: 'Review appears to contain spam or promotional content' }
+    }
 
     // Note: .schema() required for INSERT/UPDATE/DELETE on tables (not views)
     const { data: review, error } = await supabase
@@ -47,8 +85,8 @@ export async function createReview(formData: FormData): Promise<ActionResult> {
         customer_id: session.user.id,
         appointment_id: validated.appointmentId,
         rating: validated.rating,
-        title: validated.title,
-        comment: validated.comment,
+        title: sanitizedTitle,
+        comment: sanitizedComment,
         service_quality_rating: validated.serviceQualityRating,
         cleanliness_rating: validated.cleanlinessRating,
         value_rating: validated.valueRating,
@@ -80,8 +118,11 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
   const logger = createOperationLogger('updateReview', { reviewId: id })
 
   try {
-    const session = await requireAuth()
-    const supabase = await createClient()
+    // Parallel execution: fetch session and supabase client simultaneously
+    const [session, supabase] = await Promise.all([
+      requireAuth(),
+      createClient()
+    ])
 
     logger.start({ reviewId: id, userId: session.user.id })
 
@@ -133,7 +174,25 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       valueRating: getOptionalInt(formData, 'valueRating') ?? undefined,
     }
 
-    const validated = reviewSchema.parse(updateData)
+    const result = reviewSchema.safeParse(updateData)
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
+
+    // SECURITY: Sanitize comment and title to prevent XSS
+    const sanitizedComment = sanitizeReviewComment(validated.comment)
+    const sanitizedTitle = validated.title ? sanitizeText(validated.title) : undefined
+
+    // SECURITY: Check for spam content
+    if (isSpamContent(sanitizedComment)) {
+      logger.warn('Spam content detected in update', { reviewId: id, userId: session.user.id })
+      return { error: 'Review appears to contain spam or promotional content' }
+    }
 
     // Note: .schema() required for INSERT/UPDATE/DELETE
     const { error } = await supabase
@@ -141,8 +200,8 @@ export async function updateReview(id: string, formData: FormData): Promise<Acti
       .from('salon_reviews')
       .update({
         rating: validated.rating,
-        title: validated.title,
-        comment: validated.comment,
+        title: sanitizedTitle,
+        comment: sanitizedComment,
         service_quality_rating: validated.serviceQualityRating,
         cleanliness_rating: validated.cleanlinessRating,
         value_rating: validated.valueRating,
@@ -177,8 +236,11 @@ export async function deleteReview(id: string, salonId: string): Promise<ActionR
   const logger = createOperationLogger('deleteReview', { reviewId: id, salonId })
 
   try {
-    const session = await requireAuth()
-    const supabase = await createClient()
+    // Parallel execution: fetch session and supabase client simultaneously
+    const [session, supabase] = await Promise.all([
+      requireAuth(),
+      createClient()
+    ])
 
     logger.start({ reviewId: id, salonId, userId: session.user.id })
 

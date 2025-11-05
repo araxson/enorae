@@ -15,7 +15,15 @@ export async function createThread(input: z.infer<typeof createThreadSchema>) {
   logger.start()
 
   try {
-    const validated = createThreadSchema.parse(input)
+    const result = createThreadSchema.safeParse(input)
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
     const supabase = await createClient()
     const session = await requireAuth()
 
@@ -70,7 +78,15 @@ export async function sendMessage(input: z.infer<typeof sendMessageSchema>) {
   logger.start()
 
   try {
-    const validated = sendMessageSchema.parse(input)
+    const result = sendMessageSchema.safeParse(input)
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
     const supabase = await createClient()
     const session = await requireAuth()
 

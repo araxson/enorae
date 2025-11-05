@@ -15,13 +15,10 @@ import {
 } from '@/components/ui/empty'
 import {
   Item,
-  ItemActions,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemFooter,
   ItemHeader,
-  ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
 
@@ -54,12 +51,10 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <CalendarX className="size-6" aria-hidden="true" />
+            <CalendarX className="size-5" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No appointments yet</EmptyTitle>
-          <EmptyDescription>
-            Book your first appointment at a salon
-          </EmptyDescription>
+          <EmptyDescription>Book your first appointment at a salon.</EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <Button asChild>
@@ -93,50 +88,32 @@ export function AppointmentsList({ appointments }: AppointmentsListProps) {
         const statusVariantValue = statusVariant(appointment['status'] ?? 'pending')
 
         return (
-          <Item key={appointment['id']} variant="outline" className="flex h-full flex-col gap-4 p-6">
+          <Item key={appointment['id']} variant="outline">
             <ItemHeader>
               <ItemTitle>{appointment['salon_name'] || 'Unnamed Salon'}</ItemTitle>
               <ItemDescription>{appointment['service_name'] || 'Service'}</ItemDescription>
             </ItemHeader>
-            <ItemContent className="gap-4">
-              <ItemGroup className="gap-3">
-                {startTime ? (
-                  <Item variant="muted" size="sm">
-                    <ItemMedia variant="icon">
-                      <Clock className="size-4 text-muted-foreground" aria-hidden="true" />
-                    </ItemMedia>
-                    <ItemContent>
-                      <ItemTitle>Scheduled</ItemTitle>
-                      {formattedDate ? (
-                        <ItemDescription>
-                          <time dateTime={appointment['start_time'] ?? undefined}>{formattedDate}</time>
-                        </ItemDescription>
-                      ) : null}
-                      {formattedTime ? (
-                        <ItemDescription>
-                          <time dateTime={appointment['start_time'] ?? undefined}>{formattedTime}</time>
-                        </ItemDescription>
-                      ) : null}
-                    </ItemContent>
-                  </Item>
-                ) : null}
-
-                <Item variant="muted" size="sm">
-                  <ItemContent>
-                    <ItemTitle>Status</ItemTitle>
-                    <ItemDescription>{statusLabel}</ItemDescription>
-                  </ItemContent>
-                  <ItemActions>
-                    <Badge variant={statusVariantValue}>{statusLabel}</Badge>
-                  </ItemActions>
-                </Item>
-              </ItemGroup>
+            <ItemContent>
+              {startTime ? (
+                <>
+                  {formattedDate ? (
+                    <ItemDescription>
+                      <Clock className="inline size-3" aria-hidden="true" />{' '}
+                      <time dateTime={appointment['start_time'] ?? undefined}>{formattedDate}</time>
+                    </ItemDescription>
+                  ) : null}
+                  {formattedTime ? (
+                    <ItemDescription>
+                      <time dateTime={appointment['start_time'] ?? undefined}>{formattedTime}</time>
+                    </ItemDescription>
+                  ) : null}
+                </>
+              ) : null}
             </ItemContent>
             <ItemFooter>
-              <Button asChild variant="outline" className="w-full">
-                <Link href={`/customer/appointments/${appointment['id']}`}>
-                  View details
-                </Link>
+              <Badge variant={statusVariantValue}>{statusLabel}</Badge>
+              <Button asChild variant="outline" size="sm">
+                <Link href={`/customer/appointments/${appointment['id']}`}>View details</Link>
               </Button>
             </ItemFooter>
           </Item>

@@ -11,7 +11,8 @@ import {
 } from '@/features/admin/users/api/mutations'
 import { UsersTable } from './users-table'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { Item, ItemActions, ItemContent, ItemGroup } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemGroup, ItemHeader } from '@/components/ui/item'
+import { AdminSection } from '@/features/admin/common/components'
 
 export async function AdminUsersClient() {
   const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
@@ -35,14 +36,14 @@ export async function AdminUsersClient() {
   })
 
   return (
-    <section className="py-16 md:py-24 lg:py-32">
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-10">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item variant="muted" className="items-start justify-between gap-2">
+    <AdminSection>
+      <div className="flex flex-col gap-10">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader>
+              <ItemGroup>
+                <Item variant="muted">
+                  <ItemHeader>
                     <ItemContent>
                       <CardTitle>Total Users</CardTitle>
                       <CardDescription>All accounts created within the platform.</CardDescription>
@@ -50,18 +51,20 @@ export async function AdminUsersClient() {
                     <ItemActions>
                       <Users className="size-4 text-muted-foreground" />
                     </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-semibold">{overview.totalUsers}</p>
-              </CardContent>
-            </Card>
+                  </ItemHeader>
+                </Item>
+              </ItemGroup>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold">{overview.totalUsers}</p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item variant="muted" className="items-start justify-between gap-2">
+          <Card>
+            <CardHeader>
+              <ItemGroup>
+                <Item variant="muted">
+                  <ItemHeader>
                     <ItemContent>
                       <CardTitle>Active Users</CardTitle>
                       <CardDescription>Users with an active login status.</CardDescription>
@@ -69,18 +72,20 @@ export async function AdminUsersClient() {
                     <ItemActions>
                       <UserCheck className="size-4 text-primary" />
                     </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-semibold">{overview.activeUsers}</p>
-              </CardContent>
-            </Card>
+                  </ItemHeader>
+                </Item>
+              </ItemGroup>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold">{overview.activeUsers}</p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item variant="muted" className="items-start justify-between gap-2">
+          <Card>
+            <CardHeader>
+              <ItemGroup>
+                <Item variant="muted">
+                  <ItemHeader>
                     <ItemContent>
                       <CardTitle>Suspended</CardTitle>
                       <CardDescription>Accounts currently disabled by admins.</CardDescription>
@@ -88,18 +93,20 @@ export async function AdminUsersClient() {
                     <ItemActions>
                       <UserX className="size-4 text-destructive" />
                     </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-semibold">{overview.suspendedUsers}</p>
-              </CardContent>
-            </Card>
+                  </ItemHeader>
+                </Item>
+              </ItemGroup>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold">{overview.suspendedUsers}</p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <ItemGroup>
-                  <Item variant="muted" className="items-start justify-between gap-2">
+          <Card>
+            <CardHeader>
+              <ItemGroup>
+                <Item variant="muted">
+                  <ItemHeader>
                     <ItemContent>
                       <CardTitle>With Roles</CardTitle>
                       <CardDescription>Users assigned to one or more roles.</CardDescription>
@@ -107,48 +114,50 @@ export async function AdminUsersClient() {
                     <ItemActions>
                       <Shield className="size-4 text-secondary" />
                     </ItemActions>
-                  </Item>
-                </ItemGroup>
-              </CardHeader>
-              <CardContent>
-                <p className="text-3xl font-semibold">{overview.usersWithRoles}</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <ItemGroup>
-                <Item variant="muted">
-                  <ItemContent>
-                    <CardTitle>Role Distribution</CardTitle>
-                    <CardDescription>User counts by platform role.</CardDescription>
-                  </ItemContent>
+                  </ItemHeader>
                 </Item>
               </ItemGroup>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-wrap gap-4">
-                {overview.roleBreakdown.map((role) => (
-                  <Badge key={role.role} variant="outline">
-                    {role.role.replace('_', ' ')}: {role.count}
-                  </Badge>
-                ))}
-              </div>
+              <p className="text-3xl font-semibold">{overview.usersWithRoles}</p>
             </CardContent>
           </Card>
 
-          <div>
-            <UsersTable
-              users={normalizedUsers}
-              onSuspend={suspendUser}
-              onReactivate={reactivateUser}
-              onTerminateSessions={terminateAllUserSessions}
+  ... (rest)
+        </div>
+
+        <Card>
+          <CardHeader>
+            <ItemGroup>
+              <Item variant="muted">
+                <ItemContent>
+                  <CardTitle>Role Distribution</CardTitle>
+                  <CardDescription>User counts by platform role.</CardDescription>
+                </ItemContent>
+              </Item>
+            </ItemGroup>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-4">
+              {overview.roleBreakdown.map((role) => (
+                <Badge key={role.role} variant="outline">
+                  {role.role.replace('_', ' ')}: {role.count}
+                </Badge>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <div>
+          <UsersTable
+            users={normalizedUsers}
+            onSuspend={suspendUser}
+            onReactivate={reactivateUser}
+            onTerminateSessions={terminateAllUserSessions}
             onDelete={isSuperAdmin ? deleteUserPermanently : undefined}
           />
         </div>
-        </div>
       </div>
-    </section>
+    </AdminSection>
   )
 }

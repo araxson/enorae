@@ -14,7 +14,7 @@ setInterval(() => {
   })
 }, CLEANUP_INTERVAL)
 
-export function getRateLimitEntry(key: string, windowMs: number) {
+export function getRateLimitEntry(key: string, windowMs: number): { count: number; resetTime: number } {
   const now = Date.now()
   const existing = store[key]
 

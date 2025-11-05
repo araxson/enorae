@@ -1,5 +1,5 @@
 import { getUserSalonSettings } from './api/queries'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import { SalonSettingsContent, SalonSettingsNoSalonError } from './components'
 
 export async function SalonSettings() {
@@ -18,4 +18,4 @@ export async function SalonSettings() {
 
   return <SalonSettingsContent salonId={salon.id} settings={settings} />
 }
-export * from './api/types'
+export type * from './api/types'

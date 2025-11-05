@@ -6,7 +6,7 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
 
 export const getSupabaseClient = () => createServiceRoleClient()
 
-export async function ensurePlatformAdmin() {
+export async function ensurePlatformAdmin(): Promise<{ user: { id: string; email?: string } }> {
   const logger = createOperationLogger('ensurePlatformAdmin', {})
   logger.start()
 

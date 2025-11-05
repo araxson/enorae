@@ -25,7 +25,7 @@ export type MetricAccent = keyof typeof accentIndicatorClasses
 
 const metricValueClass = 'text-2xl font-semibold leading-none tracking-tight'
 
-export function getAccentStripeClass(accent: MetricAccent) {
+export function getAccentStripeClass(accent: MetricAccent): string {
   return accentIndicatorClasses[accent]
 }
 
@@ -45,7 +45,7 @@ export function AppointmentMetricCard({
   progress,
   description,
   accent = 'primary',
-}: AppointmentMetricCardProps) {
+}: AppointmentMetricCardProps): React.JSX.Element {
   return (
     <Item role="article" aria-label={`${title} metric`} variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />
@@ -78,7 +78,7 @@ export function RevenueMetricCard({
   amountLabel,
   description,
   highlight,
-}: RevenueMetricCardProps) {
+}: RevenueMetricCardProps): React.JSX.Element {
   return (
     <Item role="article" aria-label={`${title} metric`} variant="outline" className="relative flex-col gap-3 overflow-hidden">
       <span className={cn('absolute inset-y-0 left-0 w-1', getAccentStripeClass(accent))} aria-hidden="true" />

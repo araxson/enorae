@@ -42,7 +42,9 @@ export async function upsertNotificationTemplate(
 
     const validation = templateSchema.safeParse(template)
     if (!validation.success) {
-      const errorMsg = validation.error.issues[0]?.message ?? 'Validation failed'
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      const errorMsg = firstError ?? 'Validation failed'
       logger.error(errorMsg, 'validation')
       return { success: false, error: errorMsg }
     }

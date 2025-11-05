@@ -21,19 +21,17 @@ import {
   ItemActions,
   ItemContent,
   ItemDescription,
-  ItemGroup,
   ItemFooter,
   ItemHeader,
   ItemTitle,
-  ItemSeparator,
 } from '@/components/ui/item'
 
 function StarRating({ rating }: { rating: number | null }) {
   const validRating = rating ?? 0
 
   return (
-    <Badge variant="secondary" className="gap-1">
-      <Star className="size-3 fill-accent text-accent" aria-hidden="true" />
+    <Badge variant="secondary">
+      <Star className="size-3" aria-hidden="true" />
       <span>{validRating} / 5</span>
       <span className="sr-only">{validRating} out of 5 stars</span>
     </Badge>
@@ -46,7 +44,7 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Star className="size-6" />
+            <Star className="size-5" aria-hidden="true" />
           </EmptyMedia>
           <EmptyTitle>No reviews yet</EmptyTitle>
           <EmptyDescription>
@@ -63,9 +61,9 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
   }
 
   return (
-    <div className="grid gap-6">
+    <div className="space-y-4">
       {reviews.map((review) => (
-        <Item key={review['id']} variant="outline" className="flex flex-col gap-4 p-6">
+        <Item key={review['id']} variant="outline">
           <ItemHeader>
             <ItemContent>
               <ItemTitle>Salon review</ItemTitle>
@@ -75,41 +73,32 @@ export function ReviewsList({ reviews }: ReviewsListProps) {
               <StarRating rating={review['rating']} />
             </ItemActions>
           </ItemHeader>
-          <ItemContent className="gap-4">
-            <ItemGroup>
-              <Item>
-                <ItemContent>
-                  <ItemDescription>{review['comment']}</ItemDescription>
-                </ItemContent>
-              </Item>
-              {review['created_at'] ? <ItemSeparator /> : null}
-              {review['created_at'] ? (
-                <Item size="sm" variant="muted">
-                  <ItemContent>
-                    <ItemDescription>
-                      <time dateTime={review['created_at']}>
-                        {new Date(review['created_at']).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
-                      </time>
-                    </ItemDescription>
-                  </ItemContent>
-                </Item>
-              ) : null}
-            </ItemGroup>
+          <ItemContent>
+            {review['comment'] ? (
+              <ItemDescription>{review['comment']}</ItemDescription>
+            ) : null}
+            {review['created_at'] ? (
+              <ItemDescription>
+                <time dateTime={review['created_at']}>
+                  {new Date(review['created_at']).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              </ItemDescription>
+            ) : null}
           </ItemContent>
           <ItemFooter>
             <ButtonGroup aria-label="Review actions" orientation="horizontal">
               <EditReviewDialog review={review}>
-                <Button variant="outline" size="sm" className="flex-1 sm:flex-none">
-                  <Star className="mr-2 size-4" aria-hidden="true" />
+                <Button variant="outline" size="sm">
+                  <Star className="size-4" aria-hidden="true" />
                   Edit review
                 </Button>
               </EditReviewDialog>
               <DeleteReviewDialog review={review}>
-                <Button variant="destructive" size="sm" className="flex-1 sm:flex-none">
+                <Button variant="destructive" size="sm">
                   Delete review
                 </Button>
               </DeleteReviewDialog>

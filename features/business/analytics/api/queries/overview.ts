@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
@@ -61,7 +63,7 @@ export async function getAnalyticsOverview(
 
   const response = await supabase
     .from('daily_metrics_view')
-    .select('*')
+    .select('salon_id, metric_at, total_revenue, service_revenue, product_revenue, total_appointments, completed_appointments, cancelled_appointments, no_show_appointments, new_customers, returning_customers, active_staff_count')
     .in('salon_id', targetSalonIds)
     .gte('metric_at', startDate)
     .lte('metric_at', endDate)
@@ -69,7 +71,7 @@ export async function getAnalyticsOverview(
 
   if (response.error) throw response.error
 
-  const dailyMetrics: DailyMetric[] = response.data || []
+  const dailyMetrics = (response.data || []) as unknown as DailyMetric[]
 
   const totalRevenue = dailyMetrics.reduce((sum, m) => sum + (m['total_revenue'] || 0), 0)
   const serviceRevenue = dailyMetrics.reduce((sum, m) => sum + (m['service_revenue'] || 0), 0)

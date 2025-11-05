@@ -47,7 +47,7 @@ export async function getManualTransactions(limit = 100): Promise<ManualTransact
   if (error) throw error
 
   // Start with database type, will be enriched below to ManualTransactionWithDetails
-  const transactions = (data || []) as ManualTransaction[]
+  const transactions = (data as ManualTransaction[]) || []
 
   // Collect all unique IDs for batch fetching
   const staffIds = [...new Set(transactions.map((t) => t.staff_id).filter((id): id is string => typeof id === 'string'))]
@@ -208,7 +208,7 @@ export async function getManualTransactionById(
 
   const { data, error } = await supabase
     .from('manual_transactions_view')
-    .select('*')
+    .select('id, salon_id, staff_id, customer_id, transaction_type, amount, description, transaction_at, created_by_id, created_at, updated_at')
     .eq('id', id)
     .in('salon_id', accessibleSalonIds)
     .single()

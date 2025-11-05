@@ -9,10 +9,10 @@ import {
 } from '@/components/ui/item'
 import { AlertTriangle, ShieldAlert, Timer } from 'lucide-react'
 import { getSecurityIncidents } from '../api/queries'
-import { AdminMetricCard } from '@/features/admin/admin-common/components'
+import { AdminMetricCard } from '@/features/admin/common/components'
 import { IncidentTimeline } from './incident-timeline'
 
-export async function IncidentResponseTimeline() {
+export async function IncidentResponseTimeline(): Promise<React.JSX.Element> {
   const snapshot = await getSecurityIncidents({ limit: 100, offset: 0 })
   const summaryCards = [
     {

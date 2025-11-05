@@ -10,7 +10,7 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
  *
  * Security: Requires admin role to prevent unauthorized cache manipulation
  */
-export async function refreshSecurityMonitoring() {
+export async function refreshSecurityMonitoring(): Promise<{ success: true }> {
   const logger = createOperationLogger('refreshSecurityMonitoring', {})
   logger.start()
 

@@ -19,20 +19,14 @@ import {
 import {
   Field,
   FieldContent,
+  FieldDescription,
   FieldLabel,
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemFooter,
-  ItemHeader,
-  ItemTitle,
-} from '@/components/ui/item'
 import { Search, X, MapPin, Filter } from 'lucide-react'
 import { Kbd } from '@/components/ui/kbd'
+import { MarketingPanel } from '@/features/marketing/components/common'
 
 interface SalonFiltersProps {
   cities?: { city: string; state: string; count: number }[]
@@ -71,16 +65,12 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
   const hasActiveFilters = searchTerm || selectedCity || selectedState || selectedCategory
 
   return (
-    <Item variant="outline" className="flex flex-col gap-6">
-      <ItemHeader className="flex flex-col gap-2">
-        <ItemTitle>
-          <h2 className="text-lg font-semibold tracking-tight">Filter salons</h2>
-        </ItemTitle>
-        <ItemDescription>
-          Refine results by search term, location, and category.
-        </ItemDescription>
-      </ItemHeader>
-      <ItemContent>
+    <MarketingPanel
+      variant="outline"
+      align="start"
+      title="Filter salons"
+      description="Refine results by search term, location, and category."
+    >
         <FieldSet>
           <Field>
             <FieldLabel>Search salons</FieldLabel>
@@ -120,60 +110,58 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
 
           <div className="flex flex-wrap items-center gap-3">
             {cities.length > 0 && (
-              <Field orientation="responsive" className="w-full sm:w-auto">
-                <FieldLabel>City</FieldLabel>
-                <FieldContent>
-                  <Select value={selectedCity} onValueChange={setSelectedCity}>
-                    <SelectTrigger className="w-52">
-                      <MapPin className="mr-2 size-4" aria-hidden="true" />
-                      <SelectValue placeholder="Select city" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="__all__">All cities</SelectItem>
-                      {cities.map(({ city, state, count }) => (
-                        <SelectItem key={`${city}-${state}`} value={city}>
-                          {city}, {state} ({count})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FieldContent>
-              </Field>
+              <div className="w-full sm:max-w-xs">
+                <Field orientation="responsive">
+                  <FieldLabel>City</FieldLabel>
+                  <FieldContent>
+                    <Select value={selectedCity} onValueChange={setSelectedCity}>
+                      <SelectTrigger>
+                        <MapPin className="mr-2 size-4" aria-hidden="true" />
+                        <SelectValue placeholder="Select city" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__all__">All cities</SelectItem>
+                        {cities.map(({ city, state, count }) => (
+                          <SelectItem key={`${city}-${state}`} value={city}>
+                            {city}, {state} ({count})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
+              </div>
             )}
 
             {categories.length > 0 && (
-              <Field orientation="responsive" className="w-full sm:w-auto">
-                <FieldLabel>Category</FieldLabel>
-                <FieldContent>
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger className="w-52">
-                      <Filter className="mr-2 size-4" aria-hidden="true" />
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="__all__">All categories</SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FieldContent>
-              </Field>
+              <div className="w-full sm:max-w-xs">
+                <Field orientation="responsive">
+                  <FieldLabel>Category</FieldLabel>
+                  <FieldContent>
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                      <SelectTrigger>
+                        <Filter className="mr-2 size-4" aria-hidden="true" />
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__all__">All categories</SelectItem>
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
+              </div>
             )}
           </div>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemDescription>
-                Press <Kbd>Enter</Kbd> inside the search field to apply filters instantly.
-              </ItemDescription>
-            </ItemContent>
-          </Item>
+          <FieldDescription>
+            Press <Kbd>Enter</Kbd> inside the search field to apply filters instantly.
+          </FieldDescription>
         </FieldSet>
-      </ItemContent>
-      <ItemFooter>
-        <div className="flex flex-wrap items-center justify-end gap-3">
+        <div className="flex flex-wrap items-center justify-end gap-3 pt-4">
           {hasActiveFilters && (
             <Button variant="outline" size="sm" onClick={handleClear}>
               <X className="mr-2 size-4" aria-hidden="true" />
@@ -184,7 +172,6 @@ export function SalonFilters({ cities = [], categories = [] }: SalonFiltersProps
             Search
           </Button>
         </div>
-      </ItemFooter>
-    </Item>
+    </MarketingPanel>
   )
 }

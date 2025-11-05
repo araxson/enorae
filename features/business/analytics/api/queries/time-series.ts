@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
@@ -23,7 +25,7 @@ export async function getDailyMetricsTimeSeries(
 
   const response = await supabase
     .from('daily_metrics_view')
-    .select('*')
+    .select('metric_at, total_revenue, service_revenue, product_revenue, total_appointments, completed_appointments, cancelled_appointments, new_customers, returning_customers')
     .eq('salon_id', salonId)
     .gte('metric_at', startDate)
     .lte('metric_at', endDate)
@@ -31,7 +33,7 @@ export async function getDailyMetricsTimeSeries(
 
   if (response.error) throw response.error
 
-  const data: DailyMetric[] = response.data || []
+  const data = (response.data || []) as unknown as DailyMetric[]
   return data.map((metric) => ({
     date: metric['metric_at'],
     revenue: metric['total_revenue'] || 0,

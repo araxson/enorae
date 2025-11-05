@@ -8,4 +8,4 @@ export async function AccountSettings() {
 
   return <AccountSettingsContent profile={profile} metadata={metadata} />
 }
-export * from './api/types'
+export type * from './api/types'

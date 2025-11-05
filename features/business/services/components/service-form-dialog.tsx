@@ -1,8 +1,7 @@
 'use client'
 
 import { Dialog } from '@/components/ui/dialog'
-import { ServiceFormContent } from './service-form/service-form-content'
-import { useServiceForm } from './service-form/use-service-form'
+import { ServiceFormMigrated } from './service-form/service-form-migrated'
 import type { Database } from '@/lib/types/database.types'
 
 type Service = Database['public']['Views']['services_view']['Row']
@@ -22,22 +21,11 @@ export function ServiceFormDialog({
   service,
   onSuccess,
 }: ServiceFormDialogProps) {
-  const { form, error, isEditMode, handleSubmit } = useServiceForm({
-    salonId,
-    service: service ?? null,
-    open,
-    onClose,
-    onSuccess,
-  })
-
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <ServiceFormContent
+      <ServiceFormMigrated
+        salonId={salonId}
         service={service ?? null}
-        form={form}
-        error={error}
-        isEditMode={isEditMode}
-        handleSubmit={handleSubmit}
         onClose={onClose}
       />
     </Dialog>

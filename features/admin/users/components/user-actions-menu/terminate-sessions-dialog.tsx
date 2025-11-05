@@ -39,7 +39,7 @@ export function TerminateSessionsDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} disabled={isLoading} className="flex items-center gap-2">
+          <AlertDialogAction onClick={onConfirm} disabled={isLoading}>
             {isLoading ? (
               <>
                 <Spinner />

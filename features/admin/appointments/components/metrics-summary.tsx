@@ -1,15 +1,7 @@
 import { Activity, CalendarCheck, CalendarX, Clock4, DollarSign, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { AppointmentSnapshot } from '@/features/admin/appointments/api/types'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 
 interface MetricsSummaryProps {
   totals: AppointmentSnapshot['totals']
@@ -62,7 +54,7 @@ export function MetricsSummary({ totals, performance }: MetricsSummaryProps) {
   ]
 
   return (
-    <ItemGroup className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {items.map(({ title, icon: Icon, value, helper, badge }) => (
         <Item key={title} variant="outline" className="flex-col items-start gap-4">
           <ItemMedia variant="icon">
@@ -80,6 +72,6 @@ export function MetricsSummary({ totals, performance }: MetricsSummaryProps) {
           ) : null}
         </Item>
       ))}
-    </ItemGroup>
+    </div>
   )
 }

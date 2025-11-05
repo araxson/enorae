@@ -32,7 +32,7 @@ export async function getQueryPerformance(
 
   const { data: queries, error } = await supabase
     .from('query_performance_summary_view')
-    .select('*')
+    .select('tablename, avg_tuples_per_scan, tuples_read, index_scans, index_name')
     .order('mean_time_ms', { ascending: false })
     .range(offset, offset + limit - 1)
 

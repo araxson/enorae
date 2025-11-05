@@ -1,6 +1,5 @@
 import { getMyStaffProfileDetails } from './api/queries'
-import { ProfileClient } from './components'
-import { ProfileUnavailableError, ProfileNotFoundError } from './components/profile-error-state'
+import { ProfileClient, ProfileUnavailableError, ProfileNotFoundError } from './components'
 
 export type * from './api/types'
 

@@ -16,6 +16,9 @@ import 'server-only'
 import { cookies, headers } from 'next/headers'
 import { logError } from '@/lib/observability'
 
+// NOTE: generateCSRFToken has been moved to ./utils.ts to avoid 'use server' constraint.
+// Import it directly from './utils' instead of from this file.
+
 /**
  * CSRF token cookie name
  */
@@ -71,7 +74,7 @@ export async function validateCSRF(): Promise<boolean> {
     }
 
     return true
-  } catch (error) {
+  } catch (error: unknown) {
     logError('CSRF validation error', {
       operationName: 'validateCSRF',
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -81,27 +84,9 @@ export async function validateCSRF(): Promise<boolean> {
   }
 }
 
-/**
- * Generate a new CSRF token
- *
- * This should be called on initial page load and set in both:
- * 1. HttpOnly cookie
- * 2. Meta tag or data attribute for client-side access
- *
- * @returns A cryptographically secure random token
- */
-export function generateCSRFToken(): string {
-  // Generate 32 bytes of random data (256 bits)
-  const buffer = new Uint8Array(32)
-  crypto.getRandomValues(buffer)
-
-  // Convert to base64url (URL-safe base64)
-  return Buffer.from(buffer)
-    .toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '')
-}
+// generateCSRFToken has been moved to ./utils.ts and is re-exported above
+// This keeps the 'use server' constraint on validate.ts while allowing
+// the pure utility function to be used without async requirement
 
 /**
  * Validate CSRF token with custom error handling
@@ -114,7 +99,7 @@ export async function validateCSRFSafe(): Promise<{ success: boolean; error?: st
   try {
     await validateCSRF()
     return { success: true }
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       success: false,
       error: error instanceof Error ? error.message : 'CSRF validation failed',

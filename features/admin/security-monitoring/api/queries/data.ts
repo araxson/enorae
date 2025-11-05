@@ -120,26 +120,26 @@ export async function getSecurityMonitoringSnapshot(
     await Promise.all([
       supabase
         .from('security_access_monitoring_view')
-        .select('*')
+        .select('id, user_id, action, resource_type, is_granted, ip_address, user_agent, created_at')
         .gte('created_at', startIso)
         .order('created_at', { ascending: false })
         .limit(settings.accessAttemptsLimit),
       supabase
         .from('security_session_security_view')
-        .select('*')
+        .select('id, user_id, session_id, suspicious_score, is_blocked, ip_address, last_activity_at, created_at')
         .order('suspicious_score', { ascending: false })
         .limit(settings.sessionsLimit),
       supabase
         .schema('identity')
         .from('audit_logs_view')
-        .select('*')
+        .select('id, user_id, action, error_message, ip_address, created_at')
         .gte('created_at', startIso)
         .order('created_at', { ascending: false })
         .limit(settings.eventsLimit),
       supabase
         .schema('identity')
         .from('audit_logs_view')
-        .select('*')
+        .select('id, user_id, action, error_message, ip_address, created_at')
         .gte('created_at', startIso)
         .ilike('action', '%login%')
         .order('created_at', { ascending: false })
@@ -147,18 +147,18 @@ export async function getSecurityMonitoringSnapshot(
       supabase
         .schema('public')
         .from('security_rate_limit_tracking_view')
-        .select('*')
+        .select('identifier, identifier_type, endpoint, request_count, window_start_at, last_request_at, last_blocked_at, blocked_until, user_agent, metadata')
         .order('window_start_at', { ascending: false })
         .limit(settings.rateLimitLimit),
       supabase
         .schema('public')
         .from('security_rate_limit_rules_view')
-        .select('*')
+        .select('id, rule_name, endpoint, applies_to, max_requests, window_seconds, block_duration_seconds, is_active')
         .limit(settings.rateLimitLimit),
       supabase
         .schema('audit')
         .from('audit_logs')
-        .select('*')
+        .select('id, user_id, action, event_type, event_category, severity, error_message, target_schema, target_table, metadata, ip_address, created_at')
         .gte('created_at', startIso)
         .order('created_at', { ascending: false })
         .limit(settings.incidentsLimit),

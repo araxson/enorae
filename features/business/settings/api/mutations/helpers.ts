@@ -12,16 +12,16 @@ export async function getSalonContext(salonId: string) {
   await requireAnyRole(ROLE_GROUPS.BUSINESS_USERS)
 
   if (!UUID_REGEX.test(salonId)) {
-    throw new Error('Invalid salon ID format')
+    return { error: 'Invalid salon ID format', supabase: null }
   }
 
   const supabase = await createClient()
 
   if (!(await canAccessSalon(salonId))) {
-    throw new Error('Unauthorized: Not your salon')
+    return { error: 'Unauthorized: Not your salon', supabase: null }
   }
 
-  return supabase
+  return { error: null, supabase }
 }
 
 export function revalidateSettings() {

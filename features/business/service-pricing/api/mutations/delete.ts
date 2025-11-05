@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { resolveSalonContext, UUID_REGEX } from '@/features/business/business-common/api/salon-context'
+import { resolveSalonContext, UUID_REGEX } from '@/features/business/common/api/salon-context'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
 const CATALOG_SCHEMA = 'catalog'
@@ -16,7 +16,12 @@ type PricingWithService = {
   } | null
 }
 
-export async function deleteServicePricing(formData: FormData) {
+type ActionResult = {
+  success?: boolean
+  error?: string
+}
+
+export async function deleteServicePricing(formData: FormData): Promise<ActionResult> {
   const logger = createOperationLogger('deleteServicePricing', {})
   logger.start()
 

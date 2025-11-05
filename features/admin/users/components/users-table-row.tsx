@@ -1,12 +1,12 @@
 'use client'
 
-import { memo } from 'react'
+
 import { Badge } from '@/components/ui/badge'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { UserActionsMenu } from './user-actions-menu'
 import { formatDistanceToNow } from 'date-fns'
 import { User, Shield } from 'lucide-react'
-import { STATUS_BADGE_VARIANT } from '@/features/admin/admin-common/constants/badge-variants'
+import { STATUS_BADGE_VARIANT } from '@/features/admin/common/constants/badge-variants'
 import { Spinner } from '@/components/ui/spinner'
 
 type UserWithDetails = {
@@ -30,7 +30,7 @@ interface UserTableRowProps {
   onLoadingChange: (loading: boolean) => void
 }
 
-export const UserTableRow = memo(function UserTableRow({
+export function UserTableRow({
   user,
   isLoading,
   onSuspend,
@@ -122,4 +122,4 @@ export const UserTableRow = memo(function UserTableRow({
       </TableCell>
     </TableRow>
   )
-})
+}

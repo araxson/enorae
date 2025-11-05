@@ -1,15 +1,7 @@
 import { ArrowUpRight, ArrowDownRight, Users, Store, CalendarDays, PieChart } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { PlatformAnalyticsSnapshot, GrowthDelta } from '@/features/admin/analytics/api/types'
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemMedia,
-  ItemTitle,
-} from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 
 interface MetricSummaryCardsProps {
   growth: PlatformAnalyticsSnapshot['growth']['summary']
@@ -67,7 +59,7 @@ export function MetricSummaryCards({ growth, acquisition, retention }: MetricSum
   ]
 
   return (
-    <ItemGroup className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       {cards.map(({ title, icon: Icon, value, helper, delta }) => (
         <Item key={title} variant="outline" className="flex-col items-start gap-4">
           <ItemMedia variant="icon">
@@ -86,6 +78,6 @@ export function MetricSummaryCards({ growth, acquisition, retention }: MetricSum
           </ItemActions>
         </Item>
       ))}
-    </ItemGroup>
+    </div>
   )
 }

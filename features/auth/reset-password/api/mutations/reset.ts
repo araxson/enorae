@@ -14,6 +14,7 @@ const newPasswordSchema = z.object({
 })
 
 export async function resetPassword(
+  prevState: PasswordResetResult | null,
   formData: FormData
 ): Promise<PasswordResetResult> {
   const logger = createOperationLogger('resetPassword', {})
@@ -26,9 +27,12 @@ export async function resetPassword(
 
     const validation = newPasswordSchema.safeParse(rawData)
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      logger.error(firstError?.message ?? 'Invalid password', 'validation')
-      return { success: false, error: firstError?.message ?? 'Invalid password' }
+      logger.error('Validation failed', 'validation')
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        errors: validation.error.flatten().fieldErrors
+      }
     }
 
     const { password } = validation.data
@@ -44,13 +48,17 @@ export async function resetPassword(
 
     logger.start({ userId: user.id })
 
+    // SECURITY: Password reset via email link doesn't require nonce
+    // The email link token itself serves as authentication proof
+    // However, for extra security, we verify the user is authenticated via the link
     const { error } = await supabase.auth.updateUser({
       password,
     })
 
     if (error) {
       logger.error(error, 'auth', { userId: user.id })
-      return { success: false, error: error.message }
+      // SECURITY: Use generic error message to prevent information disclosure
+      return { success: false, error: 'Failed to reset password. Please request a new reset link.' }
     }
 
     logger.success({ userId: user.id })

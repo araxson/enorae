@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { SalonProfilePage, generateSalonProfileMetadata } from '@/features/marketing/salon-directory'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 
 export { generateSalonProfileMetadata as generateMetadata }
 

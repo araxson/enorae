@@ -11,7 +11,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { NavMain, NavSecondary, NavUser } from '..'
-import { BusinessSalonSwitcher } from '@/features/business/business-common/components/salon-switcher'
+import { BusinessSalonSwitcher } from '@/features/business/common/components'
 import { getMenuForUser } from '../../menu/get-menu-for-user'
 import { verifySession } from '@/lib/auth/session'
 import { getUnreadNotificationsCount } from '@/features/shared/notifications/api/queries'

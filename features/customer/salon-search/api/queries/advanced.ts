@@ -82,35 +82,37 @@ export async function getNearbyServices(
     address: { city?: string } | null
   }
 
-  // Get the salon's city from public view
-  const { data: salon } = await supabase
-    .from('salons_view')
-    .select('address')
-    .eq('id', salonId)
-    .returns<SalonRow[]>()
-    .single()
-
-  if (!salon?.address?.city) {
-    return []
-  }
-
-  // Find other salons in the same city using services
-  const { data: services, error } = await supabase
-    .from('services_view')
-    .select(`
-      id,
-      name,
-      salons:salon_id (
+  // PERFORMANCE FIX: Fetch salon and services in parallel to avoid waterfall
+  // Before: 2 sequential queries (salon then services)
+  // After: 1 parallel Promise.all (faster total time)
+  const [salonResult, servicesResult] = await Promise.all([
+    supabase
+      .from('salons_view')
+      .select('address')
+      .eq('id', salonId)
+      .returns<SalonRow[]>()
+      .single(),
+    supabase
+      .from('services_view')
+      .select(`
+        id,
         name,
-        slug,
-        address
-      )
-    `)
-    .neq('salon_id', salonId)
-    .limit(limit * 3) // Get more to filter by city
-    .returns<ServiceWithSalon[]>()
+        salons:salon_id (
+          name,
+          slug,
+          address
+        )
+      `)
+      .neq('salon_id', salonId)
+      .limit(limit * 3) // Get more to filter by city
+      .returns<ServiceWithSalon[]>()
+  ])
+
+  const { data: salon } = salonResult
+  const { data: services, error } = servicesResult
 
   if (error) throw error
+  if (!salon) return [] // Return empty array if salon not found
 
   // Filter by same city and ensure all required fields exist
   const nearbyServices = (services || [])

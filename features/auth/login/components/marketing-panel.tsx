@@ -1,4 +1,4 @@
-export function MarketingPanel() {
+export function MarketingPanel(): React.ReactElement {
   return (
     <div className="relative hidden bg-muted md:block">
       <div className="absolute inset-0 flex items-center justify-center p-8 text-center">

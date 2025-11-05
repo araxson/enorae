@@ -9,7 +9,7 @@ import {
   ensureBusinessUser,
   generateUniqueServiceSlug,
 } from './shared'
-import { deriveBookingDurations, derivePricingMetrics } from '@/features/shared/services/utils/calculations'
+import { deriveBookingDurations, derivePricingMetrics } from '@/features/shared/services/utils'
 import type {
   ServiceFormData,
   ServicePricingData,

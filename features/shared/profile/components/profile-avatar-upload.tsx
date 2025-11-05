@@ -26,7 +26,9 @@ export function ProfileAvatarUpload({ avatarUrl, onError }: ProfileAvatarUploadP
 
     const validation = avatarUploadSchema.safeParse({ file })
     if (!validation.success) {
-      onError(validation.error.issues[0]?.message || 'Invalid file')
+      const fieldErrors = validation.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      onError(firstError || 'Invalid file')
       return
     }
 

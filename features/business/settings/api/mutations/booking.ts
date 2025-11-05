@@ -34,7 +34,13 @@ export async function updateBookingRules(
   logger.start()
 
   try {
-    const supabase = await getSalonContext(salonId)
+    const salonContext = await getSalonContext(salonId)
+
+    if (salonContext.error || !salonContext.supabase) {
+      return { error: salonContext.error || 'Database connection unavailable' }
+    }
+
+    const supabase = salonContext.supabase
 
     const validation = bookingRulesSchema.safeParse({
       booking_lead_time_hours: extractNumber(formData, 'booking_lead_time_hours'),
@@ -46,7 +52,10 @@ export async function updateBookingRules(
     })
 
     if (!validation.success) {
-      return { error: `Validation failed: ${validation.error.issues[0]?.message}` }
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const validated = validation.data

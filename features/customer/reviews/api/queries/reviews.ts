@@ -10,29 +10,36 @@ export async function getCustomerReviews(): Promise<Review[]> {
   const logger = createOperationLogger('getCustomerReviews', {})
   logger.start()
 
-  const session = await requireAuth()
-  const supabase = await createClient()
+  // Parallel execution: fetch session and supabase client simultaneously
+  const [session, supabase] = await Promise.all([
+    requireAuth(),
+    createClient()
+  ])
 
   const { data, error } = await supabase
     .from('salon_reviews_view')
-    .select('*')
+    .select('id, salon_id, salon_name, customer_id, customer_name, rating, comment, helpful_count, is_flagged, is_verified, created_at')
     .eq('customer_id', session.user.id)
     .order('created_at', { ascending: false })
+    .returns<Review[]>()
 
   if (error) throw error
   return data || []
 }
 
 export async function getReviewById(id: string): Promise<Review | null> {
-  const session = await requireAuth()
-  const supabase = await createClient()
+  // Parallel execution: fetch session and supabase client simultaneously
+  const [session, supabase] = await Promise.all([
+    requireAuth(),
+    createClient()
+  ])
 
   const { data, error } = await supabase
     .from('salon_reviews_view')
-    .select('*')
+    .select('id, salon_id, salon_name, customer_id, customer_name, staff_id, staff_name, rating, comment, helpful_count, is_flagged, is_verified, created_at, updated_at')
     .eq('id', id)
     .eq('customer_id', session.user.id)
-    .single()
+    .single<Review>()
 
   if (error) {
     if (error.code === 'PGRST116') return null

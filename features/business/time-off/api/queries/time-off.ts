@@ -25,7 +25,7 @@ export async function getSalonTimeOffRequests(): Promise<TimeOffRequest[]> {
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data || []
+  return (data as TimeOffRequest[]) || []
 }
 
 /**
@@ -45,5 +45,5 @@ export async function getPendingSalonTimeOffRequests(): Promise<TimeOffRequest[]
     .order('created_at', { ascending: false })
 
   if (error) throw error
-  return data || []
+  return (data as TimeOffRequest[]) || []
 }

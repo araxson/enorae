@@ -51,7 +51,13 @@ export async function bulkUpdateAddresses(
   }
 }
 
-export async function geocodeAllAddresses(salonId: string) {
+type GeocodeResult = {
+  success: number
+  failed: number
+  errors: string[]
+}
+
+export async function geocodeAllAddresses(salonId: string): Promise<GeocodeResult> {
   const logger = createOperationLogger('geocodeAllAddresses', { salonId })
 
   try {

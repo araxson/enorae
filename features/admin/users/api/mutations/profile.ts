@@ -8,7 +8,10 @@ import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { UUID_REGEX, updateProfileSchema } from '../../constants'
 import { createOperationLogger } from '@/lib/observability'
 
-export async function updateUserProfile(formData: FormData) {
+export async function updateUserProfile(formData: FormData): Promise<
+  | { error: string; fieldErrors?: Record<string, string[] | undefined> }
+  | { success: true }
+> {
   const logger = createOperationLogger('updateUserProfile', {})
   logger.start()
 
@@ -24,7 +27,9 @@ export async function updateUserProfile(formData: FormData) {
     })
 
     if (!result.success) {
-      return { error: result.error.issues[0]?.message ?? 'Invalid form data' }
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Invalid form data', fieldErrors }
     }
 
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)

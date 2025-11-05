@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import {
   Item,
   ItemContent,
@@ -5,11 +6,10 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
-import { upsertBookingRule } from './api/mutations'
 import { getBookingRuleServices, getBookingRules } from './api/queries'
 import { BookingRulesClient } from './components'
 
-export async function BookingRules() {
+export async function BookingRules(): Promise<JSX.Element> {
   const [rules, services] = await Promise.all([
     getBookingRules(),
     getBookingRuleServices(),
@@ -27,9 +27,9 @@ export async function BookingRules() {
           </Item>
         </ItemGroup>
 
-        <BookingRulesClient rules={rules} services={services} onSubmit={upsertBookingRule} />
+        <BookingRulesClient rules={rules} services={services} />
       </div>
     </section>
   )
 }
-export * from './api/types'
+export type * from './api/types'

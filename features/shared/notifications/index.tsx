@@ -1,14 +1,15 @@
+import { Section } from '@/features/shared/ui'
 import { getNotifications } from './api/queries'
 import { NotificationCenter } from './components'
 
 export async function Notifications() {
   const notifications = await getNotifications()
   return (
-    <section className="py-16 md:py-24 lg:py-32">
+    <Section width="lg">
       <NotificationCenter notifications={notifications} />
-    </section>
+    </Section>
   )
 }
 
-export { NotificationCenter } from './components'
-export * from './api/types'
+export { NotificationCenter, NotificationCenterSkeleton } from './components'
+export type * from './api/types'

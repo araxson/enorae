@@ -14,6 +14,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import { CreditCard, Banknote, Smartphone, Wallet, CircleDollarSign, type LucideIcon } from 'lucide-react'
 
 interface PaymentMethodStatsProps {
   stats: PaymentMethodStats[]
@@ -33,13 +34,13 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
     return method.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
   }
 
-  const getMethodIcon = (method: string) => {
+  const getMethodIcon = (method: string): LucideIcon => {
     const methodLower = method.toLowerCase()
-    if (methodLower.includes('card') || methodLower.includes('credit') || methodLower.includes('debit')) return '💳'
-    if (methodLower.includes('cash')) return '💵'
-    if (methodLower.includes('online') || methodLower.includes('digital')) return '📱'
-    if (methodLower.includes('wallet')) return '👛'
-    return '💰'
+    if (methodLower.includes('card') || methodLower.includes('credit') || methodLower.includes('debit')) return CreditCard
+    if (methodLower.includes('cash')) return Banknote
+    if (methodLower.includes('online') || methodLower.includes('digital')) return Smartphone
+    if (methodLower.includes('wallet')) return Wallet
+    return CircleDollarSign
   }
 
   const totalTransactions = stats.reduce((sum, stat) => sum + stat.count, 0)
@@ -64,12 +65,14 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
           ) : (
             <div className="space-y-3">
               <ItemGroup>
-                {stats.map((stat) => (
-                  <Item key={stat.method} variant="outline" size="sm">
-                    <ItemMedia variant="icon">
-                      <span className="text-lg">{getMethodIcon(stat.method)}</span>
-                    </ItemMedia>
-                    <ItemContent>
+                {stats.map((stat) => {
+                  const Icon = getMethodIcon(stat.method)
+                  return (
+                    <Item key={stat.method} variant="outline" size="sm">
+                      <ItemMedia variant="icon">
+                        <Icon className="size-5" aria-hidden="true" />
+                      </ItemMedia>
+                      <ItemContent>
                       <ItemTitle>{formatMethodName(stat.method)}</ItemTitle>
                       <ItemDescription>
                         {stat.count.toLocaleString()} transactions · Last used {formatDate(stat.lastUsed)}
@@ -78,11 +81,12 @@ export function PaymentMethodStatsComponent({ stats }: PaymentMethodStatsProps) 
                         <Progress value={stat.percentage} />
                       </div>
                     </ItemContent>
-                    <ItemActions>
-                      <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
-                    </ItemActions>
-                  </Item>
-                ))}
+                      <ItemActions>
+                        <Badge variant="outline">{stat.percentage.toFixed(1)}%</Badge>
+                      </ItemActions>
+                    </Item>
+                  )
+                })}
               </ItemGroup>
             </div>
           )}

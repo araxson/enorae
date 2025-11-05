@@ -1,2 +1,1 @@
-
 export { subscribeToNewsletter } from './subscribe'

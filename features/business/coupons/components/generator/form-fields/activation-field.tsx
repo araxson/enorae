@@ -3,7 +3,7 @@
 import { Switch } from '@/components/ui/switch'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
 import { FieldLabel } from '@/components/ui/field'
-import type { BulkCouponFormState } from '../../../api/types'
+import type { BulkCouponFormState } from '@/features/business/coupons/api/types'
 
 interface ActivationFieldProps {
   formState: BulkCouponFormState

@@ -34,11 +34,19 @@ export async function updateSalonInfo(salonId: string, formData: FormData) {
     }
 
     // Validate input
-    const validated = salonInfoSchema.parse({
+    const result = salonInfoSchema.safeParse({
       business_name: formData.get('business_name') || undefined,
       business_type: formData.get('business_type') || undefined,
       established_at: formData.get('established_at') || undefined,
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // Update salon info
     const updateData: Record<string, unknown> = {

@@ -1,81 +1,72 @@
+import { Item, ItemContent, ItemGroup, ItemHeader } from '@/components/ui/item'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Spinner } from '@/components/ui/spinner'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemGroup,
-  ItemTitle,
-} from '@/components/ui/item'
+import { MarketingSection } from '@/features/marketing/components/common'
+
+function ListingSkeletonCard() {
+  return (
+    <Item variant="outline" className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <Skeleton className="h-5 w-3/4" />
+        <Skeleton className="h-4 w-5/6" />
+      </div>
+      <div className="flex flex-col gap-3">
+        <Skeleton className="h-4 w-1/3" />
+        <Skeleton className="h-4 w-1/2" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+      <Skeleton className="h-10 w-full" />
+    </Item>
+  )
+}
 
 export default function ExploreLoading() {
   return (
-    <div className="container mx-auto py-12 space-y-8">
-      <ItemGroup className="gap-6">
-        <Item className="flex-col items-center gap-4" variant="muted">
-          <ItemContent className="flex flex-col items-center gap-4 text-center">
-            <Spinner className="size-6 text-muted-foreground" />
-            <ItemTitle>Loading featured salons</ItemTitle>
-            <ItemDescription>Tailoring recommendations for your next visit.</ItemDescription>
-            <Skeleton className="h-12 w-96" />
-            <Skeleton className="h-6 w-[32rem]" />
+    <main className="flex flex-col gap-10">
+      <MarketingSection spacing="compact">
+        <Item variant="muted">
+          <ItemContent>
+            <div className="flex flex-col items-center gap-3 text-center">
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-4 w-64" />
+            </div>
           </ItemContent>
         </Item>
-      </ItemGroup>
+      </MarketingSection>
 
-      <ItemGroup>
-        <Item className="flex-col items-center gap-4" variant="muted">
-          <ItemContent className="w-full max-w-2xl">
-            <Skeleton className="h-12 w-full rounded-lg" />
-          </ItemContent>
-        </Item>
-      </ItemGroup>
-
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {[...Array(12)].map((_, i) => (
-          <Card key={i} className="overflow-hidden">
-            <CardHeader>
-              <div className="p-0">
-                <ItemGroup>
-                  <Item className="flex-col items-start gap-2">
-                    <ItemContent>
-                      <ItemTitle>
-                        <span className="sr-only">Loading salon listing</span>
-                      </ItemTitle>
-                    </ItemContent>
-                    <ItemContent>
-                      <Skeleton className="h-56 w-full" />
-                    </ItemContent>
-                  </Item>
-                </ItemGroup>
+      <MarketingSection className="pb-16 pt-6" spacing="none" groupClassName="gap-8">
+        <ItemGroup className="gap-4">
+          <Item variant="muted">
+            <ItemHeader>
+              <Skeleton className="h-6 w-32" />
+            </ItemHeader>
+            <ItemContent>
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-5 w-56" />
+                <Skeleton className="h-4 w-72" />
               </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <ItemGroup className="gap-3">
-                <Item className="flex-col items-start gap-3">
-                  <ItemContent>
-                    <Skeleton className="h-6 w-3/4" />
-                  </ItemContent>
-                  <ItemContent>
-                    <Skeleton className="h-4 w-full" />
-                  </ItemContent>
-                  <ItemContent>
-                    <Skeleton className="h-4 w-5/6" />
-                  </ItemContent>
-                  <ItemContent className="flex w-full items-center gap-4 pt-2">
-                    <Skeleton className="h-4 w-16" />
-                    <Skeleton className="h-4 w-20" />
-                  </ItemContent>
-                  <ItemContent className="mt-4 w-full">
-                    <Skeleton className="h-10 w-full" />
-                  </ItemContent>
-                </Item>
-              </ItemGroup>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+            </ItemContent>
+          </Item>
+        </ItemGroup>
+
+        <div className="flex flex-wrap gap-2">
+          <Skeleton className="h-9 w-24" />
+          <Skeleton className="h-9 w-28" />
+          <Skeleton className="h-9 w-24" />
+        </div>
+
+        <Skeleton className="h-4 w-56" />
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Skeleton className="h-12 w-full sm:w-96" />
+          <Skeleton className="h-12 w-full sm:w-40" />
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <ListingSkeletonCard key={index} />
+          ))}
+        </div>
+      </MarketingSection>
+    </main>
   )
 }

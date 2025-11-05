@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { CustomerReviews } from '@/features/customer/reviews'
 
 export default function CustomerReviewsPage() {

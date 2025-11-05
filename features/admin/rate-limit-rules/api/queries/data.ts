@@ -36,7 +36,7 @@ export async function getRateLimitRules(
   // Fetch rate limit rules
   const { data: rules, error } = await supabase
     .from('security_rate_limit_rules_view')
-    .select('*')
+    .select('id, endpoint, max_requests, window_seconds, is_active, description, rule_name, applies_to, created_at, updated_at')
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
 

@@ -107,10 +107,10 @@ export function SearchFilters({
             </FieldGroup>
           </FieldSet>
 
-          <Button variant="default" onClick={handleSearch} className="w-full" disabled={isSearching}>
+          <Button variant="default" onClick={handleSearch} disabled={isSearching}>
             {isSearching ? (
               <>
-                <Spinner className="mr-2" />
+                <Spinner className="size-4" />
                 Searching…
               </>
             ) : (

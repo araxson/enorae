@@ -3,6 +3,10 @@ import { getSalonSearchSuggestions } from '@/features/customer/salon-search/api/
 import { RATE_LIMITS, STRING_LIMITS, CACHE_DURATION } from '@/lib/config/constants'
 import { logApiCall, logError } from '@/lib/observability'
 
+// Next.js 15+: GET requests are NOT cached by default - must set dynamic explicitly
+// This endpoint is user-specific (query param) so we force dynamic
+export const dynamic = 'force-dynamic'
+
 // SECURITY: Rate limit to prevent abuse
 const RATE_LIMIT_WINDOW = RATE_LIMITS.IN_MEMORY_API.windowMs
 const RATE_LIMIT_MAX_REQUESTS = RATE_LIMITS.IN_MEMORY_API.limit

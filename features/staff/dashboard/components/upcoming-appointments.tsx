@@ -60,23 +60,19 @@ export function UpcomingAppointments({ appointments }: UpcomingAppointmentsProps
           {appointments.map((appointment, index) => (
             <div key={appointment.id ?? index}>
               <Item variant="outline">
-                <ItemMedia>
-                  <Card>
-                    <CardContent>
-                      <div className="flex w-16 flex-col items-center justify-center gap-1 p-2">
-                        <p className="text-xs font-semibold">
-                          {appointment.start_time
-                            ? format(new Date(appointment.start_time), 'MMM')
-                            : '---'}
-                        </p>
-                        <div className="text-lg font-semibold">
-                          {appointment.start_time
-                            ? format(new Date(appointment.start_time), 'd')
-                            : '--'}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                <ItemMedia variant="icon" className="size-16">
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-1 rounded-sm bg-muted">
+                    <p className="text-[10px] font-semibold uppercase tracking-wide">
+                      {appointment.start_time
+                        ? format(new Date(appointment.start_time), 'MMM')
+                        : '---'}
+                    </p>
+                    <span className="text-base font-semibold">
+                      {appointment.start_time
+                        ? format(new Date(appointment.start_time), 'd')
+                        : '--'}
+                    </span>
+                  </div>
                 </ItemMedia>
                 <ItemContent>
                   <ItemTitle>

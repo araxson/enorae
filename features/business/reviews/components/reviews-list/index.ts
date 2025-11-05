@@ -1,1 +1,6 @@
 export { ReviewsList } from './reviews-list'
+export * from './review-card-actions'
+export * from './review-card-content'
+export * from './review-card-header'
+export * from './review-card'
+export * from './use-reviews-list'

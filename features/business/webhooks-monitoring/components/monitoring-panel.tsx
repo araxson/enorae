@@ -6,7 +6,7 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import type { WebhookStats } from '@/features/business/webhooks/api/queries'
-import { WebhookMonitoringDashboard } from '@/features/business/webhooks/components/webhook-monitoring-dashboard'
+import { WebhookMonitoringDashboard } from '@/features/business/webhooks/components'
 import type { Database } from '@/lib/types/database.types'
 
 type FailedWebhookRow =

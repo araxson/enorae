@@ -2,8 +2,8 @@
 
 import { useCallback, useMemo, useState } from 'react'
 import { CalendarDays, History, Clock3 } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
 import type { StaffAppointment } from '@/features/staff/appointments/api/queries'
 import { AppointmentStats } from './appointment-stats'
 import { AppointmentFilters } from './appointment-filters'
@@ -20,7 +20,6 @@ export function AppointmentsClient({
   upcomingAppts,
   pastAppts,
 }: AppointmentsClientProps) {
-  const [activeTab, setActiveTab] = useState('today')
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
 
@@ -44,13 +43,6 @@ export function AppointmentsClient({
   const filteredToday = useMemo(() => filterAppointments(todayAppts), [todayAppts, filterAppointments])
   const filteredUpcoming = useMemo(() => filterAppointments(upcomingAppts), [upcomingAppts, filterAppointments])
   const filteredPast = useMemo(() => filterAppointments(pastAppts), [pastAppts, filterAppointments])
-
-  const activeAppointments =
-    activeTab === 'today'
-      ? filteredToday
-      : activeTab === 'upcoming'
-        ? filteredUpcoming
-        : filteredPast
 
   const summaries: StaffSummary[] = [
     {
@@ -88,6 +80,39 @@ export function AppointmentsClient({
     { value: 'past', label: 'Past', icon: History, badge: filteredPast.length ? filteredPast.length.toString() : undefined },
   ]
 
+  const renderFilters = () => (
+    <AppointmentFilters
+      onStatusChange={setStatusFilter}
+      onSearchChange={setSearchQuery}
+      searchValue={searchQuery}
+      showSearch={false}
+    />
+  )
+
+  const tabContent = {
+    today: (
+      <div className="space-y-6">
+        <AppointmentStats appointments={filteredToday} />
+        {renderFilters()}
+        <AppointmentsList appointments={filteredToday} title="Today's Appointments" showActions />
+      </div>
+    ),
+    upcoming: (
+      <div className="space-y-6">
+        <AppointmentStats appointments={filteredUpcoming} />
+        {renderFilters()}
+        <AppointmentsList appointments={filteredUpcoming} title="Upcoming Appointments" showActions />
+      </div>
+    ),
+    past: (
+      <div className="space-y-6">
+        <AppointmentStats appointments={filteredPast} />
+        {renderFilters()}
+        <AppointmentsList appointments={filteredPast} title="Past Appointments" showActions={false} />
+      </div>
+    ),
+  }
+
   return (
     <StaffPageShell
       title="Appointments"
@@ -99,8 +124,8 @@ export function AppointmentsClient({
       summaries={summaries}
       quickActions={quickActions}
       tabs={tabs}
-      activeTab={activeTab}
-      onTabChange={setActiveTab}
+      defaultTab="today"
+      tabContent={tabContent}
       searchPlaceholder="Search by customer or confirmation…"
       searchValue={searchQuery}
       onSearchChange={setSearchQuery}
@@ -110,29 +135,6 @@ export function AppointmentsClient({
       toggles={[
         { id: 'auto-refresh', label: 'Auto refresh', helper: 'Reload every 2 minutes', defaultOn: true },
       ]}
-    >
-      <div className="space-y-6">
-        <AppointmentStats appointments={activeAppointments} />
-
-        <AppointmentFilters
-          onStatusChange={setStatusFilter}
-          onSearchChange={setSearchQuery}
-          searchValue={searchQuery}
-          showSearch={false}
-        />
-
-        {activeTab === 'today' && (
-          <AppointmentsList appointments={filteredToday} title="Today's Appointments" showActions />
-        )}
-
-        {activeTab === 'upcoming' && (
-          <AppointmentsList appointments={filteredUpcoming} title="Upcoming Appointments" showActions />
-        )}
-
-        {activeTab === 'past' && (
-          <AppointmentsList appointments={filteredPast} title="Past Appointments" showActions={false} />
-        )}
-      </div>
-    </StaffPageShell>
+    />
   )
 }

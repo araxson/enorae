@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
@@ -77,15 +79,15 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
     rolesResponse,
     activityResponse,
   ] = await Promise.all([
-    supabase.from('admin_users_overview_view').select('*').eq('id', profileId).maybeSingle(),
+    supabase.from('admin_users_overview_view').select('id, full_name, email, username, primary_role, roles, status, updated_at, created_at').eq('id', profileId).maybeSingle(),
     supabase
       .from('profiles_metadata_view')
-      .select('*')
+      .select('profile_id, avatar_url, avatar_thumbnail_url, cover_image_url, interests, tags, social_profiles')
       .eq('profile_id', profileId)
       .maybeSingle(),
     supabase
       .from('profiles_preferences_view')
-      .select('*')
+      .select('profile_id, country_code, locale, timezone, preferences, updated_at')
       .eq('profile_id', profileId)
       .maybeSingle(),
     supabase
@@ -97,7 +99,7 @@ export async function getProfileDetail(profileId: string): Promise<ProfileDetail
       .schema('identity')
       .from('audit_logs_view')
       .select(
-        'id, created_at, action, entity_type, entity_id, ip_address, user_agent',
+        'id, created_at, action, entity_type, entity_id, ip_address, user_agent, is_success',
       )
       .eq('user_id', profileId)
       .order('created_at', { ascending: false })

@@ -19,4 +19,4 @@ export async function ServicePricing() {
 
   return <ServicePricingClient pricing={pricing} services={simpleServices} />
 }
-export * from './api/types'
+export type * from './api/types'

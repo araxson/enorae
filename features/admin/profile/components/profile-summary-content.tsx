@@ -23,12 +23,17 @@ const formatDate = (value: string | null) => {
   }
 }
 
-const getInitials = (name?: string | null, email?: string | null) => {
+const getInitials = (name?: string | null, email?: string | null): string => {
   const source = name || email || ''
   const parts = source.trim().split(/\s+/).filter(Boolean)
   if (parts.length === 0) return '??'
-  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase()
-  return `${parts[0]![0] ?? ''}${parts[parts.length - 1]![0] ?? ''}`.toUpperCase()
+  if (parts.length === 1) {
+    const firstPart = parts[0]
+    return firstPart ? firstPart.slice(0, 2).toUpperCase() : '??'
+  }
+  const firstChar = parts[0]?.[0] ?? ''
+  const lastChar = parts[parts.length - 1]?.[0] ?? ''
+  return `${firstChar}${lastChar}`.toUpperCase()
 }
 
 export function ProfileSummaryContent({ profile }: { profile: ProfileDetail }) {
@@ -81,7 +86,7 @@ export function ProfileSummaryContent({ profile }: { profile: ProfileDetail }) {
         </div>
       </div>
 
-      <ItemGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Item variant="muted" size="sm" className="flex-col items-start">
           <ItemContent className="gap-1">
             <ItemDescription>Last activity</ItemDescription>
@@ -108,7 +113,7 @@ export function ProfileSummaryContent({ profile }: { profile: ProfileDetail }) {
             <ItemTitle>{summary.countryCode ?? '—'}</ItemTitle>
           </ItemContent>
         </Item>
-      </ItemGroup>
+      </div>
 
       {roles.length > 0 && (
         <div className="space-y-2">

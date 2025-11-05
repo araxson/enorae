@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { toast } from '@/components/ui/sonner'
 import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { SessionCard } from './session-card'
-import { ConfirmDialog } from '@/features/shared/ui-components'
+import { ConfirmDialog } from '@/features/shared/ui'
 import { revokeSession, revokeAllOtherSessions } from '@/features/shared/sessions/api/mutations'
 import type { SessionWithDevice } from '@/features/shared/sessions/api/queries'
 import {

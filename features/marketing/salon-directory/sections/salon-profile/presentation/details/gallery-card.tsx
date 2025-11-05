@@ -9,9 +9,9 @@ import {
   Item,
   ItemContent,
   ItemDescription,
-  ItemHeader,
   ItemTitle,
 } from '@/components/ui/item'
+import { MarketingPanel } from '@/features/marketing/components/common'
 import type { Salon } from '../types'
 
 interface GalleryCardProps {
@@ -20,34 +20,30 @@ interface GalleryCardProps {
 
 export function GalleryCard({ salon }: GalleryCardProps) {
   return (
-    <Item variant="outline" className="flex flex-col gap-4">
-      <ItemHeader>
-        <ItemTitle>
-          <h3 className="text-lg font-semibold tracking-tight">Gallery</h3>
-        </ItemTitle>
-      </ItemHeader>
-      <ItemContent>
-        <Empty className="border border-border/50 bg-card/40">
-          <EmptyHeader>
-            <EmptyTitle>Images coming soon</EmptyTitle>
-            <EmptyDescription>
-              We&apos;re curating the best photos for {salon['name'] || 'this salon'}.
-            </EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            <Item variant="muted">
-              <ItemHeader>
-                <ItemTitle>Visual preview</ItemTitle>
-              </ItemHeader>
-              <ItemContent>
-                <ItemDescription>
-                  Check back later for visual highlights.
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-          </EmptyContent>
-        </Empty>
-      </ItemContent>
-    </Item>
+    <MarketingPanel
+      variant="outline"
+      title="Gallery"
+      description={`We're curating the best photos for ${salon['name'] || 'this salon'}.`}
+      align="start"
+    >
+      <Empty>
+        <EmptyHeader>
+          <EmptyTitle>Images coming soon</EmptyTitle>
+          <EmptyDescription>
+            Check back later for visual highlights.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <Item variant="muted">
+            <ItemContent>
+              <ItemTitle>Visual preview</ItemTitle>
+              <ItemDescription>
+                We'll add imagery as soon as the salon shares updated assets.
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+        </EmptyContent>
+      </Empty>
+    </MarketingPanel>
   )
 }

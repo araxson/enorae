@@ -39,7 +39,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
       const formData = new FormData()
       formData.append('accessId', accessId)
       const result = await acknowledgeSecurityAlert(formData)
-      if (result.error) {
+      if ('error' in result) {
         toast.error(result.error)
       } else {
         toast.success('Alert acknowledged')
@@ -55,7 +55,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
       const formData = new FormData()
       formData.append('accessId', accessId)
       const result = await dismissSecurityAlert(formData)
-      if (result.error) {
+      if ('error' in result) {
         toast.error(result.error)
       } else {
         toast.success('Alert dismissed')
@@ -77,7 +77,7 @@ export function SecurityAccessTable({ records }: SecurityAccessTableProps) {
       formData.append('reason', reason)
       formData.append('duration', duration)
       const result = await suppressSecurityAlert(formData)
-      if (result.error) {
+      if ('error' in result) {
         toast.error(result.error)
       } else {
         toast.success('Alert suppressed')

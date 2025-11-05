@@ -1,12 +1,16 @@
 'use client'
 
+import { useEffect, useMemo, useState } from 'react'
+
 import { Badge } from '@/components/ui/badge'
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
+  TableFooter,
   TableRow,
 } from '@/components/ui/table'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -28,12 +32,20 @@ import {
   ItemGroup,
   ItemTitle,
 } from '@/components/ui/item'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination'
 
 interface AuditLogsTableProps {
   logs: AuditLog[]
 }
 
-export function AuditLogsTable({ logs }: AuditLogsTableProps) {
+export function AuditLogsTable({ logs }: AuditLogsTableProps): React.JSX.Element {
   if (logs.length === 0) {
     return (
       <Card>
@@ -75,6 +87,23 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
     return <Badge variant="outline">{eventType}</Badge>
   }
 
+  const [page, setPage] = useState(1)
+  const pageSize = 10
+
+  const pageCount = Math.max(1, Math.ceil(logs.length / pageSize))
+
+  const paginatedLogs = useMemo(() => {
+    const start = (page - 1) * pageSize
+    return logs.slice(start, start + pageSize)
+  }, [logs, page, pageSize])
+
+  useEffect(() => {
+    setPage((current) => Math.min(current, pageCount))
+  }, [pageCount])
+
+  const startIndex = (page - 1) * pageSize + 1
+  const endIndex = Math.min(page * pageSize, logs.length)
+
   return (
     <Card>
       <CardHeader>
@@ -90,9 +119,9 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="-m-6">
-          <ScrollArea className="w-full">
+        <ScrollArea className="w-full">
           <Table>
+            <TableCaption>Recent audit entries from administrative and system activity.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Event</TableHead>
@@ -103,7 +132,7 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {logs.map((log) => (
+              {paginatedLogs.map((log) => (
                 <TableRow key={log.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -141,10 +170,66 @@ export function AuditLogsTable({ logs }: AuditLogsTableProps) {
                 </TableRow>
               ))}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={4}>
+                  Showing {startIndex}-{endIndex} of {logs.length} audit entries
+                </TableCell>
+                <TableCell>
+                  <span className="text-sm text-muted-foreground">
+                    Page {page} of {pageCount}
+                  </span>
+                </TableCell>
+              </TableRow>
+            </TableFooter>
           </Table>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
-        </div>
+        <Pagination className="mt-4">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(event) => {
+                  event.preventDefault()
+                  if (page > 1) {
+                    setPage(page - 1)
+                  }
+                }}
+                className={page === 1 ? 'pointer-events-none opacity-50' : undefined}
+              />
+            </PaginationItem>
+            {Array.from({ length: pageCount }, (_, index) => {
+              const value = index + 1
+              return (
+                <PaginationItem key={value}>
+                  <PaginationLink
+                    href="#"
+                    isActive={value === page}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setPage(value)
+                    }}
+                  >
+                    {value}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            })}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(event) => {
+                  event.preventDefault()
+                  if (page < pageCount) {
+                    setPage(page + 1)
+                  }
+                }}
+                className={page === pageCount ? 'pointer-events-none opacity-50' : undefined}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </CardContent>
     </Card>
   )

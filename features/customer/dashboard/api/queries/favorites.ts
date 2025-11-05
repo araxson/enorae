@@ -23,5 +23,5 @@ export async function getFavorites(): Promise<CustomerFavoriteView[]> {
 
   if (error) throw error
 
-  return (data ?? []) as CustomerFavoriteView[]
+  return (data as CustomerFavoriteView[]) ?? []
 }

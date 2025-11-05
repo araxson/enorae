@@ -5,7 +5,7 @@ import { BulkPricingAdjuster } from './bulk-pricing-adjuster'
 import { DynamicPricingDashboard } from './dynamic-pricing-dashboard'
 import { PricingRulesForm } from './pricing-rules-form'
 import { PricingRulesList } from './pricing-rules-list'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import {
   Item,
   ItemContent,

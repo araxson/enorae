@@ -1,7 +1,7 @@
 import 'server-only'
 
 import type { AppointmentRow } from '../../api/types'
-import { authorizeStaffAccess } from '@/features/staff/commission/utils/commission'
+import { authorizeStaffAccess } from '@/features/staff/commission/utils'
 import type { CommissionData, DailyEarnings } from '../../api/types'
 import { createOperationLogger } from '@/lib/observability'
 
@@ -41,7 +41,7 @@ export async function getStaffCommission(
 
   const { data: todayAppointments, error: todayError } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', formatISO(startOfDay))
@@ -60,7 +60,7 @@ export async function getStaffCommission(
 
   const { data: weekAppointments, error: weekError } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', formatISO(startOfWeek))
@@ -83,7 +83,7 @@ export async function getStaffCommission(
 
   const { data: monthAppointments, error: monthError } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', formatISO(startOfMonth))
@@ -116,7 +116,7 @@ export async function getDailyEarnings(
 
   const { data: appointments, error } = await supabase
     .from('admin_appointments_overview_view')
-    .select('*')
+    .select('id, salon_id, customer_id, staff_id, start_time, end_time, status, total_price, created_at')
     .eq('staff_id', staffId)
     .eq('status', 'completed')
     .gte('start_time', startDate.toISOString())

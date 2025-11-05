@@ -15,3 +15,4 @@ export {
   deleteNotification,
   sendNotification,
 } from './mutations'
+export * from './types'

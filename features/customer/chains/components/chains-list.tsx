@@ -34,24 +34,22 @@ export function ChainsList({ chains }: ChainsListProps) {
     return (
       <Card>
         <CardContent>
-          <div className="p-6">
-            <Empty>
+          <Empty>
+            <EmptyHeader>
               <EmptyMedia variant="icon">
-                <Building2 className="size-6" />
+                <Building2 className="size-5" aria-hidden="true" />
               </EmptyMedia>
-              <EmptyHeader>
-                <EmptyTitle>No salon chains yet</EmptyTitle>
-                <EmptyDescription>
-                  You haven't followed any salon chains. Explore salons to discover popular chains.
-                </EmptyDescription>
-              </EmptyHeader>
-              <EmptyContent>
-                <Button asChild>
-                  <Link href="/customer/salons">Browse salons</Link>
-                </Button>
-              </EmptyContent>
-            </Empty>
-          </div>
+              <EmptyTitle>No salon chains yet</EmptyTitle>
+              <EmptyDescription>
+                You haven&apos;t followed any salon chains. Explore salons to discover popular chains.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button asChild>
+                <Link href="/customer/salons">Browse salons</Link>
+              </Button>
+            </EmptyContent>
+          </Empty>
         </CardContent>
       </Card>
     )

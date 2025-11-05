@@ -77,7 +77,7 @@ function ReviewCardContentComponent({
   )
 }
 
-export const ReviewCardContent = memo(ReviewCardContentComponent)
+export const ReviewCardContent = ReviewCardContentComponent
 
 interface RatingItemProps {
   label: string

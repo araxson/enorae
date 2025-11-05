@@ -2,7 +2,7 @@ import 'server-only'
 
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
-import { getUserSalon } from '@/features/business/business-common/api/queries'
+import { getUserSalon } from '@/features/business/common/api/queries'
 import type { Database } from '@/lib/types/database.types'
 import { createOperationLogger } from '@/lib/observability'
 

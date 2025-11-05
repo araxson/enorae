@@ -3,4 +3,4 @@ import { AdminUsersClient } from './components'
 export async function UserManagement() {
   return <AdminUsersClient />
 }
-export * from './api/types'
+export type * from './api/types'

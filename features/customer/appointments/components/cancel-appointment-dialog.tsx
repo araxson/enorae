@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useCallback, memo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Dialog,
@@ -32,7 +32,7 @@ interface CancelAppointmentDialogProps {
   children?: React.ReactNode
 }
 
-export const CancelAppointmentDialog = memo(function CancelAppointmentDialog({
+export function CancelAppointmentDialog({
   appointmentId,
   startTime,
   children,
@@ -77,7 +77,7 @@ export const CancelAppointmentDialog = memo(function CancelAppointmentDialog({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || (
-          <Button variant="destructive" className="w-full">
+          <Button variant="destructive">
             Cancel appointment
           </Button>
         )}
@@ -165,4 +165,4 @@ export const CancelAppointmentDialog = memo(function CancelAppointmentDialog({
       </DialogContent>
     </Dialog>
   )
-})
+}

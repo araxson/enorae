@@ -1,7 +1,13 @@
 'use client'
 
 import { format } from 'date-fns'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import type { ModerationReview } from '@/features/admin/moderation/api/queries'
 import { InfoBlock, Panel, StatusBadges } from './review-detail-helpers'
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
@@ -18,12 +24,12 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
   if (!review) return null
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Review details</DialogTitle>
-        </DialogHeader>
-
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Review details</SheetTitle>
+          <SheetDescription>Moderation insights and response history.</SheetDescription>
+        </SheetHeader>
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <InfoBlock label="Salon" value={review['salon_name'] || 'Unknown'} />
@@ -58,7 +64,7 @@ export function ReviewDetailDialog({ review, open, onOpenChange }: ReviewDetailD
 
           <ReviewResponseSection review={review} onSuccess={() => onOpenChange(false)} />
         </div>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   )
 }

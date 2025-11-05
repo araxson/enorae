@@ -3,6 +3,17 @@
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Copy, Trash2, Pencil } from 'lucide-react'
 import { isExpired, getStatusBadge } from '../coupon-card-helpers'
 import type { CouponWithStats } from '@/features/business/coupons/api/queries'
@@ -52,14 +63,29 @@ export function HeaderSection({ coupon, onCopy, onToggle, onEdit, onDelete }: He
           >
             <Pencil className="size-4" />
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onDelete}
-            aria-label={`Delete coupon ${coupon.code}`}
-          >
-            <Trash2 className="size-4" />
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Delete coupon ${coupon.code}`}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete coupon?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. The coupon and its performance history will be permanently removed.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={onDelete}>Delete</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </ButtonGroup>
       </div>
     </div>

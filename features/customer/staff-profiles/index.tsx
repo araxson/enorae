@@ -40,4 +40,4 @@ export async function StaffProfileFeature({
 
 export { getStaffProfile, getSalonStaff } from './api/queries'
 export type { StaffProfile } from './api/queries'
-export * from './api/types'
+export type * from './api/types'

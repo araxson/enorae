@@ -1,4 +1,3 @@
-import 'server-only'
 import { z } from 'zod'
 
 const CHAIN_SUBSCRIPTION_TIERS = ['free', 'basic', 'premium', 'enterprise'] as const

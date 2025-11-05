@@ -9,6 +9,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { InterestsSection } from './metadata/interests-section'
 import { TagsSection } from './metadata/tags-section'
 import { logError } from '@/lib/observability'
+import { useToast } from '@/lib/hooks'
 
 type ProfileMetadata = Database['public']['Views']['profiles_metadata_view']['Row']
 
@@ -22,6 +23,7 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
   const [newInterest, setNewInterest] = useState('')
   const [newTag, setNewTag] = useState('')
   const [isSaving, setIsSaving] = useState(false)
+  const { toast } = useToast()
 
   const addInterest = () => {
     if (newInterest.trim() && !interests.includes(newInterest.trim())) {
@@ -52,8 +54,17 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
       formData.append('interests', interests.join(','))
       formData.append('tags', tags.join(','))
       await updateProfileMetadata(formData)
+      toast({
+        title: 'Preferences saved',
+        description: 'Your personal preferences were updated.',
+      })
     } catch (error) {
       logError('Failed to save metadata', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'ProfileMetadataEditor' })
+      toast({
+        title: 'Unable to save preferences',
+        description: 'Please try again in a moment.',
+        variant: 'destructive',
+      })
     } finally {
       setIsSaving(false)
     }
@@ -87,16 +98,18 @@ export function ProfileMetadataEditor({ metadata }: ProfileMetadataEditorProps) 
             removeTag={removeTag}
           />
 
-          <Button onClick={handleSave} disabled={isSaving} className="w-full">
-            {isSaving ? (
-              <>
-                <Spinner className="size-4" />
-                <span>Saving</span>
-              </>
-            ) : (
-              <span>Save Preferences</span>
-            )}
-          </Button>
+          <div className="flex justify-end">
+            <Button onClick={handleSave} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Spinner className="size-4" />
+                  <span>Saving</span>
+                </>
+              ) : (
+                <span>Save Preferences</span>
+              )}
+            </Button>
+          </div>
 
           <p className="text-center text-xs text-muted-foreground">
             Your preferences help us recommend services and salons that match your style

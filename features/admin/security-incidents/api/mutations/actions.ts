@@ -38,7 +38,7 @@ const logIncidentSchema = z.object({
   impactedResources: impactedResourcesSchema.default([]),
 })
 
-export async function updateIncidentStatus(formData: FormData) {
+export async function updateIncidentStatus(formData: FormData): Promise<{ success: true } | { error: string }> {
   const logger = createOperationLogger('updateIncidentStatus', {})
   logger.start()
 
@@ -46,7 +46,7 @@ export async function updateIncidentStatus(formData: FormData) {
     const session = await requireAnyRole(ROLE_GROUPS.PLATFORM_ADMINS)
     const supabase = createServiceRoleClient()
 
-    const validated = updateIncidentSchema.parse({
+    const result = updateIncidentSchema.safeParse({
       incidentId: formData.get('incidentId')?.toString(),
       remediationStatus: formData.get('remediationStatus')?.toString() as
         | 'pending'
@@ -54,6 +54,14 @@ export async function updateIncidentStatus(formData: FormData) {
         | 'resolved',
       notes: formData.get('notes')?.toString(),
     })
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { error: firstError ?? 'Validation failed' }
+    }
+
+    const validated = result.data
 
     // Log the incident update
     await supabase.schema('audit').from('audit_logs').insert({
@@ -80,7 +88,7 @@ export async function updateIncidentStatus(formData: FormData) {
   }
 }
 
-export async function logSecurityIncident(formData: FormData) {
+export async function logSecurityIncident(formData: FormData): Promise<{ success: true } | { error: string; fieldErrors?: Record<string, string[]> }> {
   const logger = createOperationLogger('logSecurityIncident', {})
   logger.start()
 
@@ -96,10 +104,11 @@ export async function logSecurityIncident(formData: FormData) {
     })
 
     if (!validationResult.success) {
-      const message =
-        validationResult.error.issues[0]?.message ?? 'Invalid incident payload submitted'
+      const fieldErrors = validationResult.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      const message = firstError ?? 'Invalid incident payload submitted'
       console.error('[AdminSecurityIncidents] Validation failed', validationResult.error)
-      return { error: message }
+      return { error: message, fieldErrors }
     }
 
     const validated = validationResult.data

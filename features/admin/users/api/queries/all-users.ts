@@ -16,7 +16,7 @@ export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
 
   let query = supabase
     .from('admin_users_overview_view')
-    .select('*')
+    .select('id, username, full_name, email, roles, is_active, is_deleted, deleted_at, last_sign_in_at, created_at')
     .order('created_at', { ascending: false })
 
   if (filters?.search) {
@@ -39,7 +39,7 @@ export async function getAllUsers(filters?: UserFilters): Promise<AdminUser[]> {
   }
 
   logger.success({ count: data?.length ?? 0 })
-  return data || []
+  return (data || []) as unknown as AdminUser[]
 }
 
 export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
@@ -50,7 +50,7 @@ export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
 
   const { data, error } = await supabase
     .from('admin_users_overview_view')
-    .select('*')
+    .select('id, username, full_name, email, roles, is_active, last_sign_in_at, created_at')
     .or(`full_name.ilike.%${searchTerm}%,username.ilike.%${searchTerm}%`)
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
@@ -62,7 +62,7 @@ export async function searchUsers(searchTerm: string): Promise<AdminUser[]> {
   }
 
   logger.success({ count: data?.length ?? 0 })
-  return data || []
+  return (data || []) as unknown as AdminUser[]
 }
 
 export async function getUsersByRole(
@@ -75,7 +75,7 @@ export async function getUsersByRole(
 
   const { data, error } = await supabase
     .from('admin_users_overview_view')
-    .select('*')
+    .select('id, username, full_name, email, roles, is_active, last_sign_in_at, created_at')
     .contains('roles', [role])
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
@@ -86,7 +86,7 @@ export async function getUsersByRole(
   }
 
   logger.success({ count: data?.length ?? 0 })
-  return data || []
+  return (data || []) as unknown as AdminUser[]
 }
 
 export async function getUsersWithDetails(): Promise<AdminUser[]> {
@@ -97,7 +97,7 @@ export async function getUsersWithDetails(): Promise<AdminUser[]> {
 
   const { data, error } = await supabase
     .from('admin_users_overview_view')
-    .select('*')
+    .select('id, username, full_name, email, roles, is_active, last_sign_in_at, created_at')
     .is('deleted_at', null)
     .order('created_at', { ascending: false })
 
@@ -107,5 +107,5 @@ export async function getUsersWithDetails(): Promise<AdminUser[]> {
   }
 
   logger.success({ count: data?.length ?? 0 })
-  return data || []
+  return (data || []) as unknown as AdminUser[]
 }

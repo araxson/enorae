@@ -46,7 +46,10 @@ export async function getChainCompliance(): Promise<ChainCompliance[]> {
     if (!salonsByChain.has(chainId)) {
       salonsByChain.set(chainId, [])
     }
-    salonsByChain.get(chainId)!.push(salon)
+    const chainSalons = salonsByChain.get(chainId)
+    if (chainSalons) {
+      chainSalons.push(salon)
+    }
   }
 
   const results: ChainCompliance[] = []

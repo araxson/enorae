@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback } from 'react'
 import { StickyNote } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { toast } from 'sonner'
@@ -37,7 +37,7 @@ interface FavoriteNotesButtonProps {
   initialNotes?: string | null
 }
 
-export const FavoriteNotesButton = memo(function FavoriteNotesButton({ salonId, salonName, initialNotes }: FavoriteNotesButtonProps) {
+export function FavoriteNotesButton({ salonId, salonName, initialNotes }: FavoriteNotesButtonProps) {
   const [open, setOpen] = useState(false)
   const [notes, setNotes] = useState(initialNotes || '')
   const [loading, setLoading] = useState(false)
@@ -125,4 +125,4 @@ export const FavoriteNotesButton = memo(function FavoriteNotesButton({ salonId, 
       </DialogContent>
     </Dialog>
   )
-})
+}

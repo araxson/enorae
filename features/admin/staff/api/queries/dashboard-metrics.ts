@@ -51,7 +51,11 @@ export function normalizeBackgroundStatus(status?: string | null): BackgroundSta
   return 'missing'
 }
 
-export function calculatePerformanceRates(snapshot: PerformanceSnapshot) {
+export function calculatePerformanceRates(snapshot: PerformanceSnapshot): {
+  completionRate: number
+  cancellationRate: number
+  noShowRate: number
+} {
   const { totalAppointments, completedAppointments, cancelledAppointments, noShowAppointments } =
     snapshot
   const safeTotal = Math.max(totalAppointments, 1)

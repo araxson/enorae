@@ -8,11 +8,12 @@ import { Bell, Globe, Shield } from 'lucide-react'
 import { updateProfilePreferences } from '@/features/customer/profile/api/mutations'
 import type { Database } from '@/lib/types/database.types'
 import { Spinner } from '@/components/ui/spinner'
-import { Item, ItemContent, ItemGroup, ItemMedia } from '@/components/ui/item'
+import { Item, ItemContent, ItemMedia } from '@/components/ui/item'
 import { RegionalPreferencesTab } from './preferences/regional-preferences-tab'
 import { NotificationsPreferencesTab } from './preferences/notifications-preferences-tab'
 import { parsePreferences } from './preferences/helpers'
 import { logError } from '@/lib/observability'
+import { useToast } from '@/lib/hooks'
 
 type ProfilePreferences = Database['public']['Views']['profiles_preferences_view']['Row']
 
@@ -25,6 +26,7 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
   const [locale, setLocale] = useState(preferences?.['locale'] || 'en-US')
   const [currencyCode, setCurrencyCode] = useState(preferences?.['currency_code'] || 'USD')
   const [isSaving, setIsSaving] = useState(false)
+  const { toast } = useToast()
 
   const currentPrefs = parsePreferences(preferences?.['preferences'])
 
@@ -59,8 +61,17 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
       )
 
       await updateProfilePreferences(formData)
+      toast({
+        title: 'Preferences saved',
+        description: 'Your account preferences have been updated.',
+      })
     } catch (error) {
       logError('Failed to save preferences', { error: error instanceof Error ? error : new Error(String(error)), operationName: 'ProfilePreferencesEditor' })
+      toast({
+        title: 'Unable to save preferences',
+        description: 'Please try again or check your connection.',
+        variant: 'destructive',
+      })
     } finally {
       setIsSaving(false)
     }
@@ -69,21 +80,23 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
   return (
     <Card>
       <CardHeader>
-        <ItemGroup>
-          <Item>
-            <ItemMedia variant="icon">
-              <Shield className="size-4" aria-hidden="true" />
-            </ItemMedia>
-            <ItemContent>
-              <CardTitle>Account Preferences</CardTitle>
-              <CardDescription>
-                Manage your notification settings, regional preferences, and privacy options
-              </CardDescription>
-            </ItemContent>
-          </Item>
-        </ItemGroup>
+        <CardTitle>Account Preferences</CardTitle>
+        <CardDescription>
+          Manage your notification settings, regional preferences, and privacy options.
+        </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
+        <Item variant="muted" size="sm">
+          <ItemMedia variant="icon">
+            <Shield className="size-4" aria-hidden="true" />
+          </ItemMedia>
+          <ItemContent>
+            <p className="text-sm">
+              Update your defaults to personalise reminders, messaging, and currency displays across the portal.
+            </p>
+          </ItemContent>
+        </Item>
+
         <Tabs defaultValue="regional" className="space-y-4">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="regional">
@@ -121,16 +134,18 @@ export function ProfilePreferencesEditor({ preferences }: ProfilePreferencesEdit
           </TabsContent>
         </Tabs>
 
-        <Button onClick={handleSave} disabled={isSaving} className="mt-6 w-full">
-          {isSaving ? (
-            <>
-              <Spinner className="size-4" />
-              <span>Saving</span>
-            </>
-          ) : (
-            <span>Save Preferences</span>
-          )}
-        </Button>
+        <div className="flex justify-end">
+          <Button onClick={handleSave} disabled={isSaving}>
+            {isSaving ? (
+              <>
+                <Spinner className="size-4" />
+                <span>Saving</span>
+              </>
+            ) : (
+              <span>Save Preferences</span>
+            )}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   )

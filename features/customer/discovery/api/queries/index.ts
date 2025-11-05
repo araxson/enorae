@@ -1,1 +1,5 @@
 export * from './discovery'
+export * from './categories'
+export * from './filter-salons'
+export * from './salon-details'
+export * from './search-salons'

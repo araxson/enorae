@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { PageLoading } from '@/features/shared/ui-components'
+import { PageLoading } from '@/features/shared/ui'
 import { PricingPage, pricingSEO } from '@/features/marketing/pricing'
 
 export const metadata = pricingSEO

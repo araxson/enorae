@@ -1,4 +1,4 @@
-import { memo } from 'react'
+
 import { Activity } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
@@ -17,7 +17,7 @@ type RealtimeMonitoringCardProps = {
   lastUpdate: string | null
 }
 
-export const RealtimeMonitoringCard = memo(function RealtimeMonitoringCard({ realtimeUpdates, lastUpdate }: RealtimeMonitoringCardProps) {
+export function RealtimeMonitoringCard({ realtimeUpdates, lastUpdate }: RealtimeMonitoringCardProps) {
   return (
     <Item variant="outline" className="flex-col gap-4">
       <ItemHeader>
@@ -56,4 +56,4 @@ export const RealtimeMonitoringCard = memo(function RealtimeMonitoringCard({ rea
       </ItemContent>
     </Item>
   )
-})
+}

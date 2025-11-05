@@ -1,3 +1,5 @@
+'use server'
+
 import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { requireAnyRole, getUserSalonIds, ROLE_GROUPS } from '@/lib/auth'
@@ -34,12 +36,12 @@ export async function getAppointmentServices(
   const { data, error } = await supabase
     .schema('scheduling')
     .from('appointment_services')
-    .select('*')
+    .select('id, appointment_id, service_id, staff_id, start_time, end_time, price, status, created_at, updated_at')
     .eq('appointment_id', appointmentId)
     .order('start_time', { ascending: true })
 
   if (error) throw error
-  return (data || []) as AppointmentServiceDetails[]
+  return (data || []) as unknown as AppointmentServiceDetails[]
 }
 
 /**
@@ -55,7 +57,7 @@ export async function getAppointmentServiceById(
   const { data, error } = await supabase
     .schema('scheduling')
     .from('appointment_services')
-    .select('*')
+    .select('id, appointment_id, service_id, staff_id, start_time, end_time, price, status, created_at, updated_at')
     .eq('id', serviceId)
     .single()
 
@@ -64,7 +66,7 @@ export async function getAppointmentServiceById(
     throw error
   }
 
-  return data as AppointmentServiceDetails
+  return data as unknown as AppointmentServiceDetails
 }
 
 /**
@@ -78,14 +80,14 @@ export async function getAppointmentWithServices(appointmentId: string) {
   const [appointment, services] = await Promise.all([
     supabase
       .from('appointments_view')
-      .select('*')
+      .select('id, salon_id, customer_id, customer_name, staff_id, staff_name, start_time, end_time, status, total_price, created_at')
       .eq('id', appointmentId)
       .in('salon_id', accessibleSalonIds)
       .single(),
     supabase
       .schema('scheduling')
       .from('appointment_services')
-      .select('*')
+      .select('id, appointment_id, service_id, staff_id, start_time, end_time, price, status, created_at, updated_at')
       .eq('appointment_id', appointmentId)
       .order('start_time', { ascending: true }),
   ])
@@ -95,7 +97,7 @@ export async function getAppointmentWithServices(appointmentId: string) {
 
   return {
     appointment: appointment.data,
-    services: (services.data || []) as AppointmentServiceDetails[],
+    services: (services.data || []) as unknown as AppointmentServiceDetails[],
   }
 }
 

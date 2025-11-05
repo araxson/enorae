@@ -5,3 +5,6 @@
  */
 export { ChainActions } from './chain-actions'
 export type { ChainActionsProps } from './types'
+export * from './action-dialog'
+export * from './actions-dropdown'
+export * from './utils'

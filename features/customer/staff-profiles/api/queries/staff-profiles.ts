@@ -35,7 +35,7 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
 
   const { data: staff, error: staffError } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, title, bio, experience_years, created_at, updated_at')
     .eq('id', staffId)
     .maybeSingle<StaffProfileRow>()
 
@@ -48,24 +48,27 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
 
   const userIds = staff.user_id ? [staff.user_id] : []
 
-  const { data: users, error: userError } = await supabase
-    .from('admin_users_overview_view')
-    .select('*')
-    .in('id', userIds)
-    .returns<UserOverviewRow[]>()
+  // ✅ Next.js 15+: Parallel data fetching to avoid waterfall
+  const [usersResult, staffServicesResult] = await Promise.all([
+    supabase
+      .from('admin_users_overview_view')
+      .select('id, email, full_name, avatar_url, created_at, last_sign_in_at')
+      .in('id', userIds)
+      .returns<UserOverviewRow[]>(),
+    supabase
+      .from('staff_services_view')
+      .select('service_id')
+      .eq('staff_id', staffId)
+      .eq('is_available', true)
+  ])
 
+  const { data: users, error: userError } = usersResult
   if (userError) throw userError
 
-  const [enrichedStaff] = mergeStaffWithUsers([staff], users ?? [])
-
-  // Get services offered by this staff member via staff_services junction table
-  const { data: staffServices, error: servicesError } = await supabase
-    .from('staff_services_view')
-    .select('service_id')
-    .eq('staff_id', staffId)
-    .eq('is_available', true)
-
+  const { data: staffServices, error: servicesError } = staffServicesResult
   if (servicesError) throw servicesError
+
+  const [enrichedStaff] = mergeStaffWithUsers([staff], users ?? [])
 
   const serviceIds = (staffServices || [])
     .map((row) => row['service_id'])
@@ -76,12 +79,13 @@ export async function getStaffProfile(staffId: string): Promise<StaffProfile | n
   if (serviceIds.length > 0) {
     const { data: servicesData, error: servicesFetchError } = await supabase
       .from('services_view')
-      .select('*')
+      .select('id, salon_id, category_id, name, description, current_price, duration_minutes, is_active, created_at')
       .in('id', serviceIds)
       .eq('is_active', true)
+      .returns<Service[]>()
 
     if (servicesFetchError) throw servicesFetchError
-    services = (servicesData || []) as Service[]
+    services = servicesData || []
   }
 
   return {
@@ -101,7 +105,7 @@ export async function getSalonStaff(salonId: string): Promise<EnrichedStaffProfi
 
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, title, bio, experience_years, created_at, updated_at')
     .eq('salon_id', salonId)
     .order('created_at', { ascending: true })
     .returns<StaffProfileRow[]>()
@@ -113,9 +117,11 @@ export async function getSalonStaff(salonId: string): Promise<EnrichedStaffProfi
     .map((row) => row.user_id)
     .filter((id): id is string => typeof id === 'string')
 
+  // ✅ Next.js 15+: Avoid waterfall - user query doesn't depend on staff query completion
+  // Note: This is a dependent query (needs userIds from staff), so cannot parallelize with staff query
   const { data: users, error: userError } = await supabase
     .from('admin_users_overview_view')
-    .select('*')
+    .select('id, email, full_name, avatar_url, created_at, last_sign_in_at')
     .in('id', userIds)
     .returns<UserOverviewRow[]>()
 

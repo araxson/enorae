@@ -11,6 +11,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/u
 import type { PlatformAnalyticsSnapshot } from '@/features/admin/analytics/api/types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Item, ItemContent, ItemDescription, ItemGroup, ItemTitle } from '@/components/ui/item'
+import { Star } from 'lucide-react'
 
 interface PerformanceBenchmarksTableProps {
   performance: PlatformAnalyticsSnapshot['performance']
@@ -86,7 +87,10 @@ export function PerformanceBenchmarksTable({ performance }: PerformanceBenchmark
                     <TableCell className="font-medium">
                       {salon.salonName || salon.salonId}
                       {salon.ratingAverage ? (
-                        <span className="ml-2 text-xs text-muted-foreground">⭐ {salon.ratingAverage.toFixed(1)}</span>
+                        <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                          <Star className="size-3 fill-accent text-accent" aria-hidden="true" />
+                          {salon.ratingAverage.toFixed(1)}
+                        </span>
                       ) : null}
                     </TableCell>
                     <TableCell className="text-right">{formatCurrencyCompact(salon.revenue)}</TableCell>

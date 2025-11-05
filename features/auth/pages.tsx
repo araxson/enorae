@@ -6,7 +6,7 @@ import { ResetPasswordForm } from './reset-password'
 import { VerifyOTPForm } from './verify-otp'
 
 // Page wrapper component
-function AuthCenteredPage({ children }: { children: React.ReactNode }) {
+function AuthCenteredPage({ children }: { children: React.ReactNode }): React.ReactElement {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">{children}</div>
@@ -15,7 +15,7 @@ function AuthCenteredPage({ children }: { children: React.ReactNode }) {
 }
 
 // Login Page
-export function LoginPage() {
+export function LoginPage(): React.ReactElement {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
@@ -26,7 +26,7 @@ export function LoginPage() {
 }
 
 // Signup Page
-export function SignupPage() {
+export function SignupPage(): React.ReactElement {
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm md:max-w-4xl">
@@ -46,7 +46,7 @@ export const verifyOtpPageMetadata: Metadata = {
   },
 }
 
-export function VerifyOtpPage() {
+export function VerifyOtpPage(): React.ReactElement {
   return (
     <AuthCenteredPage>
       <VerifyOTPForm />
@@ -64,7 +64,7 @@ export const resetPasswordPageMetadata: Metadata = {
   },
 }
 
-export function ResetPasswordPage() {
+export function ResetPasswordPage(): React.ReactElement {
   return (
     <AuthCenteredPage>
       <ResetPasswordForm />
@@ -82,7 +82,7 @@ export const forgotPasswordPageMetadata: Metadata = {
   },
 }
 
-export function ForgotPasswordPage() {
+export function ForgotPasswordPage(): React.ReactElement {
   return (
     <AuthCenteredPage>
       <ForgotPasswordForm />

@@ -1,2 +1,2 @@
 export { ServicePerformance } from './components'
-export * from './api/types'
+export type * from './api/types'

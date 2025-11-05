@@ -23,5 +23,5 @@ export async function getUserProfile(): Promise<Profile> {
     .single()
 
   if (error) throw error
-  return data
+  return data as Profile
 }

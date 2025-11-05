@@ -20,7 +20,7 @@ export async function uploadAvatar(file: File, userId: string): Promise<{ url?: 
     const { data } = supabase.storage.from('profiles').getPublicUrl(filePath)
 
     return { url: data.publicUrl }
-  } catch (error) {
+  } catch (error: unknown) {
     return { error: 'Failed to upload avatar' }
   }
 }
@@ -45,7 +45,7 @@ export async function uploadCoverImage(file: File, entityId: string, type: 'salo
     const { data } = supabase.storage.from('media').getPublicUrl(filePath)
 
     return { url: data.publicUrl }
-  } catch (error) {
+  } catch (error: unknown) {
     return { error: 'Failed to upload cover image' }
   }
 }
@@ -61,7 +61,7 @@ export async function deleteFile(bucket: string, filePath: string): Promise<{ er
     }
 
     return {}
-  } catch (error) {
+  } catch (error: unknown) {
     return { error: 'Failed to delete file' }
   }
 }

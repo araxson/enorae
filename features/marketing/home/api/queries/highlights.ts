@@ -9,6 +9,6 @@ export async function getMarketingHomeHighlights() {
     partnerSalons: '500+',
     activeUsers: '10,000+',
     bookings: '50,000+',
-    averageRating: '4.8★'
+    averageRating: '4.8 average rating'
   }
 }

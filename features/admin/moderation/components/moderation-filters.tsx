@@ -1,23 +1,10 @@
 'use client'
 
-import { Search, X } from 'lucide-react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Item, ItemActions, ItemGroup } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
-import { Field, FieldContent, FieldGroup, FieldLabel } from '@/components/ui/field'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '@/components/ui/input-group'
+import { FieldGroup } from '@/components/ui/field'
+import { SearchFilter, GenericFilter } from '@/features/shared/ui/components/filters'
 
 type ModerationFiltersProps = {
   searchQuery: string
@@ -60,107 +47,76 @@ export function ModerationFilters({
         </Item>
       </ItemGroup>
       <FieldGroup className="flex flex-wrap items-center gap-3">
-        <Field className="min-w-56 flex-1">
-          <FieldLabel htmlFor="moderation-search">Search</FieldLabel>
-          <FieldContent>
-            <InputGroup>
-              <InputGroupAddon>
-                <Search className="size-4 text-muted-foreground" aria-hidden="true" />
-              </InputGroupAddon>
-              <InputGroupInput
-                id="moderation-search"
-                type="search"
-                placeholder="Search reviews..."
-                value={searchQuery}
-                onChange={(event) => onSearchChange(event.target.value)}
-                aria-label="Search reviews"
-                autoComplete="off"
-              />
-              <InputGroupAddon align="inline-end">
-                {searchQuery ? (
-                  <InputGroupButton
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label="Clear search"
-                    onClick={() => onSearchChange('')}
-                  >
-                    <X className="size-4" aria-hidden="true" />
-                  </InputGroupButton>
-                ) : null}
-              </InputGroupAddon>
-            </InputGroup>
-          </FieldContent>
-        </Field>
+        <SearchFilter
+          value={searchQuery}
+          onChange={onSearchChange}
+          placeholder="Search reviews..."
+          label="Search"
+          inputId="moderation-search"
+          className="min-w-56 flex-1"
+        />
 
-        <Field className="min-w-48">
-          <FieldLabel>Status</FieldLabel>
-          <FieldContent>
-            <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="All reviews" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All reviews</SelectItem>
-                <SelectItem value="flagged">Flagged only</SelectItem>
-                <SelectItem value="unflagged">Not flagged</SelectItem>
-                <SelectItem value="pending">Pending response</SelectItem>
-                <SelectItem value="responded">Has response</SelectItem>
-                <SelectItem value="featured">Featured</SelectItem>
-              </SelectContent>
-            </Select>
-          </FieldContent>
-        </Field>
+        <GenericFilter
+          value={statusFilter}
+          onChange={onStatusFilterChange}
+          options={[
+            { label: 'Flagged only', value: 'flagged' },
+            { label: 'Not flagged', value: 'unflagged' },
+            { label: 'Pending response', value: 'pending' },
+            { label: 'Has response', value: 'responded' },
+            { label: 'Featured', value: 'featured' },
+          ]}
+          label="Status"
+          placeholder="All reviews"
+          showAll={true}
+          allLabel="All reviews"
+          className="min-w-48"
+        />
 
-        <Field className="min-w-40">
-          <FieldLabel>Risk level</FieldLabel>
-          <FieldContent>
-            <Select value={riskFilter} onValueChange={onRiskFilterChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="All risk levels" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All risk levels</SelectItem>
-                <SelectItem value="high">High risk</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-              </SelectContent>
-            </Select>
-          </FieldContent>
-        </Field>
+        <GenericFilter
+          value={riskFilter}
+          onChange={onRiskFilterChange}
+          options={[
+            { label: 'High risk', value: 'high' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'Low', value: 'low' },
+          ]}
+          label="Risk level"
+          placeholder="All risk levels"
+          showAll={true}
+          allLabel="All risk levels"
+          className="min-w-40"
+        />
 
-        <Field className="min-w-40">
-          <FieldLabel>Sentiment</FieldLabel>
-          <FieldContent>
-            <Select value={sentimentFilter} onValueChange={onSentimentFilterChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="All sentiments" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All sentiments</SelectItem>
-                <SelectItem value="positive">Positive</SelectItem>
-                <SelectItem value="neutral">Neutral</SelectItem>
-                <SelectItem value="negative">Negative</SelectItem>
-              </SelectContent>
-            </Select>
-          </FieldContent>
-        </Field>
+        <GenericFilter
+          value={sentimentFilter}
+          onChange={onSentimentFilterChange}
+          options={[
+            { label: 'Positive', value: 'positive' },
+            { label: 'Neutral', value: 'neutral' },
+            { label: 'Negative', value: 'negative' },
+          ]}
+          label="Sentiment"
+          placeholder="All sentiments"
+          showAll={true}
+          allLabel="All sentiments"
+          className="min-w-40"
+        />
 
-        <Field className="min-w-44">
-          <FieldLabel>Reviewer reputation</FieldLabel>
-          <FieldContent>
-            <Select value={reputationFilter} onValueChange={onReputationFilterChange}>
-              <SelectTrigger>
-                <SelectValue placeholder="All reputation tiers" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All reputation tiers</SelectItem>
-                <SelectItem value="trusted">Trusted</SelectItem>
-                <SelectItem value="neutral">Neutral</SelectItem>
-                <SelectItem value="risky">Risky</SelectItem>
-              </SelectContent>
-            </Select>
-          </FieldContent>
-        </Field>
+        <GenericFilter
+          value={reputationFilter}
+          onChange={onReputationFilterChange}
+          options={[
+            { label: 'Trusted', value: 'trusted' },
+            { label: 'Neutral', value: 'neutral' },
+            { label: 'Risky', value: 'risky' },
+          ]}
+          label="Reviewer reputation"
+          placeholder="All reputation tiers"
+          showAll={true}
+          allLabel="All reputation tiers"
+          className="min-w-44"
+        />
       </FieldGroup>
     </div>
   )

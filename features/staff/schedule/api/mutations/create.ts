@@ -15,7 +15,15 @@ export async function createStaffSchedule(
   logger.start()
 
   try {
-    const validation = scheduleSchema.parse(data)
+    const result = scheduleSchema.safeParse(data)
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { success: false, error: firstError ?? 'Validation failed' }
+    }
+
+    const validation = result.data
     const contextResult = await getAuthorizedContext(salonId)
 
     if (!contextResult.success) {

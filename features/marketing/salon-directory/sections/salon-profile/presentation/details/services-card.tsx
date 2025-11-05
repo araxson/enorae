@@ -1,4 +1,12 @@
-import { Item, ItemActions, ItemContent, ItemDescription, ItemHeader, ItemTitle } from '@/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemTitle,
+} from '@/components/ui/item'
+import { MarketingPanel } from '@/features/marketing/components/common'
 import type { ServicesByCategory, Service } from '../types'
 
 interface ServicesCardProps {
@@ -10,34 +18,31 @@ export function ServicesCard({ services, servicesByCategory }: ServicesCardProps
   if (services.length === 0) return null
 
   return (
-    <Item variant="outline" className="flex flex-col gap-6">
-      <ItemHeader className="flex flex-col gap-2">
-        <ItemTitle>
-          <h3 className="text-lg font-semibold tracking-tight">Services</h3>
-        </ItemTitle>
-        <ItemDescription>Browse offerings grouped by category.</ItemDescription>
-      </ItemHeader>
-      <ItemContent>
-        <div className="flex flex-col gap-6">
-          {(Object.entries(servicesByCategory) as Array<[string, Service[]]>).map(
-            ([category, categoryServices]) => (
-              <Item key={category} variant="outline">
-                <ItemContent>
-                  <div className="flex flex-col gap-4">
-                    <ItemTitle>{category}</ItemTitle>
-                    <div className="flex flex-col gap-2">
-                      {categoryServices.map((service) => (
-                        <ServiceRow key={service['id']} service={service} />
-                      ))}
-                    </div>
-                  </div>
-                </ItemContent>
-              </Item>
-            ),
-          )}
-        </div>
-      </ItemContent>
-    </Item>
+    <MarketingPanel
+      variant="outline"
+      title="Services"
+      description="Browse offerings grouped by category."
+      align="start"
+    >
+      <ItemGroup className="gap-6">
+        {Object.entries(servicesByCategory).map(
+          ([category, categoryServices]: [string, Service[]]) => (
+            <Item key={category} variant="outline">
+              <ItemContent>
+                <div className="flex flex-col gap-3">
+                  <ItemTitle>{category}</ItemTitle>
+                  <ItemGroup className="gap-2">
+                    {categoryServices.map((service) => (
+                      <ServiceRow key={service['id']} service={service} />
+                    ))}
+                  </ItemGroup>
+                </div>
+              </ItemContent>
+            </Item>
+          ),
+        )}
+      </ItemGroup>
+    </MarketingPanel>
   )
 }
 

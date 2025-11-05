@@ -10,7 +10,17 @@ import { createOperationLogger, logMutation, logError } from '@/lib/observabilit
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-export async function upsertBookingRule(formData: FormData) {
+type BookingRuleFormState = {
+  success?: boolean
+  error?: string
+  errors?: Record<string, string[]>
+}
+
+// useActionState signature: (prevState, formData) => Promise<state>
+export async function upsertBookingRule(
+  prevState: BookingRuleFormState | null,
+  formData: FormData
+): Promise<BookingRuleFormState> {
   const logger = createOperationLogger('upsertBookingRule', {})
   logger.start()
 
@@ -23,7 +33,12 @@ export async function upsertBookingRule(formData: FormData) {
       maxAdvanceBookingDays: formData.get('maxAdvanceBookingDays') ? parseInt(formData.get('maxAdvanceBookingDays') as string) : undefined,
     })
 
-    if (!result.success) return { error: result.error.issues[0]?.message ?? 'Validation failed' }
+    if (!result.success) {
+      return {
+        error: 'Validation failed',
+        errors: result.error.flatten().fieldErrors,
+      }
+    }
 
     const data = result.data
     const supabase = await createClient()
@@ -73,6 +88,7 @@ export async function upsertBookingRule(formData: FormData) {
     if (upsertError) return { error: upsertError.message }
 
     revalidatePath('/business/services/booking-rules', 'page')
+    revalidatePath('/business/booking-rules')
     return { success: true }
   } catch (error) {
     return { error: error instanceof Error ? error.message : 'Failed to save rule' }

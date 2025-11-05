@@ -27,7 +27,13 @@ export async function updatePaymentMethods(
   logger.start()
 
   try {
-    const supabase = await getSalonContext(salonId)
+    const salonContext = await getSalonContext(salonId)
+
+    if (salonContext.error || !salonContext.supabase) {
+      return { error: salonContext.error || 'Database connection unavailable' }
+    }
+
+    const supabase = salonContext.supabase
 
     const methods = parseMethods(formData.get('payment_methods'))
 
@@ -36,9 +42,11 @@ export async function updatePaymentMethods(
     })
 
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      logger.error(`Validation failed: ${firstError?.message}`, 'validation')
-      return { error: firstError?.message ?? 'Invalid payment methods input' }
+      logger.error('Validation failed', 'validation', { fieldErrors: validation.error.flatten().fieldErrors })
+      return {
+        error: 'Validation failed. Please check your input.',
+        fieldErrors: validation.error.flatten().fieldErrors
+      }
     }
 
     const validated = validation.data

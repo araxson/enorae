@@ -59,7 +59,7 @@ export async function getStaffProfile(
 ) {
   const { data, error } = await supabase
     .from('staff_profiles_view')
-    .select('*')
+    .select('id, user_id, salon_id, staff_role, title, experience_years, is_active, created_at')
     .eq('user_id', userId)
     .maybeSingle()
 

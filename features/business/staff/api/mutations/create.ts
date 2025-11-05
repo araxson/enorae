@@ -32,9 +32,12 @@ export async function createStaffMember(data: StaffFormData) {
     // Validate input with Zod schema
     const validation = createStaffSchema.safeParse(data)
     if (!validation.success) {
-      const firstError = validation.error.issues[0]
-      logger.error(firstError?.message ?? 'Validation failed', 'validation', { salonId, userId: session.user.id })
-      throw new Error(firstError?.message ?? 'Validation failed')
+      logger.error('Validation failed', 'validation', { salonId, userId: session.user.id, fieldErrors: validation.error.flatten().fieldErrors })
+      return {
+        success: false,
+        error: 'Validation failed. Please check your input.',
+        errors: validation.error.flatten().fieldErrors
+      }
     }
 
     const validatedData = validation.data
@@ -65,7 +68,7 @@ export async function createStaffMember(data: StaffFormData) {
       // In production, proper user lookup via auth.users would prevent this
       if (!profileError.message.includes('duplicate') && !profileError.message.includes('unique')) {
         logger.error(profileError, 'database', { salonId, userId: session.user.id, newUserId: userId })
-        throw profileError
+        return { success: false, error: 'Failed to create staff profile' }
       }
     }
 
@@ -85,7 +88,7 @@ export async function createStaffMember(data: StaffFormData) {
 
     if (staffError) {
       logger.error(staffError, 'database', { salonId, userId: session.user.id, staffUserId: userId })
-      throw staffError
+      return { success: false, error: 'Failed to create staff member' }
     }
 
     // Update profile metadata with name and phone
@@ -100,7 +103,7 @@ export async function createStaffMember(data: StaffFormData) {
 
     if (metadataError) {
       logger.error(metadataError, 'database', { salonId, userId: session.user.id, profileId: userId })
-      throw metadataError
+      return { success: false, error: 'Failed to save staff metadata' }
     }
 
     logger.success({ salonId, userId: session.user.id, newStaffUserId: userId })
@@ -108,6 +111,6 @@ export async function createStaffMember(data: StaffFormData) {
     return { success: true, userId }
   } catch (error) {
     logger.error(error instanceof Error ? error : String(error), 'system')
-    throw error
+    return { success: false, error: 'An unexpected error occurred while creating staff member' }
   }
 }

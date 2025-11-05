@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Plus, Edit2, Trash2 } from 'lucide-react'
+import { Plus, Edit2, Trash2, MoreHorizontal } from 'lucide-react'
 import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
 import {
@@ -17,12 +17,19 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 import { ButtonGroup } from '@/components/ui/button-group'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import type { DayOfWeek } from '@/features/staff/schedule/api/constants'
 
 type ScheduleCalendarProps = {
   schedules: StaffScheduleWithStaff[]
   onEdit?: (schedule: StaffScheduleWithStaff) => void
-  onDelete?: (scheduleId: string) => void
-  onAdd?: () => void
+  onDelete?: (schedule: StaffScheduleWithStaff) => void
+  onAdd?: (day?: DayOfWeek) => void
 }
 
 export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: ScheduleCalendarProps) {
@@ -37,7 +44,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
     }
   }, {} as Record<string, StaffScheduleWithStaff[]>)
 
-  const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+  const daysOfWeek: DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
   const formatTime = (time: string | null) => {
     if (!time) return 'N/A'
@@ -52,7 +59,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
     <div className="space-y-4">
       <div className="flex justify-end">
         {onAdd && (
-          <Button onClick={onAdd}>
+          <Button onClick={() => onAdd()}>
             <Plus className="mr-2 size-4" />
             Add Schedule
           </Button>
@@ -69,7 +76,7 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
               </EmptyHeader>
               {onAdd && (
                 <EmptyContent>
-                  <Button onClick={onAdd}>
+                  <Button onClick={() => onAdd()}>
                     <Plus className="mr-2 size-4" />
                     Add Schedule
                   </Button>
@@ -86,8 +93,33 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
 
             return (
               <Card key={day}>
-                <CardHeader>
+                <CardHeader className="flex items-center justify-between">
                   <CardTitle>{formatDayName(day)}</CardTitle>
+                  {onAdd ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Add time block for ${formatDayName(day)}`}
+                        >
+                          <MoreHorizontal className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onSelect={(event) => {
+                            event.preventDefault()
+                            onAdd(day)
+                          }}
+                        >
+                          <Plus className="mr-2 size-4" />
+                          Add time block
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : null}
                 </CardHeader>
                 <CardContent>
                   <ItemGroup className="gap-3">
@@ -124,11 +156,11 @@ export function ScheduleCalendar({ schedules, onEdit, onDelete, onAdd }: Schedul
                                     <span className="sr-only">Edit</span>
                                   </Button>
                                 ) : null}
-                                {onDelete && schedule['id'] ? (
+                                {onDelete ? (
                                   <Button
                                     variant="ghost"
                                     size="icon"
-                                    onClick={() => onDelete(schedule['id']!)}
+                                    onClick={() => onDelete(schedule)}
                                   >
                                     <Trash2 className="size-4" />
                                     <span className="sr-only">Delete</span>

@@ -8,7 +8,7 @@ import {
 import { getSecurityMonitoringSnapshot } from './api/queries'
 import { SecurityDashboard } from './components'
 
-export async function SecurityMonitoring() {
+export async function SecurityMonitoring(): Promise<React.JSX.Element> {
   const snapshot = await getSecurityMonitoringSnapshot()
 
   return (
@@ -30,4 +30,4 @@ export async function SecurityMonitoring() {
     </div>
   )
 }
-export * from './api/types'
+export type * from './api/types'

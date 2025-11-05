@@ -113,7 +113,7 @@ export async function fetchAppointmentServices(
     .in('appointment_id', appointmentIds)
 
   if (error) throw error
-  return (data ?? []) as AppointmentServiceRow[]
+  return (data as AppointmentServiceRow[]) ?? []
 }
 
 export async function fetchNameMaps(

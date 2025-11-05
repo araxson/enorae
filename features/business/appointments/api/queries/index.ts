@@ -7,4 +7,4 @@ export * from './service-options'
 export { ServiceOptionSchema, StaffOptionSchema, ServiceOptionsResponseSchema, type ServiceOptionsResponse } from './service-options-schema'
 
 // Re-export getUserSalon from shared location
-export { getUserSalon } from '@/features/business/business-common/api/queries'
+export { getUserSalon } from '@/features/business/common/api/queries'

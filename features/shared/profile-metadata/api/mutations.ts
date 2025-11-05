@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAuthSafe } from '@/lib/auth/guards'
 import { uploadAvatar as uploadAvatarLib, uploadCoverImage as uploadCoverImageLib } from '@/lib/storage'
+import { logError } from '@/lib/observability'
 
 export type ActionResponse<T = void> =
   | { success: true; data: T }
@@ -40,13 +41,27 @@ export async function updateProfileMetadata(
         updated_at: new Date().toISOString(),
       })
 
-    if (error) throw error
+    if (error) {
+      logError('Failed to upsert profile metadata', {
+        operationName: 'updateProfileMetadata',
+        error: error.message,
+        errorCategory: 'database'
+      })
+      return {
+        success: false,
+        error: 'Failed to update profile metadata. Please try again.'
+      }
+    }
 
     revalidatePath('/customer/profile', 'page')
     revalidatePath('/staff/profile', 'page')
     return { success: true, data: undefined }
   } catch (error) {
-    console.error('Error updating profile metadata:', error)
+    logError('Failed to update profile metadata', {
+      operationName: 'updateProfileMetadata',
+      error: error instanceof Error ? error.message : String(error),
+      errorCategory: 'database'
+    })
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to update profile metadata',
@@ -66,8 +81,10 @@ export async function uploadAvatarAction(formData: FormData): Promise<ActionResp
     }
     const { user } = authResult
 
-    const file = formData.get('avatar') as File
-    if (!file) {
+    const file = formData.get('avatar')
+
+    // SECURITY: Validate file is actually a File object
+    if (!file || !(file instanceof File)) {
       return { success: false, error: 'No file provided' }
     }
 
@@ -100,7 +117,11 @@ export async function uploadAvatarAction(formData: FormData): Promise<ActionResp
 
     return { success: true, data: { url: result.url } }
   } catch (error) {
-    console.error('Error uploading avatar:', error)
+    logError('Failed to upload avatar', {
+      operationName: 'uploadAvatarAction',
+      error: error instanceof Error ? error.message : String(error),
+      errorCategory: 'system'
+    })
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to upload avatar',
@@ -120,8 +141,10 @@ export async function uploadCoverImageAction(formData: FormData): Promise<Action
     }
     const { user } = authResult
 
-    const file = formData.get('cover') as File
-    if (!file) {
+    const file = formData.get('cover')
+
+    // SECURITY: Validate file is actually a File object
+    if (!file || !(file instanceof File)) {
       return { success: false, error: 'No file provided' }
     }
 
@@ -153,7 +176,11 @@ export async function uploadCoverImageAction(formData: FormData): Promise<Action
 
     return { success: true, data: { url: result.url } }
   } catch (error) {
-    console.error('Error uploading cover image:', error)
+    logError('Failed to upload cover image', {
+      operationName: 'uploadCoverImageAction',
+      error: error instanceof Error ? error.message : String(error),
+      errorCategory: 'system'
+    })
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to upload cover image',

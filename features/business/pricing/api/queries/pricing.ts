@@ -39,7 +39,7 @@ export async function calculateServicePrice(
   // Get service pricing - price is stored in service_pricing table, not services table
   const { data: pricing, error: pricingError } = await supabase
     .from('service_pricing_view')
-    .select('*')
+    .select('id, service_id, service_name, salon_id, base_price, min_price, max_price, pricing_type, created_at, updated_at, deleted_at')
     .eq('service_id', serviceId)
     .maybeSingle<ServicePricingView>()
 
@@ -58,7 +58,14 @@ export async function calculateServicePrice(
   )
 }
 
-export async function getPricingRules(salonId: string) {
+type PricingRule = {
+  id: string
+  name: string
+  description: string | null
+  is_active: boolean
+}
+
+export async function getPricingRules(salonId: string): Promise<PricingRule[]> {
   await requireUser()
 
   /**

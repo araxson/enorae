@@ -1,16 +1,15 @@
 'use client'
 
-import { useEffect, useMemo, useState, useTransition } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Separator } from '@/components/ui/separator'
 
-import { RefreshCw, Clock } from 'lucide-react'
+import { Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Spinner } from '@/components/ui/spinner'
 import type { DataRefreshControlsProps } from '@/features/shared/dashboard/api/types'
 import { TIME_MS } from '@/lib/config/constants'
+import { RefreshButton } from '@/features/shared/ui'
 
 const DEFAULT_LOADING = 'Refreshing...'
 const DEFAULT_LABEL = 'Refresh'
@@ -23,7 +22,6 @@ export function DataRefreshControls({
   tooltip,
 }: DataRefreshControlsProps) {
   const router = useRouter()
-  const [isPending, startTransition] = useTransition()
   const [relativeLabel, setRelativeLabel] = useState('Just now')
 
   const generatedDate = useMemo(
@@ -55,34 +53,13 @@ export function DataRefreshControls({
     return () => window.clearInterval(interval)
   }, [generatedDate])
 
-  const handleRefresh = () => {
-    startTransition(() => {
-      // ASYNC FIX: router.refresh() is sync, no need for async wrapper
-      router.refresh()
-    })
-  }
-
   const button = (
-    <Button
-      type="button"
-      variant="outline"
-      size="sm"
-      onClick={handleRefresh}
-      disabled={isPending}
-      aria-label="Refresh dashboard data"
-    >
-      {isPending ? (
-        <>
-          <Spinner />
-          {loadingLabel}
-        </>
-      ) : (
-        <>
-          <RefreshCw className="size-4" />
-          {buttonLabel}
-        </>
-      )}
-    </Button>
+    <RefreshButton
+      idleLabel={buttonLabel}
+      loadingLabel={loadingLabel}
+      onRefresh={() => router.refresh()}
+      srLabel="Refresh dashboard data"
+    />
   )
 
   return (

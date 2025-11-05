@@ -30,7 +30,7 @@ export async function getToastUsage(
 
   const { data: tables, error } = await supabase
     .from('toast_usage_summary_view')
-    .select('*')
+    .select('tablename, main_size, toast_and_index_size, total_size, toast_index_percentage')
     .order('toast_bytes', { ascending: false })
     .range(offset, offset + limit - 1)
 
@@ -41,11 +41,11 @@ export async function getToastUsage(
 
   const { count: totalCount } = await supabase
     .from('toast_usage_summary_view')
-    .select('*', { count: 'exact', head: true })
+    .select('tablename', { count: 'exact', head: true })
 
   const { count: highToastCount } = await supabase
     .from('toast_usage_summary_view')
-    .select('*', { count: 'exact', head: true })
+    .select('tablename', { count: 'exact', head: true })
     .gt('toast_percentage', 20)
 
   const totalToastBytes =

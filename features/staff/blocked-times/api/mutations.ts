@@ -2,13 +2,48 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { blockedTimeSchema, type BlockedTimeFormData } from './schema'
+import { rateLimit, getClientIdentifier, createRateLimitKey } from '@/lib/utils/rate-limit'
 
-export async function createBlockedTime(data: BlockedTimeFormData) {
+type ActionResult<T = void> = {
+  error: string | null
+  data?: T
+}
+
+/**
+ * Create a blocked time slot
+ * RATE LIMIT: 20 creates per hour (prevents schedule spam)
+ */
+export async function createBlockedTime(data: BlockedTimeFormData): Promise<ActionResult> {
+  // Rate limiting - 20 creates per hour per IP
+  const ip = await getClientIdentifier()
+  const rateLimitKey = createRateLimitKey('blocked-time-create', ip)
+  const rateLimitResult = await rateLimit({
+    identifier: rateLimitKey,
+    limit: 20,
+    windowMs: 3600000, // 1 hour
+  })
+
+  if (!rateLimitResult.success) {
+    return {
+      error: rateLimitResult.error || 'Too many blocked time creations. Try again later.',
+    }
+  }
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
 
-  const validated = blockedTimeSchema.parse(data)
+  if (!user) {
+    return { error: 'You must be logged in to create blocked times' }
+  }
+
+  // SECURITY: Use safeParse to avoid throwing errors in Server Actions
+  const validation = blockedTimeSchema.safeParse(data)
+  if (!validation.success) {
+    return {
+      error: 'Validation failed. Please check your input.',
+    }
+  }
+  const validated = validation.data
 
   // Get user's salon_id from staff view
   const { data: staffData, error: staffError } = await supabase
@@ -17,7 +52,10 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
     .eq('user_id', user.id)
     .single<{ salon_id: string }>()
 
-  if (staffError || !staffData?.salon_id) throw new Error('Staff record not found')
+  if (staffError || !staffData?.salon_id) {
+    console.error('Staff lookup error:', staffError)
+    return { error: 'Staff profile not found. Please contact support.' }
+  }
 
   const { error } = await supabase
     .schema('scheduling')
@@ -35,18 +73,52 @@ export async function createBlockedTime(data: BlockedTimeFormData) {
       updated_by_id: user.id,
     })
 
-  if (error) throw error
+  if (error) {
+    console.error('Blocked time creation error:', error)
+    return { error: 'Failed to create blocked time. Please try again.' }
+  }
 
   revalidatePath('/staff/blocked-times', 'page')
   revalidatePath('/staff/schedule', 'page')
+
+  return { error: null }
 }
 
-export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
+/**
+ * Update a blocked time slot
+ * RATE LIMIT: 50 updates per hour (allows reasonable schedule adjustments)
+ */
+export async function updateBlockedTime(id: string, data: BlockedTimeFormData): Promise<ActionResult> {
+  // Rate limiting - 50 updates per hour per IP
+  const ip = await getClientIdentifier()
+  const rateLimitKey = createRateLimitKey('blocked-time-update', ip)
+  const rateLimitResult = await rateLimit({
+    identifier: rateLimitKey,
+    limit: 50,
+    windowMs: 3600000, // 1 hour
+  })
+
+  if (!rateLimitResult.success) {
+    return {
+      error: rateLimitResult.error || 'Too many blocked time updates. Try again later.',
+    }
+  }
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
 
-  const validated = blockedTimeSchema.parse(data)
+  if (!user) {
+    return { error: 'You must be logged in to update blocked times' }
+  }
+
+  // SECURITY: Use safeParse to avoid throwing errors in Server Actions
+  const validation = blockedTimeSchema.safeParse(data)
+  if (!validation.success) {
+    return {
+      error: 'Validation failed. Please check your input.',
+    }
+  }
+  const validated = validation.data
 
   // Verify ownership
   const { data: existing } = await supabase
@@ -56,7 +128,7 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
     .single<{ staff_id: string | null }>()
 
   if (!existing || existing.staff_id !== user.id) {
-    throw new Error('Unauthorized to update this blocked time')
+    return { error: 'You do not have permission to update this blocked time' }
   }
 
   const { error } = await supabase
@@ -73,16 +145,43 @@ export async function updateBlockedTime(id: string, data: BlockedTimeFormData) {
     })
     .eq('id', id)
 
-  if (error) throw error
+  if (error) {
+    console.error('Blocked time update error:', error)
+    return { error: 'Failed to update blocked time. Please try again.' }
+  }
 
   revalidatePath('/staff/blocked-times', 'page')
   revalidatePath('/staff/schedule', 'page')
+
+  return { error: null }
 }
 
-export async function deleteBlockedTime(id: string) {
+/**
+ * Delete a blocked time slot
+ * RATE LIMIT: 20 deletes per hour (prevents abuse)
+ */
+export async function deleteBlockedTime(id: string): Promise<ActionResult> {
+  // Rate limiting - 20 deletes per hour per IP
+  const ip = await getClientIdentifier()
+  const rateLimitKey = createRateLimitKey('blocked-time-delete', ip)
+  const rateLimitResult = await rateLimit({
+    identifier: rateLimitKey,
+    limit: 20,
+    windowMs: 3600000, // 1 hour
+  })
+
+  if (!rateLimitResult.success) {
+    return {
+      error: rateLimitResult.error || 'Too many blocked time deletions. Try again later.',
+    }
+  }
+
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Unauthorized')
+
+  if (!user) {
+    return { error: 'You must be logged in to delete blocked times' }
+  }
 
   // Verify ownership
   const { data: existing } = await supabase
@@ -92,7 +191,7 @@ export async function deleteBlockedTime(id: string) {
     .single<{ staff_id: string | null }>()
 
   if (!existing || existing.staff_id !== user.id) {
-    throw new Error('Unauthorized to delete this blocked time')
+    return { error: 'You do not have permission to delete this blocked time' }
   }
 
   // Soft delete
@@ -106,8 +205,13 @@ export async function deleteBlockedTime(id: string) {
     })
     .eq('id', id)
 
-  if (error) throw error
+  if (error) {
+    console.error('Blocked time deletion error:', error)
+    return { error: 'Failed to delete blocked time. Please try again.' }
+  }
 
   revalidatePath('/staff/blocked-times', 'page')
   revalidatePath('/staff/schedule', 'page')
+
+  return { error: null }
 }

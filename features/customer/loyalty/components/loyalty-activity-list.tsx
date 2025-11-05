@@ -1,12 +1,20 @@
 'use client'
 
 import { Fragment } from 'react'
+import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { History } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import type { LoyaltyTransaction } from '@/features/customer/loyalty/api/queries'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import {
   Item,
   ItemActions,
@@ -16,6 +24,7 @@ import {
   ItemSeparator,
   ItemTitle,
 } from '@/components/ui/item'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   transactions: LoyaltyTransaction[]
@@ -41,9 +50,19 @@ export function LoyaltyActivityList({ transactions, formatNumber }: Props) {
         {transactions.length === 0 ? (
           <Empty>
             <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <History className="size-5" aria-hidden="true" />
+              </EmptyMedia>
               <EmptyTitle>No loyalty activity yet</EmptyTitle>
-              <EmptyDescription>Earn points by booking appointments or completing promotions.</EmptyDescription>
+              <EmptyDescription>
+                Earn points by booking appointments or completing promotions.
+              </EmptyDescription>
             </EmptyHeader>
+            <EmptyContent>
+              <Button asChild variant="outline" size="sm">
+                <Link href="/customer/salons">Book an appointment</Link>
+              </Button>
+            </EmptyContent>
           </Empty>
         ) : (
           <ItemGroup className="gap-2">

@@ -1,3 +1,3 @@
 // Feature export
 // This file serves as the main entry point for this feature
-export * from './api/types'
+export type * from './api/types'

@@ -1,12 +1,11 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { CalendarCheck2, CalendarX2 } from 'lucide-react'
-import { StaffPageShell } from '@/features/staff/staff-common/components/staff-page-shell'
-import type { StaffSummary, StaffQuickAction } from '@/features/staff/staff-common'
+import { StaffPageShell } from '@/features/staff/common/components'
+import type { StaffSummary, StaffQuickAction } from '@/features/staff/common'
 import { ScheduleManagementClient } from './schedule-management-client'
-import { BlockedTimeForm } from '@/features/shared/blocked-times/components/blocked-time-form'
-import { BlockedTimesList } from '@/features/shared/blocked-times/components/blocked-times-list'
+import { BlockedTimeForm, BlockedTimesList } from '@/features/shared/blocked-times/components'
 import type { StaffScheduleWithStaff } from '@/features/staff/schedule/api/queries'
 import type { getBlockedTimesByStaff } from '@/features/shared/blocked-times/api/queries'
 
@@ -27,8 +26,6 @@ export function StaffScheduleClient({
   blockedTimes,
   staffName,
 }: StaffScheduleClientProps) {
-  const [activeTab, setActiveTab] = useState<'schedule' | 'blocked'>('schedule')
-
   const summaries: StaffSummary[] = useMemo(() => {
     const activeShifts = schedules.filter((schedule) => schedule['is_active']).length
     const inactiveShifts = schedules.length - activeShifts
@@ -69,6 +66,18 @@ export function StaffScheduleClient({
     { value: 'blocked', label: 'Blocked times', icon: CalendarX2, badge: blockedTimes.length ? blockedTimes.length.toString() : undefined },
   ]
 
+  const tabContent = {
+    schedule: (
+      <ScheduleManagementClient schedules={schedules} staffId={staffId} salonId={salonId} />
+    ),
+    blocked: (
+      <div className="space-y-6" id="blocked-times">
+        <BlockedTimeForm salonId={salonId} />
+        <BlockedTimesList blockedTimes={blockedTimes} />
+      </div>
+    ),
+  }
+
   return (
     <StaffPageShell
       title="Schedule"
@@ -80,20 +89,11 @@ export function StaffScheduleClient({
       summaries={summaries}
       quickActions={quickActions}
       tabs={tabs}
-      activeTab={activeTab}
-      onTabChange={(value: string) => setActiveTab(value as typeof activeTab)}
+      defaultTab="schedule"
+      tabContent={tabContent}
       toggles={[
         { id: 'auto-publish', label: 'Auto-publish updates', helper: 'Notify your salon when changes are saved', defaultOn: true },
       ]}
-    >
-      {activeTab === 'schedule' ? (
-        <ScheduleManagementClient schedules={schedules} staffId={staffId} salonId={salonId} />
-      ) : (
-        <div className="space-y-6" id="blocked-times">
-          <BlockedTimeForm salonId={salonId} />
-          <BlockedTimesList blockedTimes={blockedTimes} />
-        </div>
-      )}
-    </StaffPageShell>
+    />
   )
 }

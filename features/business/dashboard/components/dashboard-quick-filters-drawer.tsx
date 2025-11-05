@@ -11,11 +11,11 @@ export function DashboardQuickFiltersDrawer() {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline" className="md:hidden">
-          Filters
-        </Button>
-      </DrawerTrigger>
+      <div className="md:hidden">
+        <DrawerTrigger asChild>
+          <Button variant="outline">Filters</Button>
+        </DrawerTrigger>
+      </div>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Quick filters</DrawerTitle>

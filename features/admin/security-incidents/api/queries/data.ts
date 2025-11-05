@@ -19,7 +19,9 @@ export interface SecurityIncidentRecord {
   created_at: string
 }
 
-function toSecurityIncidentRecord(row: SecurityIncidentLogRow): SecurityIncidentRecord {
+type SecurityIncidentRowSubset = Pick<SecurityIncidentLogRow, 'id' | 'event_type' | 'severity' | 'error_message' | 'entity_id' | 'metadata' | 'created_at'>
+
+function toSecurityIncidentRecord(row: SecurityIncidentRowSubset): SecurityIncidentRecord {
   const metadata = (row.metadata as Record<string, unknown> | null) ?? {}
   return {
     id: row.id ?? '',
@@ -57,7 +59,7 @@ export async function getSecurityIncidents(
 
   const { data: incidents, error } = await supabase
     .from('security_incident_logs_view')
-    .select('*')
+    .select('id, event_type, severity, error_message, entity_id, metadata, created_at')
     .order('occurred_at', { ascending: false })
     .range(offset, offset + limit - 1)
 

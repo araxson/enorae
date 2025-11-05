@@ -32,17 +32,17 @@ export async function getQueryPerformance(
   const [mostCalledRes, slowQueriesRes, perfRes] = await Promise.all([
     supabase
       .from('most_called_queries_view')
-      .select('*')
+      .select('query_text, calls, total_time_ms, avg_time_ms')
       .order('calls', { ascending: false })
       .limit(limit),
     supabase
       .from('slow_queries_view')
-      .select('*')
+      .select('query_text, calls, avg_time_ms, max_time_ms, total_time_ms')
       .order('avg_time_ms', { ascending: false })
       .limit(limit),
     supabase
       .from('query_performance_summary_view')
-      .select('*')
+      .select('tablename, index_scans, tuples_read, avg_tuples_per_scan, index_name')
       .order('index_scans', { ascending: false })
       .limit(limit),
   ])
@@ -51,9 +51,9 @@ export async function getQueryPerformance(
   if (slowQueriesRes.error) throw slowQueriesRes.error
   if (perfRes.error) throw perfRes.error
 
-  const mostCalledQueries = (mostCalledRes.data ?? []) as MostCalledQuery[]
-  const slowQueries = (slowQueriesRes.data ?? []) as SlowQuery[]
-  const indexPerformance = (perfRes.data ?? []) as QueryPerformance[]
+  const mostCalledQueries = (mostCalledRes.data ?? []) as unknown as MostCalledQuery[]
+  const slowQueries = (slowQueriesRes.data ?? []) as unknown as SlowQuery[]
+  const indexPerformance = (perfRes.data ?? []) as unknown as QueryPerformance[]
 
   const totalSlowQueries = slowQueries.filter(
     (q) => (q['avg_time_ms'] ?? 0) > 100

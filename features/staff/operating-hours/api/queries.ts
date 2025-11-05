@@ -23,7 +23,7 @@ export async function getSalonOperatingHours(): Promise<OperatingHours[]> {
     .order('day_of_week', { ascending: true })
 
   if (error) throw error
-  return data
+  return data as OperatingHours[]
 }
 
 export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
@@ -55,5 +55,5 @@ export async function getTodayOperatingHours(): Promise<OperatingHours | null> {
     if (error.code === 'PGRST116') return null
     throw error
   }
-  return data
+  return data as OperatingHours
 }

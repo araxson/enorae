@@ -11,18 +11,20 @@ import {
 } from '../api/queries'
 import { getUserRole } from '@/lib/auth'
 import { AnalyticsOverviewCards } from './analytics-overview'
-import { ChainAnalyticsSection } from './sections/chain-analytics-section'
-import { CohortsTable } from './sections/cohorts-table'
-import { CustomerInsightsSection } from './sections/customer-insights-section'
-import { DateRangeHeader } from './sections/date-range-header'
-import { TopPerformersSection } from './sections/top-performers-section'
+import {
+  ChainAnalyticsSection,
+  CohortsTable,
+  CustomerInsightsSection,
+  DateRangeHeader,
+  TopPerformersSection,
+} from './sections'
 
 type EnhancedAnalyticsProps = {
   startDate?: string
   endDate?: string
 }
 
-export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalyticsProps = {}) {
+export async function EnhancedAnalytics({ startDate, endDate }: EnhancedAnalyticsProps = {}): Promise<React.JSX.Element> {
   let salon
   try {
     salon = await getAnalyticsSalon()

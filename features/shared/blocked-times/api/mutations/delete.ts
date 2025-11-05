@@ -4,7 +4,9 @@ import { revalidatePath } from 'next/cache'
 import { resolveClient, resolveSessionRoles, ensureSalonAccess, BLOCKED_TIMES_PATHS, UUID_REGEX } from './shared'
 import { createOperationLogger, logMutation, logError } from '@/lib/observability'
 
-export async function deleteBlockedTime(id: string) {
+type DeleteResult = { success: true; error: null } | { error: string }
+
+export async function deleteBlockedTime(id: string): Promise<DeleteResult> {
   const logger = createOperationLogger('deleteBlockedTime', {})
   logger.start()
 

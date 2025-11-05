@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAnyRole, ROLE_GROUPS } from '@/lib/auth'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { sanitizeAdminText } from '@/features/admin/admin-common'
+import { sanitizeAdminText } from '@/features/admin/common'
 import type { Tables } from '@/lib/types/database.types'
 import { verifyChainSchema } from './schemas'
 import { logChainAudit } from './audit'
@@ -29,7 +29,9 @@ export async function verifyChain(data: {
   try {
     const parsed = verifyChainSchema.safeParse(data)
     if (!parsed.success) {
-      return { success: false, error: parsed.error.issues[0]?.message ?? 'Invalid chain payload' }
+      const fieldErrors = parsed.error.flatten().fieldErrors
+      const firstError = Object.values(fieldErrors)[0]?.[0]
+      return { success: false, error: firstError ?? 'Invalid chain payload' }
     }
 
     const { chainId, isVerified } = parsed.data

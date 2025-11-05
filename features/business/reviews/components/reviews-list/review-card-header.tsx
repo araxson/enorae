@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+
 import { CheckCircle2, Flag, TrendingUp } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { ItemTitle } from '@/components/ui/item'
@@ -60,4 +60,4 @@ function ReviewCardHeaderComponent({
   )
 }
 
-export const ReviewCardHeader = memo(ReviewCardHeaderComponent)
+export const ReviewCardHeader = ReviewCardHeaderComponent
